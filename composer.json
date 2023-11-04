@@ -1,0 +1,27 @@
+{
+    "name": "alban/simplisiti",
+    "type": "libary",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Alban\\Simplisiti\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Christian Albán"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alban\\Simplisiti\\ServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "illuminate/database": "^10.0",
+        "illuminate/support": "^10.0"
+    }
+}
