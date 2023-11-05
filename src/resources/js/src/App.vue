@@ -17,10 +17,30 @@ import Toast from "./components/Toast.vue";
 </style>
 <style lang="scss">
 .button {
-    @apply bg-blue-100 px-4 py-2 rounded-lg text-blue-900 transition;
+    @apply px-4 py-2 rounded-lg transition;
 
-    &:hover {
-        @apply bg-blue-200;
+    &.primary {
+        @apply bg-blue-100 text-blue-900;
+
+        &:hover {
+            @apply bg-blue-200;
+        }
+    }
+
+    &.danger {
+        @apply bg-red-100 text-red-900;
+
+        &:hover {
+            @apply bg-red-200;
+        }
+    }
+
+    &.default {
+        @apply bg-gray-100 text-gray-900;
+
+        &:hover {
+            @apply bg-gray-200;
+        }
     }
 }
 

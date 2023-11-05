@@ -1,15 +1,63 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import ComponentsForm from "./partials/Form.vue";
+import { getComponent, updateComponent } from "../../services/ComponentService";
+import { useRoute, useRouter } from "vue-router";
+import { Variable } from "../../types/Variable";
+import { showToast } from "../../services/ToastService";
+import { useI18n } from "vue-i18n";
 
-const code = ref('<div>Create your new component</div>');
+const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+const code = ref('');
+const name = ref('');
+const variables = ref<Variable[]>([]);
+const componentId = +route.params.component;
+
+const update = () => {
+    updateComponent({
+        id: componentId,
+        html: code.value,
+        variables: variables.value.filter(variable => variable.name !== ''),
+        name: name.value,
+    })
+    .then(() => {
+        router.push({name: 'components.index'});
+        showToast({
+            title: t('components.toasts.success'),
+            message: t('components.toasts.updated'),
+            type: 'success',
+        });
+    })
+    .catch(() => {
+        showToast({
+            title: t('components.toasts.error'),
+            message: t('components.toasts.errorUpdated'),
+            type: 'error',
+        });
+    })
+}
+
+onMounted(() => {
+    getComponent(componentId).then((response) => {
+        const data = response.data.data;
+        code.value = data.html;
+        name.value = data.name;
+        variables.value = data.variables;
+    });
+});
 
 </script>
 
 <template>
-    <div>
-        <components-form v-model:code="code"/>
+    <div class="flex gap-4 mb-4 w-full">
+        <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
+        <h1 class="title">{{ $t('components.titles.editComponent') }}</h1>
+        <button @click="update" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
+        <button @click="update" type="button" class="button primary">{{ $t('buttons.save') }}</button>
     </div>
+    <components-form v-model:code="code" v-model:name="name" v-model:variables="variables"/>
 </template>
 
 <style scoped>

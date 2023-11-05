@@ -5,7 +5,7 @@ import { PropType } from 'vue';
 
 const props = defineProps({
     position: {
-        type: Object as PropType<ToastPosition>,
+        type: String as PropType<ToastPosition>,
         default: 'top-right',
     },
 });

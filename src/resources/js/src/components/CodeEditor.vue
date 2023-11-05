@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRefs, watch } from 'vue';
 import * as monaco from 'monaco-editor';
 
 const props = defineProps({
@@ -13,9 +13,11 @@ const emit = defineEmits(['update:code']);
 
 const editor = ref(null);
 
+let codeEditor: any = null;
+
 onMounted(() => {
     if (editor.value) {
-        const codeEditor = monaco.editor.create(editor.value, {
+        codeEditor = monaco.editor.create(editor.value, {
             value: props.code,
             language: "html",
             minimap: {
@@ -27,6 +29,12 @@ onMounted(() => {
             emit('update:code', codeEditor.getValue());
         });
     };
+});
+
+const { code  } = toRefs(props);
+
+watch(code, (code) => {
+    codeEditor?.setValue(code);
 });
 
 </script>

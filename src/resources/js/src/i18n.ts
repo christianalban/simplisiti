@@ -28,6 +28,7 @@ const messages = {
                 componentName: "Component name (optional group)",
             },
             titles: {
+                componentsList: "Components list",
                 createComponent: "Create new component",
                 editComponent: "Edit component",
                 code: "Code",
@@ -37,19 +38,18 @@ const messages = {
                 create: "New component",
             },
             toasts: {
-                success: {
-                    title: "Success",
-                    message: "Component created successfully.",
-                },
-                error: {
-                    title: "Error",
-                    message: "Component couldn't be created.",
-                },
+                success: "Success",
+                error: "Error",
+                created: "Component created successfully.",
+                updated: "Component updated successfully.",
+                errorCreated: "Component couldn't be created.",
+                errorUpdated: "Component couldn't be updated.",
             }
         },
         buttons: {
             save: "Save",
             back: "Back",
+            delete: "Delete",
         }
     },
     es: {
@@ -79,6 +79,7 @@ const messages = {
                 componentName: "Nombre del componente (grupo opcional)",
             },
             titles: {
+                componentsList: "Listado de componentes",
                 createComponent: "Crear nuevo componente",
                 editComponent: "Editar componente",
                 code: "Código",
@@ -88,19 +89,18 @@ const messages = {
                 create: "Nuevo componente",
             },
             toasts: {
-                success: {
-                    title: "Éxito",
-                    message: "Componente creado correctamente.",
-                },
-                error: {
-                    title: "Error",
-                    message: "El componente no pudo ser creado.",
-                },
+                success: "Éxito",
+                error: "Error",
+                created: "Componente creado correctamente.",
+                updated: "Componente actualizado correctamente.",
+                errorCreated: "El componente no pudo ser creado.",
+                errorUpdated: "El componente no pudo ser actualizado.",
             }
         },
         buttons: {
             save: "Guardar",
             back: "Volver",
+            delete: "Eliminar",
         }
     },
 }
