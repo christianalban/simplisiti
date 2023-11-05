@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Component\DeleteComponentAction;
 use Alban\Simplisiti\Actions\Component\StoreComponentAction;
 use Alban\Simplisiti\Actions\Component\UpdateComponentAction;
 use Alban\Simplisiti\Http\Resources\ComponentResource;
@@ -35,6 +36,14 @@ class ComponentController extends Controller {
 
         return response()->json([
             'message' => 'Component updated successfully',
+        ]);
+    }
+
+    public function destroy(Component $component, DeleteComponentAction $action) {
+        $action->execute($component);
+
+        return response()->json([
+            'message' => 'Component deleted successfully',
         ]);
     }
 }

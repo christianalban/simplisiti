@@ -21,7 +21,7 @@ const props = defineProps({
     </ul>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .toast {
     @apply fixed list-none p-4 m-4 z-50 gap-4 flex flex-col-reverse;
 

@@ -31,10 +31,12 @@ onMounted(() => {
     };
 });
 
-const { code  } = toRefs(props);
+const { code } = toRefs(props);
 
 watch(code, (code) => {
-    codeEditor?.setValue(code);
+    if (code !== codeEditor.getValue()) {
+        codeEditor.setValue(code);
+    }
 });
 
 </script>

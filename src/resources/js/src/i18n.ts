@@ -42,8 +42,16 @@ const messages = {
                 error: "Error",
                 created: "Component created successfully.",
                 updated: "Component updated successfully.",
+                deleted: "Component deleted successfully.",
                 errorCreated: "Component couldn't be created.",
                 errorUpdated: "Component couldn't be updated.",
+                errorDeleted: "Component couldn't be deleted.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Delete component",
+                    message: "Are you sure you want to delete the component {name}?",
+                }
             }
         },
         buttons: {
@@ -93,15 +101,25 @@ const messages = {
                 error: "Error",
                 created: "Componente creado correctamente.",
                 updated: "Componente actualizado correctamente.",
+                deleted: "Componente eliminado correctamente.",
                 errorCreated: "El componente no pudo ser creado.",
                 errorUpdated: "El componente no pudo ser actualizado.",
+                errorDeleted: "El componente no pudo ser eliminado.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Eliminar componente",
+                    message: "¿Está seguro que desea eliminar el componente {name}?",
+                }
             }
         },
         buttons: {
             save: "Guardar",
             back: "Volver",
             delete: "Eliminar",
-        }
+            confirm: "Confirmar",
+            cancel: "Cancelar",
+        },
     },
 }
 

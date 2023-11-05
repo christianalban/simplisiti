@@ -9,6 +9,7 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
         Route::get('component/{component}', 'show');
         Route::post('component', 'store');
         Route::put('component/{component}', 'update');
+        Route::delete('component/{component}', 'destroy');
     });
 });
 

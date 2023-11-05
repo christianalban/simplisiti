@@ -28,7 +28,10 @@ const removeVariable = (index: number) => {
     emit('update:variables', props.variables.filter((_, i) => i !== index));
 };
 
-const value = (value: EventTarget): string => {
+const value = (value: EventTarget | null): string => {
+    if (!value) {
+        return '';
+    }
     return (value as HTMLInputElement).value.toLowerCase().trim().replaceAll(' ', '');
 }
 

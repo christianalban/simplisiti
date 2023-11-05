@@ -16,3 +16,7 @@ export const getComponent = async (componentId: number): Promise<any> => {
 export const updateComponent = async (component: Component): Promise<any> => {
     return await axios.put(`component/${component.id}`, component)
 }
+
+export const deleteComponent = async (componentId: number): Promise<any> => {
+    return await axios.delete(`component/${componentId}`)
+}
