@@ -1,4 +1,25 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
+import { getComponents } from '../services/ComponentService';
+import { useI18n } from 'vue-i18n';
+
+const componentsCount = ref(0);
+const { t } = useI18n();
+
+const componentsStatusMessage = computed(() => {
+    if (componentsCount.value === 0) {
+        return t('status.components.warning');
+    }
+
+    return t('status.components.success', { count: componentsCount.value });
+});
+
+onMounted(() => {
+    getComponents()
+    .then((response) => {
+        componentsCount.value = response.data.data.length;
+    });
+});
 </script>
 
 <template>
@@ -17,8 +38,9 @@
                     <h2 class="title">{{ $t('titles.status') }}</h2>
                     <ul class="">
                         <li class="tool-status">
-                            <fa-icon class="text-yellow-500" icon="triangle-exclamation"/>
-                            {{ $t('status.components.warning') }}
+                            <fa-icon v-if="!componentsCount" class="text-yellow-500" icon="triangle-exclamation"/>
+                            <fa-icon v-if="componentsCount" class="text-green-500" icon="check"/>
+                            {{ componentsStatusMessage }}
                         </li>
                     </ul>
                 </div>

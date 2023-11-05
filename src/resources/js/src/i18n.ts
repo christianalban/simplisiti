@@ -9,7 +9,7 @@ const messages = {
         },
         status: {
             components: {
-                success: "Components loaded successfully.",
+                success: "{count} components loaded successfully.",
                 warning: "There isn't any component created yet.",
             }
         },
@@ -50,7 +50,7 @@ const messages = {
             dialogs: {
                 delete: {
                     title: "Delete component",
-                    message: "Are you sure you want to delete the component {name}?",
+                    message: "Are you sure you want to delete the component '{name}'?",
                 }
             }
         },
@@ -64,11 +64,11 @@ const messages = {
         titles: {
             dashboard: "Tablero",
             components: "Componentes",
-            status: "Status",
+            status: "Estado",
         },
         status: {
             components: {
-                success: "Componentes cargados correctamente.",
+                success: "{count} componentes cargados correctamente.",
                 warning: "No hay componentes creados aún.",
             }
         },
@@ -109,7 +109,7 @@ const messages = {
             dialogs: {
                 delete: {
                     title: "Eliminar componente",
-                    message: "¿Está seguro que desea eliminar el componente {name}?",
+                    message: "¿Está seguro que desea eliminar el componente '{name}'?",
                 }
             }
         },

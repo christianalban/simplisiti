@@ -70,7 +70,7 @@ onMounted(() => {
         const data = response.data.data;
         code.value = data.html;
         name.value = data.name;
-        variables.value = data.variables;
+        variables.value = data.variables.length ? data.variables : [{type: 'text', name: '', default: ''}];
     });
 });
 
@@ -87,7 +87,7 @@ onMounted(() => {
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('components.dialogs.delete.title')"
-        :message="$t('components.dialogs.delete.message')"
+        :message="$t('components.dialogs.delete.message', { name: name })"
         @confirm="confirmDeleteComponent"
     />
 </template>

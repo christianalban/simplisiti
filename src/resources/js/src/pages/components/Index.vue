@@ -20,7 +20,7 @@ onMounted(() => {
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'components.create' }">{{ $t('components.buttons.create') }}</router-link>
         </div>
-        <div class="grid grid-cols-6 grid-rows-6 h-full">
+        <div class="grid grid-cols-6 grid-rows-6 h-full gap-4">
             <router-link :to="{ name: 'components.edit', params: { component: component.id } }" class="tile" v-for="component of components" :key="component.name">
                 <span class="tile-title">{{ component.name }}</span>
             </router-link>

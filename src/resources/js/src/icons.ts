@@ -1,5 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+faCheck,
     faMinus,
     faPlus,
     faTriangleExclamation
@@ -10,6 +11,7 @@ library.add(
     faTriangleExclamation,
     faPlus,
     faMinus,
+    faCheck,
 );
 
 export default FontAwesomeIcon;
