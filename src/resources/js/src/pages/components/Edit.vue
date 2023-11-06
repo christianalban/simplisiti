@@ -14,7 +14,6 @@ const router = useRouter();
 const code = ref('');
 const name = ref('');
 const showDialog = ref(false);
-
 const variables = ref<Variable[]>([]);
 const componentId = +route.params.component;
 
@@ -28,14 +27,14 @@ const update = () => {
     .then(() => {
         router.push({name: 'components.index'});
         showToast({
-            title: t('components.toasts.success'),
+            title: t('toasts.success'),
             message: t('components.toasts.updated'),
             type: 'success',
         });
     })
     .catch(() => {
         showToast({
-            title: t('components.toasts.error'),
+            title: t('toasts.error'),
             message: t('components.toasts.errorUpdated'),
             type: 'error',
         });
@@ -51,14 +50,14 @@ const confirmDeleteComponent = () => {
     .then(() => {
         router.push({name: 'components.index'});
         showToast({
-            title: t('components.toasts.success'),
+            title: t('toasts.success'),
             message: t('components.toasts.deleted'),
             type: 'success',
         });
     })
     .catch(() => {
         showToast({
-            title: t('components.toasts.error'),
+            title: t('toasts.error'),
             message: t('components.toasts.errorDeleted'),
             type: 'error',
         });
@@ -83,7 +82,11 @@ onMounted(() => {
         <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
         <button @click="update" type="button" class="button primary">{{ $t('buttons.save') }}</button>
     </div>
-    <components-form v-model:code="code" v-model:name="name" v-model:variables="variables"/>
+    <components-form
+        v-model:code="code"
+        v-model:name="name"
+        v-model:variables="variables"
+    />
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('components.dialogs.delete.title')"

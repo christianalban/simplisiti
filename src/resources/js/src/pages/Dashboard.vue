@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getComponents } from '../services/ComponentService';
-import { useI18n } from 'vue-i18n';
 
 const componentsCount = ref(0);
-const { t } = useI18n();
-
-const componentsStatusMessage = computed(() => {
-    if (componentsCount.value === 0) {
-        return t('status.components.warning');
-    }
-
-    return t('status.components.success', { count: componentsCount.value });
-});
+const toolLinks = [
+    {
+        name: 'components.index',
+        title: 'titles.components',
+    },
+    {
+        name: 'pages.index',
+        title: 'titles.pages',
+    },
+];
 
 onMounted(() => {
     getComponents()
@@ -29,8 +29,8 @@ onMounted(() => {
                 <div>
                     <h2 class="title">{{ $t('titles.dashboard') }}</h2>
                     <ul class="border border-gray-200 rounded-lg">
-                        <li>
-                            <router-link class="tool-link" :to="{ name: 'components.index' }">{{ $t('titles.components') }}</router-link>
+                        <li v-for="{ name, title } of toolLinks" :key="name">
+                            <router-link class="tool-link" :to="{ name  }">{{ $t(title) }}</router-link>
                         </li>
                     </ul>
                 </div>
@@ -40,7 +40,7 @@ onMounted(() => {
                         <li class="tool-status">
                             <fa-icon v-if="!componentsCount" class="text-yellow-500" icon="triangle-exclamation"/>
                             <fa-icon v-if="componentsCount" class="text-green-500" icon="check"/>
-                            {{ componentsStatusMessage }}
+                            {{ $t('status.components', componentsCount) }}
                         </li>
                     </ul>
                 </div>

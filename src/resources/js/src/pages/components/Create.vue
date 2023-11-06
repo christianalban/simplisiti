@@ -24,14 +24,14 @@ const save = () => {
     .then(() => {
         router.push({name: 'components.index'});
         showToast({
-            title: t('components.toasts.success'),
+            title: t('toasts.success'),
             message: t('components.toasts.created'),
             type: 'success',
         });
     })
     .catch(() => {
         showToast({
-            title: t('components.toasts.error'),
+            title: t('toasts.error'),
             message: t('components.toasts.errorCreated'),
             type: 'error',
         });
@@ -50,7 +50,6 @@ const save = () => {
         v-model:code="code"
         v-model:variables="variables"
         v-model:name="name"
-        @save="save"
     />
 </template>
 

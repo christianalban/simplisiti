@@ -15,7 +15,7 @@ class UpdateComponentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string:max:255', Rule::unique('components')->ignore($this->component)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('components')->ignore($this->component)],
             'html' => 'required|string',
             'variables' => 'nullable|array',
             'variables.*.type' => 'required|in:text',

@@ -29,15 +29,4 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.tile {
-    @apply col-span-1 row-span-1 flex justify-center items-center bg-blue-200 rounded-lg;
-
-    &:hover {
-        @apply border-4 border-blue-300;
-    }
-
-    .tile-title {
-        @apply font-semibold text-2xl;
-    }
-}
 </style>

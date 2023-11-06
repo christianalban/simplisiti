@@ -5,13 +5,11 @@ const messages = {
         titles: {
             dashboard: "Dashboard",
             components: "Components",
+            pages: "Pages",
             status: "Status",
         },
         status: {
-            components: {
-                success: "{count} components loaded successfully.",
-                warning: "There isn't any component created yet.",
-            }
+            components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully."
         },
         components: {
             name: "Name",
@@ -38,8 +36,6 @@ const messages = {
                 create: "New component",
             },
             toasts: {
-                success: "Success",
-                error: "Error",
                 created: "Component created successfully.",
                 updated: "Component updated successfully.",
                 deleted: "Component deleted successfully.",
@@ -54,23 +50,65 @@ const messages = {
                 }
             }
         },
+        pages: {
+            placeholders: {
+                pageName: "[group/]name",
+                pageUrl: "Enter the page URL, without the domain",
+            },
+            labels: {
+                pageName: "Page name (optional group)",
+                pageUrl: "Page URL",
+                addComponentsToSection: "Add components to this section",
+                urlParam: "URL: {url}",
+                sectionsCount: "Sections: {count}",
+            },
+            titles: {
+                pagesList: "Pages list",
+                createPage: "Create new page",
+                editPage: "Edit page",
+                availableComponents: "Available components",
+                sections: "Sections",
+                componentConfigurationForm: "Component configuration",
+            },
+            buttons: {
+                create: "New page",
+                addSection: "Add new section",
+                exit: "Exit",
+            },
+            toasts: {
+                created: "Page created successfully.",
+                updated: "Page updated successfully.",
+                deleted: "Page deleted successfully.",
+                errorCreated: "Page couldn't be created.",
+                errorUpdated: "Page couldn't be updated.",
+                errorDeleted: "Page couldn't be deleted.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Delete page",
+                    message: "Are you sure you want to delete the page '{name}'?",
+                }
+            }
+        },
         buttons: {
             save: "Save",
             back: "Back",
             delete: "Delete",
-        }
+        },
+        toasts: {
+            success: "Success",
+            error: "Error",
+        },
     },
     es: {
         titles: {
             dashboard: "Tablero",
             components: "Componentes",
+            pages: "Páginas",
             status: "Estado",
         },
         status: {
-            components: {
-                success: "{count} componentes cargados correctamente.",
-                warning: "No hay componentes creados aún.",
-            }
+            components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente."
         },
         components: {
             name: "Nombre",
@@ -97,8 +135,6 @@ const messages = {
                 create: "Nuevo componente",
             },
             toasts: {
-                success: "Éxito",
-                error: "Error",
                 created: "Componente creado correctamente.",
                 updated: "Componente actualizado correctamente.",
                 deleted: "Componente eliminado correctamente.",
@@ -113,12 +149,56 @@ const messages = {
                 }
             }
         },
+        pages: {
+            placeholders: {
+                pageName: "[grupo/]nombre",
+                pageUrl: "Ingrese la URL de la página, sin el dominio",
+            },
+            labels: {
+                pageName: "Nombre de la página (grupo opcional)",
+                pageUrl: "URL de la página",
+                addComponentsToSection: "Agrega componentes a esta sección",
+                urlParam: "URL: {url}",
+                sectionsCount: "Secciones: {count}",
+            },
+            titles: {
+                pagesList: "Listado de páginas",
+                createPage: "Crear nueva página",
+                editPage: "Editar página",
+                availableComponents: "Componentes disponibles",
+                sections: "Secciones",
+                componentConfigurationForm: "Configuración del componente",
+            },
+            buttons: {
+                create: "Nueva página",
+                addSection: "Agregar nueva sección",
+                exit: "Salir",
+            },
+            toasts: {
+                created: "Página creada correctamente.",
+                updated: "Página actualizada correctamente.",
+                deleted: "Página eliminada correctamente.",
+                errorCreated: "La página no pudo ser creada.",
+                errorUpdated: "La página no pudo ser actualizada.",
+                errorDeleted: "La página no pudo ser eliminada.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Eliminar página",
+                    message: "¿Está seguro que desea eliminar la página '{name}'?",
+                }
+            }
+        },
         buttons: {
             save: "Guardar",
             back: "Volver",
             delete: "Eliminar",
             confirm: "Confirmar",
             cancel: "Cancelar",
+        },
+        toasts: {
+            success: "Éxito",
+            error: "Error",
         },
     },
 }

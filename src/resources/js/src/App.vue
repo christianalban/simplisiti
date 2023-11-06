@@ -42,6 +42,10 @@ import Toast from "./components/Toast.vue";
             @apply bg-gray-200;
         }
     }
+
+    &.small {
+        @apply px-2 py-1 text-xs rounded;
+    }
 }
 
 .input {
@@ -71,10 +75,30 @@ import Toast from "./components/Toast.vue";
 
     .button:first-child {
         @apply rounded-l-lg;
+
+        &.small {
+            @apply rounded-l;
+        }
     }
 
     .button:last-child {
         @apply rounded-r-lg;
+
+        &.small {
+            @apply rounded-r;
+        }
+    }
+}
+
+.tile {
+    @apply col-span-1 border-4 border-blue-200 row-span-1 flex justify-center items-center bg-blue-200 rounded-lg;
+
+    &:hover {
+        @apply border-blue-300 bg-blue-100;
+    }
+
+    .tile-title {
+        @apply font-semibold text-2xl;
     }
 }
 </style>

@@ -2,6 +2,7 @@
 import { PropType } from "vue";
 import CodeEditor from "../../../components/CodeEditor.vue";
 import { Variable } from "../../../types/Variable";
+import { value } from '../../../utils/helpers';
 
 const props = defineProps({
     code: {
@@ -28,19 +29,10 @@ const removeVariable = (index: number) => {
     emit('update:variables', props.variables.filter((_, i) => i !== index));
 };
 
-const value = (value: EventTarget | null): string => {
-    if (!value) {
-        return '';
-    }
-    return (value as HTMLInputElement).value.toLowerCase().trim().replaceAll(' ', '');
-}
-
 </script>
 
 <template>
     <div class="flex flex-col gap-4">
-        <div class="flex justify-end">
-        </div>
         <div class="flex flex-col gap-2 w-1/3">
             <label class="label">{{ $t('components.labels.componentName') }}</label>
             <input type="text" :value="name" @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('components.placeholders.componentName')"/>

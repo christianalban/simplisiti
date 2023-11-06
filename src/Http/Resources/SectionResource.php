@@ -5,7 +5,7 @@ namespace Alban\Simplisiti\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ComponentResource extends JsonResource
+class SectionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,8 @@ class ComponentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'html' => $this->html,
-            'variables' => $this->variables,
-            'content' => $this->when($this->pivot?->content, $this->pivot?->content),
-            'content_id' => $this->when($this->pivot?->id, $this->pivot?->id),
+            'order' => $this->order,
+            'components' => ComponentResource::collection($this->whenLoaded('components')),
         ];
     }
 }
