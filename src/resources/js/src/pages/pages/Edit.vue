@@ -49,7 +49,7 @@ const mergeComponentsContent = (components: Component[]): Component[] => {
             variables: component.variables.map((variable) => {
                 return {
                     ...variable,
-                    default: component.content[variable.name],
+                    default: component.content ? component.content[variable.name] : '',
                 }
             }),
         }

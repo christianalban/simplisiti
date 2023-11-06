@@ -9,7 +9,8 @@ const messages = {
             status: "Status",
         },
         status: {
-            components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully."
+            components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
+            pages: "There isn't any page created yet. | {count} page loaded successfully. | {count} pages loaded successfully.",
         },
         components: {
             name: "Name",
@@ -108,7 +109,8 @@ const messages = {
             status: "Estado",
         },
         status: {
-            components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente."
+            components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
+            pages: "No hay páginas creadas aún. | {count} página cargada correctamente. | {count} páginas cargadas correctamente.",
         },
         components: {
             name: "Nombre",

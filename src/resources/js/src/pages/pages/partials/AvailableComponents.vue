@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { value } from '../../../utils/helpers';
 import { getComponents } from '../../../services/ComponentService';
 import { onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'

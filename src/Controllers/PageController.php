@@ -22,7 +22,8 @@ class PageController extends Controller {
     }
 
     public function show(Page $page) {
-        $page->load('sections.components');
+        $page->loadOrderedSectionsAndComponents();
+
         return PageResource::make($page);
     }
 

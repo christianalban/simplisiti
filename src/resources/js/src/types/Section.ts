@@ -1,4 +1,4 @@
-import { Component } from "vue";
+import { Component } from "./Component"
 
 export interface Section {
     id?: number

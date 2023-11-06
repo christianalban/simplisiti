@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getComponents } from '../services/ComponentService';
+import { computed, onMounted, ref } from 'vue';
+import { getComponents } from '../../services/ComponentService';
+import { getPages } from '../../services/PageService';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const componentsCount = ref(0);
+const pagesCount = ref(0);
 const toolLinks = [
     {
         name: 'components.index',
@@ -14,10 +18,25 @@ const toolLinks = [
     },
 ];
 
+const toolStatus = computed(() => [
+    {
+        counter: componentsCount.value,
+        message: t('status.components', componentsCount.value),
+    },
+    {
+        counter: pagesCount.value,
+        message: t('status.pages', pagesCount.value),
+    },
+]);
+
 onMounted(() => {
     getComponents()
     .then((response) => {
         componentsCount.value = response.data.data.length;
+    });
+    getPages()
+    .then((response) => {
+        pagesCount.value = response.data.data.length;
     });
 });
 </script>
@@ -37,10 +56,10 @@ onMounted(() => {
                 <div>
                     <h2 class="title">{{ $t('titles.status') }}</h2>
                     <ul class="">
-                        <li class="tool-status">
-                            <fa-icon v-if="!componentsCount" class="text-yellow-500" icon="triangle-exclamation"/>
-                            <fa-icon v-if="componentsCount" class="text-green-500" icon="check"/>
-                            {{ $t('status.components', componentsCount) }}
+                        <li class="tool-status" v-for="status of toolStatus">
+                            <fa-icon v-if="!status.counter" class="text-yellow-500" icon="triangle-exclamation"/>
+                            <fa-icon v-if="status.counter" class="text-green-500" icon="check"/>
+                            {{ status.message }}
                         </li>
                     </ul>
                 </div>

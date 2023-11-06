@@ -3,10 +3,13 @@
 namespace Alban\Simplisiti\Actions\Page;
 
 use Alban\Simplisiti\Models\Page;
+use Alban\Simplisiti\Traits\PageUtils;
 use Illuminate\Support\Facades\DB;
 
 class StorePageAction
 {
+    use PageUtils;
+
     public function execute(array $data): Page
     {
         return DB::transaction(function() use ($data) {
@@ -15,29 +18,7 @@ class StorePageAction
                 'url' => $data['url'],
             ]);
 
-            foreach ($data['sections'] as $section) {
-                $componentsData = collect($section['components'])->map(function($component) {
-                    return [
-                        'id' => $component['id'],
-                        'order' => $component['order'],
-                        'content' => collect($component['variables'])->reduce(function($content, $variable) {
-                            $content[$variable['name']] = $variable['default'];
-                            return $content;
-                        }, [])
-                    ];
-                });
-
-                $section = $page->sections()->create([
-                    'order' => $section['order'],
-                ]);
-
-                $componentsData->each(function($component) use ($section) {
-                    $section->components()->attach($component['id'], [
-                        'order' => $component['order'],
-                        'content' => $component['content'],
-                    ]);
-                });
-            }
+            $this->forPage($page)->createSections($data['sections']);
 
             return $page;
         });

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { PropType } from 'vue';
+import { Component } from '../../../types/Component';
 
-const props = defineProps({
+
+defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },
@@ -16,7 +19,7 @@ defineEmits(['exit']);
             {{ $t('pages.buttons.exit') }}
         </button>
     </div>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4" v-if="component">
         <div v-for="variable of component.variables" :key="variable.name">
             <div v-if="variable.type === 'text'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>

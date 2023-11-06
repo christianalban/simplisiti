@@ -21,6 +21,7 @@ class ComponentResource extends JsonResource
             'variables' => $this->variables,
             'content' => $this->when($this->pivot?->content, $this->pivot?->content),
             'content_id' => $this->when($this->pivot?->id, $this->pivot?->id),
+            'order' => $this->when($this->pivot, $this->pivot?->order),
         ];
     }
 }
