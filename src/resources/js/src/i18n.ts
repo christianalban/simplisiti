@@ -54,6 +54,7 @@ const messages = {
         pages: {
             placeholders: {
                 pageName: "[group/]name",
+                pageTitle: "Enter the page title",
                 pageUrl: "Enter the page URL, without the domain",
             },
             labels: {
@@ -62,6 +63,7 @@ const messages = {
                 addComponentsToSection: "Add components to this section",
                 urlParam: "URL: {url}",
                 sectionsCount: "Sections: {count}",
+                pageTitle: "Page title",
             },
             titles: {
                 pagesList: "Pages list",
@@ -155,6 +157,7 @@ const messages = {
             placeholders: {
                 pageName: "[grupo/]nombre",
                 pageUrl: "Ingrese la URL de la página, sin el dominio",
+                pageTitle: "Ingrese el título de la página",
             },
             labels: {
                 pageName: "Nombre de la página (grupo opcional)",
@@ -162,6 +165,7 @@ const messages = {
                 addComponentsToSection: "Agrega componentes a esta sección",
                 urlParam: "URL: {url}",
                 sectionsCount: "Secciones: {count}",
+                pageTitle: "Título de la página",
             },
             titles: {
                 pagesList: "Listado de páginas",

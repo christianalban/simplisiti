@@ -17,6 +17,7 @@ class UpdatePageRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('pages')->ignore($this->page)],
             'url' => ['required', Rule::unique('pages')->ignore($this->page)],
+            'title' => 'nullable|string',
             'sections' => 'required|array',
             'sections.*.id' => 'sometimes|required|integer|exists:sections,id',
             'sections.*.order' => 'required|integer|min:0',

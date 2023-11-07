@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -9,6 +10,7 @@ class Page extends Model
     protected $fillable = [
         'name',
         'url',
+        'title',
     ];
 
     public function sections()
@@ -16,15 +18,25 @@ class Page extends Model
         return $this->hasMany(Section::class);
     }
 
-    public function loadOrderedSectionsAndComponents(): self
+    protected function orderedSectionsAndComponents(): array
     {
-        return $this->load([
+        return [
             'sections' => function($q_sections) {
                 $q_sections->orderBy('order', 'asc');
             },
             'sections.components' => function($q_components) {
                 $q_components->orderBy('component_section.order', 'asc');
             },
-        ]);
+        ];
+    }
+
+    public function loadOrderedSectionsAndComponents(): self
+    {
+        return $this->load($this->orderedSectionsAndComponents());
+    }
+
+    public function scopeWithOrderedSectionsAndComponents(): Builder
+    {
+        return $this->with($this->orderedSectionsAndComponents());
     }
 }

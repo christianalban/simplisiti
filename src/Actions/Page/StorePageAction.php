@@ -16,6 +16,7 @@ class StorePageAction
             $page = Page::create([
                 'name' => $data['name'],
                 'url' => $data['url'],
+                'title' => $data['title'],
             ]);
 
             $this->forPage($page)->createSections($data['sections']);

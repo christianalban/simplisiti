@@ -18,6 +18,7 @@ class PageResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'url' => $this->url,
+            'title' => $this->title,
             'sections' => SectionResource::collection($this->whenLoaded('sections')),
             'sections_count' => $this->when($this->sections_count, $this->sections_count),
         ];

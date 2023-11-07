@@ -9,6 +9,7 @@ import { useI18n } from "vue-i18n";
 
 const name = ref('');
 const url = ref('');
+const title = ref('');
 const sections = ref<Section[]>([]);
 const router = useRouter();
 const { t } = useI18n();
@@ -18,6 +19,7 @@ const save = () => {
         name: name.value,
         url: url.value,
         sections: sections.value,
+        title: title.value,
     })
     .then(() => {
         router.push({name: 'pages.index'});
@@ -48,6 +50,7 @@ const save = () => {
         v-model:name="name"
         v-model:url="url"
         v-model:sections="sections"
+        v-model:title="title"
     />
 
 </template>

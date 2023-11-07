@@ -17,6 +17,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    title: {
+        type: String,
+        default: '',
+    },
     sections: {
         type: Array as PropType<Section[]>,
         default: () => [],
@@ -85,9 +89,15 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
             <component-configuration-form :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
         </div>
         <div class="flex flex-col gap-4 col-span-3">
-            <div class="flex flex-col gap-2">
-                <label class="label">{{ $t('pages.labels.pageUrl') }}</label>
-                <input class="input" type="text" :value="url" @input="$emit('update:url', value($event.target))" :placeholder="$t('pages.placeholders.pageUrl')"/>
+            <div class="flex gap-4">
+                <div class="w-1/3 flex flex-col gap-2">
+                    <label class="label">{{ $t('pages.labels.pageTitle') }}</label>
+                    <input class="input" type="text" :value="title" @input="$emit('update:title', $event.target.value)" :placeholder="$t('pages.placeholders.pageTitle')"/>
+                </div>
+                <div class="w-2/3 flex flex-col gap-2">
+                    <label class="label">{{ $t('pages.labels.pageUrl') }}</label>
+                    <input class="input" type="text" :value="url" @input="$emit('update:url', value($event.target))" :placeholder="$t('pages.placeholders.pageUrl')"/>
+                </div>
             </div>
             <h2 class="font-bold">{{ $t('pages.titles.sections') }}</h2>
             <div class="flex flex-col">

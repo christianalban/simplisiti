@@ -14,6 +14,7 @@ const route = useRoute();
 const router = useRouter();
 const name = ref('');
 const url = ref('');
+const title = ref('');
 const showDialog = ref(false);
 const sections = ref<Section[]>([]);
 const pageId = +route.params.page;
@@ -23,6 +24,7 @@ const update = () => {
         id: pageId,
         name: name.value,
         url: url.value,
+        title: title.value,
         sections: sections.value,
     })
     .then(() => {
@@ -84,6 +86,7 @@ onMounted(() => {
         const page = response.data.data;
         name.value = page.name;
         url.value = page.url;
+        title.value = page.title;
         sections.value = page.sections.map((section: Section) => {
             return {
                 ...section,
@@ -106,6 +109,7 @@ onMounted(() => {
         v-model:name="name"
         v-model:url="url"
         v-model:sections="sections"
+        v-model:title="title"
     />
     <dialog-component
         v-model:showDialog="showDialog"

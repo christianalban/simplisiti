@@ -16,6 +16,7 @@ class UpdatePageAction
             $page->update([
                 'name' => $data['name'],
                 'url' => $data['url'],
+                'title' => $data['title'],
             ]);
 
             $this->forPage($page);

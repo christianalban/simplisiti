@@ -16,6 +16,7 @@ class StorePageRequest extends FormRequest
         return [
             'name' => 'required|string:max:255|unique:pages',
             'url' => 'required|unique:pages',
+            'title' => 'nullable|string',
             'sections' => 'required|array',
             'sections.*.order' => 'required|integer|min:0',
             'sections.*.components' => 'required|array',
