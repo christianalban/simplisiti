@@ -3,10 +3,12 @@ import { computed, onMounted, ref } from 'vue';
 import { getComponents } from '../../services/ComponentService';
 import { getPages } from '../../services/PageService';
 import { useI18n } from 'vue-i18n';
+import { getStyles } from '../../services/StyleService';
 
 const { t } = useI18n();
 const componentsCount = ref(0);
 const pagesCount = ref(0);
+const stylesCount = ref(0);
 const toolLinks = [
     {
         name: 'components.index',
@@ -15,6 +17,10 @@ const toolLinks = [
     {
         name: 'pages.index',
         title: 'titles.pages',
+    },
+    {
+        name: 'styles.index',
+        title: 'titles.styles',
     },
 ];
 
@@ -27,6 +33,10 @@ const toolStatus = computed(() => [
         counter: pagesCount.value,
         message: t('status.pages', pagesCount.value),
     },
+    {
+        counter: stylesCount.value,
+        message: t('status.styles', stylesCount.value),
+    },
 ]);
 
 onMounted(() => {
@@ -37,6 +47,10 @@ onMounted(() => {
     getPages()
     .then((response) => {
         pagesCount.value = response.data.data.length;
+    });
+    getStyles()
+    .then((response) => {
+        stylesCount.value = response.data.data.length;
     });
 });
 </script>

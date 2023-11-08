@@ -1,6 +1,8 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import {
     faCheck,
+    faCircleCheck,
     faFileInvoice,
     faMinus,
     faPlus,
@@ -16,6 +18,8 @@ library.add(
     faCheck,
     faTrash,
     faFileInvoice,
+    faCircle,
+    faCircleCheck,
 );
 
 export default FontAwesomeIcon;

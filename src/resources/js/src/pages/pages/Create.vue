@@ -41,17 +41,19 @@ const save = () => {
 </script>
 
 <template>
-    <div class="flex gap-4 mb-4 w-full">
-        <router-link class="button default" :to="{ name: 'pages.index' }">{{ $t('buttons.back') }}</router-link>
-        <h1 class="title">{{ $t('pages.titles.createPage') }}</h1>
-        <button @click="save" type="button" class="button primary ml-auto">{{ $t('buttons.save') }}</button>
-    </div>
-    <pages-form
-        v-model:name="name"
-        v-model:url="url"
-        v-model:sections="sections"
-        v-model:title="title"
-    />
+    <form @submit.prevent="save">
+        <div class="flex gap-4 mb-4 w-full">
+            <router-link class="button default" :to="{ name: 'pages.index' }">{{ $t('buttons.back') }}</router-link>
+            <h1 class="title">{{ $t('pages.titles.createPage') }}</h1>
+            <button type="submit" class="button primary ml-auto">{{ $t('buttons.save') }}</button>
+        </div>
+        <pages-form
+            v-model:name="name"
+            v-model:url="url"
+            v-model:sections="sections"
+            v-model:title="title"
+        />
+    </form>
 
 </template>
 

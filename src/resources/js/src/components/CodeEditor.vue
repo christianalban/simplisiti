@@ -7,6 +7,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    language: {
+        type: String,
+        default: 'html',
+    },
 });
 
 const emit = defineEmits(['update:code']);
@@ -19,7 +23,7 @@ onMounted(() => {
     if (editor.value) {
         codeEditor = monaco.editor.create(editor.value, {
             value: props.code,
-            language: "html",
+            language: props.language,
             minimap: {
                 enabled: false,
             },

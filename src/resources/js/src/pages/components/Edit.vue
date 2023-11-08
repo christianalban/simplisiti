@@ -76,17 +76,19 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex gap-4 mb-4 w-full">
-        <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
-        <h1 class="title">{{ $t('components.titles.editComponent') }}</h1>
-        <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
-        <button @click="update" type="button" class="button primary">{{ $t('buttons.save') }}</button>
-    </div>
-    <components-form
-        v-model:code="code"
-        v-model:name="name"
-        v-model:variables="variables"
-    />
+    <form @submit.prevent="update">
+        <div class="flex gap-4 mb-4 w-full">
+            <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
+            <h1 class="title">{{ $t('components.titles.editComponent') }}</h1>
+            <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
+            <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+        </div>
+        <components-form
+            v-model:code="code"
+            v-model:name="name"
+            v-model:variables="variables"
+        />
+    </form>
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('components.dialogs.delete.title')"

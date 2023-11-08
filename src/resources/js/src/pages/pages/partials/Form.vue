@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { value } from '../../../utils/helpers';
+import { value, inputValue } from '../../../utils/helpers';
 import { PropType, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component } from '../../../types/Component';
@@ -27,7 +27,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['update:name', 'update:url', 'update:sections']);
+const emit = defineEmits(['update:name', 'update:title', 'update:url', 'update:sections']);
 
 const availableComponents = ref<Component[]>([]);
 
@@ -83,7 +83,7 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
         <div class="flex flex-col gap-4 col-span-1">
             <div class="flex flex-col gap-2">
                 <label class="label">{{ $t('pages.labels.pageName') }}</label>
-                <input class="input" type="text" :value="name" @input="$emit('update:name', value($event.target))" :placeholder="$t('pages.placeholders.pageName')"/>
+                <input class="input" type="text" required :value="name" @input="$emit('update:name', value($event.target))" :placeholder="$t('pages.placeholders.pageName')"/>
             </div>
             <available-components v-if="pageEditionMode === 'adding-component'"/>
             <component-configuration-form :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
@@ -92,7 +92,7 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
             <div class="flex gap-4">
                 <div class="w-1/3 flex flex-col gap-2">
                     <label class="label">{{ $t('pages.labels.pageTitle') }}</label>
-                    <input class="input" type="text" :value="title" @input="$emit('update:title', $event.target.value)" :placeholder="$t('pages.placeholders.pageTitle')"/>
+                    <input class="input" type="text" :value="title" @input="$emit('update:title', inputValue($event.target))" :placeholder="$t('pages.placeholders.pageTitle')"/>
                 </div>
                 <div class="w-2/3 flex flex-col gap-2">
                     <label class="label">{{ $t('pages.labels.pageUrl') }}</label>

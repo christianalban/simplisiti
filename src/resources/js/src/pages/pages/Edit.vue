@@ -99,18 +99,20 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex gap-4 mb-4 w-full">
-        <router-link class="button default" :to="{ name: 'pages.index' }">{{ $t('buttons.back') }}</router-link>
-        <h1 class="title">{{ $t('pages.titles.editPage') }}</h1>
-        <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
-        <button @click="update" type="button" class="button primary">{{ $t('buttons.save') }}</button>
-    </div>
-    <pages-form
-        v-model:name="name"
-        v-model:url="url"
-        v-model:sections="sections"
-        v-model:title="title"
-    />
+    <form @submit.prevent="update">
+        <div class="flex gap-4 mb-4 w-full">
+            <router-link class="button default" :to="{ name: 'pages.index' }">{{ $t('buttons.back') }}</router-link>
+            <h1 class="title">{{ $t('pages.titles.editPage') }}</h1>
+            <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
+            <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+        </div>
+        <pages-form
+            v-model:name="name"
+            v-model:url="url"
+            v-model:sections="sections"
+            v-model:title="title"
+        />
+    </form>
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('pages.dialogs.delete.title')"

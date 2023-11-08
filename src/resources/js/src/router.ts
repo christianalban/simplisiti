@@ -6,6 +6,9 @@ import ComponentsEdit from "./pages/components/Edit.vue"
 import PagesIndex from "./pages/pages/Index.vue"
 import PageCreate from "./pages/pages/Create.vue"
 import PageEdit from "./pages/pages/Edit.vue"
+import StylesIndex from "./pages/styles/Index.vue"
+import StylesCreate from "./pages/styles/Create.vue"
+import StylesEdit from "./pages/styles/Edit.vue"
 
 const routes = [
   { path: '/', redirect: '/spanel' },
@@ -16,6 +19,9 @@ const routes = [
   { path: '/spanel/pages', component: PagesIndex, name: 'pages.index' },
   { path: '/spanel/pages/create', component: PageCreate, name: 'pages.create' },
   { path: '/spanel/pages/:page', component: PageEdit, name: 'pages.edit' },
+  { path: '/spanel/styles', component: StylesIndex, name: 'styles.index' },
+  { path: '/spanel/styles/create', component: StylesCreate, name: 'styles.create' },
+  { path: '/spanel/styles/edit/:style', component: StylesEdit, name: 'styles.edit' },
 ]
 
 const router = createRouter({

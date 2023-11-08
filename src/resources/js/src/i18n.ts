@@ -7,10 +7,12 @@ const messages = {
             components: "Components",
             pages: "Pages",
             status: "Status",
+            styles: "Styles",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
             pages: "There isn't any page created yet. | {count} page loaded successfully. | {count} pages loaded successfully.",
+            styles: "There isn't any styles sheet created yet. | {count} styles sheet loaded successfully. | {count} styles sheets loaded successfully.",
         },
         components: {
             name: "Name",
@@ -93,6 +95,38 @@ const messages = {
                 }
             }
         },
+        styles: {
+            titles: {
+                stylesList: "Styles list",
+                createStyle: "Create new styles sheet",
+                updateStyle: "Edit styles sheet",
+            },
+            labels: {
+                styleIsActive: "Is active",
+                styleName: "Styles sheet name",
+            },
+            placeholders: {
+                styleIsActive: "The styles sheet is active",
+                styleName: "Styles sheet name",
+            },
+            toasts: {
+                created: "Styles sheet created successfully.",
+                updated: "Styles sheet updated successfully.",
+                deleted: "Styles sheet deleted successfully.",
+                errorCreated: "Styles sheet couldn't be created.",
+                errorUpdated: "Styles sheet couldn't be updated.",
+                errorDeleted: "Styles sheet couldn't be deleted.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Delete styles sheet",
+                    message: "Are you sure you want to delete the styles sheet '{name}'?",
+                }
+            },
+            buttons: {
+                create: "New styles sheet",
+            },
+        },
         buttons: {
             save: "Save",
             back: "Back",
@@ -109,10 +143,12 @@ const messages = {
             components: "Componentes",
             pages: "Páginas",
             status: "Estado",
+            styles: "Estilos",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
             pages: "No hay páginas creadas aún. | {count} página cargada correctamente. | {count} páginas cargadas correctamente.",
+            styles: "No hay hojas de estilos creadas aún. | {count} hoja de estilos cargada correctamente. | {count} hojas de estilos cargadas correctamente.",
         },
         components: {
             name: "Nombre",
@@ -194,6 +230,38 @@ const messages = {
                     message: "¿Está seguro que desea eliminar la página '{name}'?",
                 }
             }
+        },
+        styles: {
+            titles: {
+                stylesList: "Listado de estilos",
+                createStyle: "Crear nueva hoja de estilos",
+                updateStyle: "Editar hoja de estilos",
+            },
+            labels: {
+                styleIsActive: "Está activa",
+                styleName: "Nombre de la hoja de estilos",
+            },
+            placeholders: {
+                styleIsActive: "La hoja de estilos está activa",
+                styleName: "Nombre de la hoja de estilos",
+            },
+            toasts: {
+                created: "La hoja de estilos se creó correctamente.",
+                updated: "La hoja de estilos se actualizó correctamente.",
+                deleted: "La hoja de estilos se eliminó correctamente.",
+                errorCreated: "La hoja de estilos no pudo ser creada.",
+                errorUpdated: "La hoja de estilos no pudo ser actualizada.",
+                errorDeleted: "La hoja de estilos no pudo ser eliminada.",
+            },
+            dialogs: {
+                delete: {
+                    title: "Eliminar hoja de estilos",
+                    message: "¿Está seguro que desea eliminar la hoja de estilos '{name}'?",
+                }
+            },
+            buttons: {
+                create: "Nueva hoja de estilos",
+            },
         },
         buttons: {
             save: "Guardar",

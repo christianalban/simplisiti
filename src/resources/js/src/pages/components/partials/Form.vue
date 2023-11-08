@@ -35,12 +35,12 @@ const removeVariable = (index: number) => {
     <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2 w-1/3">
             <label class="label">{{ $t('components.labels.componentName') }}</label>
-            <input type="text" :value="name" @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('components.placeholders.componentName')"/>
+            <input type="text" :value="name" required @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('components.placeholders.componentName')"/>
         </div>
         <div class="flex gap-4 h-screen py-2">
             <div class="w-8/12">
                 <h2 class="title mb-4">{{ $t('components.titles.code') }}</h2>
-                <code-editor :code="props.code" @update:code="$emit('update:code', $event)"/>
+                <code-editor :code="props.code" @update:code="$emit('update:code', $event)" language="html"/>
             </div>
             <div class="w-4/12">
                 <h2 class="title mb-4">{{ $t('components.titles.variables') }}</h2>
