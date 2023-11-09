@@ -128,10 +128,10 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
                                             <span class="text-blue-500 mr-2">
                                                 #{{ (component.order = componentIndex) + 1 }}
                                             </span>
-                                            <button class="button danger small" @click="removeComponent(section.components, componentIndex)">
+                                            <button class="button danger small" type="button" @click="removeComponent(section.components, componentIndex)">
                                                 <fa-icon icon="trash" />
                                             </button>
-                                            <button class="button default small" @click="enterToEditingMode(component, sectionIndex)">
+                                            <button class="button default small" type="button" @click="enterToEditingMode(component, sectionIndex)">
                                                 <fa-icon icon="file-invoice" />
                                             </button>
                                         </div>
