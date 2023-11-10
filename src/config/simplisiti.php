@@ -2,4 +2,5 @@
 
 return [
     'styles_path' => 'spanel/styles',
+    'scripts_path' => 'spanel/scripts',
 ];

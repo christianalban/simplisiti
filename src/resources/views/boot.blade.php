@@ -8,5 +8,6 @@
   </head>
   <body>
     {!! $content !!}
+    @include('simplisiti::partials.scripts')
   </body>
 </html>

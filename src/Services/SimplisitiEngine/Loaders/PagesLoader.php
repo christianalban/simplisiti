@@ -3,6 +3,7 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 
 use Alban\Simplisiti\Models\Page;
+use Alban\Simplisiti\Models\Script;
 use Alban\Simplisiti\Models\Style;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Blade;
@@ -30,6 +31,7 @@ class PagesLoader
                 return View::make('simplisiti::boot', [
                     'content' => $this->renderContent($page),
                     'styles' => $this->renderStyle(),
+                    'scripts' => $this->renderScript(),
                     'title' => $page->title,
                 ]);
             });
@@ -58,5 +60,10 @@ class PagesLoader
     protected function renderStyle(): Collection
     {
         return Style::active()->get();
+    }
+
+    protected function renderScript(): Collection
+    {
+        return Script::active()->get();
     }
 }
