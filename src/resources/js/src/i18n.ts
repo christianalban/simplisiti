@@ -8,11 +8,13 @@ const messages = {
             pages: "Pages",
             status: "Status",
             styles: "Styles",
+            scripts: "Scripts",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
             pages: "There isn't any page created yet. | {count} page loaded successfully. | {count} pages loaded successfully.",
             styles: "There isn't any styles sheet created yet. | {count} styles sheet loaded successfully. | {count} styles sheets loaded successfully.",
+            scripts: "There isn't any script created yet. | {count} script loaded successfully. | {count} scripts loaded successfully.",
         },
         components: {
             name: "Name",
@@ -127,6 +129,38 @@ const messages = {
                 create: "New styles sheet",
             },
         },
+        scripts: {
+            titles: {
+                scriptsList: "Scripts list",
+                createScript: "Create new script",
+                updateScript: "Edit script",
+            },
+            labels: {
+                scriptIsActive: "Is active",
+                scriptName: "Script name",
+            },
+            toasts: {
+                created: "Script created successfully.",
+                updated: "Script updated successfully.",
+                deleted: "Script deleted successfully.",
+                errorCreated: "Script couldn't be created.",
+                errorUpdated: "Script couldn't be updated.",
+                errorDeleted: "Script couldn't be deleted.",
+            },
+            placeholders: {
+                scriptIsActive: "The script is active",
+                scriptName: "Script name",
+            },
+            dialogs: {
+                delete: {
+                    title: "Delete script",
+                    message: "Are you sure you want to delete the script '{name}'?",
+                }
+            },
+            buttons: {
+                create: "New script",
+            },
+        },
         buttons: {
             save: "Save",
             back: "Back",
@@ -144,11 +178,13 @@ const messages = {
             pages: "Páginas",
             status: "Estado",
             styles: "Estilos",
+            scripts: "Scripts",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
             pages: "No hay páginas creadas aún. | {count} página cargada correctamente. | {count} páginas cargadas correctamente.",
             styles: "No hay hojas de estilos creadas aún. | {count} hoja de estilos cargada correctamente. | {count} hojas de estilos cargadas correctamente.",
+            scripts: "No hay scripts creados aún. | {count} script cargado correctamente. | {count} scripts cargados correctamente.",
         },
         components: {
             name: "Nombre",
@@ -261,6 +297,38 @@ const messages = {
             },
             buttons: {
                 create: "Nueva hoja de estilos",
+            },
+        },
+        scripts: {
+            titles: {
+                scriptsList: "Listado de scripts",
+                createScript: "Crear nuevo script",
+                updateScript: "Editar script",
+            },
+            labels: {
+                scriptIsActive: "Está activo",
+                scriptName: "Nombre del script",
+            },
+            toasts: {
+                created: "El script se creó correctamente.",
+                updated: "El script se actualizó correctamente.",
+                deleted: "El script se eliminó correctamente.",
+                errorCreated: "El script no pudo ser creado.",
+                errorUpdated: "El script no pudo ser actualizado.",
+                errorDeleted: "El script no pudo ser eliminado.",
+            },
+            placeholders: {
+                scriptIsActive: "El script está activo",
+                scriptName: "Nombre del script",
+            },
+            dialogs: {
+                delete: {
+                    title: "Eliminar script",
+                    message: "¿Está seguro que desea eliminar el script '{name}'?",
+                }
+            },
+            buttons: {
+                create: "Nuevo script",
             },
         },
         buttons: {

@@ -2,6 +2,7 @@
 
 use Alban\Simplisiti\Controllers\ComponentController;
 use Alban\Simplisiti\Controllers\PageController;
+use Alban\Simplisiti\Controllers\ScriptController;
 use Alban\Simplisiti\Controllers\StyleController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,14 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
         Route::get('style/{style}', 'show');
         Route::put('style/{style}', 'update');
         Route::delete('style/{style}', 'destroy');
+    });
+
+    Route::controller(ScriptController::class)->group(function () {
+        Route::post('script', 'store');
+        Route::get('script', 'index');
+        Route::get('script/{script}', 'show');
+        Route::put('script/{script}', 'update');
+        Route::delete('script/{script}', 'destroy');
     });
 });
 

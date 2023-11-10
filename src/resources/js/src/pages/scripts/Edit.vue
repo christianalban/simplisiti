@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import StylesForm from './partials/Form.vue';
+import ScriptsForm from './partials/Form.vue';
 import DialogComponent from '../../components/Dialog.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
-import { deleteStyle, getStyle, updateStyle } from '../../services/StyleService';
+import { deleteScript, getScript, updateScript } from '../../services/ScriptService';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -14,27 +14,27 @@ const code = ref('');
 const name = ref('');
 const showDialog = ref(false);
 const isActive = ref(false);
-const styleId = +route.params.style;
+const scriptId = +route.params.script;
 
 const update = () => {
-    updateStyle({
-        id: styleId,
+    updateScript({
+        id: scriptId,
         name: name.value,
-        styles: code.value,
+        scripts: code.value,
         is_active: Boolean(isActive.value),
     })
     .then(() => {
-        router.push({name: 'styles.index'});
+        router.push({name: 'scripts.index'});
         showToast({
             title: t('toasts.success'),
-            message: t('styles.toasts.updated'),
+            message: t('scripts.toasts.updated'),
             type: 'success',
         });
     })
     .catch(() => {
         showToast({
             title: t('toasts.error'),
-            message: t('styles.toasts.errorUpdated'),
+            message: t('scripts.toasts.errorUpdated'),
             type: 'error',
         });
     })
@@ -44,32 +44,32 @@ const showDeleteDialog = () => {
     showDialog.value = true;
 }
 
-const confirmDeleteStyle = () => {
-    deleteStyle(styleId)
+const confirmDeleteScript = () => {
+    deleteScript(scriptId)
     .then(() => {
-        router.push({name: 'styles.index'});
+        router.push({name: 'scripts.index'});
         showToast({
             title: t('toasts.success'),
-            message: t('styles.toasts.deleted'),
+            message: t('scripts.toasts.deleted'),
             type: 'success',
         });
     })
     .catch(() => {
         showToast({
             title: t('toasts.error'),
-            message: t('styles.toasts.errorDeleted'),
+            message: t('scripts.toasts.errorDeleted'),
             type: 'error',
         });
     })
 }
 
 onMounted(() => {
-    getStyle(styleId)
+    getScript(scriptId)
     .then(({data}) => {
-        const style = data.data;
-        code.value = style.styles;
-        name.value = style.name;
-        isActive.value = style.is_active;
+        const script = data.data;
+        code.value = script.scripts;
+        name.value = script.name;
+        isActive.value = script.is_active;
     })
 })
 
@@ -78,12 +78,12 @@ onMounted(() => {
 <template>
     <form @submit.prevent="update">
         <div class="flex gap-4 mb-4 w-full">
-            <router-link class="button default" :to="{ name: 'styles.index' }">{{ $t('buttons.back') }}</router-link>
-            <h1 class="title">{{ $t('styles.titles.updateStyle') }}</h1>
+            <router-link class="button default" :to="{ name: 'scripts.index' }">{{ $t('buttons.back') }}</router-link>
+            <h1 class="title">{{ $t('scripts.titles.updateScript') }}</h1>
             <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
             <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
         </div>
-        <styles-form
+        <scripts-form
             v-model:code="code"
             v-model:name="name"
             v-model:isActive="isActive"
@@ -91,9 +91,9 @@ onMounted(() => {
     </form>
     <dialog-component
         v-model:showDialog="showDialog"
-        :title="$t('styles.dialogs.delete.title')"
-        :message="$t('styles.dialogs.delete.message', { name: name })"
-        @confirm="confirmDeleteStyle"
+        :title="$t('scripts.dialogs.delete.title')"
+        :message="$t('scripts.dialogs.delete.message', { name: name })"
+        @confirm="confirmDeleteScript"
     />
 </template>
 
