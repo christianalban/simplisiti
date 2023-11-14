@@ -7,7 +7,8 @@ import {
     faMinus,
     faPlus,
     faTrash,
-    faTriangleExclamation
+    faTriangleExclamation,
+    faEdit
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -20,6 +21,7 @@ library.add(
     faFileInvoice,
     faCircle,
     faCircleCheck,
+    faEdit,
 );
 
 export default FontAwesomeIcon;

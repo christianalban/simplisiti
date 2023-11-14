@@ -5,12 +5,14 @@ import { getPages } from '../../services/PageService';
 import { useI18n } from 'vue-i18n';
 import { getStyles } from '../../services/StyleService';
 import { getScripts } from '../../services/ScriptService';
+import { getResources } from '../../services/ResourceService';
 
 const { t } = useI18n();
 const componentsCount = ref(0);
 const pagesCount = ref(0);
 const stylesCount = ref(0);
 const scriptsCount = ref(0);
+const resourcesCount = ref(0);
 const toolLinks = [
     {
         name: 'components.index',
@@ -27,6 +29,10 @@ const toolLinks = [
     {
         name: 'scripts.index',
         title: 'titles.scripts',
+    },
+    {
+        name: 'resources.index',
+        title: 'titles.resources',
     },
 ];
 
@@ -47,6 +53,10 @@ const toolStatus = computed(() => [
         counter: scriptsCount.value,
         message: t('status.scripts', scriptsCount.value),
     },
+    {
+        counter: resourcesCount.value,
+        message: t('status.resources', resourcesCount.value),
+    },
 ]);
 
 onMounted(() => {
@@ -65,6 +75,10 @@ onMounted(() => {
     getScripts()
     .then((response) => {
         scriptsCount.value = response.data.data.length;
+    });
+    getResources()
+    .then((response) => {
+        resourcesCount.value = response.data.data.length;
     });
 });
 </script>

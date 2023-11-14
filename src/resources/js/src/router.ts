@@ -12,6 +12,7 @@ import StylesEdit from "./pages/styles/Edit.vue"
 import ScriptsIndex from "./pages/scripts/Index.vue"
 import ScriptsCreate from "./pages/scripts/Create.vue"
 import ScriptsEdit from "./pages/scripts/Edit.vue"
+import ResourcesIndex from "./pages/resources/Index.vue"
 
 const routes = [
     { path: '/', redirect: '/spanel' },
@@ -28,6 +29,7 @@ const routes = [
     { path: '/spanel/scripts', component: ScriptsIndex, name: 'scripts.index' },
     { path: '/spanel/scripts/create', component: ScriptsCreate, name: 'scripts.create' },
     { path: '/spanel/scripts/edit/:script', component: ScriptsEdit, name: 'scripts.edit' },
+    { path: '/spanel/resources', component: ResourcesIndex, name: 'resources.index' },
 ]
 
 const router = createRouter({

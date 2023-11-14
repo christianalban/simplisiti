@@ -9,12 +9,14 @@ const messages = {
             status: "Status",
             styles: "Styles",
             scripts: "Scripts",
+            resources: "Resources",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
             pages: "There isn't any page created yet. | {count} page loaded successfully. | {count} pages loaded successfully.",
             styles: "There isn't any styles sheet created yet. | {count} styles sheet loaded successfully. | {count} styles sheets loaded successfully.",
             scripts: "There isn't any script created yet. | {count} script loaded successfully. | {count} scripts loaded successfully.",
+            resources: "There isn't any resource created yet. | {count} resource loaded successfully. | {count} resources loaded successfully.",
         },
         components: {
             name: "Name",
@@ -161,6 +163,38 @@ const messages = {
                 create: "New script",
             },
         },
+        resources: {
+            titles: {
+                resourcesList: "Resources list",
+                createResource: "Create new resource",
+                updateResource: "Edit resource",
+            },
+            labels: {
+                resourceName: "Resource name",
+                resourceFile: "Resource file",
+            },
+            toasts: {
+                created: "Resource created successfully.",
+                updated: "Resource updated successfully.",
+                deleted: "Resource deleted successfully.",
+                errorCreated: "Resource couldn't be created.",
+                errorUpdated: "Resource couldn't be updated.",
+                errorDeleted: "Resource couldn't be deleted.",
+            },
+            placeholders: {
+                resourceName: "Resource name",
+                resourceFile: "Resource file",
+            },
+            dialogs: {
+                delete: {
+                    title: "Delete resource",
+                    message: "Are you sure you want to delete the resource '{name}'?",
+                }
+            },
+            buttons: {
+                create: "New resource",
+            },
+        },
         buttons: {
             save: "Save",
             back: "Back",
@@ -179,12 +213,14 @@ const messages = {
             status: "Estado",
             styles: "Estilos",
             scripts: "Scripts",
+            resources: "Recursos",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
             pages: "No hay páginas creadas aún. | {count} página cargada correctamente. | {count} páginas cargadas correctamente.",
             styles: "No hay hojas de estilos creadas aún. | {count} hoja de estilos cargada correctamente. | {count} hojas de estilos cargadas correctamente.",
             scripts: "No hay scripts creados aún. | {count} script cargado correctamente. | {count} scripts cargados correctamente.",
+            resources: "No hay recursos creados aún. | {count} recurso cargado correctamente. | {count} recursos cargados correctamente.",
         },
         components: {
             name: "Nombre",
@@ -329,6 +365,38 @@ const messages = {
             },
             buttons: {
                 create: "Nuevo script",
+            },
+        },
+        resources: {
+            titles: {
+                resourcesList: "Listado de recursos",
+                createResource: "Crear nuevo recurso",
+                updateResource: "Editar recurso",
+            },
+            labels: {
+                resourceName: "Nombre del recurso",
+                resourceFile: "Archivo del recurso",
+            },
+            toasts: {
+                created: "Recurso creado correctamente.",
+                updated: "Recurso actualizado correctamente.",
+                deleted: "Recurso eliminado correctamente.",
+                errorCreated: "Recurso no pudo ser creado.",
+                errorUpdated: "Recurso no pudo ser actualizado.",
+                errorDeleted: "Recurso no pudo ser eliminado.",
+            },
+            placeholders: {
+                resourceName: "Nombre del recurso",
+                resourceFile: "Archivo del recurso",
+            },
+            dialogs: {
+                delete: {
+                    title: "Eliminar recurso",
+                    message: "¿Está seguro que desea eliminar el recurso '{name}'?",
+                }
+            },
+            buttons: {
+                create: "Nuevo recurso",
             },
         },
         buttons: {
