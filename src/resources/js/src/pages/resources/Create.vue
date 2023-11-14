@@ -17,7 +17,7 @@ defineProps({
 const name = ref('');
 const file = ref(undefined);
 
-const emit = defineEmits(['created']);
+const emit = defineEmits(['created', 'update:showModal']);
 
 const save = () => {
     createResource({
