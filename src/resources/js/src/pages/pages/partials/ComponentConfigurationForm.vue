@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
+import ResourcePicker from '../../../components/inputs/ResourcePicker.vue';
+import { useResources } from "../../../services/ResourceService";
+import { Variable } from '../../../types/Variable';
 
+const { resources } = useResources();
 
 defineProps({
     component: {
@@ -9,6 +13,11 @@ defineProps({
     },
 });
 defineEmits(['exit']);
+
+const handleChangeResource = (variable: Variable, value: number): void => {
+    variable.default = value;
+    variable.value = resources.value.find((resource) => resource.id === value)?.url ?? '';
+};
 
 </script>
 
@@ -24,6 +33,10 @@ defineEmits(['exit']);
             <div v-if="variable.type === 'text'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>
                 <input class="input" type="text" v-model="variable.default" :placeholder="variable.name"/>
+            </div>
+            <div v-else-if="variable.type === 'resource'" class="flex flex-col gap-2">
+                <label class="label">{{ variable.name }}</label>
+                <resource-picker :modelValue="variable.default" @update:modelValue="handleChangeResource(variable, $event)" />
             </div>
         </div>
     </div>

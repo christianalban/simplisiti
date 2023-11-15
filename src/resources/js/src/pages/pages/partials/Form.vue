@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { value, inputValue } from '../../../utils/helpers';
-import { PropType, ref } from 'vue';
+import { PropType, onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component } from '../../../types/Component';
 import { Section } from '../../../types/Section';
 import AvailableComponents from './AvailableComponents.vue';
 import ComponentConfigurationForm from './ComponentConfigurationForm.vue';
 import { PageEditionMode } from '../../../types/Page';
+import { useResources } from "../../../services/ResourceService";
+
+const { loadResources } = useResources();
 
 const props = defineProps({
     name: {
@@ -64,7 +67,7 @@ const exitFromEditMode = (): void => {
 
 const renderHtmlComponent = (component: Component): string => {
     const html =  component.variables.reduce((html, variable) => {
-        return html.replace(`{{ $${variable.name} }}`, variable.default);
+        return html.replace(`{{ $${variable.name} }}`, variable.value);
     }, component.html);
 
     return html;
@@ -75,6 +78,10 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
         && component.order === selectedComponent.value?.order
         && selectedSection.value === sectionIndex;
 };
+
+onMounted(() => {
+    loadResources();
+});
 
 </script>
 

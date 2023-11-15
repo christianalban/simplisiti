@@ -8,6 +8,7 @@ import { deletePage, getPage, updatePage } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { parseVariable, useResources } from "../../services/ResourceService";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -18,6 +19,7 @@ const title = ref('');
 const showDialog = ref(false);
 const sections = ref<Section[]>([]);
 const pageId = +route.params.page;
+const { loadResources } = useResources();
 
 const update = () => {
     updatePage({
@@ -49,10 +51,7 @@ const mergeComponentsContent = (components: Component[]): Component[] => {
         return {
             ...component,
             variables: component.variables.map((variable) => {
-                return {
-                    ...variable,
-                    default: component.content ? component.content[variable.name] : '',
-                }
+                return parseVariable(component, variable)
             }),
         }
     });
@@ -94,6 +93,7 @@ onMounted(() => {
             }
         });
     });
+    loadResources();
 });
 
 </script>

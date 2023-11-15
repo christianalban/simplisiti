@@ -16,7 +16,11 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
-    hiddeButtons: {
+    hiddeCancel: {
+        type: Boolean,
+        default: false,
+    },
+    hiddeSubmit: {
         type: Boolean,
         default: false,
     },
@@ -60,9 +64,9 @@ watch(showModal, (showModal) => {
             <div>
                 <slot></slot>
             </div>
-            <div v-if="!hiddeButtons" class="flex justify-between gap-4">
-                <button type="reset" value="cancel" class="button danger" formmethod="dialog" @click="modal?.close('cancel')">{{ $t('buttons.cancel') }}</button>
-                <button type="submit" class="button primary" value="default" formmethod="dialog">{{ $t('buttons.confirm') }}</button>
+            <div class="flex justify-between gap-4">
+                <button v-if="!hiddeCancel" type="reset" value="cancel" class="button danger" formmethod="dialog" @click="modal?.close('cancel')">{{ $t('buttons.cancel') }}</button>
+                <button v-if="!hiddeSubmit" type="submit" class="button primary" value="default" formmethod="dialog">{{ $t('buttons.confirm') }}</button>
             </div>
         </form>
     </dialog>

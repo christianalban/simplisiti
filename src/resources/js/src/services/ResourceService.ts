@@ -1,5 +1,7 @@
 import axios from "axios";
 import { Resource } from "../types/Resource";
+import { Variable } from "../types/Variable";
+import { Component } from "../types/Component";
 import { ref } from "vue";
 
 export const createResource = async (resource: Resource): Promise<any> => {
@@ -42,6 +44,34 @@ export const resources = ref<Resource[]>([]);
 export const loadResources = async (): Promise<void> => {
     const response = await getResources();
     resources.value = response.data.data;
+}
+
+export const parseTextVariable = (component: Component, variable: Variable): Variable => {
+    return {
+        ...variable,
+        default: component.content ? component.content[variable.name] : '',
+    }
+}
+
+export const parseResourceVariable = (component: Component, variable: Variable): Variable => {
+    return {
+        ...variable,
+        default: component.content ? component.content[variable.name] : '',
+        value: resources.value.find(resource => {
+            if (!component.content) {
+                return false;
+            }
+
+            return resource.id === Number.parseInt(component.content[variable.name])
+        })?.url,
+    }
+}
+
+export const parseVariable = (component: Component, variable: Variable): Variable => {
+    if (variable.type === 'resource') {
+        return parseResourceVariable(component, variable);
+    }
+    return parseTextVariable(component, variable);
 }
 
 export const useResources = () => ({

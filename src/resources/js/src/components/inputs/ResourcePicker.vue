@@ -41,7 +41,7 @@ const handleSelectResource = (resourceId: number) => {
     <modal
         :title="$t('components.titles.selectResource')"
         v-model:showModal="showModal"
-        :hiddeButtons="true"
+        :hiddeSubmit="true"
     >
         <div class="grid grid-cols-3 gap-2">
             <button type="button" @click="handleSelectResource(resource.id)" v-for="resource of resources" class="button primary flex flex-col gap-2 justify-center items-center">
