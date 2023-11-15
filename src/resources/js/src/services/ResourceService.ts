@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Resource } from "../types/Resource";
+import { ref } from "vue";
 
 export const createResource = async (resource: Resource): Promise<any> => {
     if (!resource.file) {
@@ -35,3 +36,15 @@ export const updateResource = async (resource: Resource): Promise<any> => {
 export const deleteResource = async (resourceId: number): Promise<any> => {
     return await axios.delete(`resource/${resourceId}`)
 }
+
+export const resources = ref<Resource[]>([]);
+
+export const loadResources = async (): Promise<void> => {
+    const response = await getResources();
+    resources.value = response.data.data;
+}
+
+export const useResources = () => ({
+    resources,
+    loadResources,
+});

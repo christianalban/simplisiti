@@ -1,4 +1,4 @@
-export type VariableType = 'text';
+export type VariableType = 'text' | 'resource';
 
 export interface Variable {
     type: VariableType

@@ -27,6 +27,14 @@ import Toast from "./components/Toast.vue";
         }
     }
 
+    &.secondary {
+        @apply bg-teal-100 text-teal-900;
+
+        &:hover {
+            @apply bg-teal-200;
+        }
+    }
+
     &.danger {
         @apply bg-red-100 text-red-900;
 
@@ -60,20 +68,20 @@ import Toast from "./components/Toast.vue";
 }
 
 .form-group {
-    .input,
-    .button {
+    & > .input,
+    & > .button {
         @apply rounded-none;
     }
 
-    .input:first-child {
+    & > .input:first-child {
         @apply rounded-l-lg;
     }
 
-    .input:last-child {
+    & > .input:last-child {
         @apply rounded-r-lg;
     }
 
-    .button:first-child {
+    & > .button:first-child {
         @apply rounded-l-lg;
 
         &.small {
@@ -81,7 +89,7 @@ import Toast from "./components/Toast.vue";
         }
     }
 
-    .button:last-child {
+    & > .button:last-child {
         @apply rounded-r-lg;
 
         &.small {

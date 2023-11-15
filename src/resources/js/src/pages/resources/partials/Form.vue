@@ -8,7 +8,7 @@ defineProps({
         required: true,
     },
     file: {
-        type: Object as PropType<File|null>,
+        type: [Object, null] as PropType<File|null>,
         default: null,
     },
     fileRequired: {

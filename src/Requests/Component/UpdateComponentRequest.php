@@ -18,9 +18,9 @@ class UpdateComponentRequest extends FormRequest
             'name' => ['required', 'string', 'max:255', Rule::unique('components')->ignore($this->component)],
             'html' => 'required|string',
             'variables' => 'nullable|array',
-            'variables.*.type' => 'required|in:text',
+            'variables.*.type' => 'required|in:text,resource',
             'variables.*.name' => 'required|string|max:255',
-            'variables.*.default' => 'nullable|string|max:255',
+            'variables.*.default' => 'nullable|max:255',
         ];
     }
 }

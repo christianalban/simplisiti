@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { PropType } from "vue";
+import { PropType, onMounted } from "vue";
 import CodeEditor from "../../../components/CodeEditor.vue";
+import ResourcePicker from "../../../components/inputs/ResourcePicker.vue";
 import { Variable } from "../../../types/Variable";
 import { value } from '../../../utils/helpers';
+import { useResources } from "../../../services/ResourceService";
+
+const { loadResources } = useResources();
 
 const props = defineProps({
     code: {
@@ -29,6 +33,10 @@ const removeVariable = (index: number) => {
     emit('update:variables', props.variables.filter((_, i) => i !== index));
 };
 
+onMounted(() => {
+    loadResources();
+});
+
 </script>
 
 <template>
@@ -48,10 +56,12 @@ const removeVariable = (index: number) => {
                     <div v-for="(variable, index) of variables" class="flex form-group">
                         <select class="input w-4/12" v-model="variable.type">
                             <option value="text">{{ $t('components.types.text') }}</option>
+                            <option value="resource">{{ $t('components.types.resource') }}</option>
                         </select>
                         <input type="text" class="input" v-model="variable.name" :placeholder="$t('components.placeholders.name')" />
                         <!-- inputs defaults accord selected type -->
                         <input v-if="variable.type === 'text'" type="text" class="input" v-model="variable.default" :placeholder="$t('components.placeholders.defaultValue')" />
+                        <resource-picker v-else-if="variable.type === 'resource'" v-model="variable.default" />
                         <!-- inputs defaults accord selected type -->
                         <!-- buttons add and remove -->
                         <button type="button" class="button primary max-w-min" @click="addVariable" v-if="index === variables.length - 1">

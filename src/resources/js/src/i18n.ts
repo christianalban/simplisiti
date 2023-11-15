@@ -28,6 +28,7 @@ const messages = {
             },
             types: {
                 text: "Text",
+                resource: "Resource",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -38,9 +39,12 @@ const messages = {
                 editComponent: "Edit component",
                 code: "Code",
                 variables: "Variables",
+                selectResource: "Select resource",
             },
             buttons: {
                 create: "New component",
+                selectResource: "Select",
+                changeResource: "Change",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -232,6 +236,7 @@ const messages = {
             },
             types: {
                 text: "Texto",
+                resource: "Recurso",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -242,9 +247,12 @@ const messages = {
                 editComponent: "Editar componente",
                 code: "Código",
                 variables: "Variables",
+                selectResource: "Seleccionar recurso",
             },
             buttons: {
                 create: "Nuevo componente",
+                selectResource: "Seleccionar",
+                changeResource: "Cambiar",
             },
             toasts: {
                 created: "Componente creado correctamente.",
