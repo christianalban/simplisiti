@@ -47,9 +47,11 @@ export const loadResources = async (): Promise<void> => {
 }
 
 export const parseTextVariable = (component: Component, variable: Variable): Variable => {
+    const value = component.content ? component.content[variable.name] : '';
     return {
         ...variable,
-        default: component.content ? component.content[variable.name] : '',
+        default: value,
+        value: value,
     }
 }
 

@@ -19,6 +19,12 @@ const handleChangeResource = (variable: Variable, value: number): void => {
     variable.value = resources.value.find((resource) => resource.id === value)?.url ?? '';
 };
 
+const handleChangeText = (variable: Variable, event: Event): void => {
+    const value = (event.target as HTMLInputElement).value;
+    variable.default = value;
+    variable.value = value;
+};
+
 </script>
 
 <template>
@@ -32,11 +38,11 @@ const handleChangeResource = (variable: Variable, value: number): void => {
         <div v-for="variable of component.variables" :key="variable.name">
             <div v-if="variable.type === 'text'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>
-                <input class="input" type="text" v-model="variable.default" :placeholder="variable.name"/>
+                <input class="input" type="text" :value="variable.default" @input="handleChangeText(variable, $event)" :placeholder="variable.name"/>
             </div>
             <div v-else-if="variable.type === 'resource'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>
-                <resource-picker :modelValue="variable.default" @update:modelValue="handleChangeResource(variable, $event)" />
+                <resource-picker :modelValue="variable.default" @input="handleChangeResource(variable, $event)" />
             </div>
         </div>
     </div>

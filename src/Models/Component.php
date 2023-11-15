@@ -20,23 +20,23 @@ class Component extends Model
     ];
 
     protected function variables(): Attribute {
-        $variables = collect(json_decode($this->attributes['variables'], true))->map(function ($variable) {
-            return Value::parseValue($variable);
-        });
-
         return Attribute::make(
-            get: fn () => $variables
+            get: fn (mixed $variables) => collect(json_decode($variables, true))->map(function ($variable) {
+                return Value::parseValue($variable);
+            })
         ); 
     }
 
     protected function content(): Attribute
     {
         $content = collect(json_decode($this->attributes['variables'], true))
-        ->keyBy('name')
         ->map(function ($variable) {
-            return $variable['default'];
+            return Value::parseValue([
+                ...$variable,
+                'default' => $this->pivot->content[$variable['name']],
+            ]);
         })
-        ->merge($this->pivot->content);
+        ->pluck('value', 'name');
 
         return Attribute::make(
             get: fn () => $content

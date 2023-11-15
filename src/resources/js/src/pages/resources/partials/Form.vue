@@ -36,7 +36,7 @@ const handleFile = (event: EventTarget | null) => {
         </div>
         <div class="flex flex-col gap-2 w-full">
             <label class="label">{{ $t('resources.labels.resourceFile') }}</label>
-            <input type="file" :required="fileRequired" @change="handleFile($event.target)" class="input" :placeholder="$t('resources.placeholders.resourceFile')" accept="image/png,image/jpg"/>
+            <input type="file" :required="fileRequired" @change="handleFile($event.target)" class="input" :placeholder="$t('resources.placeholders.resourceFile')" accept="image/png,image/jpeg"/>
         </div>
     </div>
 </template>
