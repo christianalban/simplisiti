@@ -4,7 +4,10 @@ import { ref, toRefs, watch } from 'vue';
 interface ModalProps {
     returnValue: string;
     showModal: () => void;
+    resetOnClose: boolean;
     close: (returnValue?: string) => void;
+    cancelLabel: string;
+    confirmLabel: string;
 }
 
 const props = defineProps({
@@ -16,13 +19,25 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
-    hiddeCancel: {
+    showCancel: {
         type: Boolean,
-        default: false,
+        default: true,
     },
-    hiddeSubmit: {
+    showConfirm: {
         type: Boolean,
-        default: false,
+        default: true,
+    },
+    resetOnClose: {
+        type: Boolean,
+        default: true,
+    },
+    cancelLabel: {
+        type: [String, undefined],
+        default: undefined,
+    },
+    confirmLabel: {
+        type: [String, undefined],
+        default: undefined,
     },
 });
 
@@ -44,7 +59,9 @@ const close = () => {
         emit('cancel');
     }
 
-    form.value?.reset();
+    if (props.resetOnClose) {
+        form.value?.reset();
+    }
 }
 
 watch(showModal, (showModal) => {
@@ -64,9 +81,9 @@ watch(showModal, (showModal) => {
             <div>
                 <slot></slot>
             </div>
-            <div class="flex justify-between gap-4">
-                <button v-if="!hiddeCancel" type="reset" value="cancel" class="button danger" formmethod="dialog" @click="modal?.close('cancel')">{{ $t('buttons.cancel') }}</button>
-                <button v-if="!hiddeSubmit" type="submit" class="button primary" value="default" formmethod="dialog">{{ $t('buttons.confirm') }}</button>
+            <div class="flex justify-end gap-4">
+                <button v-if="showCancel" :type="resetOnClose ? 'reset' : 'button'" value="cancel" class="button danger" formmethod="dialog" @click="modal?.close('cancel')">{{ cancelLabel || $t('buttons.cancel') }}</button>
+                <button v-if="showConfirm" type="submit" class="button primary ml-auto" value="default" formmethod="dialog">{{ confirmLabel || $t('buttons.confirm') }}</button>
             </div>
         </form>
     </dialog>

@@ -25,10 +25,12 @@ const messages = {
                 componentName: "[group/]name",
                 name: "Name",
                 defaultValue: "Default value",
+                dataName: "Field",
             },
             types: {
                 text: "Text",
                 resource: "Resource",
+                datatable: "Datatable",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -40,11 +42,13 @@ const messages = {
                 code: "Code",
                 variables: "Variables",
                 selectResource: "Select resource",
+                fillData: "Fill data",
             },
             buttons: {
                 create: "New component",
                 selectResource: "Select",
                 changeResource: "Change",
+                fillData: "Fill",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -233,10 +237,12 @@ const messages = {
                 componentName: "[grupo/]nombre",
                 name: "Nombre",
                 defaultValue: "Valor por defecto",
+                dataName: "Campo",
             },
             types: {
                 text: "Texto",
                 resource: "Recurso",
+                datatable: "Tabla",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -248,11 +254,13 @@ const messages = {
                 code: "Código",
                 variables: "Variables",
                 selectResource: "Seleccionar recurso",
+                fillData: "Completar datos",
             },
             buttons: {
                 create: "Nuevo componente",
                 selectResource: "Seleccionar",
                 changeResource: "Cambiar",
+                fillData: "Completar",
             },
             toasts: {
                 created: "Componente creado correctamente.",
@@ -413,6 +421,7 @@ const messages = {
             delete: "Eliminar",
             confirm: "Confirmar",
             cancel: "Cancelar",
+            close: "Cerrar",
         },
         toasts: {
             success: "Éxito",

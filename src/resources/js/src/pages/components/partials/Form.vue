@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { PropType, onMounted } from "vue";
 import CodeEditor from "../../../components/CodeEditor.vue";
-import ResourcePicker from "../../../components/inputs/ResourcePicker.vue";
 import { Variable } from "../../../types/Variable";
+import VariableTypeSelector from "../../../components/inputs/VariableTypeSelector.vue";
 import { value } from '../../../utils/helpers';
 import { useResources } from "../../../services/ResourceService";
+import ControlTypeSelector from "../../../components/inputs/ControlTypeSelector.vue";
 
 const { loadResources } = useResources();
 
@@ -54,14 +55,10 @@ onMounted(() => {
                 <h2 class="title mb-4">{{ $t('components.titles.variables') }}</h2>
                 <div class="flex flex-col gap-2 bg-gray-100 p-2 rounded-lg">
                     <div v-for="(variable, index) of variables" class="flex form-group">
-                        <select class="input w-4/12" v-model="variable.type">
-                            <option value="text">{{ $t('components.types.text') }}</option>
-                            <option value="resource">{{ $t('components.types.resource') }}</option>
-                        </select>
-                        <input type="text" class="input" v-model="variable.name" :placeholder="$t('components.placeholders.name')" />
+                        <variable-type-selector class="w-4/12" v-model="variable.type"/>
+                        <input type="text" class="input" :value="variable.name" @input="variable.name = value($event.target)" :placeholder="$t('components.placeholders.name')" />
                         <!-- inputs defaults accord selected type -->
-                        <input v-if="variable.type === 'text'" type="text" class="input" v-model="variable.default" :placeholder="$t('components.placeholders.defaultValue')" />
-                        <resource-picker v-else-if="variable.type === 'resource'" v-model="variable.default" />
+                        <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
                         <!-- inputs defaults accord selected type -->
                         <!-- buttons add and remove -->
                         <button type="button" class="button primary max-w-min" @click="addVariable" v-if="index === variables.length - 1">

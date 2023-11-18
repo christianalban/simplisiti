@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller;
 class ResourceController extends Controller {
     public function index(IndexQuery $query) {
         $resources = $query->query()
-        ->paginate();
+        ->get();
 
         return ResourceResource::collection($resources);
     }

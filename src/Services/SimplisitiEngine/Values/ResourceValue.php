@@ -12,4 +12,12 @@ class ResourceValue extends Value
 
         return $url;
     }
+
+    public function merge(array|string|int| null $merge) {
+        return [
+            'type' => $this->type,
+            'name' => $this->name,
+            'default' => $merge ?? $this->default,
+        ];
+    }
 }

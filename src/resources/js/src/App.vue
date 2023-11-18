@@ -68,6 +68,8 @@ import Toast from "./components/Toast.vue";
 }
 
 .form-group {
+    @apply flex;
+
     & > .input,
     & > .button {
         @apply rounded-none;

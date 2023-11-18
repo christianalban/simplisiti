@@ -2,8 +2,10 @@
 import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
 import ResourcePicker from '../../../components/inputs/ResourcePicker.vue';
+import DataTable from '../../../components/inputs/DataTable.vue';
 import { useResources } from "../../../services/ResourceService";
 import { Variable } from '../../../types/Variable';
+import { DataTableValue } from '../../../types/DataTable';
 
 const { resources } = useResources();
 
@@ -25,6 +27,10 @@ const handleChangeText = (variable: Variable, event: Event): void => {
     variable.value = value;
 };
 
+const handleChangeDataTable = (variable: Variable, value: DataTableValue): void => {
+    variable.default = value;
+};
+
 </script>
 
 <template>
@@ -42,7 +48,11 @@ const handleChangeText = (variable: Variable, event: Event): void => {
             </div>
             <div v-else-if="variable.type === 'resource'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>
-                <resource-picker :modelValue="variable.default" @input="handleChangeResource(variable, $event)" />
+                <resource-picker :modelValue="variable.default" @update:model-value="handleChangeResource(variable, $event)" />
+            </div>
+            <div v-else-if="variable.type === 'datatable'" class="flex flex-col gap-2">
+                <label class="label">{{ variable.name }}</label>
+                <data-table :modelValue="variable.default" @update:model-value="handleChangeDataTable(variable, $event)"/>
             </div>
         </div>
     </div>
