@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref, toRefs, watch } from 'vue';
+import { PropType, toRefs, watch } from 'vue';
 import { VariableType } from '../../types/Variable';
 import { DataTableValue } from '../../types/DataTable';
 import ResourcePicker from './ResourcePicker.vue';

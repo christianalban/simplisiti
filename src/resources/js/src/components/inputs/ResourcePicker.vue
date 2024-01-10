@@ -2,10 +2,11 @@
 import Modal from "../Modal.vue";
 import { ref, computed, PropType } from "vue";
 import { useResources } from "../../services/ResourceService";
+import { DataTableValue } from "../../types/DataTable";
 
 const props = defineProps({
     modelValue: {
-        type: [Number, String, undefined] as PropType<number | string | undefined>,
+        type: [Number, String, Object, undefined] as PropType<number | string | DataTableValue | undefined>,
         required: true,
     },
 });

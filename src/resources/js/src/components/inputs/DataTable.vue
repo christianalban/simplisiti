@@ -9,12 +9,12 @@ import VariableTypeSelector from "./VariableTypeSelector.vue";
 
 const props = defineProps({
     modelValue: {
-        type: [Object, String, undefined] as PropType<DataTableValue | string | undefined>,
+        type: [Object, String, Number, undefined] as PropType<DataTableValue | string | number | undefined>,
         required: true,
     },
     name: {
         type: String as PropType<string>,
-        required: true,
+        required: false,
     },
 });
 

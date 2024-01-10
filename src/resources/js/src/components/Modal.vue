@@ -31,14 +31,8 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
-    cancelLabel: {
-        type: [String, undefined],
-        default: undefined,
-    },
-    confirmLabel: {
-        type: [String, undefined],
-        default: undefined,
-    },
+    cancelLabel: String,
+    confirmLabel: String,
 });
 
 const form = ref<HTMLFormElement|null>(null);

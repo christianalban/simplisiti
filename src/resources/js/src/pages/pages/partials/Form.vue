@@ -67,7 +67,7 @@ const exitFromEditMode = (): void => {
 
 const renderHtmlComponent = (component: Component): string => {
     const html =  component.variables.reduce((html, variable) => {
-        return html.replace(`{{ $${variable.name} }}`, variable.value);
+        return html.replace(`{{ $${variable.name} }}`, variable.value?.toString() || '');
     }, component.html);
 
     return html;
