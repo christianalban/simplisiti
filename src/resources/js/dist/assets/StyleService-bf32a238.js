@@ -1,0 +1,1 @@
+import{bE as e}from"./index-2c2285d1.js";const s=async t=>await e.post("style",t),n=async()=>await e.get("style"),r=async t=>await e.get(`style/${t}`),y=async t=>await e.put(`style/${t.id}`,t),c=async t=>await e.delete(`style/${t}`);export{r as a,s as c,c as d,n as g,y as u};
