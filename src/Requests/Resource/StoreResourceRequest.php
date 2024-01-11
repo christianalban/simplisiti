@@ -15,7 +15,7 @@ class StoreResourceRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|unique:resources',
-            'file' => 'required|file|mimetypes:image/jpeg,image/png',
+            'file' => 'required|file|mimetypes:image/jpeg,image/svg+xml,image/png,image/webp,video/mp4',
         ];
     }
 }

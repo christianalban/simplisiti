@@ -5,6 +5,7 @@ import { Resource } from '../../types/Resource';
 import CreateResource from './Create.vue';
 import EditResource from './Edit.vue';
 import DialogComponent from '../../components/Dialog.vue';
+import ResourcePreview from '../../components/preview/ResourcePreview.vue';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
 const resources = ref<Resource[]>([]);
@@ -77,7 +78,7 @@ onMounted(() => {
         <ul class="grid grid-cols-5 gap-4">
             <li v-for="resource of resources" class="flex">
                 <div type="button" class="button primary w-full flex flex-col items-center justify-between">
-                    <img :src="resource.url" class="h-32 object-cover"/>
+                    <resource-preview :url="resource.url" />
                     <div class="flex w-full justify-between mt-4">
                         <span class="font-semibold">{{ resource.name }}</span>
                         <div class="flex gap-2">
