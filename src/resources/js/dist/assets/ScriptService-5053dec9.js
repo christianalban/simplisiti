@@ -1,0 +1,1 @@
+import{bE as a}from"./index-c4739e21.js";const s=async t=>await a.post("script",t),c=async()=>await a.get("script"),e=async t=>await a.get(`script/${t}`),i=async t=>await a.put(`script/${t.id}`,t),n=async t=>await a.delete(`script/${t}`);export{e as a,s as c,n as d,c as g,i as u};
