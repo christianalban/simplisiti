@@ -36,6 +36,7 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
     Route::controller(ScriptController::class)->group(function () {
         Route::post('script', 'store');
         Route::get('script', 'index');
+        Route::put('script/order', 'order');
         Route::get('script/{script}', 'show');
         Route::put('script/{script}', 'update');
         Route::delete('script/{script}', 'destroy');

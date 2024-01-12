@@ -1,13 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getScripts } from '../../services/ScriptService';
+import { computed, onMounted, ref } from 'vue';
+import { getScripts, updateOrder } from '../../services/ScriptService';
 import { Script } from '../../types/Script';
-const scripts = ref<Script[]>([]);
+import { ListItem } from '../../types/List';
+import DraggableList from '../../components/DraggableList.vue';
+
+const scripts = ref<ListItem[]>([]);
+
+const saveOrder = (list: ListItem[]) => {
+    const orderedList = list.map(({ id }, index) => ({
+        id,
+        order: index + 1,
+    }));
+
+    updateOrder(orderedList)
+    .then(() => {
+        scripts.value = list;
+    });
+};
 
 onMounted(() => {
     getScripts()
     .then((response) => {
-        scripts.value = response.data.data;
+        scripts.value = response.data.data.map(({id, name, is_active}: Script) => ({
+            id,
+            name,
+            url: { name: 'scripts.edit', params: { script: id } },
+            is_active,
+        }));
     });
 });
 </script>
@@ -19,15 +39,11 @@ onMounted(() => {
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'scripts.create' }">{{ $t('scripts.buttons.create') }}</router-link>
         </div>
-        <ul class="w-1/5 grid gap-4">
-            <li v-for="script of scripts" class="flex">
-                <router-link :to="{ name: 'scripts.edit', params: { script: script.id } }" class="button primary w-full flex items-center justify-between">
-                    <span class="font-semibold">{{ script.name }}</span>
-                    <fa-icon v-if="script.is_active" icon="circle-check" />
-                    <fa-icon v-else :icon="['far','circle']" />
-                </router-link>
-            </li>
-        </ul>
+        <draggable-list
+            class="w-1/5 grid gap-4"
+            :list="scripts"
+            @update:list="saveOrder"
+        />
     </div>
 </template>
 

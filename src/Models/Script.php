@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Models;
 
+use Alban\Simplisiti\Models\Scopes\OrderListScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Script extends Model
@@ -10,6 +11,7 @@ class Script extends Model
         'name',
         'scripts',
         'is_active',
+        'order',
     ];
 
     protected $casts = [
@@ -20,5 +22,10 @@ class Script extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new OrderListScope);
     }
 }
