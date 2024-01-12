@@ -7,7 +7,12 @@ use Alban\Simplisiti\Models\Resource;
 class ResourceValue extends Value
 {
     public function parse() {
-        $path = Resource::find($this->default)->path;
+        $path = Resource::find($this->default)?->path;
+
+        if (!$path) {
+            return null;
+        }
+
         $url = asset('storage/' . $path);
 
         return $url;
