@@ -2,11 +2,14 @@
 
 namespace Alban\Simplisiti\Models;
 
-use Alban\Simplisiti\Models\Scopes\OrderListScope;
+use Alban\Simplisiti\Traits\MustActive;
+use Alban\Simplisiti\Traits\MustSort;
 use Illuminate\Database\Eloquent\Model;
 
 class Script extends Model
 {
+    use MustSort, MustActive;
+
     protected $fillable = [
         'name',
         'scripts',
@@ -18,14 +21,4 @@ class Script extends Model
         'scripts' => 'array',
         'is_active' => 'boolean',
     ];
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new OrderListScope);
-    }
 }

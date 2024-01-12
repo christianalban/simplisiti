@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getScripts, updateOrder } from '../../services/ScriptService';
 import { Script } from '../../types/Script';
 import { ListItem } from '../../types/List';
@@ -13,10 +13,7 @@ const saveOrder = (list: ListItem[]) => {
         order: index + 1,
     }));
 
-    updateOrder(orderedList)
-    .then(() => {
-        scripts.value = list;
-    });
+    updateOrder(orderedList);
 };
 
 onMounted(() => {

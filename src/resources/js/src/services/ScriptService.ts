@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Script, ScriptOrder } from "../types/Script";
+import { Script } from "../types/Script";
+import { ListOrder } from "../types/List";
 
 export const createScript = async (script: Script): Promise<any> => {
     return await axios.post('script', script)
@@ -21,6 +22,6 @@ export const deleteScript = async (scriptId: number): Promise<any> => {
     return await axios.delete(`script/${scriptId}`)
 }
 
-export const updateOrder = async (scriptOrder: ScriptOrder[]): Promise<any> => {
+export const updateOrder = async (scriptOrder: ListOrder[]): Promise<any> => {
     return await axios.put(`script/order`, { list: scriptOrder })
 }

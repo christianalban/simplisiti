@@ -1,14 +1,30 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { getStyles } from '../../services/StyleService';
+import { getStyles, updateOrder } from '../../services/StyleService';
+import { ListItem } from '../../types/List';
 import { Style } from '../../types/Style';
+import DraggableList from '../../components/DraggableList.vue';
 
-const styles = ref<Style[]>([]);
+const styles = ref<ListItem[]>([]);
+
+const saveOrder = (list: ListItem[]) => {
+    const orderedList = list.map(({ id }, index) => ({
+        id,
+        order: index + 1,
+    }));
+
+    updateOrder(orderedList);
+};
 
 onMounted(() => {
     getStyles()
     .then((response) => {
-        styles.value = response.data.data;
+        styles.value = response.data.data.map(({id, name, is_active}: Style) => ({
+            id,
+            name,
+            url: { name: 'styles.edit', params: { style: id } },
+            is_active,
+        }));
     });
 });
 </script>
@@ -20,15 +36,11 @@ onMounted(() => {
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'styles.create' }">{{ $t('styles.buttons.create') }}</router-link>
         </div>
-        <ul class="w-1/5 grid gap-4">
-            <li v-for="style of styles" class="flex">
-                <router-link :to="{ name: 'styles.edit', params: { style: style.id } }" class="button primary w-full flex items-center justify-between">
-                    <span class="font-semibold">{{ style.name }}</span>
-                    <fa-icon v-if="style.is_active" icon="circle-check" />
-                    <fa-icon v-else :icon="['far','circle']" />
-                </router-link>
-            </li>
-        </ul>
+        <draggable-list
+            class="w-1/5 grid gap-4"
+            :list="styles"
+            @update:list="saveOrder"
+        />
     </div>
 </template>
 

@@ -28,6 +28,7 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
     Route::controller(StyleController::class)->group(function () {
         Route::post('style', 'store');
         Route::get('style', 'index');
+        Route::put('style/order', 'order');
         Route::get('style/{style}', 'show');
         Route::put('style/{style}', 'update');
         Route::delete('style/{style}', 'destroy');

@@ -4,8 +4,3 @@ export interface Script {
     scripts?: string
     is_active?: boolean
 }
-
-export interface ScriptOrder {
-    id?: number
-    order: number
-}

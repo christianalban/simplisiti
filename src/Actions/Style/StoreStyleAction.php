@@ -8,6 +8,10 @@ class StoreStyleAction
 {
     public function execute(array $data): Style
     {
-        return Style::create($data);
+        $style = Style::make($data);
+
+        $style->setNextOrder()->save();
+
+        return $style;
     }
 }

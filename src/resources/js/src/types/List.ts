@@ -6,3 +6,8 @@ export interface ListItem {
     url: RouteLocationRaw
     is_active?: boolean
 }
+
+export interface ListOrder {
+    id?: number
+    order: number
+}

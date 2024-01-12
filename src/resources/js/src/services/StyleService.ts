@@ -20,3 +20,7 @@ export const updateStyle = async (style: Style): Promise<any> => {
 export const deleteStyle = async (styleId: number): Promise<any> => {
     return await axios.delete(`style/${styleId}`)
 }
+
+export const updateOrder = async (scriptOrder: ScriptOrder[]): Promise<any> => {
+    return await axios.put(`style/order`, { list: scriptOrder })
+}

@@ -3,11 +3,13 @@
 namespace Alban\Simplisiti\Controllers;
 
 use Alban\Simplisiti\Actions\Style\DeleteStyleAction;
+use Alban\Simplisiti\Actions\Style\OrderStyleAction;
 use Alban\Simplisiti\Actions\Style\StoreStyleAction;
 use Alban\Simplisiti\Actions\Style\UpdateStyleAction;
 use Alban\Simplisiti\Http\Resources\StyleResource;
 use Alban\Simplisiti\Models\Style;
 use Alban\Simplisiti\Queries\Style\IndexQuery;
+use Alban\Simplisiti\Requests\Style\OrderStyleRequest;
 use Alban\Simplisiti\Requests\Style\StoreStyleRequest;
 use Alban\Simplisiti\Requests\Style\UpdateStyleRequest;
 use App\Http\Controllers\Controller;
@@ -45,6 +47,14 @@ class StyleController extends Controller {
 
         return response()->json([
             'message' => 'Style deleted successfully',
+        ]);
+    }
+
+    public function order(OrderStyleRequest $request, OrderStyleAction $action) {
+        $action->execute($request->validated());
+
+        return response()->json([
+            'message' => 'Styles order updated successfully',
         ]);
     }
 }
