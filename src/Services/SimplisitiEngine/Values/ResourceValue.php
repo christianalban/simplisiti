@@ -10,7 +10,7 @@ class ResourceValue extends Value
         $path = Resource::find($this->default)?->path;
 
         if (!$path) {
-            return null;
+            return '';
         }
 
         $url = asset('storage/' . $path);
