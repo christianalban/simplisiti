@@ -16,7 +16,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->string('name')->unique();
             $table->json('styles')->nullable();
-            $table->unsignedTinyInteger('order')->nullable();
             $table->timestamps();
         });
     }
