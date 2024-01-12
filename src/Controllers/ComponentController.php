@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 
 class ComponentController extends Controller {
     public function index(IndexQuery $query) {
-        $components = $query->query()->paginate();
+        $components = $query->query()->get();
 
         return ComponentResource::collection($components);
     }

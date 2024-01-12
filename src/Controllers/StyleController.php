@@ -17,7 +17,7 @@ use App\Http\Controllers\Controller;
 class StyleController extends Controller {
     public function index(IndexQuery $query) {
         $styles = $query->query()
-        ->paginate();
+        ->get();
 
         return StyleResource::collection($styles);
     }

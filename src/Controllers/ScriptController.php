@@ -17,7 +17,7 @@ use App\Http\Controllers\Controller;
 class ScriptController extends Controller {
     public function index(IndexQuery $query) {
         $scripts = $query->query()
-        ->paginate();
+        ->get();
 
         return ScriptResource::collection($scripts);
     }
