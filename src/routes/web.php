@@ -5,7 +5,10 @@ use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
 use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/spanel/{path1?}/{path2?}/{path3?}', 'simplisiti::index')->middleware(['web' ,'auth'])->name('spanel.dashboard');
+Route::view('/spanel/{any?}', 'simplisiti::index')
+    ->where('any', '.*')
+    ->middleware(['web' ,'auth'])
+    ->name('spanel.dashboard');
 
 PagesLoader::loadPages();
 StylesLoader::loadStyles();
