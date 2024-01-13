@@ -3,9 +3,7 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 
 use Alban\Simplisiti\Models\Page;
-use Alban\Simplisiti\Models\Script;
-use Alban\Simplisiti\Models\Style;
-use Illuminate\Database\Eloquent\Collection;
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +11,14 @@ use Illuminate\Support\Facades\View;
 
 class PagesLoader
 {
+    private SimplisitiApp $app;
+
+    public function __construct() {
+        $this->app = new SimplisitiApp;
+
+        $this->app->init();
+    }
+    
     public static function loadPages(): void
     {
         (new static)->loadPagesList();
@@ -30,9 +36,8 @@ class PagesLoader
             Route::get($page->url, function () use ($page) {
                 return View::make('simplisiti::boot', [
                     'content' => $this->renderContent($page),
-                    'styles' => $this->renderStyle(),
-                    'scripts' => $this->renderScript(),
                     'title' => $page->title,
+                    'app' => $this->app,
                 ]);
             });
         });
@@ -55,15 +60,5 @@ class PagesLoader
 
             return $buildedContent;
         }, '');
-    }
-
-    protected function renderStyle(): Collection
-    {
-        return Style::active()->get();
-    }
-
-    protected function renderScript(): Collection
-    {
-        return Script::active()->get();
     }
 }

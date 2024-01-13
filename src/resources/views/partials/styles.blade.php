@@ -1,3 +1,3 @@
-@foreach($styles as $style)
+@foreach($app->getStyles() as $style)
     <link rel="stylesheet" href="{{ asset(config('simplisiti.styles_path') . '/' . $style->name . '.css') }}" />
 @endforeach
