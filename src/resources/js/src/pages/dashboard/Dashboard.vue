@@ -34,6 +34,10 @@ const toolLinks = [
         name: 'resources.index',
         title: 'titles.resources',
     },
+    {
+        name: 'settings.index',
+        title: 'titles.settings',
+    },
 ];
 
 const toolStatus = computed(() => [

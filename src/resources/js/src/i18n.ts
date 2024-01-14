@@ -10,6 +10,7 @@ const messages = {
             styles: "Styles",
             scripts: "Scripts",
             resources: "Resources",
+            settings: "Settings",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
@@ -139,6 +140,34 @@ const messages = {
                 create: "New styles sheet",
             },
         },
+        settings: {
+            titles: {
+                settingsList: "Settings list",
+                createSetting: "Create new setting",
+                updateSetting: "Edit setting",
+            },
+            // labels: {
+            //     styleIsActive: "Is active",
+            //     styleName: "Styles sheet name",
+            // },
+            // placeholders: {
+            //     styleIsActive: "The styles sheet is active",
+            //     styleName: "Styles sheet name",
+            // },
+            toasts: {
+                updated: "Setting updated successfully.",
+                errorUpdated: "Setting couldn't be updated.",
+            },
+            // dialogs: {
+            //     delete: {
+            //         title: "Delete styles sheet",
+            //         message: "Are you sure you want to delete the styles sheet '{name}'?",
+            //     }
+            // },
+            // buttons: {
+            //     create: "New styles sheet",
+            // },
+        },
         scripts: {
             titles: {
                 scriptsList: "Scripts list",
@@ -222,6 +251,7 @@ const messages = {
             styles: "Estilos",
             scripts: "Scripts",
             resources: "Recursos",
+            settings: "Configuración",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
@@ -349,6 +379,13 @@ const messages = {
             },
             buttons: {
                 create: "Nueva hoja de estilos",
+            },
+        },
+        settings: {
+            titles: {
+                settingsList: "Listado de configuraciones",
+                createSetting: "Crear nueva configuración",
+                updateSetting: "Editar configuración",
             },
         },
         scripts: {

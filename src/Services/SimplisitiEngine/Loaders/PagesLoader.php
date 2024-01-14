@@ -4,6 +4,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -14,9 +15,19 @@ class PagesLoader
     private SimplisitiApp $app;
 
     public function __construct() {
-        $this->app = new SimplisitiApp;
+        $this->app = App::make(SimplisitiApp::class);
 
-        $this->app->init();
+        $this->app->loadStyles();
+
+        $this->app->loadHeaders();
+
+        $this->app->loadBody();
+
+        $this->app->loadScripts(); 
+
+        $this->app->loadSettings(); 
+
+        $this->app->loadPlugins();
     }
     
     public static function loadPages(): void
@@ -29,6 +40,8 @@ class PagesLoader
         if (!Schema::hasTable('pages')) {
             return;
         }
+
+        $this->app->init();
 
         $pages = Page::withOrderedSectionsAndComponents()->get();
 

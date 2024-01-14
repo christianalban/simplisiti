@@ -1,3 +1,3 @@
-@foreach($app->getHeads() as $head)
+@foreach($app->getHeadManager()->getHeads() as $head)
     {!! $head !!}
 @endforeach

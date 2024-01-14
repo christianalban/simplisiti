@@ -2,84 +2,92 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine;
 
 use Alban\Simplisiti\Models\Plugin;
-use Alban\Simplisiti\Models\Script;
-use Alban\Simplisiti\Models\Style;
-use Alban\Simplisiti\Support\Plugin\PluginManager;
-use Illuminate\Support\Collection;
+use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
+use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
+use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
+use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
+use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
+use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
 use Illuminate\Support\Facades\Schema;
 
 class SimplisitiApp
 {
-    private Collection $styles;
+    private StyleManager $styleManager;
 
-    private Collection $scripts;
+    private HeadManager $headManager;
 
-    private Collection $heads;
+    private ScriptManager $scriptManager;
 
-    public function __construct(
-    )
+    private PluginManager $pluginManager;
+
+    private SettingManager $settingManager;
+
+    private BodyManager $bodyManager;
+
+    public function getStyleManager(): StyleManager
     {
-        $this->styles = new Collection;
-        $this->scripts = new Collection;
-        $this->heads = new Collection;
+        return $this->styleManager;
     }
 
-    protected function setStyles(Collection $styles): void
+    public function getHeadManager(): HeadManager
     {
-        $this->styles = $styles;
+        return $this->headManager;
     }
 
-    protected function setScripts(Collection $scripts): void
+    public function getScriptManager(): ScriptManager
     {
-        $this->scripts = $scripts;
+        return $this->scriptManager;
     }
 
-    public function getStyles(): Collection
+    public function getSettingManager(): SettingManager
     {
-        return $this->styles;
+        return $this->settingManager;
     }
 
-    public function getScripts(): Collection
+    public function getBodyManager(): BodyManager
     {
-        return $this->scripts;
-    }
-
-    public function addHead(string $head): void
-    {
-        $this->heads->add($head);
-    }
-
-    public function getHeads(): Collection
-    {
-        return $this->heads;
+        return $this->bodyManager;
     }
 
     public function init(): void {
-        $this->setStyles($this->renderStyle());
-
-        $this->setScripts($this->renderScript());
+        $this->initPlugins();
     }
 
-    protected function loadPlugins(): void {
+    public function loadStyles(): void {
+        $this->styleManager = new StyleManager;
+    }
+
+    public function loadHeaders(): void {
+        $this->headManager = new HeadManager;
+    }
+
+    public function loadScripts(): void {
+        $this->scriptManager = new ScriptManager;
+    }
+
+    public function loadSettings(): void {
+        $this->settingManager = new SettingManager;
+    }
+
+    public function loadBody(): void {
+        $this->bodyManager = new BodyManager;
+    }
+
+    public function loadPlugins(): void {
         if (!Schema::hasTable('plugins')) {
             return;
         }
 
-        $pluginManager = new PluginManager($this);
+        $this->pluginManager = new PluginManager($this);
         foreach (Plugin::all() as $plugin) {
-            $pluginManager->add($plugin);
+            $this->pluginManager->add($plugin);
         }
-
-        $pluginManager->execute();
     }
 
-    protected function renderStyle(): Collection
-    {
-        return Style::active()->get();
-    }
-
-    protected function renderScript(): Collection
-    {
-        return Script::active()->get();
+    protected function initPlugins(): void {
+        if (!Schema::hasTable('plugins')) {
+            return;
+        }
+        $this->pluginManager->execute();
     }
 }

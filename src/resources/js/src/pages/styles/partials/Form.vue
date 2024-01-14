@@ -20,7 +20,7 @@ const props = defineProps({
 
 const isChecked = ref(props.isActive);
 
-const emit = defineEmits(['update:code', 'update:name', 'update:isActive']);
+defineEmits(['update:code', 'update:name', 'update:isActive']);
 
 </script>
 

@@ -1,6 +1,7 @@
 <?php
 namespace Alban\Simplisiti;
 
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support;
 
 class ServiceProvider extends Support\ServiceProvider
@@ -22,5 +23,9 @@ class ServiceProvider extends Support\ServiceProvider
         $this->publishes([
             __DIR__.'/config/simplisiti.php' => config_path('simplisiti.php'),
         ]);
+
+        $this->app->singleton(SimplisitiApp::class, function () {
+            return new SimplisitiApp;
+        });
     }
 }

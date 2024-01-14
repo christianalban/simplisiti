@@ -4,11 +4,12 @@ use Alban\Simplisiti\Controllers\ComponentController;
 use Alban\Simplisiti\Controllers\PageController;
 use Alban\Simplisiti\Controllers\ResourceController;
 use Alban\Simplisiti\Controllers\ScriptController;
+use Alban\Simplisiti\Controllers\SettingController;
 use Alban\Simplisiti\Controllers\StyleController;
 use Illuminate\Support\Facades\Route;
 
 // For Develop remove the `auth:sanctum` middleware
-Route::prefix('api/spanel')->middleware(['api'])->group(function () {
+Route::prefix('api/spanel')->middleware(['auth:sanctum' ,'api'])->group(function () {
     Route::controller(ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');
@@ -49,6 +50,11 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
         Route::get('resource/{resource}', 'show');
         Route::put('resource/{resource}', 'update');
         Route::delete('resource/{resource}', 'destroy');
+    });
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::get('setting', 'index');
+        Route::put('setting', 'update');
     });
 });
 

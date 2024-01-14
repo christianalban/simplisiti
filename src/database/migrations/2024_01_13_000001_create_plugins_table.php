@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('plugins', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('version')->unique();
-            $table->string('namespace');
+            $table->string('name');
+            $table->string('version');
             $table->string('description');
             $table->string('author');
             $table->string('email');
-            $table->string('website');
+            $table->string('website')->nullable();
+            $table->unique(['name', 'version']);
             $table->timestamps();
         });
     }

@@ -2,10 +2,11 @@
 
 namespace Alban\Simplisiti\Support\Plugin;
 
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Models\Setting;
 
 abstract class Plugin {
-    public function __construct(
-        private SimplisitiApp $app
-    ) {}
+    public function getSettingValue(string $name): string | null
+    {
+        return Setting::where('plugin', $this::class)->where('name', $name)->first()->value ?? null;
+    }
 }
