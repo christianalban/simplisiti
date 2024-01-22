@@ -11,6 +11,7 @@ const messages = {
             scripts: "Scripts",
             resources: "Resources",
             settings: "Settings",
+            plugins: "Plugins",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
@@ -146,27 +147,10 @@ const messages = {
                 createSetting: "Create new setting",
                 updateSetting: "Edit setting",
             },
-            // labels: {
-            //     styleIsActive: "Is active",
-            //     styleName: "Styles sheet name",
-            // },
-            // placeholders: {
-            //     styleIsActive: "The styles sheet is active",
-            //     styleName: "Styles sheet name",
-            // },
             toasts: {
                 updated: "Setting updated successfully.",
                 errorUpdated: "Setting couldn't be updated.",
             },
-            // dialogs: {
-            //     delete: {
-            //         title: "Delete styles sheet",
-            //         message: "Are you sure you want to delete the styles sheet '{name}'?",
-            //     }
-            // },
-            // buttons: {
-            //     create: "New styles sheet",
-            // },
         },
         scripts: {
             titles: {
@@ -232,6 +216,43 @@ const messages = {
                 create: "New resource",
             },
         },
+        plugins: {
+            titles: {
+                index: "Plugin manager",
+                repositories: "Repositories",
+            },
+            statusSync: {
+                sync: "Sync plugins",
+                syncing: "Syncing plugins...",
+                success: "Plugins synced successfully.",
+                error: "Plugins couldn't be synced.",
+            },
+            placeholders: {
+                searchPlugin: "Search plugin",
+            },
+            labels: {
+                noPlugins: "There aren't any plugins available.",
+                author: "Author",
+                installingPackage: "Installing package {name}...",
+                installedPackage: "Package {name} installed successfully.",
+                errorInstallingPackage: "Package {name} couldn't be installed.",
+                uninstallingPackage: "Uninstalling package {name}...",
+                uninstalledPackage: "Package {name} uninstalled successfully.",
+            },
+            toasts: {
+                repositoriesUpdated: "Repositories list updated successfully.",
+                errorRepositoriesUpdated: "Repositories list couldn't be updated.",
+                errorGetPackages: "Packages list couldn't be obtained.",
+            },
+            buttons: {
+                install: "Install",
+                installing: "Installing",
+                uninstall: "Uninstall",
+                uninstalling: "Uninstalling",
+                repositories: "Repositories",
+                addRepository: "Add repository",
+            }
+        },
         buttons: {
             save: "Save",
             back: "Back",
@@ -252,6 +273,7 @@ const messages = {
             scripts: "Scripts",
             resources: "Recursos",
             settings: "Configuración",
+            plugins: "Complementos",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
@@ -450,6 +472,43 @@ const messages = {
             },
             buttons: {
                 create: "Nuevo recurso",
+            },
+        },
+        plugins: {
+            titles: {
+                index: "Gestor de plugins",
+                repositories: "Repositorios",
+            },
+            statusSync: {
+                sync: "Sincronizar plugins",
+                syncing: "Sincronizando plugins...",
+                success: "Plugins sincronizados correctamente.",
+                error: "Plugins no pudieron ser sincronizados.",
+            },
+            placeholders: {
+                searchPlugin: "Buscar plugin",
+            },
+            labels: {
+                noPlugins: "No hay plugins disponibles.",
+                author: "Autor",
+                installingPackage: "Instalando paquete {name}...",
+                installedPackage: "Paquete {name} instalado correctamente.",
+                errorInstallingPackage: "Paquete {name} no pudo ser instalado.",
+                uninstallingPackage: "Desinstalando paquete {name}...",
+                uninstalledPackage: "Paquete {name} desinstalado correctamente.",
+            },
+            buttons: {
+                install: "Instalar",
+                installing: "Instalando",
+                uninstall: "Desinstalar",
+                uninstalling: "Desinstalando",
+                repositories: "Repositorios",
+                addRepository: "Agregar repositorio",
+            },
+            toasts: {
+                repositoriesUpdated: "Lista de repositorios actualizada correctamente.",
+                errorRepositoriesUpdated: "Lista de repositorios no pudo ser actualizada.",
+                errorGetPackages: "Lista de paquetes no pudo ser obtenida.",
             },
         },
         buttons: {

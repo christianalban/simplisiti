@@ -11,4 +11,8 @@ class Setting extends Model
         'name',
         'value',
     ];
+
+    protected $casts = [
+        'value' => 'array',
+    ];
 }

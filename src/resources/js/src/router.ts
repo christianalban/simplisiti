@@ -17,6 +17,7 @@ const routes = [
     { path: '/spanel/scripts/edit/:script', component: () => import("./pages/scripts/Edit.vue"), name: 'scripts.edit' },
     { path: '/spanel/resources', component: () => import("./pages/resources/Index.vue"), name: 'resources.index' },
     { path: '/spanel/settings', component: () => import("./pages/settings/Index.vue"), name: 'settings.index' },
+    { path: '/spanel/plugins', component: () => import("./pages/plugins/Index.vue"), name: 'plugins.index' },
 ]
 
 const router = createRouter({

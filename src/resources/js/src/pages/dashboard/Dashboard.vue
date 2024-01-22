@@ -38,6 +38,10 @@ const toolLinks = [
         name: 'settings.index',
         title: 'titles.settings',
     },
+    {
+        name: 'plugins.index',
+        title: 'titles.plugins',
+    },
 ];
 
 const toolStatus = computed(() => [

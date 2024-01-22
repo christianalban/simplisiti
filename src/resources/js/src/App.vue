@@ -3,7 +3,7 @@ import Toast from "./components/Toast.vue";
 </script>
 
 <template>
-    <div class="container py-8">
+    <div class="container p-8">
         <router-view />
     </div>
     <toast position="bottom-right"/>

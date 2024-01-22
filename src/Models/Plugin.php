@@ -13,5 +13,7 @@ class Plugin extends Model
         'author',
         'email',
         'website',
+        'md5',
+        'namespace',
     ];
 }

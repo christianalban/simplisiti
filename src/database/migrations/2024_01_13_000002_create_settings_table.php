@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('plugin');
             $table->string('name');
-            $table->longText('value')->nullable();
+            $table->json('value')->nullable();
             $table->unique(['plugin', 'name']);
             $table->timestamps();
         });

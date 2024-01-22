@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('author');
             $table->string('email');
             $table->string('website')->nullable();
+            $table->string('md5', 32);
+            $table->string('namespace');
             $table->unique(['name', 'version']);
             $table->timestamps();
         });

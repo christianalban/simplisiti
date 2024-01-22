@@ -2,6 +2,7 @@
 
 use Alban\Simplisiti\Controllers\ComponentController;
 use Alban\Simplisiti\Controllers\PageController;
+use Alban\Simplisiti\Controllers\PluginController;
 use Alban\Simplisiti\Controllers\ResourceController;
 use Alban\Simplisiti\Controllers\ScriptController;
 use Alban\Simplisiti\Controllers\SettingController;
@@ -9,7 +10,7 @@ use Alban\Simplisiti\Controllers\StyleController;
 use Illuminate\Support\Facades\Route;
 
 // For Develop remove the `auth:sanctum` middleware
-Route::prefix('api/spanel')->middleware(['auth:sanctum' ,'api'])->group(function () {
+Route::prefix('api/spanel')->middleware(['api'])->group(function () {
     Route::controller(ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');
@@ -55,6 +56,15 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum' ,'api'])->group(function
     Route::controller(SettingController::class)->group(function () {
         Route::get('setting', 'index');
         Route::put('setting', 'update');
+    });
+
+    Route::controller(PluginController::class)->group(function () {
+        Route::get('plugin/repositories', 'repositoriesList');
+        Route::put('plugin/repositories', 'repositoriesUpdate');
+        Route::post('plugin/repositories/sync', 'repositoriesSync');
+        Route::get('plugin/packages', 'packagesList');
+        Route::post('plugin/packages/install', 'packagesInstall');
+        Route::post('plugin/packages/uninstall', 'packagesUninstall');
     });
 });
 
