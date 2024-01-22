@@ -36,7 +36,7 @@ const save = () => {
             type: 'success',
         });
     })
-    .catch((error) => {
+    .catch(() => {
         showToast({
             title: t('toasts.error'),
             message: t('plugins.toasts.errorRepositoriesUpdated'),

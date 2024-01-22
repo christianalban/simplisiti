@@ -2,10 +2,8 @@
 import { ref } from 'vue';
 import { Plugin } from '../../../types/Plugin';
 import PluginItem from './PluginItem.vue'
-import { useI18n } from 'vue-i18n';
 
 const search = ref('')
-const { t } = useI18n()
 
 defineProps({
     plugins: Array as () => Plugin[],
@@ -20,7 +18,7 @@ defineEmits(['installing', 'installed', 'uninstalling', 'uninstalled', 'error'])
             <input type="search" class="input" v-model="search" :placeholder="$t('plugins.placeholders.searchPlugin')" />
         </div>
         <div class="flex flex-col py-4">
-            <div v-if="plugins.length" v-for="(plugin, index) of plugins" :key="plugin.name">
+            <div v-if="plugins?.length" v-for="(plugin, index) of plugins" :key="plugin.name">
                 <plugin-item
                     :plugin="plugin"
                     @installing="$emit('installing', $event)"

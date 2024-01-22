@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Plugin } from '../../../types/Plugin';
+import { Plugin, PluginRequest, PluginStatus } from '../../../types/Plugin';
 import { useI18n } from 'vue-i18n';
 import { installPlugin, uninstallPlugin } from '../../../services/PluginService';
-import { ref, defineProps, defineEmits, PropType } from 'vue';
+import { ref, PropType } from 'vue';
 
 const { t } = useI18n()
 
@@ -12,7 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits(['installing', 'installed', 'uninstalling', 'uninstalled', 'error'])
 
-const pluginStatus = ref(props.plugin.status);
+const pluginStatus = ref<PluginRequest|PluginStatus|'unknown'>(props.plugin?.status || 'unknown');
 
 const install = (plugin: Plugin) => {
     emit('installing', plugin)
@@ -55,22 +55,24 @@ const excecute = (plugin: Plugin) => {
     }
 }
 
-const buttonsLabelsMapping = {
+const buttonsLabelsMapping: { [key: string]: string } = {
     'not-installed': t('plugins.buttons.install'),
     'installing': t('plugins.buttons.installing'),
     'enabled': t('plugins.buttons.uninstall'),
     'uninstalling': t('plugins.buttons.uninstalling'),
+    'unknown': t('plugins.buttons.unknown'),
 }
 
-const buttonColorMapping = {
+const buttonColorMapping: { [key: string]: string } = {
     'not-installed': 'primary',
     'enabled': 'danger',
+    'unknown': 'default',
 }
 
 </script>
 
 <template>
-    <div class="flex w-full justify-between items-center hover:bg-gray-100 rounded-lg transition p-4">
+    <div v-if="plugin" class="flex w-full justify-between items-center hover:bg-gray-100 rounded-lg transition p-4">
         <div>
             <div class="flex items-end gap-2">
                 <h2 class="title">{{ plugin.name }}</h2> <span class="text-gray-500">{{ plugin.version }}</span>
@@ -78,7 +80,7 @@ const buttonColorMapping = {
             <span class="text-gray-500 text-sm">{{ plugin.author }}</span>
             <p class="text-gray-500">{{ plugin.description }}</p>
         </div>
-        <button @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus]]" v-text="buttonsLabelsMapping[pluginStatus]"></button>
+        <button @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
     </div>
 </template>
 

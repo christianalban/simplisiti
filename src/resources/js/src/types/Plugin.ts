@@ -2,6 +2,8 @@ export type SyncStatus = 'no-synced' |'synced' | 'syncing' | 'error';
 
 export type PluginStatus = 'enabled' | 'disabled' | 'not-installed';
 
+export type PluginRequest = 'installing' | 'installed' | 'uninstalling' | 'uninstalled';
+
 export interface Plugin {
     name: string;
     description: string;
