@@ -17,7 +17,9 @@ class UpdateSettingAction
                         'name' => $item['name'],
                     ],
                     [
-                        'value' => $item['value'],
+                        'value' => [
+                            'value' => $item['value']
+                        ],
                     ]
                 );
             });

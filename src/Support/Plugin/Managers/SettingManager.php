@@ -54,7 +54,7 @@ class SettingManager {
         $settingValues = Setting::all();
 
         foreach ($this->settings as $setting) {
-            $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value ?? null;
+            $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
             if (array_key_exists($setting['plugin'], $settingMenu)) {
                 $settingMenu[$setting['plugin']]['items'][] = $setting;
             } else {
