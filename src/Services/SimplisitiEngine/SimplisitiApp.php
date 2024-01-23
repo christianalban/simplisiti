@@ -68,6 +68,10 @@ class SimplisitiApp extends BasePlugin
     }
 
     public function loadStyles(): void {
+        if (!Schema::hasTable('styles')) {
+            return;
+        }
+
         $this->styleManager = new StyleManager;
     }
 
@@ -76,6 +80,10 @@ class SimplisitiApp extends BasePlugin
     }
 
     public function loadScripts(): void {
+        if (!Schema::hasTable('scripts')) {
+            return;
+        }
+
         $this->scriptManager = new ScriptManager;
     }
 
