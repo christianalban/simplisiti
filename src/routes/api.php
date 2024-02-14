@@ -10,7 +10,7 @@ use Alban\Simplisiti\Controllers\StyleController;
 use Illuminate\Support\Facades\Route;
 
 // For Develop remove the `auth:sanctum` middleware
-Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function () {
+Route::prefix('api/spanel')->middleware(['api'])->group(function () {
     Route::controller(ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');
@@ -25,6 +25,7 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
         Route::post('page', 'store');
         Route::put('page/{page}', 'update');
         Route::delete('page/{page}', 'destroy');
+        Route::get('page/{type}/preview', 'preview')->where('type', 'style|script');
     });
 
     Route::controller(StyleController::class)->group(function () {

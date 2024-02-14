@@ -10,3 +10,5 @@ export interface Page {
     sections: Section[]
     sections_count?: number
 }
+
+export type ResourcePreview = 'style' | 'script';

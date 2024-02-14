@@ -93,7 +93,7 @@ onMounted(() => {
 
 <template>
     <div class="grid place-items-center h-full">
-        <div class="dashboard w-full bg-white p-8">
+        <div class="dashboard w-full bg-white">
             <div class="grid grid-cols-2 rounded-lg gap-4">
                 <div>
                     <h2 class="title">{{ $t('titles.dashboard') }}</h2>

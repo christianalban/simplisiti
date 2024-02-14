@@ -34,13 +34,13 @@ const handleChangeDataTable = (variable: Variable, value: DataTableValue): void 
 </script>
 
 <template>
-    <div class="flex gap-2">
-        <h2 class="font-bold">{{ $t('pages.titles.componentConfigurationForm') }}</h2>
+    <div class="component-configuration-title">
+        <h2>{{ $t('pages.titles.componentConfigurationForm') }}</h2>
         <button type="button" class="button small default" @click="$emit('exit')">
             {{ $t('pages.buttons.exit') }}
         </button>
     </div>
-    <div class="flex flex-col gap-4" v-if="component">
+    <div class="component-configuration-parameters" v-if="component">
         <div v-for="variable of component.variables" :key="variable.name">
             <div v-if="variable.type === 'text'" class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}</label>
@@ -63,5 +63,24 @@ const handleChangeDataTable = (variable: Variable, value: DataTableValue): void 
     &.sortable-chosen {
         @apply bg-blue-100;
     }
+}
+
+.component-configuration-title {
+    display: flex;
+    gap: 1rem;
+
+    h2 {
+        font-weight: bold;
+        font-size: 0.95rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+.component-configuration-parameters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    overflow: auto;
 }
 </style>

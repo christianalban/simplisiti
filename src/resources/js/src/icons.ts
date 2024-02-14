@@ -11,7 +11,11 @@ import {
     faEdit,
     faGripLines,
     faArrowRotateRight,
-    faArrowsRotate
+    faArrowsRotate,
+    faEye,
+    faEyeSlash,
+    faArrowLeft,
+    faSquarePlus,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -28,6 +32,10 @@ library.add(
     faGripLines,
     faArrowRotateRight,
     faArrowsRotate,
+    faEye,
+    faEyeSlash,
+    faArrowLeft,
+    faSquarePlus,
 );
 
 export default FontAwesomeIcon;

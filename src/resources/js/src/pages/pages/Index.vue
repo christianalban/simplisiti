@@ -22,7 +22,7 @@ onMounted(() => {
         </div>
         <ul class="w-2/3 grid gap-4">
             <li v-for="page of pages" class="flex">
-                <router-link :to="{ name: 'pages.edit', params: { page: page.id } }" class="button primary w-full flex items-center justify-between">
+                <a :href="`/spanel/pages/${page.id}`" class="button primary w-full flex items-center justify-between">
                     <div class="flex flex-col">
                         <span class="font-semibold">{{ page.name }}</span>
                         <span>{{ $t('pages.labels.urlParam', { url: page.url }) }}</span>
@@ -30,7 +30,7 @@ onMounted(() => {
                     <div class="flex gap-2">
                         <span>{{ $t('pages.labels.sectionsCount', { count: page.sections_count }) }}</span>
                     </div>
-                </router-link>
+                </a>
             </li>
         </ul>
     </div>

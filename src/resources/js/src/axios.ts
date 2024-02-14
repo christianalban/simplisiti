@@ -1,5 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = '/api/spanel';
-// axios.defaults.baseURL = 'http://localhost/api/spanel';
+export const baseURL = 'http://localhost/api/spanel'
+// const baseURL = '/api/spanel'
+axios.defaults.baseURL = baseURL;
 axios.defaults.withCredentials = true;

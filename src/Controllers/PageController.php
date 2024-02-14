@@ -3,6 +3,7 @@
 namespace Alban\Simplisiti\Controllers;
 
 use Alban\Simplisiti\Actions\Page\DeletePageAction;
+use Alban\Simplisiti\Actions\Page\MinifyAction;
 use Alban\Simplisiti\Actions\Page\StorePageAction;
 use Alban\Simplisiti\Actions\Page\UpdatePageAction;
 use Alban\Simplisiti\Http\Resources\PageResource;
@@ -48,6 +49,14 @@ class PageController extends Controller {
 
         return response()->json([
             'message' => 'Page deleted successfully',
+        ]);
+    }
+
+    public function preview(string $type, MinifyAction $action) {
+        return response($action->forType($type)->execute(), 200, [
+            'Content-Type' => $type === 'style'
+                ? 'text/css'
+                : 'text/javascript'
         ]);
     }
 }

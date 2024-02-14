@@ -76,15 +76,17 @@ const messages = {
             labels: {
                 pageName: "Page name (optional group)",
                 pageUrl: "Page URL",
-                addComponentsToSection: "Add components to this section",
+                addComponentsToSection: "Empty section, drag components to this section",
                 urlParam: "URL: {url}",
                 sectionsCount: "Sections: {count}",
                 pageTitle: "Page title",
+                section: "Section",
+                component: "Component"
             },
             titles: {
                 pagesList: "Pages list",
                 createPage: "Create new page",
-                editPage: "Edit page",
+                editPage: "Page edition",
                 availableComponents: "Available components",
                 sections: "Sections",
                 componentConfigurationForm: "Component configuration",
@@ -93,6 +95,8 @@ const messages = {
                 create: "New page",
                 addSection: "Add new section",
                 exit: "Exit",
+                settings: "Settings",
+                components: "Components",
             },
             toasts: {
                 created: "Page created successfully.",
@@ -257,6 +261,11 @@ const messages = {
             save: "Save",
             back: "Back",
             delete: "Delete",
+            confirm: "Confirm",
+            cancel: "Cancel",
+            close: "Close",
+            hide: "Hide",
+            show: "Show",
         },
         toasts: {
             success: "Success",
@@ -338,15 +347,17 @@ const messages = {
             labels: {
                 pageName: "Nombre de la página (grupo opcional)",
                 pageUrl: "URL de la página",
-                addComponentsToSection: "Agrega componentes a esta sección",
+                addComponentsToSection: "Sección vacía, arrastre componentes a esta sección",
                 urlParam: "URL: {url}",
                 sectionsCount: "Secciones: {count}",
                 pageTitle: "Título de la página",
+                section: "Sección",
+                component: "Componente"
             },
             titles: {
                 pagesList: "Listado de páginas",
                 createPage: "Crear nueva página",
-                editPage: "Editar página",
+                editPage: "Edición de página",
                 availableComponents: "Componentes disponibles",
                 sections: "Secciones",
                 componentConfigurationForm: "Configuración del componente",
@@ -355,6 +366,8 @@ const messages = {
                 create: "Nueva página",
                 addSection: "Agregar nueva sección",
                 exit: "Salir",
+                settings: "Configuración",
+                components: "Componentes",
             },
             toasts: {
                 created: "Página creada correctamente.",
@@ -518,6 +531,8 @@ const messages = {
             confirm: "Confirmar",
             cancel: "Cancelar",
             close: "Cerrar",
+            hide: "Ocultar",
+            show: "Mostrar",
         },
         toasts: {
             success: "Éxito",

@@ -4,6 +4,7 @@ import DialogComponent from "../../components/Dialog.vue";
 import { onMounted, ref } from 'vue';
 import { Section } from '../../types/Section';
 import { Component } from '../../types/Component';
+import PageToolbar from './partials/PageToolbar.vue';
 import { deletePage, getPage, updatePage } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { useRoute, useRouter } from "vue-router";
@@ -100,17 +101,16 @@ onMounted(() => {
 
 <template>
     <form @submit.prevent="update">
-        <div class="flex gap-4 mb-4 w-full">
-            <router-link class="button default" :to="{ name: 'pages.index' }">{{ $t('buttons.back') }}</router-link>
-            <h1 class="title">{{ $t('pages.titles.editPage') }}</h1>
-            <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
-            <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
-        </div>
-        <pages-form
+        <page-toolbar
+            :title="$t('pages.titles.editPage')"
+            :showDelete="true"
+            @delete="showDeleteDialog"
             v-model:name="name"
             v-model:url="url"
+            v-model:pageTitle="title"
+        />
+        <pages-form
             v-model:sections="sections"
-            v-model:title="title"
         />
     </form>
     <dialog-component

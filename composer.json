@@ -20,8 +20,9 @@
             ]
         }
     },
-    "require-dev": {
+    "require": {
         "illuminate/database": "^10.0",
-        "illuminate/support": "^10.0"
+        "illuminate/support": "^10.0",
+        "matthiasmullie/minify": "^1.3"
     }
 }
