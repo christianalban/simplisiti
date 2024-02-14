@@ -93,3 +93,7 @@
         @apply font-semibold text-2xl;
     }
 }
+
+.label {
+    @apply text-sm font-semibold italic;
+}

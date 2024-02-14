@@ -124,10 +124,10 @@ onUnmounted (() => {
                                                 {{ $t('pages.labels.component') }} {{ (component.order = componentIndex) + 1 }} - {{ component.name }}
                                             </span>
                                             <div class="pages-secttions-component-buttons">
-                                                <button class="button danger small" type="button" @click="removeComponent(section.components, componentIndex)">
+                                                <button type="button" @click="removeComponent(section.components, componentIndex)">
                                                     <fa-icon icon="trash" />
                                                 </button>
-                                                <button class="button default small" type="button" @click="enterToEditingMode(component, sectionIndex)">
+                                                <button type="button" @click="enterToEditingMode(component, sectionIndex)">
                                                     <fa-icon icon="file-invoice" />
                                                 </button>
                                             </div>
@@ -137,7 +137,7 @@ onUnmounted (() => {
                             </template>
                             <template #header>
                                 <div class="hideable-header">
-                                    <p>{{ $t('pages.labels.addComponentsToSection') }}</p>
+                                    <p>{{ $t('pages.labels.addComponentsToSection', { section: sectionIndex + 1 }) }}</p>
                                 </div>
                             </template>
                         </draggable>
@@ -146,7 +146,7 @@ onUnmounted (() => {
                                 {{ $t('pages.labels.section') }} {{ (section.order = sectionIndex) + 1 }}
                             </span>
                             <fa-icon icon="grip-lines" class="page-sections-grip-lines" />
-                            <button class="button danger small" @click="removeSection(sectionIndex)">
+                            <button @click="removeSection(sectionIndex)">
                                 <fa-icon icon="trash" />
                             </button>
                         </div>
@@ -185,8 +185,11 @@ onUnmounted (() => {
 
             .page-sections-item-panel {
                 .page-sections-dreaggable {
-                    z-index: 10;
-                    position: relative;
+                    @apply py-4 relative z-10 bg-orange-50;
+
+                    &:hover {
+                        @apply bg-orange-100;
+                    }
                 }
 
                 .hideable-header {
@@ -206,10 +209,7 @@ onUnmounted (() => {
                 }
 
                 .page-sections-item {
-                    cursor: grab;
-                    position: relative;
-                    display: flex;
-                    justify-content: center;
+                    @apply cursor-grab relative flex justify-center;
 
                     &:active {
                         cursor: grabbing;
@@ -247,7 +247,7 @@ onUnmounted (() => {
 
                         .page-sections-preview-content {
                             z-index: -10;
-                            border: 2px solid transparent;
+                            @apply bg-white -z-10 border-2 border-transparent;
                         }
 
                         .page-sections-item-buttons {

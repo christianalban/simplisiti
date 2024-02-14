@@ -42,17 +42,11 @@ const handleChangeDataTable = (variable: Variable, value: DataTableValue): void 
     </div>
     <div class="component-configuration-parameters" v-if="component">
         <div v-for="variable of component.variables" :key="variable.name">
-            <div v-if="variable.type === 'text'" class="flex flex-col gap-2">
-                <label class="label">{{ variable.name }}</label>
-                <input class="input" type="text" :value="variable.default" @input="handleChangeText(variable, $event)" :placeholder="variable.name"/>
-            </div>
-            <div v-else-if="variable.type === 'resource'" class="flex flex-col gap-2">
-                <label class="label">{{ variable.name }}</label>
-                <resource-picker :modelValue="variable.default" @update:model-value="handleChangeResource(variable, $event)" />
-            </div>
-            <div v-else-if="variable.type === 'datatable'" class="flex flex-col gap-2">
-                <label class="label">{{ variable.name }}</label>
-                <data-table :modelValue="variable.default" @update:model-value="handleChangeDataTable(variable, $event)"/>
+            <div class="flex flex-col gap-2">
+                <label class="label">{{ variable.name }}&colon;</label>
+                <input v-if="variable.type === 'text'" class="input" type="text" :value="variable.default" @input="handleChangeText(variable, $event)" :placeholder="variable.name"/>
+                <resource-picker v-else-if="variable.type === 'resource'" :modelValue="variable.default" @update:model-value="handleChangeResource(variable, $event)" />
+                <data-table v-else-if="variable.type === 'datatable'" :modelValue="variable.default" @update:model-value="handleChangeDataTable(variable, $event)"/>
             </div>
         </div>
     </div>

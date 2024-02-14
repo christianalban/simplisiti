@@ -68,6 +68,7 @@ const isInvisible = ref(true);
         gap: 1rem;
         width: 100%;
         margin-bottom: 1rem;
+        align-items: center;
 
         .title {
             margin-left: auto;

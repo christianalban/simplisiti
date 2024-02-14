@@ -54,7 +54,7 @@ onMounted(() => {
             <div class="w-4/12">
                 <h2 class="title mb-4">{{ $t('components.titles.variables') }}</h2>
                 <div class="flex flex-col gap-2 bg-gray-100 p-2 rounded-lg">
-                    <div v-for="(variable, index) of variables" class="form-group">
+                    <div v-for="(variable, index) of variables" class="form-group h-14">
                         <variable-type-selector class="w-5/12" v-model="variable.type"/>
                         <input type="text" class="input w-full" :value="variable.name" @input="variable.name = value($event.target)" :placeholder="$t('components.placeholders.name')" />
                         <!-- inputs defaults accord selected type -->

@@ -51,6 +51,7 @@ const messages = {
                 selectResource: "Select",
                 changeResource: "Change",
                 fillData: "Fill",
+                refresh: "Refresh components list",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -76,7 +77,7 @@ const messages = {
             labels: {
                 pageName: "Page name (optional group)",
                 pageUrl: "Page URL",
-                addComponentsToSection: "Empty section, drag components to this section",
+                addComponentsToSection: "Empty section {section} , drag components to this section",
                 urlParam: "URL: {url}",
                 sectionsCount: "Sections: {count}",
                 pageTitle: "Page title",
@@ -322,6 +323,7 @@ const messages = {
                 selectResource: "Seleccionar",
                 changeResource: "Cambiar",
                 fillData: "Completar",
+                refresh: "Actualizar listado de componentes",
             },
             toasts: {
                 created: "Componente creado correctamente.",
@@ -347,7 +349,7 @@ const messages = {
             labels: {
                 pageName: "Nombre de la página (grupo opcional)",
                 pageUrl: "URL de la página",
-                addComponentsToSection: "Sección vacía, arrastre componentes a esta sección",
+                addComponentsToSection: "Sección {section} vacía, arrastre componentes a esta sección",
                 urlParam: "URL: {url}",
                 sectionsCount: "Secciones: {count}",
                 pageTitle: "Título de la página",
