@@ -39,7 +39,7 @@
 }
 
 .input {
-    @apply rounded-lg overflow-hidden px-4 py-2 border border-gray-300 bg-white;
+    @apply rounded-lg px-4 py-2 border border-gray-300 bg-white;
     &:focus {
         @apply z-10;
     }

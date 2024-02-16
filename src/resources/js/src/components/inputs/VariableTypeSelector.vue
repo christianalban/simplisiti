@@ -21,6 +21,7 @@ const getSelectedValue = (event: Event): string => {
 <template>
     <select class="input" :value="modelValue" @change="$emit('update:modelValue', getSelectedValue($event))">
         <option value="text">{{ $t('components.types.text') }}</option>
+        <option value="textarea">{{ $t('components.types.textarea') }}</option>
         <option value="resource">{{ $t('components.types.resource') }}</option>
         <option value="datatable">{{ $t('components.types.datatable') }}</option>
     </select>

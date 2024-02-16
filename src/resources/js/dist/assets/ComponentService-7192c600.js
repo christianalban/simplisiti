@@ -1,0 +1,1 @@
+import{x as n}from"./index-83999901.js";const o=async t=>await n.post("component",t),a=async()=>await n.get("component"),s=async t=>await n.get(`component/${t}`),c=async t=>await n.put(`component/${t.id}`,t),p=async t=>await n.delete(`component/${t}`);export{s as a,o as c,p as d,a as g,c as u};

@@ -44,6 +44,7 @@ watch(type, () => {
 
 <template>
     <input v-if="type === 'text'" type="text" class="input w-full" :value="modelValue" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
+    <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue }}</textarea>
     <resource-picker v-else-if="type === 'resource'" :modelValue="modelValue as number" @update:modelValue="emitResourceValue($event)"/>
     <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="modelValue as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
 </template>

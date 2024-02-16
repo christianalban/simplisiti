@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FloatToolbar from '../../../components/FloatToolbar.vue';
 import { ref } from 'vue';
+import { value, inputValue } from '../../../utils/helpers';
 
 defineProps({
     showDelete: Boolean,
@@ -23,7 +24,7 @@ defineProps({
     },
 })
 
-defineEmits(['delete'])
+defineEmits(['delete', 'update:name', 'update:pageTitle', 'update:url'])
 
 const isInvisible = ref(true);
 
@@ -48,7 +49,7 @@ const isInvisible = ref(true);
                 </div>
                 <div class="toolbar-route-input">
                     <label class="label">{{ $t('pages.labels.pageTitle') }}</label>
-                    <input class="input" type="text" :value="pageTitle" @input="$emit('update:title', inputValue($event.target))" :placeholder="$t('pages.placeholders.pageTitle')"/>
+                    <input class="input" type="text" :value="pageTitle" @input="$emit('update:pageTitle', inputValue($event.target))" :placeholder="$t('pages.placeholders.pageTitle')"/>
                 </div>
                 <div class="toolbar-route-input">
                     <label class="label">{{ $t('pages.labels.pageUrl') }}</label>

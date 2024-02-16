@@ -16,6 +16,7 @@ import {
     faEyeSlash,
     faArrowLeft,
     faSquarePlus,
+faUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -36,6 +37,7 @@ library.add(
     faEyeSlash,
     faArrowLeft,
     faSquarePlus,
+    faUpRightFromSquare
 );
 
 export default FontAwesomeIcon;

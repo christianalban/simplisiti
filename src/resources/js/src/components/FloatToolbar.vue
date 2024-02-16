@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, PropType, computed } from 'vue';
-import { FloatToolbarPosition } from '../../types/FloatToolbarPosition';
+import { PropType, computed } from 'vue';
+import { FloatToolbarPosition } from '../types/FloatToolbar';
 
 const props = defineProps({
     position: {

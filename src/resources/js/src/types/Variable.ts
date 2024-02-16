@@ -1,6 +1,6 @@
 import { DataTableValue } from "./DataTable";
 
-export type VariableType = 'text' | 'resource' | 'datatable';
+export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea';
 
 export interface Variable {
     type: VariableType

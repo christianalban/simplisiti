@@ -1,35 +1,15 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
-import ResourcePicker from '../../../components/inputs/ResourcePicker.vue';
-import DataTable from '../../../components/inputs/DataTable.vue';
-import { useResources } from "../../../services/ResourceService";
-import { Variable } from '../../../types/Variable';
-import { DataTableValue } from '../../../types/DataTable';
-
-const { resources } = useResources();
+import ControlTypeSelector from '../../../components/inputs/ControlTypeSelector.vue';
 
 defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },
 });
+
 defineEmits(['exit']);
-
-const handleChangeResource = (variable: Variable, value: number): void => {
-    variable.default = value;
-    variable.value = resources.value.find((resource) => resource.id === value)?.url ?? '';
-};
-
-const handleChangeText = (variable: Variable, event: Event): void => {
-    const value = (event.target as HTMLInputElement).value;
-    variable.default = value;
-    variable.value = value;
-};
-
-const handleChangeDataTable = (variable: Variable, value: DataTableValue): void => {
-    variable.default = value;
-};
 
 </script>
 
@@ -44,9 +24,7 @@ const handleChangeDataTable = (variable: Variable, value: DataTableValue): void 
         <div v-for="variable of component.variables" :key="variable.name">
             <div class="flex flex-col gap-2">
                 <label class="label">{{ variable.name }}&colon;</label>
-                <input v-if="variable.type === 'text'" class="input" type="text" :value="variable.default" @input="handleChangeText(variable, $event)" :placeholder="variable.name"/>
-                <resource-picker v-else-if="variable.type === 'resource'" :modelValue="variable.default" @update:model-value="handleChangeResource(variable, $event)" />
-                <data-table v-else-if="variable.type === 'datatable'" :modelValue="variable.default" @update:model-value="handleChangeDataTable(variable, $event)"/>
+                <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
             </div>
         </div>
     </div>
@@ -54,7 +32,7 @@ const handleChangeDataTable = (variable: Variable, value: DataTableValue): void 
 
 <style scoped lang="scss">
 .tile {
-    &.sortable-chosen {
+   &.sortable-chosen {
         @apply bg-blue-100;
     }
 }

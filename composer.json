@@ -12,7 +12,7 @@
             "name": "Christian Albán"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "alpha",
     "extra": {
         "laravel": {
             "providers": [
