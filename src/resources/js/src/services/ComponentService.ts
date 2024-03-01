@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Component } from "../types/Component";
+import { Component, ComponentContent } from "../types/Component";
 
 export const createComponent = async (component: Component): Promise<any> => {
     return await axios.post('component', component)
@@ -19,4 +19,15 @@ export const updateComponent = async (component: Component): Promise<any> => {
 
 export const deleteComponent = async (componentId: number): Promise<any> => {
     return await axios.delete(`component/${componentId}`)
+}
+
+export const getDefaultContent = (component: Component, name?: string): any => {
+    if (name) {
+        return component.variables.find(variable => variable.name === name)?.default || '';
+    }
+
+    return component.variables.reduce<ComponentContent>((content, variable) => {
+        content[variable.name] = variable.default || '';
+        return content;
+    }, {})
 }

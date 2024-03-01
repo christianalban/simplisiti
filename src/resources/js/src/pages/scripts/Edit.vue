@@ -24,7 +24,6 @@ const update = () => {
         is_active: Boolean(isActive.value),
     })
     .then(() => {
-        router.push({name: 'scripts.index'});
         showToast({
             title: t('toasts.success'),
             message: t('scripts.toasts.updated'),

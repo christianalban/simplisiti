@@ -6,5 +6,5 @@ export interface Variable {
     type: VariableType
     name: string
     default?: string|number|DataTableValue
-    value?: string|number
+    value?: string|number|DataTableValue
 }

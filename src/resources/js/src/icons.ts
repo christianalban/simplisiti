@@ -9,14 +9,16 @@ import {
     faTrash,
     faTriangleExclamation,
     faEdit,
-    faGripLines,
+    faGrip,
     faArrowRotateRight,
     faArrowsRotate,
     faEye,
     faEyeSlash,
     faArrowLeft,
     faSquarePlus,
-faUpRightFromSquare,
+    faUpRightFromSquare,
+    faHeading,
+    faBorderTopLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -30,14 +32,16 @@ library.add(
     faCircle,
     faCircleCheck,
     faEdit,
-    faGripLines,
+    faGrip,
     faArrowRotateRight,
     faArrowsRotate,
     faEye,
     faEyeSlash,
     faArrowLeft,
     faSquarePlus,
-    faUpRightFromSquare
+    faUpRightFromSquare,
+    faHeading,
+    faBorderTopLeft,
 );
 
 export default FontAwesomeIcon;

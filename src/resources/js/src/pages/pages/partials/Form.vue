@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, onMounted, onUnmounted, ref } from 'vue';
+import { PropType, onMounted, onUnmounted, reactive, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component } from '../../../types/Component';
 import { Section } from '../../../types/Section';
@@ -7,15 +7,22 @@ import AvailableComponents from './AvailableComponents.vue';
 import ComponentConfigurationForm from './ComponentConfigurationForm.vue';
 import { PageEditionMode } from '../../../types/Page';
 import FloatToolbar from '../../../components/FloatToolbar.vue';
+import PageSectionsButtonAdd from '../partials/PageSectionButtonAdd.vue';
 import { useResources } from "../../../services/ResourceService";
 import { getResourcePreviewUrl } from "../../../services/PageService";
+import { FloatToolbarPosition } from '../../../types/FloatToolbar';
+import { getValueOfType } from '../../../services/ContentService';
+import { getDefaultContent } from '../../../services/ComponentService';
 
 const { loadResources } = useResources();
 
 const props = defineProps({
     sections: {
         type: Array as PropType<Section[]>,
-        default: () => [],
+        default: () => [
+            {order: 0, components: []},
+            {order: 0, components: []}
+        ],
     },
 });
 
@@ -28,8 +35,14 @@ const selectedSection = ref<number|null>(null);
 
 const pageEditionMode = ref<PageEditionMode>('adding-component');
 
-const addSection = () => {
-    emit('update:sections', [...props.sections, {order: 0, components: []}]);
+const prependSection = (index: number) => {
+    const sections = [...props.sections];
+    sections.splice(index, 0, reactive({order: 0, components: []}));
+    emit('update:sections', sections);
+};
+
+const appendSection = () => {
+    emit('update:sections', [...props.sections, reactive({order: 0, components: []})]);
 };
 
 const removeSection = (sectionIndex: number) => {
@@ -57,8 +70,20 @@ const exitFromEditMode = (): void => {
 };
 
 const renderHtmlComponent = (component: Component): string => {
+    component.content = component.content || getDefaultContent(component);
+
     const html =  component.variables.reduce((html, variable) => {
-        return html.replace(`{{ $${variable.name} }}`, variable.value?.toString() || '');
+        const value = component.content ? getValueOfType(variable.type, component.content[variable.name]?.toString()) : '';
+
+        let content = '';
+
+        if (typeof value === 'string') {
+            content = value;
+        } else {
+            content = JSON.stringify(value);
+        }
+        
+        return html.replace(`{{ $${variable.name} }}`, content || '');
     }, component.html);
 
     return html;
@@ -79,6 +104,8 @@ const loadResourcesPreview = (): void => {
     document.head.appendChild(link);
 };
 
+const position = ref<FloatToolbarPosition>('left');
+
 onMounted(() => {
     loadResources();
     loadResourcesPreview();
@@ -91,10 +118,10 @@ onUnmounted (() => {
 </script>
 
 <template>
-    <float-toolbar v-model:isInvisible="isInvisible" position="left" :showLabel="$t('pages.buttons.components')">
+    <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')">
         <div class="component-wizard">
             <available-components v-if="pageEditionMode === 'adding-component'"/>
-            <component-configuration-form :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
+            <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
         </div>
     </float-toolbar>
     <div class="page-sections-container">
@@ -108,55 +135,63 @@ onUnmounted (() => {
                 handle=".page-sections-grip-lines"
             >
                 <template #item="{element: section, index: sectionIndex}">
-                    <div class="page-sections-item-panel">
-                        <draggable 
-                            class="page-sections-dreaggable"
-                            v-model="section.components" 
-                            group="components" 
-                            item-key="id"
-                        >
-                            <template #item="{element: component, index: componentIndex}">
-                                <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
-                                    <div v-autosize class="page-sections-preview">
-                                        <div class="page-sections-preview-content" v-autosize v-html="renderHtmlComponent(component)"></div>
-                                        <div class="page-sections-item-buttons">
-                                            <span class="page-sections-label">
-                                                {{ $t('pages.labels.component') }} {{ (component.order = componentIndex) + 1 }} - {{ component.name }}
-                                            </span>
-                                            <div class="pages-secttions-component-buttons">
-                                                <button type="button" @click="removeComponent(section.components, componentIndex)">
-                                                    <fa-icon icon="trash" />
+                    <div :class="['page-sections-list-content', {'page-sections-list-header': !sectionIndex, 'page-sections-list-footer': sectionIndex === sections.length - 1}]">
+                        <page-sections-button-add v-if="sectionIndex" @click="prependSection(sectionIndex)" />
+                        <div class="page-sections-item-panel">
+                            <draggable 
+                                class="page-sections-dreaggable"
+                                v-model="section.components" 
+                                group="components" 
+                                item-key="id"
+                                handle=".page-sections-components-grip-lines"
+                            >
+                                <template #item="{element: component, index: componentIndex}">
+                                    <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
+                                        <div v-autosize class="page-sections-preview">
+                                            <div class="page-sections-preview-content" v-autosize v-html="renderHtmlComponent(component)"></div>
+                                            <div class="page-sections-item-buttons">
+                                                <button class="page-sections-components-grip-lines">
+                                                    <fa-icon icon="grip" />
                                                 </button>
-                                                <button type="button" @click="enterToEditingMode(component, sectionIndex)">
-                                                    <fa-icon icon="file-invoice" />
-                                                </button>
+                                                <div class="pages-secttions-component-buttons">
+                                                    <button type="button" @click="removeComponent(section.components, componentIndex)">
+                                                        <fa-icon icon="trash" />
+                                                    </button>
+                                                    <button type="button" @click="enterToEditingMode(component, sectionIndex)">
+                                                        <fa-icon icon="file-invoice" />
+                                                    </button>
+                                                    <span class="page-sections-label">
+                                                        {{ $t('pages.labels.component') }} {{ (component.order = componentIndex) + 1 }} - {{ component.name }}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </template>
-                            <template #header>
-                                <div class="hideable-header">
-                                    <p>{{ $t('pages.labels.addComponentsToSection', { section: sectionIndex + 1 }) }}</p>
-                                </div>
-                            </template>
-                        </draggable>
-                        <div class="page-sections-buttons">
-                            <span class="text-blue-500 ml-2">
-                                {{ $t('pages.labels.section') }} {{ (section.order = sectionIndex) + 1 }}
-                            </span>
-                            <fa-icon icon="grip-lines" class="page-sections-grip-lines" />
-                            <button @click="removeSection(sectionIndex)">
-                                <fa-icon icon="trash" />
-                            </button>
+                                </template>
+                                <template #header>
+                                    <div class="hideable-header">
+                                        <p>{{ $t('pages.labels.addComponentsToSection', { section: sectionIndex }) }}</p>
+                                    </div>
+                                </template>
+                            </draggable>
+                            <div class="page-sections-buttons">
+                                <fa-icon v-if="sectionIndex && sectionIndex !== sections.length - 1" icon="grip" class="page-sections-grip-lines" />
+                                <span v-if="!sectionIndex">
+                                    <fa-icon icon="heading" />
+                                    {{ $t('pages.labels.header') }}
+                                </span>
+                                <span v-else>
+                                    {{ $t(sectionIndex === sections.length - 1 ? 'pages.labels.footer' :  'pages.labels.section', { section: (section.order = sectionIndex) }) }}
+                                </span>
+                                <button @click="removeSection(sectionIndex)">
+                                    <fa-icon icon="trash" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </template>
             </draggable>
-            <button class="page-sections-buttons-add" @click="addSection" type="button">
-                <fa-icon icon="square-plus" />
-                {{ $t('pages.buttons.addSection') }}
-            </button>
+            <page-sections-button-add @click="appendSection" />
         </div>
     </div>
 </template>
@@ -185,10 +220,10 @@ onUnmounted (() => {
 
             .page-sections-item-panel {
                 .page-sections-dreaggable {
-                    @apply py-4 relative z-10 bg-orange-50;
+                    @apply py-4 relative z-10 bg-gray-200;
 
                     &:hover {
-                        @apply bg-orange-100;
+                        @apply bg-gray-300;
                     }
                 }
 
@@ -209,7 +244,7 @@ onUnmounted (() => {
                 }
 
                 .page-sections-item {
-                    @apply cursor-grab relative flex justify-center;
+                    @apply relative flex justify-center;
 
                     &:active {
                         cursor: grabbing;
@@ -220,6 +255,7 @@ onUnmounted (() => {
                             .page-sections-preview-content {
                                 border: 2px solid rgb(234 179 8);
                             }
+                            
                         }
                     }
 
@@ -243,11 +279,24 @@ onUnmounted (() => {
                             .page-sections-preview-content {
                                 border: 2px solid rgb(234 179 8);
                             }
+
+                            &.minify {
+                                .page-sections-label {
+                                    max-width: 100vw;
+                                    @apply block;
+                                }
+                            }
                         }
 
                         .page-sections-preview-content {
-                            z-index: -10;
                             @apply bg-white -z-10 border-2 border-transparent;
+                        }
+
+                        &.minify {
+                            .page-sections-label {
+                                transition: max-width 0.5s;
+                                @apply max-w-0 overflow-hidden;
+                            }
                         }
 
                         .page-sections-item-buttons {
@@ -261,9 +310,17 @@ onUnmounted (() => {
                             border-radius: 0 0 0.25rem 0.25rem;
                             padding: 0 0.25rem;
 
+                            .page-sections-components-grip-lines {
+                                @apply cursor-grab;
+
+                                &:active {
+                                    @apply cursor-grabbing;
+                                }
+                            }
+
                             .page-sections-label {
-                                font-style: italic;
-                                padding: 0 0.25rem;
+                                text-wrap: nowrap;
+                                @apply italic;
                             }
                             
                             .pages-secttions-component-buttons {
@@ -275,29 +332,16 @@ onUnmounted (() => {
                 }
 
                 .page-sections-buttons {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 1rem;
-                    background-color: rgb(191 219 254);
+                    @apply flex justify-center items-center gap-4 bg-gray-300 text-gray-500;
 
                     .page-sections-grip-lines {
-                        cursor: grab;
+                        @apply cursor-grab;
 
                         &:active {
-                            cursor: grabbing;
+                            @apply cursor-grabbing;
                         }
                     }
                 }
-            }
-        }
-
-        .page-sections-buttons-add {
-            background-color: rgb(204, 251, 241);
-            padding: 0.5rem;
-
-            &:hover {
-                background-color: rgb(153 246 228);
             }
         }
     }

@@ -14,10 +14,13 @@ const props = defineProps({
 
 const showModal = ref(false);
 
-const { resources, loadResources } = useResources();
+const { resources, loadResources, resourceFromId } = useResources();
 
 const selectedResource = computed(() => {
-    return resources.value.find((resource) => resource.id === props.modelValue);
+    if (props.modelValue === undefined) {
+        return undefined;
+    }
+    return resourceFromId(+props.modelValue);
 });
 
 const emit = defineEmits(['update:modelValue']);

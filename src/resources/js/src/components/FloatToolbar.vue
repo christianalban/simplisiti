@@ -63,6 +63,8 @@ const flexDirectionClass = computed(() => {
             <div :class="['float-toolbar-buttons', {
                 'float-toolbar-buttons-vertical': position === 'top',
                 'float-toolbar-buttons-horizontal': ['left', 'right'].includes(position),
+                left: position === 'left',
+                right: position === 'right',
             }]">
                 <button
                     :class="['float-toolbar-button', {
@@ -224,12 +226,14 @@ const flexDirectionClass = computed(() => {
                 .float-toolbar-button {
                     padding: 0.5rem 0.5rem;
                 }
+
+                &.right .float-toolbar-button {
+                    left: -30px;
+                }
             }
 
             .float-toolbar-button {
-                background-color: rgb(204 251 241);
-                font-size: 0.85rem;
-                gap: 0.25rem;
+                @apply absolute bg-blue-100 text-sm gap-1;
             }
         }
     }

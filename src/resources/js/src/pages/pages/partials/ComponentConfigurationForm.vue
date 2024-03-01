@@ -2,30 +2,56 @@
 import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
 import ControlTypeSelector from '../../../components/inputs/ControlTypeSelector.vue';
+import { FloatToolbarPosition } from '../../../types/FloatToolbar';
+import { getDefaultContent } from '../../../services/ComponentService';
 
-defineProps({
+const props = defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },
+    position: {
+        type: String as PropType<FloatToolbarPosition>,
+        default: 'left',
+    },
 });
 
-defineEmits(['exit']);
+const emit = defineEmits(['exit', 'update:position']);
+
+const togglePosition = () => {
+    const newPosition = props.position === 'left' ? 'right' : 'left';
+    emit('update:position', newPosition);
+}
+
+const restoreDefault = (component: Component, name: string) => {
+    if (!component.content) {
+        return;
+    }
+    component.content[name] = getDefaultContent(component, name);
+}
 
 </script>
 
 <template>
-    <div class="component-configuration-title">
+    <div :class="`component-configuration-title ${position}`">
         <h2>{{ $t('pages.titles.componentConfigurationForm') }}</h2>
-        <button type="button" class="button small default" @click="$emit('exit')">
-            {{ $t('pages.buttons.exit') }}
-        </button>
+        <div>
+            <div class="form-group">
+                <button type="button" class="button small default" @click="$emit('exit')">
+                    {{ $t('pages.buttons.exit') }}
+                </button>
+                <button type="button" class="button small default button-position" @click="togglePosition">
+                    <fa-icon icon="border-top-left" />
+                </button>
+            </div>
+        </div>
     </div>
     <div class="component-configuration-parameters" v-if="component">
         <div v-for="variable of component.variables" :key="variable.name">
-            <div class="flex flex-col gap-2">
-                <label class="label">{{ variable.name }}&colon;</label>
-                <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
+            <div class="component-configuration-label">
+                <label>{{ variable.name }}&colon;</label>
+                <fa-icon class="component-configuration-set-default" icon="arrows-rotate" @click="restoreDefault(component, variable.name)"/>
             </div>
+            <control-type-selector v-if="component.content" v-model="component.content[variable.name]" :name="variable.name" :type="variable.type"/>
         </div>
     </div>
 </template>
@@ -38,21 +64,38 @@ defineEmits(['exit']);
 }
 
 .component-configuration-title {
-    display: flex;
-    gap: 1rem;
+    @apply flex gap-2;
 
     h2 {
-        font-weight: bold;
-        font-size: 0.95rem;
-        padding-bottom: 0.5rem;
+        @apply font-bold text-lg pb-2;
+    }
+
+    .button-position {
+        @apply -scale-x-100;
+    }
+
+    &.right {
+        @apply flex-row-reverse;
+
+        .button-position {
+            @apply scale-x-100;
+        }
+
+        .form-group {
+            @apply flex-row-reverse;
+        }
     }
 }
 
 .component-configuration-parameters {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex: 1;
-    overflow: auto;
+    @apply flex flex-col gap-2 flex-1 overflow-auto;
+
+    .component-configuration-label {
+        @apply flex gap-2 items-center;
+
+        .component-configuration-set-default {
+            @apply cursor-pointer text-xs;
+        }
+    }
 }
 </style>

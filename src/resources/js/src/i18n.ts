@@ -82,8 +82,10 @@ const messages = {
                 urlParam: "URL: {url}",
                 sectionsCount: "Sections: {count}",
                 pageTitle: "Page title",
-                section: "Section",
-                component: "Component"
+                section: "Section {section}",
+                component: "Component",
+                header: "Header",
+                footer: "Footer",
             },
             titles: {
                 pagesList: "Pages list",
@@ -355,8 +357,10 @@ const messages = {
                 urlParam: "URL: {url}",
                 sectionsCount: "Secciones: {count}",
                 pageTitle: "Título de la página",
-                section: "Sección",
-                component: "Componente"
+                section: "Sección {section}",
+                component: "Componente",
+                header: "Cabecera",
+                footer: "Pie de página",
             },
             titles: {
                 pagesList: "Listado de páginas",

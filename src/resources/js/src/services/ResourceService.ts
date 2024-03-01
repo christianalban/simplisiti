@@ -64,7 +64,7 @@ export const parseResourceVariable = (component: Component, variable: Variable):
                 return false;
             }
 
-            return resource.id === Number.parseInt(component.content[variable.name])
+            return resource.id === +component.content[variable.name]
         })?.url,
     }
 }
@@ -76,7 +76,12 @@ export const parseVariable = (component: Component, variable: Variable): Variabl
     return parseTextVariable(component, variable);
 }
 
+export const resourceFromId = (resourceId: number): Resource => {
+    return resources.value.find(resource => resource.id === resourceId) as Resource;
+}
+
 export const useResources = () => ({
     resources,
     loadResources,
+    resourceFromId,
 });

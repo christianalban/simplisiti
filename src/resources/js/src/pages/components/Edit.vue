@@ -25,7 +25,6 @@ const update = () => {
         name: name.value,
     })
     .then(() => {
-        router.push({name: 'components.index'});
         showToast({
             title: t('toasts.success'),
             message: t('components.toasts.updated'),

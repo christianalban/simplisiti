@@ -31,7 +31,6 @@ const update = () => {
         sections: sections.value,
     })
     .then(() => {
-        router.push({name: 'pages.index'});
         showToast({
             title: t('toasts.success'),
             message: t('pages.toasts.updated'),

@@ -1,0 +1,1 @@
+import{x as e,L as t}from"./index-3f981e9e.js";const r=async a=>await e.post("page",a),n=async()=>await e.get("page"),g=async a=>await e.get(`page/${a}`),c=async a=>await e.put(`page/${a.id}`,a),o=async a=>await e.delete(`page/${a}`),p=a=>`${t}/page/${a}/preview`;export{g as a,p as b,r as c,o as d,n as g,c as u};
