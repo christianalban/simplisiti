@@ -199,7 +199,8 @@ onMounted(() => {
     right: 0;
     max-height: 100vh;
     max-width: 100vw;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     .page-sections-content {
         display: flex;

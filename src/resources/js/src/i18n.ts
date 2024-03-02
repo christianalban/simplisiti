@@ -275,6 +275,9 @@ const messages = {
             success: "Success",
             error: "Error",
         },
+        placeholders: {
+            search: "Search",
+        },
     },
     es: {
         titles: {
@@ -545,6 +548,9 @@ const messages = {
         toasts: {
             success: "Éxito",
             error: "Error",
+        },
+        placeholders: {
+            search: "Buscar",
         },
     },
 }

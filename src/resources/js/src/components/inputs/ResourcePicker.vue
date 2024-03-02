@@ -14,7 +14,15 @@ const props = defineProps({
 
 const showModal = ref(false);
 
+const search = ref('');
+
 const { resources, loadResources, resourceFromId } = useResources();
+
+const filteredResources = computed(() => {
+    return resources.value.filter((resource) => {
+        return resource.name.toLowerCase().includes(search.value.toLowerCase());
+    });
+});
 
 const selectedResource = computed(() => {
     if (props.modelValue === undefined) {
@@ -41,11 +49,11 @@ const refreshResources = () => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary picker-button-container">
-        <div class="picker-button-preview">
+    <button @click="handleShowModal" type="button" class="button secondary flex gap-2 w-full flex-col justify-start !p-1 relative items-center">
+        <div class="w-full flex items-center justify-center max-h-full">
             <resource-preview :url="selectedResource?.url" />
         </div>
-        <span class="picker-button-placeholder">{{ selectedResource ? $t('components.buttons.changeResource') : $t('components.buttons.selectResource') }}</span>
+        <span class="absolute top-1/4 bg-teal-500 rounded-lg text-white text-xs p-1 bg-opacity-50">{{ selectedResource ? $t('components.buttons.changeResource') : $t('components.buttons.selectResource') }}</span>
     </button>
     <modal
         :title="$t('components.titles.selectResource')"
@@ -53,14 +61,15 @@ const refreshResources = () => {
         :showCancel="false"
         :confirmLabel="$t('buttons.close')"
     >
-        <div>
-            <button type="button" @click="refreshResources" class="button secondary picker-refresh-button">
+        <div class="flex justify-between mb-4">
+            <button type="button" @click="refreshResources" class="button secondary">
                 <fa-icon icon="arrow-rotate-right" />
                 {{ $t('components.buttons.refresh') }}
             </button>
+            <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
         </div>
-        <div class="grid grid-cols-3 gap-2">
-            <button type="button" @click="handleSelectResource(resource.id as number)" v-for="resource of resources" class="button primary flex flex-col gap-2 justify-center items-center">
+        <div class="grid grid-cols-3 gap-2 overflow-y-auto max-h-[70vh]">
+            <button type="button" @click="handleSelectResource(resource.id as number)" v-for="resource of filteredResources" class="button primary flex flex-col gap-2 justify-center items-center">
                 <resource-preview :url="resource.url" />
                 <span>{{ resource.name }}</span>
             </button>
@@ -69,19 +78,4 @@ const refreshResources = () => {
 </template>
 
 <style scoped>
-.picker-button-container {
-    @apply flex gap-2 w-full flex-col justify-start !p-1 relative items-center;
-
-    .picker-button-preview {
-        @apply w-full flex items-center justify-center max-h-full;
-    }
-
-    .picker-button-placeholder {
-        @apply absolute top-1/4 bg-teal-500 rounded-lg text-white text-xs p-1 bg-opacity-50;
-    }
-}
-
-.picker-refresh-button {
-    @apply mb-4;
-}
 </style>

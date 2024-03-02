@@ -51,7 +51,12 @@ trait PageUtils {
             'id' => $component['id'],
             'order' => $component['order'],
             'content' => collect($component['variables'])->reduce(function($content, $variable) use ($component) {
-                $content[$variable['name']] = $component['content'][$variable['name']];
+                $content[$variable['name']] = null;
+
+                if (array_key_exists('content', $component)) {
+                    $content[$variable['name']] = $component['content'][$variable['name']];
+                }
+
                 return $content;
             }, [])
         ];
