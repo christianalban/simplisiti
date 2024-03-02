@@ -50,8 +50,8 @@ trait PageUtils {
         return [
             'id' => $component['id'],
             'order' => $component['order'],
-            'content' => collect($component['variables'])->reduce(function($content, $variable) {
-                $content[$variable['name']] = $variable['default'];
+            'content' => collect($component['variables'])->reduce(function($content, $variable) use ($component) {
+                $content[$variable['name']] = $component['content'][$variable['name']];
                 return $content;
             }, [])
         ];
@@ -96,7 +96,7 @@ trait PageUtils {
             });
 
             // Delete components that are not in the request
-            ComponentSection::whereNotIn('id', $componentsData->pluck('content_id')->toArray())
+            ComponentSection::whereNotIn('id', $componentsData->pluck('content_id')->filter()->toArray())
             ->where('section_id', $section->id)
             ->delete();
             $componentsData->each(function($component) use ($section) {

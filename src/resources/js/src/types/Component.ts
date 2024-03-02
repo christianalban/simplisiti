@@ -2,7 +2,7 @@ import { DataTableValue } from "./DataTable";
 import { Variable } from "./Variable";
 
 export interface ComponentContent {
-    [key: string]: string|number|DataTableValue
+    [key: string]: string|number|DataTableValue|null|undefined
 }
 
 export interface Component {

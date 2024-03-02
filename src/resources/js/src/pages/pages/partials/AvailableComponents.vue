@@ -2,17 +2,28 @@
 import { getComponents } from '../../../services/ComponentService';
 import { onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'
-import { Component } from '../../../types/Component';
+import { Component, ComponentContent } from '../../../types/Component';
 
 
 const availableComponents = ref<Component[]>([]);
 
 const cloneComponent = (component: Component) => {
-    return {
+    const content: ComponentContent = {};
+
+    component.variables.forEach((variable) => {
+        content[variable.name] = null;
+    });
+
+    const clonedComponent = {
         id: component.id || 1 + 1,
         ...component,
         variables: component.variables.map((variable) => ({...variable})),
+        content,
     };
+
+    delete clonedComponent.content_id;
+
+    return clonedComponent;
 }
 
 onMounted(() => {

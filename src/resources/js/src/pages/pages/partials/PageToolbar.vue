@@ -40,7 +40,12 @@ const isInvisible = ref(true);
                 </router-link>
                 <button v-if="showDelete" @click="$emit('delete')" type="button" class="button-link danger">{{ $t('buttons.delete') }}</button>
                 <button type="submit" class="button-link">{{ $t('buttons.save') }}</button>
-                <h1 class="title">{{ title }}</h1>
+                <h1 class="title">
+                    {{ title }}
+                    <a v-if="showDelete" :href="url" target="_blank">
+                        <fa-icon icon="external-link-alt" />
+                    </a>
+                </h1>
             </div>
             <div class="toolbar-route">
                 <div class="toolbar-route-input">
@@ -62,51 +67,42 @@ const isInvisible = ref(true);
 
 <style scoped lang="scss">
 .toolbar-container {
-    padding: 1rem;
+    @apply p-4;
 
     .toolbar-actions {
-        display: flex;
-        gap: 1rem;
-        width: 100%;
-        margin-bottom: 1rem;
-        align-items: center;
+        @apply flex gap-2 w-full mb-4 items-center;
 
         .title {
-            margin-left: auto;
-            font-style: italic;
+            @apply ml-auto italic;
+
+            a {
+                @apply ml-2 text-sm text-blue-500;
+            }
         }
 
         .button-link {
             &:hover {
-                text-decoration: underline;
+                @apply underline;
             }
 
             &.danger {
-                color: #e53e3e;
+                @apply text-red-600;
             }
         }
     }
 
     .toolbar-route {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        @apply grid grid-cols-3 gap-4;
 
         .toolbar-route-input {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+            @apply flex flex-col gap-1;
 
             .label {
-                font-weight: bold;
-                padding-bottom: 0.5rem;
+                @apply font-bold pb-2;
             }
 
             .input {
-                padding: 0.25rem 0.5rem;
-                border: 1px solid #d1d5db;
-                border-radius: 0.25rem;
-                width: 100%;
+                @apply px-2 py-1 rounded-md w-full border border-gray-300;
             }
         }
     }

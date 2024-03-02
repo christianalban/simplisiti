@@ -5,6 +5,6 @@ export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea';
 export interface Variable {
     type: VariableType
     name: string
-    default?: string|number|DataTableValue
-    value?: string|number|DataTableValue
+    default?: string|number|DataTableValue|undefined|null
+    value?: string|number|DataTableValue|undefined|null
 }

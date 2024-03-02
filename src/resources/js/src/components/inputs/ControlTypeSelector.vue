@@ -18,6 +18,9 @@ const props = defineProps({
         type: String as PropType<string>,
         required: true,
     },
+    defaultValue: {
+        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | null | undefined>,
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -43,10 +46,10 @@ watch(type, () => {
 </script>
 
 <template>
-    <input v-if="type === 'text'" type="text" class="input w-full" :value="modelValue" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
-    <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue }}</textarea>
-    <resource-picker v-else-if="type === 'resource'" :modelValue="modelValue as number" @update:modelValue="emitResourceValue($event)"/>
-    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="modelValue as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
+    <input v-if="type === 'text'" type="text" class="input w-full" :value="modelValue || defaultValue" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
+    <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue || defaultValue}}</textarea>
+    <resource-picker v-else-if="type === 'resource'" :modelValue="(modelValue || defaultValue) as number" @update:modelValue="emitResourceValue($event)"/>
+    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
 </template>
 
 <style scoped>

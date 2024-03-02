@@ -3,13 +3,12 @@ import PagesForm from "./partials/Form.vue";
 import DialogComponent from "../../components/Dialog.vue";
 import { onMounted, ref } from 'vue';
 import { Section } from '../../types/Section';
-import { Component } from '../../types/Component';
 import PageToolbar from './partials/PageToolbar.vue';
 import { deletePage, getPage, updatePage } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { parseVariable, useResources } from "../../services/ResourceService";
+import { useResources } from "../../services/ResourceService";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -46,17 +45,6 @@ const update = () => {
     })
 }
 
-const mergeComponentsContent = (components: Component[]): Component[] => {
-    return components.map((component) => {
-        return {
-            ...component,
-            variables: component.variables.map((variable) => {
-                return parseVariable(component, variable)
-            }),
-        }
-    });
-}
-
 const showDeleteDialog = () => {
     showDialog.value = true;
 }
@@ -86,12 +74,7 @@ onMounted(() => {
         name.value = page.name;
         url.value = page.url;
         title.value = page.title;
-        sections.value = page.sections.map((section: Section) => {
-            return {
-                ...section,
-                components: mergeComponentsContent(section.components),
-            }
-        });
+        sections.value = page.sections;
     });
     loadResources();
 });

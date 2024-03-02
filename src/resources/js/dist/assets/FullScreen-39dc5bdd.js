@@ -1,1 +1,0 @@
-/* empty css               */import{d as o,r,c as t,a as n,o as a}from"./index-3f981e9e.js";const m=o({__name:"FullScreen",setup(c){return(s,_)=>{const e=r("router-view");return a(),t("div",null,[n(e)])}}});export{m as default};

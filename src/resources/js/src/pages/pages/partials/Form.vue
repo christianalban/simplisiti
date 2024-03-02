@@ -73,7 +73,10 @@ const renderHtmlComponent = (component: Component): string => {
     component.content = component.content || getDefaultContent(component);
 
     const html =  component.variables.reduce((html, variable) => {
-        const value = component.content ? getValueOfType(variable.type, component.content[variable.name]?.toString()) : '';
+        const contentValue = component.content && component.content[variable.name]
+            ? component.content[variable.name]
+            : component.variables.find(v => v.name === variable.name)?.default;
+        const value = contentValue ? getValueOfType(variable.type, contentValue?.toString()) : '';
 
         let content = '';
 

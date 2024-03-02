@@ -3,7 +3,6 @@ import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
 import ControlTypeSelector from '../../../components/inputs/ControlTypeSelector.vue';
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
-import { getDefaultContent } from '../../../services/ComponentService';
 
 const props = defineProps({
     component: {
@@ -26,7 +25,7 @@ const restoreDefault = (component: Component, name: string) => {
     if (!component.content) {
         return;
     }
-    component.content[name] = getDefaultContent(component, name);
+    component.content[name] = null;
 }
 
 </script>
@@ -51,7 +50,7 @@ const restoreDefault = (component: Component, name: string) => {
                 <label>{{ variable.name }}&colon;</label>
                 <fa-icon class="component-configuration-set-default" icon="arrows-rotate" @click="restoreDefault(component, variable.name)"/>
             </div>
-            <control-type-selector v-if="component.content" v-model="component.content[variable.name]" :name="variable.name" :type="variable.type"/>
+            <control-type-selector v-if="component.content" v-model="component.content[variable.name]" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
         </div>
     </div>
 </template>

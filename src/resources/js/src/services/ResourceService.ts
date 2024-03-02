@@ -64,16 +64,9 @@ export const parseResourceVariable = (component: Component, variable: Variable):
                 return false;
             }
 
-            return resource.id === +component.content[variable.name]
+            return resource.id === +(component.content[variable.name] || 0)
         })?.url,
     }
-}
-
-export const parseVariable = (component: Component, variable: Variable): Variable => {
-    if (variable.type === 'resource') {
-        return parseResourceVariable(component, variable);
-    }
-    return parseTextVariable(component, variable);
 }
 
 export const resourceFromId = (resourceId: number): Resource => {
