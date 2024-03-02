@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, onMounted, onUnmounted, reactive, ref } from 'vue';
+import { PropType, onMounted, reactive, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component } from '../../../types/Component';
 import { Section } from '../../../types/Section';
@@ -9,10 +9,10 @@ import { PageEditionMode } from '../../../types/Page';
 import FloatToolbar from '../../../components/FloatToolbar.vue';
 import PageSectionsButtonAdd from '../partials/PageSectionButtonAdd.vue';
 import { useResources } from "../../../services/ResourceService";
-import { getResourcePreviewUrl } from "../../../services/PageService";
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
 import { getValueOfType } from '../../../services/ContentService';
 import { getDefaultContent } from '../../../services/ComponentService';
+import SectionPreview from '../../../components/preview/SectionPreview.vue';
 
 const { loadResources } = useResources();
 
@@ -98,24 +98,10 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
         && selectedSection.value === sectionIndex;
 };
 
-const link = document.createElement('link');
-
-const loadResourcesPreview = (): void => {
-    const styleUrl = getResourcePreviewUrl('style');
-    link.rel = 'stylesheet';
-    link.href = styleUrl
-    document.head.appendChild(link);
-};
-
 const position = ref<FloatToolbarPosition>('left');
 
 onMounted(() => {
     loadResources();
-    loadResourcesPreview();
-});
-
-onUnmounted (() => {
-    link && document.head.removeChild(link);
 });
 
 </script>
@@ -151,7 +137,9 @@ onUnmounted (() => {
                                 <template #item="{element: component, index: componentIndex}">
                                     <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
                                         <div v-autosize class="page-sections-preview">
-                                            <div class="page-sections-preview-content" v-autosize v-html="renderHtmlComponent(component)"></div>
+                                            <div class="page-sections-preview-content" v-autosize>
+                                                <section-preview :content="renderHtmlComponent(component)"/>
+                                            </div>
                                             <div class="page-sections-item-buttons">
                                                 <button class="page-sections-components-grip-lines">
                                                     <fa-icon icon="grip" />

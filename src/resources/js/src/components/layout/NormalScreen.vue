@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import '../../style.css'
-import '../../custom.css'
 </script>
 
 <template>

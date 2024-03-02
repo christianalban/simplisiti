@@ -13,6 +13,6 @@ export const AutoSizeToChild = {
                     ? el.classList.add('minify')
                     : el.classList.remove('minify');
             }
-        }, 700);
+        }, 2000);
     },
 }
