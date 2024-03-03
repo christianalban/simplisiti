@@ -28,5 +28,7 @@ export const getValueOfType = (type: VariableType, content: string|number|DataTa
             return content;
         case 'textarea':
             return valueOfTextType(content);
+        default:
+            return '';
     }
 }
