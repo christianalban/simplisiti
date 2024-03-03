@@ -5,9 +5,11 @@ import { Variable } from "../../../types/Variable";
 import VariableTypeSelector from "../../../components/inputs/VariableTypeSelector.vue";
 import { value } from '../../../utils/helpers';
 import { useResources } from "../../../services/ResourceService";
+import { useSources } from "../../../services/DataSourceService";
 import ControlTypeSelector from "../../../components/inputs/ControlTypeSelector.vue";
 
 const { loadResources } = useResources();
+const { loadSources } = useSources();
 
 const props = defineProps({
     code: {
@@ -36,6 +38,7 @@ const removeVariable = (index: number) => {
 
 onMounted(() => {
     loadResources();
+    loadSources();
 });
 
 </script>
@@ -55,10 +58,10 @@ onMounted(() => {
                 <h2 class="title mb-4">{{ $t('components.titles.variables') }}</h2>
                 <div class="flex flex-col gap-2 bg-gray-100 p-2 rounded-lg">
                     <div v-for="(variable, index) of variables" class="form-group h-14">
-                        <variable-type-selector class="w-5/12" v-model="variable.type"/>
-                        <input type="text" class="input w-full" :value="variable.name" @input="variable.name = value($event.target)" :placeholder="$t('components.placeholders.name')" />
+                        <variable-type-selector class="w-20" v-model="variable.type"/>
+                        <input type="text" class="input w-40" :value="variable.name" @input="variable.name = value($event.target)" :placeholder="$t('components.placeholders.name')" />
                         <!-- inputs defaults accord selected type -->
-                        <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
+                        <control-type-selector class="w-full" v-model="variable.default" :name="variable.name" :type="variable.type"/>
                         <!-- inputs defaults accord selected type -->
                         <!-- buttons add and remove -->
                         <button type="button" class="button primary max-w-min" @click="addVariable" v-if="index === variables.length - 1">

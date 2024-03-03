@@ -24,6 +24,7 @@ const getSelectedValue = (event: Event): string => {
         <option value="textarea">{{ $t('components.types.textarea') }}</option>
         <option value="resource">{{ $t('components.types.resource') }}</option>
         <option value="datatable">{{ $t('components.types.datatable') }}</option>
+        <option value="datasource">{{ $t('components.types.datasource') }}</option>
     </select>
 </template>
 

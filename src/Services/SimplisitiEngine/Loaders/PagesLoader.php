@@ -27,6 +27,8 @@ class PagesLoader
 
         $this->app->loadSettings(); 
 
+        $this->app->loadDataSources(); 
+
         $this->app->loadPlugins();
     }
     

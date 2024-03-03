@@ -4,6 +4,7 @@ import { VariableType } from '../../types/Variable';
 import { DataTableValue } from '../../types/DataTable';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
+import DataSource from './DataSource.vue';
 
 const props = defineProps({
     type: {
@@ -50,6 +51,7 @@ watch(type, () => {
     <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue || defaultValue}}</textarea>
     <resource-picker v-else-if="type === 'resource'" :modelValue="(modelValue || defaultValue) as number" @update:modelValue="emitResourceValue($event)"/>
     <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
+    <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
 </template>
 
 <style scoped>

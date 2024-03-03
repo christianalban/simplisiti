@@ -25,7 +25,7 @@ const updateIframe = (content: string) => {
         setTimeout(() => {
             const firstChild = doc.body.firstChild as HTMLElement | null;
             const bodyHeight = firstChild?.clientHeight;
-            if (iframe.value && bodyHeight) {
+            if (iframe.value) {
                 iframe.value.style.height = `${bodyHeight}px`;
             }
         }, 1000);

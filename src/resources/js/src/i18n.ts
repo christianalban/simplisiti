@@ -34,6 +34,7 @@ const messages = {
                 resource: "Resource",
                 datatable: "Datatable",
                 textarea: "Textarea",
+                datasource: "Datasource",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -277,6 +278,7 @@ const messages = {
         },
         placeholders: {
             search: "Search",
+            select: "Select",
         },
     },
     es: {
@@ -312,6 +314,7 @@ const messages = {
                 resource: "Recurso",
                 datatable: "Tabla",
                 textarea: "Área de texto",
+                datasource: "Fuente de datos",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -551,6 +554,7 @@ const messages = {
         },
         placeholders: {
             search: "Buscar",
+            select: "Seleccionar",
         },
     },
 }

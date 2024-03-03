@@ -4,6 +4,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine;
 use Alban\Simplisiti\Models\Plugin;
 use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
+use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
@@ -27,6 +28,8 @@ class SimplisitiApp extends BasePlugin
     private BodyManager $bodyManager;
 
     private CacheManager $cacheManager;
+
+    private DataSourceManager $dataSourceManager;
 
     public function getStyleManager(): StyleManager
     {
@@ -63,6 +66,11 @@ class SimplisitiApp extends BasePlugin
         return $this->cacheManager;
     }
 
+    public function getDataSourceManager(): DataSourceManager
+    {
+        return $this->dataSourceManager;
+    }
+
     public function init(): void {
         $this->initPlugins();
     }
@@ -97,6 +105,10 @@ class SimplisitiApp extends BasePlugin
 
     public function loadBody(): void {
         $this->bodyManager = new BodyManager;
+    }
+
+    public function loadDataSources(): void {
+        $this->dataSourceManager = new DataSourceManager;
     }
 
     public function loadPlugins(): void {
