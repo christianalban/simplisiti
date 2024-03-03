@@ -9,11 +9,13 @@ const props = defineProps({
     },
 });
 
-const iframe = ref(null);
+const iframe = ref<HTMLIFrameElement | null>(null);
 
 const updateIframe = (content: string) => {
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
+        if (!doc) return;
+
         const styleLink = loadResourcesPreview();
         doc.open();
         doc.write(content);
@@ -21,8 +23,11 @@ const updateIframe = (content: string) => {
         doc.close();
 
         setTimeout(() => {
-            const bodyHeight = doc.body.firstChild.clientHeight;
-            iframe.value.style.height = `${bodyHeight}px`;
+            const firstChild = doc.body.firstChild as HTMLElement | null;
+            const bodyHeight = firstChild?.clientHeight;
+            if (iframe.value && bodyHeight) {
+                iframe.value.style.height = `${bodyHeight}px`;
+            }
         }, 1000);
     }
 };

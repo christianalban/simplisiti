@@ -108,7 +108,7 @@ onMounted(() => {
 
 <template>
     <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')">
-        <div class="component-wizard">
+        <div class="w-[30vw] p-4 h-screen flex flex-col overflow-y-auto">
             <available-components v-if="pageEditionMode === 'adding-component'"/>
             <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
         </div>
@@ -238,10 +238,6 @@ onMounted(() => {
                 .page-sections-item {
                     @apply relative flex justify-center;
 
-                    &:active {
-                        cursor: grabbing;
-                    }
-
                     &:hover {
                         .page-sections-preview {
                             .page-sections-preview-content {
@@ -337,13 +333,5 @@ onMounted(() => {
             }
         }
     }
-}
-
-.component-wizard {
-    width: 20rem;
-    padding: 1rem;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 </style>

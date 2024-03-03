@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getComponents} from '../../services/ComponentService';
 import { Component } from '../../types/Component';
+import Group from '../../components/Group.vue';
+import { componentName, groupItems } from '../../utils/helpers';
 
 const components = ref<Component[]>([]);
+
+const componentsGroup = computed(() => {
+    return groupItems(components.value);
+});
 
 onMounted(() => {
     getComponents()
@@ -20,11 +26,15 @@ onMounted(() => {
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'components.create' }">{{ $t('components.buttons.create') }}</router-link>
         </div>
-        <div class="grid grid-cols-6 grid-rows-6 h-full gap-4">
-            <router-link :to="{ name: 'components.edit', params: { component: component.id } }" class="tile" v-for="component of components" :key="component.name">
-                <span class="tile-title">{{ component.name }}</span>
-            </router-link>
-        </div>
+        <group :items="componentsGroup" v-slot="slotProps">
+            <div class="grid grid-cols-6 gap-4 py-4">
+                <router-link v-for="(item, key) in slotProps.item" :key="key" :to="{ name: 'components.edit', params: { component: item.id } }" class="tile">
+                    <span class="tile-title">
+                        {{ componentName(item.name) }}
+                    </span>
+                </router-link>
+            </div>
+        </group>
     </div>
 </template>
 

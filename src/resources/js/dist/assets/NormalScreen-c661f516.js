@@ -1,1 +1,0 @@
-/* empty css               */import{d as o,r as t,c as r,a as n,o as s}from"./index-cc6630f0.js";const c={class:"p-8"},l=o({__name:"NormalScreen",setup(a){return(_,p)=>{const e=t("router-view");return s(),r("div",c,[n(e)])}}});export{l as default};

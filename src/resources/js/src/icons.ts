@@ -19,6 +19,7 @@ import {
     faUpRightFromSquare,
     faHeading,
     faBorderTopLeft,
+    faGripLines,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -33,6 +34,7 @@ library.add(
     faCircleCheck,
     faEdit,
     faGrip,
+    faGripLines,
     faArrowRotateRight,
     faArrowsRotate,
     faEye,

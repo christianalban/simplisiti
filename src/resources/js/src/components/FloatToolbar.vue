@@ -228,7 +228,7 @@ const flexDirectionClass = computed(() => {
                 }
 
                 &.right .float-toolbar-button {
-                    left: -30px;
+                    left: -28px;
                 }
             }
 
