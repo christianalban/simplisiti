@@ -12,6 +12,6 @@ class DataSourceManager {
 
     public function addDataSource(string $key, callable $source): void
     {
-        return $this->datasources[$key] = $source();
+        $this->datasources[$key] = $source();
     }
 }
