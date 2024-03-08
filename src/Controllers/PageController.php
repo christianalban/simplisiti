@@ -11,9 +11,24 @@ use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Queries\Page\IndexQuery;
 use Alban\Simplisiti\Requests\Page\StorePageRequest;
 use Alban\Simplisiti\Requests\Page\UpdatePageRequest;
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use App\Http\Controllers\Controller;
 
 class PageController extends Controller {
+
+    public function __construct(SimplisitiApp $app)
+    {
+        $app->loadSettings();
+
+        $app->loadHeaders();
+
+        $app->loadDataSources();
+
+        $app->loadPlugins();
+
+        $app->init();
+    }
+
     public function index(IndexQuery $query) {
         $pages = $query->query()
         ->withCount('sections')

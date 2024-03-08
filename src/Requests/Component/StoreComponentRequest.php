@@ -17,7 +17,7 @@ class StoreComponentRequest extends FormRequest
             'name' => 'required|string|max:255|unique:components',
             'html' => 'required|string',
             'variables' => 'nullable|array',
-            'variables.*.type' => 'required|in:text,resource,datatable,textarea',
+            'variables.*.type' => 'required|in:text,resource,datatable,textarea,datasource',
             'variables.*.name' => 'required|string|max:255',
             'variables.*.default' => 'nullable',
         ];

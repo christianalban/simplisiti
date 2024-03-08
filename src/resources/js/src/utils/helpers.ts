@@ -1,3 +1,4 @@
+import { Options } from "../types/Data";
 import { Group, GroupItem } from "../types/Group";
 
 export const inputValue = (value: EventTarget | null): string => {
@@ -31,4 +32,12 @@ export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
         acc[groupKey].push(data);
         return acc;
     }, group);
+}
+
+export const addQueryToUrlFromOptions = (url: string, options?: Options): string => {
+    let urlFinal = url;
+
+    urlFinal += `?withData=${options?.withData ? 'true' : 'false'}`;
+
+    return urlFinal;
 }

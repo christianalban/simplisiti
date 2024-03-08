@@ -13,8 +13,11 @@ import { FloatToolbarPosition } from '../../../types/FloatToolbar';
 import { getValueOfType } from '../../../services/ContentService';
 import { getDefaultContent } from '../../../services/ComponentService';
 import SectionPreview from '../../../components/preview/SectionPreview.vue';
+import { useSources } from '../../../services/DataSourceService';
+import { replaceContentWithValues } from '../../../services/ContentService';
 
 const { loadResources } = useResources();
+const { loadSources } = useSources();
 
 const props = defineProps({
     sections: {
@@ -86,7 +89,7 @@ const renderHtmlComponent = (component: Component): string => {
             content = JSON.stringify(value);
         }
         
-        return html.replace(`{{ $${variable.name} }}`, content || '');
+        return replaceContentWithValues(html, variable, content || '');
     }, component.html);
 
     return html;
@@ -102,6 +105,7 @@ const position = ref<FloatToolbarPosition>('left');
 
 onMounted(() => {
     loadResources();
+    loadSources();
 });
 
 </script>

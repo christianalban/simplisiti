@@ -3,11 +3,16 @@ namespace Alban\Simplisiti;
 
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support;
+use Illuminate\Support\Facades\Blade;
 
 class ServiceProvider extends Support\ServiceProvider
 {
     public function boot()
     {
+        $this->app->singleton(SimplisitiApp::class, function () {
+            return new SimplisitiApp;
+        });
+
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
 
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
@@ -24,8 +29,6 @@ class ServiceProvider extends Support\ServiceProvider
             __DIR__.'/config/simplisiti.php' => config_path('simplisiti.php'),
         ]);
 
-        $this->app->singleton(SimplisitiApp::class, function () {
-            return new SimplisitiApp;
-        });
+        Blade::componentNamespace('Alban\\Simplisiti\\Components', 'simplisiti');
     }
 }

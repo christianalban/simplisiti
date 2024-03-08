@@ -19,7 +19,7 @@ class DataTableValue extends Value
         ];
     }
 
-    public function parseRecursive(array $dataSet) {
+    private function parseRecursive(array $dataSet) {
         $data = [];
 
         foreach($dataSet as $rows) {
@@ -54,7 +54,7 @@ class DataTableValue extends Value
         ];
     }
 
-    public function mergeRecursive(array $dataSet, array $merge) {
+    private function mergeRecursive(array $dataSet, array $merge) {
         $data = [];
 
         foreach($dataSet as $rowkey => $dataSetRows) {

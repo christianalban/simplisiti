@@ -32,7 +32,9 @@ const cloneComponent = (component: Component) => {
 }
 
 onMounted(() => {
-    getComponents()
+    getComponents({
+        withData: true,
+    })
     .then((response) => {
         availableComponents.value = response.data.data;
     });

@@ -22,7 +22,7 @@ class Component extends Model
     protected function variables(): Attribute {
         return Attribute::make(
             get: fn (mixed $variables) => collect(json_decode($variables, true))->map(function ($variable) {
-                if ($variable['type'] === 'datatable') {
+                if (collect(['datatable', 'datasource'])->contains($variable['type'])) {
                     return Value::parseValue($variable);
                 }
                 
@@ -40,10 +40,10 @@ class Component extends Model
         ->map(function ($variable) {
             $override = $this->pivot->content[$variable['name']] ?? null;
 
-            if ($variable['type'] === 'datatable') {
+            if (collect(['datatable', 'datasource'])->contains($variable['type'])) {
                 return Value::parseValue([
                     ...$variable,
-                    'default' => Value::mergeContent($variable, $override),
+                    'value' => Value::mergeContent($variable, $override),
                 ]);
             }
             

@@ -1,22 +1,21 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { PropType, computed } from 'vue';
 import { GroupItem, Group } from '../types/Group';
-import { Component } from '../types/Component';
 import { groupBy } from '../utils/helpers';
 import Accordion from './Accordion.vue';
 
 const props = defineProps({
-    items: Array as PropType<GroupItem<Component>[]>,
+    items: Array as PropType<GroupItem<T>[]>,
     expanded: {
         type: Boolean,
         default: true,
     },
 })
 
-const groupedItems = computed<Group<Component>>((): Group<Component> => {
+const groupedItems = computed<Group<T>>((): Group<T> => {
     if (!props.items) return {};
 
-    const group = groupBy<Component>(props.items, 'name');
+    const group = groupBy<T>(props.items, 'name');
 
     return group;
 });

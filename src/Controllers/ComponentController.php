@@ -10,9 +10,24 @@ use Alban\Simplisiti\Models\Component;
 use Alban\Simplisiti\Queries\Component\IndexQuery;
 use Alban\Simplisiti\Requests\Component\StoreComponentRequest;
 use Alban\Simplisiti\Requests\Component\UpdateComponentRequest;
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use App\Http\Controllers\Controller;
 
 class ComponentController extends Controller {
+    
+    public function __construct(SimplisitiApp $app)
+    {
+        $app->loadSettings();
+
+        $app->loadHeaders();
+
+        $app->loadDataSources();
+
+        $app->loadPlugins();
+
+        $app->init();
+    }
+
     public function index(IndexQuery $query) {
         $components = $query->query()->get();
 

@@ -1,16 +1,21 @@
 import axios from "axios";
 import { Component, ComponentContent } from "../types/Component";
+import { Options } from "../types/Data";
+import { addQueryToUrlFromOptions } from "../utils/helpers";
 
 export const createComponent = async (component: Component): Promise<any> => {
     return await axios.post('component', component)
 }
 
-export const getComponents = async (): Promise<any> => {
-    return await axios.get('component')
+export const getComponents = async (options?: Options): Promise<any> => {
+    const url = addQueryToUrlFromOptions('component', options);
+    return await axios.get(url)
 }
 
-export const getComponent = async (componentId: number): Promise<any> => {
-    return await axios.get(`component/${componentId}`)
+export const getComponent = async (componentId: number, options?: Options): Promise<any> => {
+    const url = addQueryToUrlFromOptions(`component/${componentId}`, options);
+
+    return await axios.get(url)
 }
 
 export const updateComponent = async (component: Component): Promise<any> => {

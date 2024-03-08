@@ -2,6 +2,7 @@
 import { PropType, toRefs, watch } from 'vue';
 import { VariableType } from '../../types/Variable';
 import { DataTableValue } from '../../types/DataTable';
+import { DataSourceValue } from '../../types/DataSource';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
 import DataSource from './DataSource.vue';
@@ -12,7 +13,7 @@ const props = defineProps({
         required: true,
     },
     modelValue: {
-        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | null | undefined>,
+        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | DataSourceValue | null | undefined>,
         required: true,
     },
     name: {
@@ -20,7 +21,7 @@ const props = defineProps({
         required: true,
     },
     defaultValue: {
-        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | null | undefined>,
+        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | DataSourceValue | null | undefined>,
     },
 });
 

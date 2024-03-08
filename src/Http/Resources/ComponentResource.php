@@ -14,14 +14,16 @@ class ComponentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $withData = $request->withData === 'true';
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'html' => $this->html,
-            'variables' => $this->variables,
-            'content' => $this->when($this->pivot?->content, $this->pivot?->content),
-            'content_id' => $this->when($this->pivot?->id, $this->pivot?->id),
-            'order' => $this->when($this->pivot, $this->pivot?->order),
+            'variables' => $this->when($withData, fn () => $this->variables),
+            'content' => $this->when($withData && $this->pivot?->content, fn () => $this->pivot?->content),
+            'content_id' => $this->when($withData && $this->pivot?->id, fn () => $this->pivot?->id),
+            'order' => $this->when($withData && $this->pivot, fn () => $this->pivot?->order),
         ];
     }
 }

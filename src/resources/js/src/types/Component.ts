@@ -1,8 +1,9 @@
 import { DataTableValue } from "./DataTable";
+import { DataSourceValue } from "./DataSource";
 import { Variable } from "./Variable";
 
 export interface ComponentContent {
-    [key: string]: string|number|DataTableValue|null|undefined
+    [key: string]: string|number|DataTableValue|DataSourceValue|null|undefined
 }
 
 export interface Component {
