@@ -10,7 +10,7 @@ const syncStatus = ref<SyncStatus>('no-synced');
 const { t } = useI18n()
 const codeLogs = ref(null)
 
-defineProps({
+const props = defineProps({
     consoleLogs: {
         type: Array as () => string[],
         required: true,
@@ -31,6 +31,11 @@ const syncStatusMessage = computed<string>(() => {
             return t('plugins.statusSync.error');
     }
 })
+
+const statusMessage = computed<string>(() => props.consoleLogs.length
+    ? props.consoleLogs[props.consoleLogs.length - 1]
+    : syncStatusMessage.value
+)
 
 const addLog = (log: string) => {
     emit('addLog', log)
@@ -85,7 +90,7 @@ const clearLogs = () => {
                     <button @click.prevent="clearLogs" class="ml-2 button default small">
                         <fa-icon icon="trash" />
                     </button>
-                    <span class="ml-2 font-bold">{{ syncStatusMessage }}</span>
+                    <span class="ml-2 font-bold">{{ statusMessage }}</span>
                 </div>
             </template>
             <div class="flex w-full">
