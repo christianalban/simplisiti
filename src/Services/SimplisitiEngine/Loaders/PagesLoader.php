@@ -27,6 +27,8 @@ class PagesLoader
 
         $this->app->loadDataSources(); 
 
+        $this->app->loadActions(); 
+
         $this->app->loadPlugins();
     }
     
@@ -54,6 +56,8 @@ class PagesLoader
                 ]);
             });
         });
+
+        $this->app->registerActions();
     }
 
     protected function renderContent(Page $page): string

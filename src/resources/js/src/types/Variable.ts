@@ -1,7 +1,7 @@
 import { DataTableValue } from "./DataTable";
 import { DataSourceValue } from "./DataSource";
 
-export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource';
+export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action';
 
 export interface Variable {
     type: VariableType

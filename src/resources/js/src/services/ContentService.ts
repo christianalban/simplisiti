@@ -66,18 +66,11 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 }
 
 export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataTableValue): string => {
-    switch (variable.type) {
-        case 'text':
-            return replaceTextContentWithValues(html, variable, content);
-        case 'resource':
-            return html;
-        case 'datatable':
-            return html;
-        case 'textarea':
-            return html;
-        case 'datasource':
-            return replaceBucleContentWithValues(html, variable, content as DataSourceValue);
-        default:
-            return html;
-    }
+    let htmlContent = html;
+
+    htmlContent = replaceTextContentWithValues(htmlContent, variable, content);
+
+    htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataSourceValue);
+
+    return htmlContent;
 }

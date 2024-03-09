@@ -1,5 +1,6 @@
 <?php
 
+use Alban\Simplisiti\Controllers\ActionController;
 use Alban\Simplisiti\Controllers\ComponentController;
 use Alban\Simplisiti\Controllers\DataSourceController;
 use Alban\Simplisiti\Controllers\PageController;
@@ -57,6 +58,10 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
 
     Route::controller(DataSourceController::class)->group(function () {
         Route::get('source', 'index');
+    });
+
+    Route::controller(ActionController::class)->group(function () {
+        Route::get('action', 'index');
     });
 
     Route::controller(SettingController::class)->group(function () {

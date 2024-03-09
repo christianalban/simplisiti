@@ -4,7 +4,7 @@ import { Component } from '../../../types/Component';
 import ControlTypeSelector from '../../../components/inputs/ControlTypeSelector.vue';
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
 
-const props = defineProps({
+defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },
@@ -14,12 +14,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['exit', 'update:position']);
-
-const togglePosition = () => {
-    const newPosition = props.position === 'left' ? 'right' : 'left';
-    emit('update:position', newPosition);
-}
+const emit = defineEmits(['update:position']);
 
 const restoreDefault = (component: Component, name: string) => {
     if (!component.content) {
@@ -31,19 +26,6 @@ const restoreDefault = (component: Component, name: string) => {
 </script>
 
 <template>
-    <div :class="`component-configuration-title ${position}`">
-        <h2>{{ $t('pages.titles.componentConfigurationForm') }}</h2>
-        <div>
-            <div class="form-group">
-                <button type="button" class="button small default" @click="$emit('exit')">
-                    {{ $t('pages.buttons.exit') }}
-                </button>
-                <button type="button" class="button small default button-position" @click="togglePosition">
-                    <fa-icon icon="border-top-left" />
-                </button>
-            </div>
-        </div>
-    </div>
     <div class="component-configuration-parameters" v-if="component">
         <div v-for="variable of component.variables" :key="variable.name">
             <div class="component-configuration-label">
@@ -59,30 +41,6 @@ const restoreDefault = (component: Component, name: string) => {
 .tile {
    &.sortable-chosen {
         @apply bg-blue-100;
-    }
-}
-
-.component-configuration-title {
-    @apply flex gap-2;
-
-    h2 {
-        @apply font-bold text-lg pb-2;
-    }
-
-    .button-position {
-        @apply -scale-x-100;
-    }
-
-    &.right {
-        @apply flex-row-reverse;
-
-        .button-position {
-            @apply scale-x-100;
-        }
-
-        .form-group {
-            @apply flex-row-reverse;
-        }
     }
 }
 

@@ -35,6 +35,7 @@ const messages = {
                 datatable: "Datatable",
                 textarea: "Textarea",
                 datasource: "Datasource",
+                action: "Action",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -315,6 +316,7 @@ const messages = {
                 datatable: "Tabla",
                 textarea: "Área de texto",
                 datasource: "Fuente de datos",
+                action: "Acción",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",

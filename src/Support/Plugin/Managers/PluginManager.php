@@ -7,6 +7,7 @@ use Alban\Simplisiti\Models;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Exceptions\InvalidPluginException;
 use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
+use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateHeader;
@@ -160,6 +161,10 @@ class PluginManager {
 
             if ($plugin instanceof ManipulateDataSource) {
                 $plugin->withDataSources($this->app->getDataSourceManager());
+            }
+
+            if ($plugin instanceof ManipulateAction) {
+                $plugin->withActions($this->app->getActionManager());
             }
         }
     }

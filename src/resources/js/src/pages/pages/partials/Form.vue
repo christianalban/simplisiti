@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, onMounted, reactive, ref } from 'vue';
+import { PropType, onMounted, reactive, ref, computed } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component } from '../../../types/Component';
 import { Section } from '../../../types/Section';
@@ -103,6 +103,14 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
 
 const position = ref<FloatToolbarPosition>('left');
 
+const togglePosition = () => {
+    position.value = position.value === 'left' ? 'right' : 'left';
+}
+
+const title = computed(() => {
+    return pageEditionMode.value === 'adding-component' ? 'availableComponents' : 'componentConfigurationForm';
+});
+
 onMounted(() => {
     loadResources();
     loadSources();
@@ -113,8 +121,21 @@ onMounted(() => {
 <template>
     <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')">
         <div class="w-[30vw] p-4 h-screen flex flex-col overflow-y-auto">
+            <div :class="`component-configuration-title ${position}`">
+                <h2>{{ $t(`pages.titles.${title}`) }}</h2>
+                <div>
+                    <div class="form-group">
+                        <button type="button" class="button small default" @click="exitFromEditMode">
+                            {{ $t('pages.buttons.exit') }}
+                        </button>
+                        <button type="button" class="button small default button-position" @click="togglePosition">
+                            <fa-icon icon="border-top-left" />
+                        </button>
+                    </div>
+                </div>
+            </div>
             <available-components v-if="pageEditionMode === 'adding-component'"/>
-            <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" @exit="exitFromEditMode"/>
+            <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'"/>
         </div>
     </float-toolbar>
     <div class="page-sections-container">
@@ -271,24 +292,10 @@ onMounted(() => {
                             .page-sections-preview-content {
                                 border: 2px solid rgb(234 179 8);
                             }
-
-                            &.minify {
-                                .page-sections-label {
-                                    max-width: 100vw;
-                                    @apply block;
-                                }
-                            }
                         }
 
                         .page-sections-preview-content {
                             @apply bg-white -z-10 border-2 border-transparent;
-                        }
-
-                        &.minify {
-                            .page-sections-label {
-                                transition: max-width 0.5s;
-                                @apply max-w-0 overflow-hidden;
-                            }
                         }
 
                         .page-sections-item-buttons {
@@ -335,6 +342,30 @@ onMounted(() => {
                     }
                 }
             }
+        }
+    }
+}
+
+.component-configuration-title {
+    @apply flex gap-2 justify-between;
+
+    h2 {
+        @apply font-bold text-lg pb-2;
+    }
+
+    .button-position {
+        @apply -scale-x-100;
+    }
+
+    &.right {
+        @apply flex-row-reverse;
+
+        .button-position {
+            @apply scale-x-100;
+        }
+
+        .form-group {
+            @apply flex-row-reverse;
         }
     }
 }

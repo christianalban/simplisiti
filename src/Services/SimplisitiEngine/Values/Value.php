@@ -25,6 +25,7 @@ abstract class Value
             'datatable' => DataTableValue::class,
             'textarea' => TextAreaValue::class,
             'datasource' => DataSourceValue::class,
+            'action' => ActionValue::class,
         };
 
         return (new $valueType($variable))->parse();
@@ -38,6 +39,7 @@ abstract class Value
             'datatable' => DataTableValue::class,
             'textarea' => TextAreaValue::class,
             'datasource' => DataSourceValue::class,
+            'action' => ActionValue::class,
         };
 
         return (new $valueType($variable))->merge($content);

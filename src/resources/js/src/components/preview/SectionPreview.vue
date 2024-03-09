@@ -16,30 +16,39 @@ const updateIframe = (content: string) => {
         const doc = iframe.value.contentDocument;
         if (!doc) return;
 
-        const styleLink = loadResourcesPreview();
+        const [styleLink, scriptLink] = loadResourcesPreview();
+
         doc.open();
         doc.write(content);
         doc.head.appendChild(styleLink);
+        doc.body.appendChild(scriptLink);
         doc.close();
 
-        setTimeout(() => {
+        iframe.value.onload = () => {
             const firstChild = doc.body.firstChild as HTMLElement | null;
             const bodyHeight = firstChild?.clientHeight;
             if (iframe.value) {
                 iframe.value.style.height = `${bodyHeight}px`;
             }
-        }, 1000);
+        };
     }
 };
 
 
-const loadResourcesPreview = (): HTMLLinkElement => {
+const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     const link = document.createElement('link');
+    const script = document.createElement('script');
+
     const styleUrl = getResourcePreviewUrl('style');
+    const scriptUrl = getResourcePreviewUrl('script');
+
     link.rel = 'stylesheet';
     link.href = styleUrl
 
-    return link;
+    script.src = scriptUrl;
+    script.async = true;
+
+    return [link, script];
 };
 
 watch(() => props.content, (content) => {
@@ -55,6 +64,7 @@ onMounted(() => {
     <iframe
         class="w-screen"
         ref="iframe"
+        sandbox="allow-scripts allow-same-origin"
     ></iframe>
 </template>
 

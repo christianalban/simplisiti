@@ -24,6 +24,8 @@ class PageController extends Controller {
 
         $app->loadDataSources();
 
+        $app->loadActions();
+
         $app->loadPlugins();
 
         $app->init();

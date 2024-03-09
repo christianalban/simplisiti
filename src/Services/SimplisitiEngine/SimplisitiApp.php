@@ -2,6 +2,7 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine;
 
 use Alban\Simplisiti\Models\Plugin;
+use Alban\Simplisiti\Support\Plugin\Managers\ActionManager;
 use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
@@ -30,6 +31,8 @@ class SimplisitiApp extends BasePlugin
     private CacheManager $cacheManager;
 
     private DataSourceManager $dataSourceManager;
+
+    private ActionManager $actionManager;
 
     public function getStyleManager(): StyleManager
     {
@@ -69,6 +72,11 @@ class SimplisitiApp extends BasePlugin
     public function getDataSourceManager(): DataSourceManager
     {
         return $this->dataSourceManager;
+    }
+
+    public function getActionManager(): ActionManager
+    {
+        return $this->actionManager;
     }
 
     public function init(): void {
@@ -111,6 +119,10 @@ class SimplisitiApp extends BasePlugin
         $this->dataSourceManager = new DataSourceManager;
     }
 
+    public function loadActions(): void {
+        $this->actionManager = new ActionManager;
+    }
+
     public function loadPlugins(): void {
         if (!Schema::hasTable('plugins')) {
             return;
@@ -127,5 +139,9 @@ class SimplisitiApp extends BasePlugin
             return;
         }
         $this->pluginManager->execute();
+    }
+
+    public function registerActions(): void {
+        $this->actionManager->registerActions();
     }
 }

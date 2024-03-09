@@ -6,10 +6,12 @@ import VariableTypeSelector from "../../../components/inputs/VariableTypeSelecto
 import { value } from '../../../utils/helpers';
 import { useResources } from "../../../services/ResourceService";
 import { useSources } from "../../../services/DataSourceService";
+import { useActions } from "../../../services/ActionService";
 import ControlTypeSelector from "../../../components/inputs/ControlTypeSelector.vue";
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
+const { loadActions } = useActions();
 
 const props = defineProps({
     code: {
@@ -39,6 +41,7 @@ const removeVariable = (index: number) => {
 onMounted(() => {
     loadResources();
     loadSources();
+    loadActions();
 });
 
 </script>

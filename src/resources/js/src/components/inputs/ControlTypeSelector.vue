@@ -6,6 +6,7 @@ import { DataSourceValue } from '../../types/DataSource';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
 import DataSource from './DataSource.vue';
+import Action from './Action.vue';
 
 const props = defineProps({
     type: {
@@ -39,6 +40,14 @@ const emitDataTableValue = (value: DataTableValue) => {
     emit('update:modelValue', value);
 };
 
+const emitDataSourceValue = (value: DataSourceValue) => {
+    emit('update:modelValue', value);
+};
+
+const emitActionValue = (value: string) => {
+    emit('update:modelValue', value);
+};
+
 const { type } = toRefs(props);
 
 watch(type, () => {
@@ -52,7 +61,8 @@ watch(type, () => {
     <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue || defaultValue}}</textarea>
     <resource-picker v-else-if="type === 'resource'" :modelValue="(modelValue || defaultValue) as number" @update:modelValue="emitResourceValue($event)"/>
     <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
-    <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
+    <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataSourceValue($event)"/>
+    <action v-else-if="type === 'action'" :name="name" :modelValue="modelValue || defaultValue" @update:modelValue="emitActionValue($event)"/>
 </template>
 
 <style scoped>

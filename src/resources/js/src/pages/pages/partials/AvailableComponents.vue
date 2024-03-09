@@ -43,7 +43,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <h2 class="font-bold">{{ $t('pages.titles.availableComponents') }}</h2>
     <group :items="componentsGroup" v-slot="slotProps">
         <draggable 
             class="grid grid-cols-2 gap-4"
