@@ -119,8 +119,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')">
-        <div class="w-[30vw] p-4 h-screen flex flex-col overflow-y-auto">
+    <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')" :canResize="true">
+        <div class="w-full p-4 h-screen flex flex-col overflow-y-auto">
             <div :class="`component-configuration-title ${position}`">
                 <h2>{{ $t(`pages.titles.${title}`) }}</h2>
                 <div>

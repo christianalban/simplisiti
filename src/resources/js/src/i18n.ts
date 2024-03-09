@@ -224,6 +224,7 @@ const messages = {
             },
             buttons: {
                 create: "New resource",
+                refresh: "Refresh resources list",
             },
         },
         plugins: {
@@ -501,6 +502,7 @@ const messages = {
             },
             buttons: {
                 create: "Nuevo recurso",
+                refresh: "Actualizar listado de recursos",
             },
         },
         plugins: {

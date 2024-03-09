@@ -16,6 +16,8 @@ const showModal = ref(false);
 
 const search = ref('');
 
+const isLoading = ref(false);
+
 const { resources, loadResources, resourceFromId } = useResources();
 
 const filteredResources = computed(() => {
@@ -43,7 +45,10 @@ const handleSelectResource = (resourceId: number) => {
 };
 
 const refreshResources = () => {
-    loadResources();
+    isLoading.value = true;
+    loadResources().finally(() => {
+        isLoading.value = false;
+    });
 };
 
 </script>
@@ -63,8 +68,8 @@ const refreshResources = () => {
     >
         <div class="flex justify-between mb-4">
             <button type="button" @click="refreshResources" class="button secondary">
-                <fa-icon icon="arrow-rotate-right" />
-                {{ $t('components.buttons.refresh') }}
+                <fa-icon icon="sync" :class="{'animate-spin': isLoading}"/>
+                {{ $t('resources.buttons.refresh') }}
             </button>
             <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
         </div>

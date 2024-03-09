@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, computed } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import { FloatToolbarPosition } from '../types/FloatToolbar';
 
 const props = defineProps({
@@ -17,7 +17,13 @@ const props = defineProps({
     hiddeLabel: {
         type: String as PropType<string>,
     },
+    canResize: {
+        type: Boolean as PropType<boolean>,
+        default: false,
+    },
 });
+
+const resizedWidth = ref(500);
 
 defineEmits(['update:isInvisible']);
 
@@ -38,10 +44,28 @@ const flexDirectionClass = computed(() => {
     }
 });
 
+const startResize = (event: MouseEvent) => {
+    const initialX = event.clientX;
+    const initialWidth = resizedWidth.value;
+
+    const handleMouseMove = (event: MouseEvent) => {
+        const newWidth = initialWidth + (event.clientX - initialX);
+        resizedWidth.value = newWidth < 200 ? 200 : newWidth;
+    };
+
+    const handleMouseUp = () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+};
+
 </script>
 
 <template>
-    <div :class="['float-toolbar', flexDirectionClass, positionClass, {
+    <div :style="{width: canResize && !isInvisible ? `${resizedWidth}px` : 'initial'}" :class="['float-toolbar', flexDirectionClass, positionClass, {
         'float-toolbar-top': position === 'top',
         'float-toolbar-right': ['left', 'right'].includes(position),
     }]">
@@ -78,12 +102,17 @@ const flexDirectionClass = computed(() => {
                 </button>
             </div>
         </div>
+        <div
+            v-if="canResize"
+            class="border-l-2 border-l-gray-200 hover:border-l-blue-500 transition-colors h-full hover:cursor-col-resize"
+            @mousedown.prevent.stop="startResize"
+        ></div>
     </div>
 </template>
 
 <style scoped lang="scss">
 .vertical-mode {
-    writing-mode: sideways-lr;
+    writing-mode: vertical-lr;
     width: 1.75rem;
     display: flex;
     justify-content: center;
@@ -94,6 +123,7 @@ const flexDirectionClass = computed(() => {
     z-index: 100;
     position: fixed;
     display: flex;
+    max-width: 95vw;
 
     &.position-left {
         flex-direction: row;
@@ -157,11 +187,10 @@ const flexDirectionClass = computed(() => {
     }
 
     .float-toolbar-container {
-        display: flex;
-        justify-content: center;
+        @apply flex justify-center w-full;
 
         &.float-toolbar-container-vertical {
-            flex-direction: column;
+            @apply flex-col;
         }
 
         .float-toolbar-accordion {

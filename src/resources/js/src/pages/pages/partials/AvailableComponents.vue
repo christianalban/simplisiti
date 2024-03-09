@@ -12,6 +12,8 @@ const componentsGroup = computed(() => {
     return groupItems(availableComponents.value);
 });
 
+const isLoading = ref(false);
+
 const cloneComponent = (component: Component) => {
     const content: ComponentContent = {};
 
@@ -31,18 +33,30 @@ const cloneComponent = (component: Component) => {
     return clonedComponent;
 }
 
-onMounted(() => {
+const loadComponents = () => {
+    isLoading.value = true;
     getComponents({
         withData: true,
     })
     .then((response) => {
         availableComponents.value = response.data.data;
+    })
+    .finally(() => {
+        isLoading.value = false;
     });
+}
+
+onMounted(() => {
+    loadComponents();
 });
 
 </script>
 
 <template>
+    <button @click="loadComponents" type="button" class="button secondary">
+        <fa-icon icon="sync" :class="{'animate-spin': isLoading}" />
+        {{ $t('components.buttons.refresh') }}
+    </button>
     <group :items="componentsGroup" v-slot="slotProps">
         <draggable 
             class="grid grid-cols-2 gap-4"
