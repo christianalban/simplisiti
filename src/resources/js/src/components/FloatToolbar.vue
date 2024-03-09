@@ -65,7 +65,7 @@ const startResize = (event: MouseEvent) => {
 </script>
 
 <template>
-    <div :style="{width: canResize && !isInvisible ? `${resizedWidth}px` : 'initial'}" :class="['float-toolbar', flexDirectionClass, positionClass, {
+    <div :style="{width: canResize && !isInvisible ? `${resizedWidth}px` : `${ ['left', 'right'].includes(position) ? 'initial' : '100%'}`}" :class="['float-toolbar', flexDirectionClass, positionClass, {
         'float-toolbar-top': position === 'top',
         'float-toolbar-right': ['left', 'right'].includes(position),
     }]">
