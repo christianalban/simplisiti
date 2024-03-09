@@ -1,0 +1,1 @@
+import{x as a}from"./index-ad68ceb6.js";const s=async t=>await a.post("script",t),c=async()=>await a.get("script"),e=async t=>await a.get(`script/${t}`),i=async t=>await a.put(`script/${t.id}`,t),n=async t=>await a.delete(`script/${t}`),p=async t=>await a.put("script/order",{list:t});export{e as a,i as b,s as c,n as d,c as g,p as u};
