@@ -58,7 +58,7 @@ export const getValueOfType = (type: VariableType, content: string|number|DataTa
 }
 
 export const replaceTextContentWithValues = (content: string, variable: Variable, value: string|number): string => {
-    return content.replace(`{{ $${variable.name} }}`, valueOfTextType(value));
+    return content.replaceAll(new RegExp(`{{\\s*\\$${variable.name}\\s*}}`, 'g'), valueOfTextType(value));
 } 
 
 export const replaceBucleContentWithValues = (content: string, variable: Variable, value: DataSourceValue | DataTableValue): string => {
@@ -72,7 +72,7 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
                 .replace(new RegExp(/<\/x-simplisiti::list-render>/, 'm'), '')
             : '';
 
-        const attribute = [...rawReplace.matchAll(new RegExp(/\@{[{!]+\$dt->(.*.)(!!|})+}/g, ))];
+        const attribute = [...rawReplace.matchAll(new RegExp(/\@{[{!]+\s*\$dt->(.*.)(!!|})+}/g, ))];
 
         const variableValue = (value || variable.value) as DataSourceValue;
 
@@ -91,9 +91,9 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
     let htmlContent = html;
 
-    htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
-
     htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataSourceValue);
+
+    htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
 
     return htmlContent;
 }
