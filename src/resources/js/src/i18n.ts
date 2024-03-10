@@ -55,6 +55,7 @@ const messages = {
                 changeResource: "Change",
                 fillData: "Fill",
                 refresh: "Refresh components list",
+                addVariable: "Add variable",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -337,6 +338,7 @@ const messages = {
                 changeResource: "Cambiar",
                 fillData: "Completar",
                 refresh: "Actualizar listado de componentes",
+                addVariable: "Agregar variable",
             },
             toasts: {
                 created: "Componente creado correctamente.",

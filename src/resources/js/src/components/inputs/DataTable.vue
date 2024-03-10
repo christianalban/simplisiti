@@ -114,7 +114,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex gap-2 w-full">
+    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
         <span>{{ $t('components.buttons.fillData') }}</span>
     </button>
     <modal

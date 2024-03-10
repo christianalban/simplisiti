@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
-import { ref, computed, PropType } from "vue";
+import { ref, computed } from "vue";
 import { useResources } from "../../services/ResourceService";
-import { DataTableValue } from "../../types/DataTable";
 import ResourcePreview from '../../components/preview/ResourcePreview.vue';
 
 const props = defineProps({
     modelValue: {
-        type: [Number, String, Object, undefined] as PropType<number | string | DataTableValue | undefined>,
         required: true,
     },
 });
@@ -27,7 +25,7 @@ const filteredResources = computed(() => {
 });
 
 const selectedResource = computed(() => {
-    if (props.modelValue === undefined) {
+    if (props.modelValue === undefined || props.modelValue === null) {
         return undefined;
     }
     return resourceFromId(+props.modelValue);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, toRefs, watch } from 'vue';
+import { PropType, toRefs, watch, computed } from 'vue';
 import { VariableType } from '../../types/Variable';
 import { DataTableValue } from '../../types/DataTable';
 import { DataSourceValue } from '../../types/DataSource';
@@ -24,6 +24,9 @@ const props = defineProps({
     defaultValue: {
         type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | DataSourceValue | null | undefined>,
     },
+    class: {
+        type: String as PropType<string>,
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -50,6 +53,10 @@ const emitActionValue = (value: string) => {
 
 const { type } = toRefs(props);
 
+const value = computed(() => {
+    return props.modelValue || props.defaultValue;
+});
+
 watch(type, () => {
     emit('update:modelValue', '');
 });
@@ -57,12 +64,12 @@ watch(type, () => {
 </script>
 
 <template>
-    <input v-if="type === 'text'" type="text" class="input w-full" :value="modelValue || defaultValue" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
-    <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue || defaultValue}}</textarea>
-    <resource-picker v-else-if="type === 'resource'" :modelValue="(modelValue || defaultValue) as number" @update:modelValue="emitResourceValue($event)"/>
-    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
-    <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="(modelValue || defaultValue) as DataTableValue" @update:modelValue="emitDataSourceValue($event)"/>
-    <action v-else-if="type === 'action'" :name="name" :modelValue="modelValue || defaultValue" @update:modelValue="emitActionValue($event)"/>
+    <input v-if="type === 'text'" type="text" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
+    <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ value }}</textarea>
+    <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
+    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="value as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
+    <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
+    <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
 </template>
 
 <style scoped>

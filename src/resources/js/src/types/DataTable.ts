@@ -9,3 +9,7 @@ export interface DataTableValue {
     columns: Column[],
     rows: Variable[][];
 }
+
+export interface DataTableItem {
+    [key: string]: any;
+}

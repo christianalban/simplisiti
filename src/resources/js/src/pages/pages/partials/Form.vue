@@ -27,6 +27,10 @@ const props = defineProps({
             {order: 0, components: []}
         ],
     },
+    pageEditionMode: {
+        type: String as PropType<PageEditionMode>,
+        default: 'adding-component',
+    },
 });
 
 const isInvisible = ref(true);
@@ -79,17 +83,9 @@ const renderHtmlComponent = (component: Component): string => {
         const contentValue = component.content && component.content[variable.name]
             ? component.content[variable.name]
             : component.variables.find(v => v.name === variable.name)?.default;
-        const value = contentValue ? getValueOfType(variable.type, contentValue?.toString()) : '';
+        const value = contentValue ? getValueOfType(variable.type, contentValue) : '';
 
-        let content = '';
-
-        if (typeof value === 'string') {
-            content = value;
-        } else {
-            content = JSON.stringify(value);
-        }
-        
-        return replaceContentWithValues(html, variable, content || '');
+        return replaceContentWithValues(html, variable, value);
     }, component.html);
 
     return html;

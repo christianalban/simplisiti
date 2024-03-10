@@ -27,7 +27,9 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
         Route::post('page', 'store');
         Route::put('page/{page}', 'update');
         Route::delete('page/{page}', 'destroy');
-        Route::get('page/{type}/preview', 'preview')->where('type', 'style|script');
+        Route::group(['excluded_middleware' => 'throttle:api'], function () {
+            Route::get('page/{type}/preview', 'preview')->where('type', 'style|script');
+        });
     });
 
     Route::controller(StyleController::class)->group(function () {

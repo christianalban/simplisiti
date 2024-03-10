@@ -20,6 +20,7 @@ import {
     faHeading,
     faBorderTopLeft,
     faGripLines,
+    faGear,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -44,6 +45,7 @@ library.add(
     faUpRightFromSquare,
     faHeading,
     faBorderTopLeft,
+    faGear,
 );
 
 export default FontAwesomeIcon;

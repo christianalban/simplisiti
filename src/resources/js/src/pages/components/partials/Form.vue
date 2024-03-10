@@ -67,13 +67,21 @@ onMounted(() => {
                         <control-type-selector class="w-full" v-model="variable.default" :name="variable.name" :type="variable.type"/>
                         <!-- inputs defaults accord selected type -->
                         <!-- buttons add and remove -->
-                        <button type="button" class="button primary max-w-min" @click="addVariable" v-if="index === variables.length - 1">
-                            <fa-icon icon="plus" />
-                        </button>
-                        <button type="button" class="button primary max-w-min" @click="removeVariable(index)" v-else>
-                            <fa-icon icon="minus" />
-                        </button>
+                        <div class="flex flex-col text-xs">
+                            <button type="button" class="variable-button bg-blue-200 text-blue-900 rounded-tr cursor-not-allowed" @click="addVariable" disabled>
+                                <fa-icon icon="gear" />
+                            </button>
+                            <button type="button" :class="['variable-button bg-red-200 text-red-900 rounded-br ', { 'hover:bg-red-300 cursor-pointer': variables.length > 1, 'cursor-not-allowed': variables.length <= 1 }]" @click="removeVariable(index)" :disabled="variables.length <= 1">
+                                <fa-icon icon="minus" />
+                            </button>
+                        </div>
                         <!-- buttons add and remove -->
+                    </div>
+                    <div class="w-full">
+                        <button type="button" class="variable-button bg-teal-200 hover:bg-teal-300 text-teal-900 w-full rounded" @click="addVariable">
+                            <fa-icon icon="plus" />
+                            {{ $t('components.buttons.addVariable') }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -82,5 +90,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
+.variable-button {
+    @apply flex-1 transition-colors px-0.5;
+}
 </style>
