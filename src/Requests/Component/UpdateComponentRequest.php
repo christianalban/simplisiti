@@ -21,6 +21,9 @@ class UpdateComponentRequest extends FormRequest
             'variables.*.type' => 'required|in:text,resource,datatable,textarea,datasource,action',
             'variables.*.name' => 'required|string|max:255',
             'variables.*.default' => 'nullable',
+            'variables.*.settings.*.items.*.name' => 'required',
+            'variables.*.settings.*.items.*.plugin' => 'required',
+            'variables.*.settings.*.items.*.value' => 'required',
         ];
     }
 }

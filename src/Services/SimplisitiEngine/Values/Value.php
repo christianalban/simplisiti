@@ -7,11 +7,13 @@ abstract class Value
     protected string $type;
     protected string $name;
     protected string|array|null $default;
+    protected array $applied_settings = [];
 
     public function __construct(array $variable) {
         $this->type = $variable['type'];
         $this->name = $variable['name'];
         $this->default = $variable['default'];
+        $this->applied_settings = $variable['applied_settings'] ?? [];
     }
 
     abstract public function parse();

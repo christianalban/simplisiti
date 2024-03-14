@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import ComponentsForm from "./partials/Form.vue";
 import DialogComponent from "../../components/Dialog.vue";
-import { deleteComponent, getComponent, updateComponent } from "../../services/ComponentService";
+import { deleteComponent, getComponent, updateComponent, mapWithoutSettingsData } from "../../services/ComponentService";
 import { useRoute, useRouter } from "vue-router";
 import { Variable } from "../../types/Variable";
 import { showToast } from "../../services/ToastService";
@@ -21,7 +21,7 @@ const update = () => {
     updateComponent({
         id: componentId,
         html: code.value,
-        variables: variables.value.filter(variable => variable.name !== ''),
+        variables: mapWithoutSettingsData(variables.value),
         name: name.value,
     })
     .then(() => {

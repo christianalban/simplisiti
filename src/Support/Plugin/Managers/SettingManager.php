@@ -2,8 +2,8 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
-use Alban\Simplisiti\Models\Setting;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 class SettingManager {
@@ -16,24 +16,27 @@ class SettingManager {
         $this->settingEntries = new Collection;
     }
 
-    public function settingEntry(ManipulateSetting $plugin, string $label, string $description = null): void
+    public function settingEntry(string|ManipulateSetting $plugin, string $label, string $description = null): void
     {
-        $this->settingEntries[$plugin::class] = [
-            'plugin' => $plugin::class,
+        $pluginKey = $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
+
+        $this->settingEntries[$pluginKey] = [
+            'plugin' => $pluginKey,
             'label' => $label,
             'description' => $description,
         ];
     }
 
-    public function addSetting(ManipulateSetting $plugin, string $name, string $type, string $label, string $description = null, bool $required = false): void
+    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
     {
         $this->settings[] = [
-            'plugin' => $plugin::class,
+            'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
             'name' => $name,
             'type' => $type,
             'label' => $label,
             'description' => $description,
             'required' => $required,
+            'data' => $data,
         ];
     }
 
@@ -47,11 +50,9 @@ class SettingManager {
         return $this->settingEntries;
     }
 
-    public function getSettingMenu(): array
+    public function getSettingMenu(Collection|EloquentCollection $settingValues): array
     {
         $settingMenu = [];
-
-        $settingValues = Setting::all();
 
         foreach ($this->settings as $setting) {
             $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;

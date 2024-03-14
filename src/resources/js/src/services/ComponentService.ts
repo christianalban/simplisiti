@@ -2,6 +2,7 @@ import axios from "axios";
 import { Component, ComponentContent } from "../types/Component";
 import { Options } from "../types/Data";
 import { addQueryToUrlFromOptions } from "../utils/helpers";
+import { Variable } from "../types/Variable";
 
 export const createComponent = async (component: Component): Promise<any> => {
     return await axios.post('component', component)
@@ -36,3 +37,25 @@ export const getDefaultContent = (component: Component, name?: string): any => {
         return content;
     }, {})
 }
+
+export const mapWithoutSettingsData = (variables: Variable[]): Variable[] => {
+    const tempVariables = JSON.parse(JSON.stringify(variables)) as Variable[];
+    return tempVariables.filter(variable => variable.name !== '').map(variable => {
+            variable.settings = variable.settings?.map(setting => {
+                setting.items = setting.items.map(item => ({
+                    id: item.id,
+                    plugin: item.plugin,
+                    name: item.name,
+                    label: item.label,
+                    description: item.description,
+                    type: item.type,
+                    value: item.value,
+                    required: item.required,
+                }));
+
+                return setting;
+            })
+            return variable;
+        })
+}
+    

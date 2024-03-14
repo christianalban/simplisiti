@@ -1,5 +1,6 @@
 import { DataTableValue } from "./DataTable";
 import { DataSourceValue } from "./DataSource";
+import { SettingMenu } from "./Setting";
 
 export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action';
 
@@ -8,4 +9,5 @@ export interface Variable {
     name: string
     default?: string|number|DataTableValue|DataSourceValue|undefined|null
     value?: string|number|DataTableValue|DataSourceValue|undefined|null
+    settings?: SettingMenu[]
 }

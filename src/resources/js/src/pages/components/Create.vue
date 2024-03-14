@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import ComponentsForm from "./partials/Form.vue";
 import { showToast } from '../../services/ToastService';
-import { createComponent } from '../../services/ComponentService'
+import { createComponent, mapWithoutSettingsData } from '../../services/ComponentService'
 import { Variable } from "../../types/Variable";
 
 const { t } = useI18n();
@@ -18,7 +18,7 @@ const name = ref('');
 const save = () => {
     createComponent({
         html: code.value,
-        variables: variables.value.filter(variable => variable.name !== ''),
+        variables: mapWithoutSettingsData(variables.value),
         name: name.value,
     })
     .then(() => {

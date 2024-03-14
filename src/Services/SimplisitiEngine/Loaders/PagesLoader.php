@@ -54,7 +54,7 @@ class PagesLoader
                     'title' => $page->title,
                     'app' => $this->app,
                 ]);
-            });
+            })->name($page->name);
         });
 
         $this->app->registerActions();

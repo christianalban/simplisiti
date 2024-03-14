@@ -21,7 +21,11 @@ const props = defineProps({
                     <label class="font-bold">{{ item.label }} {{ item.required ? '*' : '' }}</label>
                     <p class="text-sm italic" v-if="item.description">{{ item.description }}</p>
                     <input v-if="item.type === 'text' || item.type === 'number' " :type="item.type" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
-                    <textarea v-if="item.type === 'textarea'" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
+                    <textarea v-else-if="item.type === 'textarea'" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
+                    <select v-else-if="item.type === 'select'" class="input" v-model="item.value" :required="item.required">
+                        <option :value="null">{{ $t('placeholders.select') }}</option>
+                        <option v-for="option of item.data" :value="option.value">{{ option.label }}</option>
+                    </select>
                 </div>
             </div>
         </div>

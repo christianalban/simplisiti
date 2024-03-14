@@ -1,4 +1,4 @@
-export type SettingType = 'text' | 'textarea' | 'number';
+export type SettingType = 'text' | 'textarea' | 'number' | 'select';
 
 export interface SettingRequest {
     items: Setting[]
@@ -20,4 +20,5 @@ export interface Setting {
     type: SettingType
     value?: string
     required: boolean
+    data?: any
 }

@@ -14,6 +14,7 @@ class Action extends Component
      */
     public function __construct(
         public string $action,
+        public array $params = [],
     ) {}
 
     /**
