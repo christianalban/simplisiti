@@ -13,8 +13,10 @@ trait HandleSettings {
             }
             foreach ($variable['settings'] as $setting) {
                 $collectSetting = collect($setting);
-                $variable['applied_settings'] = $collectSetting->flatMap(function ($setting) {
-                    return collect($setting)->map(function ($value) {
+                $variable['applied_settings'] = $collectSetting->flatMap(function ($settingItem) use ($variable) {
+                    return collect($settingItem)->map(function ($value) use ($variable) {
+                        $value['plugin'] = $variable['default'];
+
                         $objectValue = (object) $value;
                         $objectValue->value = ['value' => $objectValue->value];
                         return $objectValue;
