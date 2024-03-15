@@ -1,3 +1,8 @@
 export interface Options {
-    withData: boolean
+    withData?: boolean
+    withSettings?: boolean
+}
+
+export interface QueryParams {
+    [key: string]: any
 }

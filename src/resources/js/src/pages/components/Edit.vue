@@ -65,7 +65,7 @@ const confirmDeleteComponent = () => {
 
 onMounted(() => {
     getComponent(componentId, { 
-        withData: true,
+        withData: false,
     }).then((response) => {
         const data = response.data.data;
         code.value = data.html;

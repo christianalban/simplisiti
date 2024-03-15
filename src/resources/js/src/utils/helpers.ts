@@ -1,4 +1,4 @@
-import { Options } from "../types/Data";
+import { Options, QueryParams } from "../types/Data";
 import { Group, GroupItem } from "../types/Group";
 
 export const inputValue = (value: EventTarget | null): string => {
@@ -34,10 +34,18 @@ export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
     }, group);
 }
 
-export const addQueryToUrlFromOptions = (url: string, options?: Options): string => {
+export const addQueryToUrlFromOptions = (url: string, options?: Options, query?: QueryParams): string => {
     let urlFinal = url;
 
+    const optionsCount = Object.keys(options || {}).length;
+
     urlFinal += `?withData=${options?.withData ? 'true' : 'false'}`;
+
+    urlFinal += `${optionsCount >= 1 ? '&' : '?'}withSettings=${options?.withSettings ? 'true' : 'false'}`;
+
+    if (query) {
+        urlFinal += `${optionsCount ? '&' : '?'}${Object.keys(query).map(key => `${key}=${query[key]}`).join('&')}`;
+    }
 
     return urlFinal;
 }

@@ -58,4 +58,4 @@ export const mapWithoutSettingsData = (variables: Variable[]): Variable[] => {
             return variable;
         })
 }
-    
+

@@ -3,25 +3,36 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Values;
 
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Illuminate\Support\Facades\Request;
 
 class DataSourceValue extends Value
 {
     public function parse() {
+        $withSettings = $this->options['withSettings'] ?? Request::input('withSettings') === 'true';
+        $withData = $this->options['withData'] ?? Request::input('withData') === 'true';
+
+        $parsed = [
+            'type' => $this->type,
+            'name' => $this->name,
+            'default' => $this->default,
+            'value' => null,
+        ];
+
         $app = app(SimplisitiApp::class);
 
         $container = $app->getDataSourceManager()->getDataContainer($this->default);
 
         $appliedSettings = $this->parseAppliedSettings();
 
-        $settings = $container->getSettingMenu($appliedSettings);
+        if ($withSettings) {
+            $parsed['settings'] = $container->getSettingMenu($appliedSettings);
+        }
 
-        return [
-            'type' => $this->type,
-            'name' => $this->name,
-            'default' => $this->default,
-            'value' => $container->getData($appliedSettings->toArray()),
-            'settings' => $settings,
-        ];
+        if ($withData) {
+            $parsed['value'] = $container->getData($appliedSettings->toArray());
+        }
+
+        return $parsed;
     }
 
     public function merge(array|string|int|null $merge) {

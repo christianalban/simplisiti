@@ -44,6 +44,8 @@ class Component extends Model
                 return Value::parseValue([
                     ...$variable,
                     'value' => Value::mergeContent($variable, $override),
+                ], [
+                    'withData' => true,
                 ]);
             }
             
@@ -52,6 +54,8 @@ class Component extends Model
                 'value' => Value::parseValue([
                     ...$variable,
                     ...Value::mergeContent($variable, $override),
+                ], [
+                    'withData' => true,
                 ]),
             ];
             

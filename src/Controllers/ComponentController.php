@@ -3,15 +3,18 @@
 namespace Alban\Simplisiti\Controllers;
 
 use Alban\Simplisiti\Actions\Component\DeleteComponentAction;
+use Alban\Simplisiti\Actions\Component\LoadVariableSettingsAction;
 use Alban\Simplisiti\Actions\Component\StoreComponentAction;
 use Alban\Simplisiti\Actions\Component\UpdateComponentAction;
 use Alban\Simplisiti\Http\Resources\ComponentResource;
+use Alban\Simplisiti\Http\Resources\VariableSettingsResource;
 use Alban\Simplisiti\Models\Component;
 use Alban\Simplisiti\Queries\Component\IndexQuery;
 use Alban\Simplisiti\Requests\Component\StoreComponentRequest;
 use Alban\Simplisiti\Requests\Component\UpdateComponentRequest;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ComponentController extends Controller {
     
@@ -62,5 +65,11 @@ class ComponentController extends Controller {
         return response()->json([
             'message' => 'Component deleted successfully',
         ]);
+    }
+
+    public function variableSettings(Component $component, string $name, string $type, Request $request, LoadVariableSettingsAction $action) {
+        $settings = $action->execute($component, $name, $type, $request->default);
+
+        return VariableSettingsResource::collection($settings);
     }
 }
