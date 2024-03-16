@@ -3,13 +3,11 @@
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Support\Action\ActionData;
-use Alban\Simplisiti\Support\Plugin\Containers\ActionContainer;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Closure;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class ActionManager {
     private array $actions = [];
@@ -50,10 +48,9 @@ class ActionManager {
             $path = $action->getPath();
             $callable = $action->getAction();
             Route::$method($path, function(Request $request, ...$params) use ($key, $callable) {
-                $container = new ActionContainer($request);
-                $this->runBeforeEvents($container, $key);
-                $response = $callable($container, ...$params);
-                $this->runAfterEvents($container, $key);
+                $this->runBeforeEvents($request, $key);
+                $response = $callable($request, ...$params);
+                $this->runAfterEvents($request, $key);
 
                 return $response;
             
@@ -74,14 +71,14 @@ class ActionManager {
         ];
     }
 
-    protected function runBeforeEvents(ActionContainer $request, string $key): void
+    protected function runBeforeEvents(Request $request, string $key): void
     {
         foreach ($this->events[$key]['before'] as $event) {
             $event($request);
         }
     }
 
-    protected function runAfterEvents(ActionContainer $request, string $key): void
+    protected function runAfterEvents(Request $request, string $key): void
     {
         foreach ($this->events[$key]['after'] as $event) {
             $event($request);

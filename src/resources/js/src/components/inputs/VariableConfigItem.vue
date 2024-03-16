@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
 import { Variable, VariableType } from '../../types/Variable.ts';
 import { variableHasSettings } from '../../services/VariableService.ts';
 import { getComponentVariableSettings } from '../../services/VariableService.ts';
@@ -7,6 +7,7 @@ import { computed } from 'vue';
 import VariableTypeSelector from "../../components/inputs/VariableTypeSelector.vue";
 import ControlTypeSelector from "../../components/inputs/ControlTypeSelector.vue";
 import { useRoute } from 'vue-router';
+import { value } from '../../utils/helpers.ts';
 
 const props = defineProps({
     type: {
@@ -28,6 +29,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const variableName = ref(props.name);
 
 const emit = defineEmits(['update:type', 'update:name', 'update:default', 'removeVariable', 'displaySettings']);
 
@@ -46,12 +48,14 @@ const displaySettings = () => {
         });
 };
 
+const handleInput = (event: Event) => variableName.value = value(event.target);
+
 </script>
 
 <template>
     <div class="form-group h-14">
         <variable-type-selector class="w-20" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
-        <input type="text" class="input w-32" :value="name" @input="$emit('update:name', value($event.target))" :placeholder="$t('components.placeholders.name')" />
+        <input type="text" class="input w-32" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
         <!-- inputs defaults accord selected type -->
         <control-type-selector class="flex-1" :modelValue="default" @update:modelValue="$emit('update:default', $event)" :name="name" :type="type"/>
         <!-- inputs defaults accord selected type -->

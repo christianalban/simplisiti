@@ -159,7 +159,7 @@ const messages = {
                 updateSetting: "Edit setting",
             },
             toasts: {
-                updated: "Setting updated successfully.",
+                successUpdated: "Setting updated successfully.",
                 errorUpdated: "Setting couldn't be updated.",
             },
         },
@@ -440,6 +440,10 @@ const messages = {
                 settingsList: "Listado de configuraciones",
                 createSetting: "Crear nueva configuración",
                 updateSetting: "Editar configuración",
+            },
+            toasts: {
+                successUpdated: "Configuración actualizada correctamente.",
+                errorUpdated: "Configuración no pudo ser actualizada.",
             },
         },
         scripts: {
