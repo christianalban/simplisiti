@@ -10,6 +10,7 @@ import { variableHasSettings } from '../../../services/VariableService.ts';
 import Modal from "../../../components/Modal.vue";
 import SettingForm from '../../settings/partials/Form.vue';
 import VariableConfigItem from '../../../components/inputs/VariableConfigItem.vue';
+import { SettingMenu } from '../../../types/Setting';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();

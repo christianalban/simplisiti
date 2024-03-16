@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
-import { Variable, VariableType } from '../../types/Variable.ts';
+import { VariableType } from '../../types/Variable.ts';
 import { variableHasSettings } from '../../services/VariableService.ts';
 import { getComponentVariableSettings } from '../../services/VariableService.ts';
 import { computed } from 'vue';
@@ -8,6 +8,8 @@ import VariableTypeSelector from "../../components/inputs/VariableTypeSelector.v
 import ControlTypeSelector from "../../components/inputs/ControlTypeSelector.vue";
 import { useRoute } from 'vue-router';
 import { value } from '../../utils/helpers.ts';
+import { DataTableValue } from "../../types/DataTable.ts";
+import { DataSourceValue } from "../../types/DataSource.ts";
 
 const props = defineProps({
     type: {
@@ -42,7 +44,7 @@ const removeVariable = () => {
 };
 
 const displaySettings = () => {
-    getComponentVariableSettings(route.params.component, {type: props.type, name: props.name, default: props.default})
+    getComponentVariableSettings(route.params.component as string, {type: props.type, name: props.name, default: props.default})
         .then((settings) => {
             emit('displaySettings', settings.data.data);
         });
