@@ -182,6 +182,7 @@ onMounted(() => {
                                 </template>
                                 <template #header>
                                     <div class="hideable-header">
+                                        <fa-icon icon="triangle-exclamation" />
                                         <p>{{ $t('pages.labels.addComponentsToSection', { section: sectionIndex }) }}</p>
                                     </div>
                                 </template>
@@ -210,26 +211,13 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .page-sections-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: fixed;
-    z-index: -10;
-    left: 0;
-    top: 0;
-    right: 0;
-    max-height: 100vh;
-    max-width: 100vw;
-    overflow-y: auto;
-    overflow-x: hidden;
+    @apply flex flex-col gap-4 fixed top-0 left-0 right-0 h-screen w-full overflow-y-auto overflow-x-hidden;
 
     .page-sections-content {
-        display: flex;
-        flex-direction: column;
+        @apply flex flex-col;
 
         .page-sections-panel {
-            display: flex;
-            flex-direction: column;
+            @apply flex flex-col;
 
             .page-sections-item-panel {
                 .page-sections-dreaggable {
@@ -241,19 +229,15 @@ onMounted(() => {
                 }
 
                 .hideable-header {
-                    justify-content: center;
-                    align-items: center;
-                    margin: 0.5rem;
-                    padding: 0.5rem;
-                    border: 2px dashed rgb(234 179 8);
+                    @apply justify-center items-center my-1 mx-4 py-4 border-2 border-dashed border-yellow-400 italic gap-2;
                 }
 
                 .hideable-header:not(:only-child){
-                    display: none;
+                    @apply hidden;
                 }
 
                 .hideable-header:only-child{
-                    display: flex;
+                    @apply flex;
                 }
 
                 .page-sections-item {
@@ -262,7 +246,7 @@ onMounted(() => {
                     &:hover {
                         .page-sections-preview {
                             .page-sections-preview-content {
-                                border: 2px solid rgb(234 179 8);
+                                @apply border-2 border-yellow-400;
                             }
                             
                         }
@@ -271,22 +255,17 @@ onMounted(() => {
                     &.page-sections-item-selected {
                         .page-sections-preview {
                             .page-sections-preview-content {
-                                border: 2px solid rgb(234 179 8);
+                                @apply border-2 border-yellow-400;
                             }
                         }
                     }
 
                     .page-sections-preview {
-                        display: flex;
-                        flex-direction: column;
-                        width: 100%;
-                        height: 100%;
-                        position: sticky;
-                        z-index: -10;
+                        @apply flex flex-col w-full h-full sticky z-10;
 
                         &:hover {
                             .page-sections-preview-content {
-                                border: 2px solid rgb(234 179 8);
+                                @apply border-2 border-yellow-400;
                             }
                         }
 
@@ -295,15 +274,7 @@ onMounted(() => {
                         }
 
                         .page-sections-item-buttons {
-                            display: flex;
-                            position: absolute;
-                            top: 100%;
-                            left: 2.5rem;
-                            gap: 1rem;
-                            z-index: 10;
-                            background-color: rgb(234 179 8);
-                            border-radius: 0 0 0.25rem 0.25rem;
-                            padding: 0 0.25rem;
+                            @apply flex absolute top-0 left-[2.5rem] gap-4 bg-yellow-400 z-20 rounded-b-md px-2;
 
                             .page-sections-components-grip-lines {
                                 @apply cursor-grab;
@@ -319,8 +290,7 @@ onMounted(() => {
                             }
                             
                             .pages-secttions-component-buttons {
-                                display: flex;
-                                gap: 0.5rem;
+                                @apply flex gap-1;
                             }
                         }
                     }

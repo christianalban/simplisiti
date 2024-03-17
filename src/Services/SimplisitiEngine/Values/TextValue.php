@@ -9,10 +9,6 @@ class TextValue extends Value
     }
 
     public function merge(array|string|int | null $merge) {
-        return [
-            'type' => $this->type,
-            'name' => $this->name,
-            'default' => $merge ?? $this->default,
-        ];
+        return $merge['default'] ?? $this->default;
     }
 }

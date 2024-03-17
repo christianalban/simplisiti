@@ -125,46 +125,51 @@ onMounted(() => {
         :resetOnClose="false"
         @confirm="handleConfirm"
     >
-        <table>
-            <thead>
-                <tr>
-                    <th v-for="(column, index) of columns">
-                        <div class="w-52 flex">
-                            <div class="w-full form-group">
-                                <input class="input" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')"/>
-                                <variable-type-selector class="w-5" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
-                                <button v-if="columns.length > 1" type="button" class="button danger" @click="removeColumn(index)">
-                                    <fa-icon icon="minus" />
-                                </button>
-                                <button v-if="index == columns.length - 1" type="button" class="button primary" @click="addColumn">
+        <div class="overflow-y-auto h-[70vh]">
+            <table class="w-full relative">
+                <thead>
+                    <tr>
+                        <th class="sticky top-0 z-10" v-for="(column, index) of columns">
+                            <div class="flex">
+                                <div class="w-full form-group">
+                                    <input class="input" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')"/>
+                                    <variable-type-selector class="w-5" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
+                                    <button v-if="columns.length > 1" type="button" class="button danger" @click="removeColumn(index)">
+                                        <fa-icon icon="minus" />
+                                    </button>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="sticky top-0 z-10">
+                            <div class="flex justify-center">
+                                <button v-if="columns.length >= 1" type="button" class="button primary" @click="addColumn">
                                     <fa-icon icon="plus" />
                                 </button>
                             </div>
-                        </div>
-                    </th>
-                    <th>
-                        &nbsp;
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(variables, index) of rows" :key="`${index}:${name}`">
-                    <td v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex].name}:${variable.name}`">
-                        <div class="w-52 flex">
-                            <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
-                        </div>
-                    </td>
-                    <td>
-                        <button v-if="rows.length > 1" type="button" class="button danger" @click="removeRow(index)">
-                            <fa-icon icon="minus" />
-                        </button>
-                        <button v-if="index == rows.length - 1" type="button" class="button secondary" @click="addRow">
-                            <fa-icon icon="plus" />
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(variables, index) of rows" :key="`${index}:${name}`">
+                        <td v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex].name}:${variable.name}`">
+                            <div class="flex">
+                                <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex flex-col gap-1">
+                                <button v-if="rows.length > 1" type="button" class="button danger" @click="removeRow(index)">
+                                    <fa-icon icon="minus" />
+                                </button>
+                                <button v-if="index == rows.length - 1" type="button" class="button secondary" @click="addRow">
+                                    <fa-icon icon="plus" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </modal>
 </template>
 

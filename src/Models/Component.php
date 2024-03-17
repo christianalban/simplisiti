@@ -43,6 +43,7 @@ class Component extends Model
             if (collect(['datatable', 'datasource'])->contains($variable['type'])) {
                 return Value::parseValue([
                     ...$variable,
+                    'default' => Value::mergeContent($variable, $override),
                     'value' => Value::mergeContent($variable, $override),
                 ], [
                     'withData' => true,

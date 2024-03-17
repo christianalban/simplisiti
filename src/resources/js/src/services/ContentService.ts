@@ -76,6 +76,8 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 
         const variableValue = (value || variable.value) as DataSourceValue;
 
+        if (!variableValue) return acc;
+
         const renderedBucle = variableValue.reduce((accBucle: string, valueBucle: any) => {
             return accBucle + attribute.reduce((accAttribute: string, attribute: string[]) => {
                 const attributeToReplace = attribute[1];
