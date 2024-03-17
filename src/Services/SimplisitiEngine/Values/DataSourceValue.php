@@ -29,7 +29,7 @@ class DataSourceValue extends Value
         }
 
         if ($withData) {
-            $parsed['value'] = $container->getData($appliedSettings->toArray());
+            $parsed['value'] = $container?->getData($appliedSettings->toArray());
         }
 
         return $parsed;

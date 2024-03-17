@@ -53,7 +53,7 @@ trait PageUtils {
             'content' => collect($component['variables'])->reduce(function($content, $variable) use ($component) {
                 $content[$variable['name']] = null;
 
-                if (array_key_exists('content', $component)) {
+                if (array_key_exists('content', $component) && array_key_exists($variable['name'], $component['content'])) {
                     $content[$variable['name']] = $component['content'][$variable['name']];
                 }
 

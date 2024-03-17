@@ -56,6 +56,9 @@ class SettingManager {
 
         foreach ($this->settings as $setting) {
             $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
+            if(is_callable($setting['data'])) {
+                $setting['data'] = $setting['data']();
+            }
             if (array_key_exists($setting['plugin'], $settingMenu)) {
                 $settingMenu[$setting['plugin']]['items'][] = $setting;
             } else {
