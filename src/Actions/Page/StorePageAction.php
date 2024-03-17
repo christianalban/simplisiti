@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Page;
 
+use Alban\Simplisiti\Events\PageCreated;
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Traits\PageUtils;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,8 @@ class StorePageAction
             ]);
 
             $this->forPage($page)->createSections($data['sections']);
+
+            PageCreated::dispatch($page);
 
             return $page;
         });

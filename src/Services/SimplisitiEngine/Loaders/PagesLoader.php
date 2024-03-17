@@ -6,6 +6,7 @@ use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -45,7 +46,12 @@ class PagesLoader
 
         $this->app->init();
 
-        $pages = Page::withOrderedSectionsAndComponents()->get();
+        if (Cache::has('pages')) {
+            $pages = Cache::get('pages');
+        } else {
+            $pages = Page::withOrderedSectionsAndComponents()->get();
+            Cache::put('pages', $pages);
+        }
 
         $pages->each(function (Page $page) {
             Route::get($page->url, function () use ($page) {

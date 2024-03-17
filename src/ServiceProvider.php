@@ -1,9 +1,12 @@
 <?php
 namespace Alban\Simplisiti;
 
+use Alban\Simplisiti\Events;
+use Alban\Simplisiti\Listeners;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 
 class ServiceProvider extends Support\ServiceProvider
 {
@@ -30,5 +33,20 @@ class ServiceProvider extends Support\ServiceProvider
         ]);
 
         Blade::componentNamespace('Alban\\Simplisiti\\Components', 'simplisiti');
+
+        $this->registerEvents();
+    }
+
+    private function registerEvents()
+    {
+        Event::listen(
+            Events\PageCreated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\PageUpdated::class,
+            Listeners\ClearCache::class,
+        );
     }
 }

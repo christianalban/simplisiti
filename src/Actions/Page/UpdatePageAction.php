@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Page;
 
+use Alban\Simplisiti\Events\PageUpdated;
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Traits\PageUtils;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,8 @@ class UpdatePageAction
             });
 
             $this->createSections($toCreateSections->toArray());
+
+            PageUpdated::dispatch($page);
 
             return $page;
         });
