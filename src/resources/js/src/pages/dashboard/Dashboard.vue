@@ -6,6 +6,8 @@ import { useI18n } from 'vue-i18n';
 import { getStyles } from '../../services/StyleService';
 import { getScripts } from '../../services/ScriptService';
 import { getResources } from '../../services/ResourceService';
+import { clearAll } from '../../services/CacheService';
+import { showToast } from '../../services/ToastService';
 
 const { t } = useI18n();
 const componentsCount = ref(0);
@@ -13,6 +15,7 @@ const pagesCount = ref(0);
 const stylesCount = ref(0);
 const scriptsCount = ref(0);
 const resourcesCount = ref(0);
+const clearingCache = ref(false);
 const toolLinks = [
     {
         name: 'components.index',
@@ -67,6 +70,28 @@ const toolStatus = computed(() => [
     },
 ]);
 
+const clearCache = () => {
+    clearingCache.value = true;
+    clearAll()
+    .then(() => {
+        showToast({
+            title: t('toasts.success'),
+            message: t('cache.toasts.success'),
+            type: 'success',
+        });
+    })
+    .catch(() => {
+        showToast({
+            title: t('toasts.error'),
+            message: t('cache.toasts.error'),
+            type: 'error',
+        });
+    })
+    .finally(() => {
+        clearingCache.value = false;
+    })
+};
+
 onMounted(() => {
     getComponents()
     .then((response) => {
@@ -110,6 +135,19 @@ onMounted(() => {
                             <fa-icon v-if="!status.counter" class="text-yellow-500" icon="triangle-exclamation"/>
                             <fa-icon v-if="status.counter" class="text-green-500" icon="check"/>
                             {{ status.message }}
+                        </li>
+                    </ul>
+                    <hr class="my-4"/>
+                    <ul class="">
+                        <li class="tool-status hover:underline">
+                            <button @click="clearCache" v-if="!clearingCache">
+                                <fa-icon class="text-blue-500 mr-2" icon="brush"/>
+                                {{ $t('status.cacheClear') }}
+                            </button>
+                            <p v-else>
+                                <fa-icon class="text-blue-500 mr-2 animate-spin" icon="arrows-rotate"/>
+                                {{ $t('status.cacheClearing') }}
+                            </p>
                         </li>
                     </ul>
                 </div>

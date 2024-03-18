@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Script;
 
+use Alban\Simplisiti\Events\ScriptCreated;
 use Alban\Simplisiti\Models\Script;
 
 class StoreScriptAction
@@ -11,6 +12,8 @@ class StoreScriptAction
         $script = Script::make($data);
 
         $script->setNextOrder()->save();
+
+        ScriptCreated::dispatch($script);
 
         return $script;
     }

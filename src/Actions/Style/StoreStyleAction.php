@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Style;
 
+use Alban\Simplisiti\Events\StyleCreated;
 use Alban\Simplisiti\Models\Style;
 
 class StoreStyleAction
@@ -11,6 +12,8 @@ class StoreStyleAction
         $style = Style::make($data);
 
         $style->setNextOrder()->save();
+
+        StyleCreated::dispatch($style);
 
         return $style;
     }

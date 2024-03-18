@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Resource;
 
+use Alban\Simplisiti\Events\ResourceUpdated;
 use Alban\Simplisiti\Models\Resource;
 
 class UpdateResourceAction
@@ -17,6 +18,8 @@ class UpdateResourceAction
         }
 
         $resource->update($data);
+
+        ResourceUpdated::dispatch($resource);
 
         return $resource;
     }

@@ -48,5 +48,45 @@ class ServiceProvider extends Support\ServiceProvider
             Events\PageUpdated::class,
             Listeners\ClearCache::class,
         );
+
+        Event::listen(
+            Events\ComponentCreated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\ComponentUpdated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\ResourceCreated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\ResourceUpdated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\ScriptCreated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\ScriptUpdated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\StyleCreated::class,
+            Listeners\ClearCache::class,
+        );
+
+        Event::listen(
+            Events\StyleUpdated::class,
+            Listeners\ClearCache::class,
+        );
     }
 }

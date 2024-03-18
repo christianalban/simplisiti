@@ -2,7 +2,7 @@
  
 namespace Alban\Simplisiti\Listeners;
 
-use Illuminate\Support\Facades\Cache;
+use Alban\Simplisiti\Actions\Cache\ClearAllCacheAction;
 
 class ClearCache
 {
@@ -11,6 +11,6 @@ class ClearCache
      */
     public function handle(): void
     {
-        Cache::clear();
+        (new ClearAllCacheAction())->execute();
     }
 }

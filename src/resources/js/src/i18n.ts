@@ -19,6 +19,8 @@ const messages = {
             styles: "There isn't any styles sheet created yet. | {count} styles sheet loaded successfully. | {count} styles sheets loaded successfully.",
             scripts: "There isn't any script created yet. | {count} script loaded successfully. | {count} scripts loaded successfully.",
             resources: "There isn't any resource created yet. | {count} resource loaded successfully. | {count} resources loaded successfully.",
+            cacheClear: "Click to clear cache",
+            cacheClearing: "Clearing cache...",
         },
         components: {
             name: "Name",
@@ -265,6 +267,12 @@ const messages = {
                 addRepository: "Add repository",
             }
         },
+        cache: {
+            toasts: {
+                success: "Cache cleared successfully.",
+                error: "Cache couldn't be cleared.",
+            }
+        },
         buttons: {
             save: "Save",
             back: "Back",
@@ -302,6 +310,8 @@ const messages = {
             styles: "No hay hojas de estilos creadas aún. | {count} hoja de estilos cargada correctamente. | {count} hojas de estilos cargadas correctamente.",
             scripts: "No hay scripts creados aún. | {count} script cargado correctamente. | {count} scripts cargados correctamente.",
             resources: "No hay recursos creados aún. | {count} recurso cargado correctamente. | {count} recursos cargados correctamente.",
+            cacheClear: "Click para limpiar caché",
+            cacheClearing: "Limpiando caché...",
         },
         components: {
             name: "Nombre",
@@ -547,6 +557,12 @@ const messages = {
                 errorRepositoriesUpdated: "Lista de repositorios no pudo ser actualizada.",
                 errorGetPackages: "Lista de paquetes no pudo ser obtenida.",
             },
+        },
+        cache: {
+            toasts: {
+                success: "Caché limpiada correctamente.",
+                error: "Caché no pudo ser limpiada.",
+            }
         },
         buttons: {
             save: "Guardar",

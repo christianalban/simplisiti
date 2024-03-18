@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Actions\Resource;
 
+use Alban\Simplisiti\Events\ResourceCreated;
 use Alban\Simplisiti\Models\Resource;
 
 class StoreResourceAction
@@ -13,6 +14,10 @@ class StoreResourceAction
         $data['extension'] = $data['file']->getClientOriginalExtension();
         $data['size'] = $data['file']->getSize();
 
-        return Resource::create($data);
+        $resource = Resource::create($data);
+
+        ResourceCreated::dispatch($resource);
+
+        return $resource;
     }
 }
