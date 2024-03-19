@@ -45,7 +45,7 @@ class DataSourceManager {
         return $this;
     }
 
-    public function getDataContainer(string $key): DataContainer | null
+    public function getDataContainer(array|string $key): DataContainer | null
     {
         if (array_key_exists($key, $this->datasources)) {
             return $this->fetchDataSource($key);

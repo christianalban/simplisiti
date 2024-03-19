@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
 import ControlTypeSelector from "./ControlTypeSelector.vue";
-import { ref, PropType, onMounted } from "vue";
+import { ref, PropType, onMounted, watch } from "vue";
 import { Variable, VariableType } from '../../types/Variable';
 import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';
@@ -9,7 +9,6 @@ import VariableTypeSelector from "./VariableTypeSelector.vue";
 
 const props = defineProps({
     modelValue: {
-        type: [Object, String, Number, undefined] as PropType<DataTableValue | string | number | undefined>,
         required: true,
     },
     name: {
@@ -44,14 +43,14 @@ const rows = ref<Variable[][]>([[emptyVariable()]]);
 
 const showModal = ref(false);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:model-value']);
 
 const handleShowModal = () => {
     showModal.value = true;
 };
 
 const handleConfirm = () => {
-    emit('update:modelValue', {
+    emit('update:model-value', {
         columns: columns.value,
         rows: rows.value,
     });
@@ -106,8 +105,17 @@ const removeRow = (index: number) => {
 
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
-        columns.value = props.modelValue.columns;
-        rows.value = props.modelValue.rows;
+        const value = props.modelValue as DataTableValue;
+        columns.value = value.columns;
+        rows.value = value.rows;
+    }
+});
+
+watch(() => props.modelValue, (value) => {
+    if (value && typeof value === 'object') {
+        const value = props.modelValue as DataTableValue;
+        columns.value = value.columns;
+        rows.value = value.rows;
     }
 });
 

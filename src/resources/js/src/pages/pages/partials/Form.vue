@@ -15,9 +15,11 @@ import { getDefaultContent } from '../../../services/ComponentService';
 import SectionPreview from '../../../components/preview/SectionPreview.vue';
 import { useSources } from '../../../services/DataSourceService';
 import { replaceContentWithValues } from '../../../services/ContentService';
+import { useActions } from '../../../services/ActionService';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
+const { loadActions } = useActions();
 
 const props = defineProps({
     sections: {
@@ -110,6 +112,7 @@ const title = computed(() => {
 onMounted(() => {
     loadResources();
     loadSources();
+    loadActions();
 });
 
 </script>

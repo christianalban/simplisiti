@@ -11,12 +11,7 @@ class DataTableValue extends Value
             
         $rows = $this->default['rows'];
 
-        return [
-            'type' => $this->type,
-            'name' => $this->name,
-            'default' => $this->default,
-            'value' => $this->parseRecursive($rows),
-        ];
+        return $this->parseRecursive($rows);
     }
 
     private function parseRecursive(array $dataSet) {
@@ -42,11 +37,7 @@ class DataTableValue extends Value
     }
 
     public function merge(array|string|int|null $merge) {
-        $rows = $this->default['rows'];
-
-        if (isset($merge)) {
-            $rows = $this->mergeRecursive($rows, $merge['rows']);
-        }
+        $rows = $this->mergeRecursive($merge ? $merge['rows'] : $this->default['rows']);
 
         return [
             'columns' => $this->default['columns'],
@@ -54,23 +45,18 @@ class DataTableValue extends Value
         ];
     }
 
-    private function mergeRecursive(array $dataSet, array $merge) {
+    private function mergeRecursive(array $dataSet) {
         $data = [];
 
         foreach($dataSet as $rowkey => $dataSetRows) {
-            $data[] = collect($dataSetRows)->map(function($row, $key) use ($rowkey, $merge) {
+            $data[] = collect($dataSetRows)->map(function($row, $key) use ($rowkey) {
                 if ($row['type'] === 'datatable') {
-                    if (array_key_exists($key, $merge) && $merge[$rowkey][$key]['default']) {
-                        $row['default'] = [
-                            ...$row,
-                            'columns' => $row['default']['columns'],
-                            'rows' => $this->mergeRecursive($row['default']['rows'], $merge[$rowkey][$key]['default']['rows']),
-                        ];
-                    }
+                    $row['default'] = [
+                        'columns' => $row['default']['columns'],
+                        'rows' => $this->mergeRecursive($row['default']['rows']),
+                    ];
                 } else {
-                    if (array_key_exists($rowkey, $merge) && array_key_exists($key, $merge[$rowkey])) {
-                        $row['default'] = Value::mergeContent($row, $merge[$rowkey][$key]);
-                    }
+                    $row['default'] = Value::mergeContent($row, $row['default']);
                 }
 
                 return $row;

@@ -25,8 +25,7 @@ const updateIframe = (content: string) => {
         doc.close();
 
         iframe.value.onload = () => {
-            const firstChild = doc.body.firstChild as HTMLElement | null;
-            const bodyHeight = firstChild?.clientHeight;
+            const bodyHeight = doc.body.scrollHeight;
             if (iframe.value) {
                 iframe.value.style.height = `${bodyHeight}px`;
             }
@@ -61,11 +60,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <iframe
-        class="w-screen"
-        ref="iframe"
-        sandbox="allow-scripts allow-same-origin"
-    ></iframe>
+    <div class="relative">
+        <iframe
+            class="w-screen"
+            ref="iframe"
+            sandbox="allow-scripts allow-same-origin"
+        ></iframe>
+        <div class="absolute inset-0"></div>
+    </div>
 </template>
 
 <style scoped>

@@ -14,7 +14,6 @@ const props = defineProps({
         required: true,
     },
     modelValue: {
-        type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | DataSourceValue | null | undefined>,
         required: true,
     },
     name: {
@@ -29,26 +28,26 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:model-value']);
 
 const emitInputValue = (value: Event) => {
-    emit('update:modelValue', (value.target as HTMLInputElement).value);
+    emit('update:model-value', (value.target as HTMLInputElement).value);
 };
 
 const emitResourceValue = (value: number) => {
-    emit('update:modelValue', value);
+    emit('update:model-value', value);
 };
 
 const emitDataTableValue = (value: DataTableValue) => {
-    emit('update:modelValue', value);
+    emit('update:model-value', value);
 };
 
 const emitDataSourceValue = (value: DataSourceValue) => {
-    emit('update:modelValue', value);
+    emit('update:model-value', value);
 };
 
 const emitActionValue = (value: string) => {
-    emit('update:modelValue', value);
+    emit('update:model-value', value);
 };
 
 const { type } = toRefs(props);
@@ -58,7 +57,7 @@ const value = computed(() => {
 });
 
 watch(type, () => {
-    emit('update:modelValue', '');
+    emit('update:model-value', '');
 });
 
 </script>
@@ -67,7 +66,7 @@ watch(type, () => {
     <input v-if="type === 'text'" type="text" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
     <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ value }}</textarea>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
-    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="value as DataTableValue" @update:modelValue="emitDataTableValue($event)"/>
+    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
     <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
 </template>

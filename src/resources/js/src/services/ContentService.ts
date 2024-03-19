@@ -93,7 +93,7 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
     let htmlContent = html;
 
-    htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataSourceValue);
+    // htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataSourceValue);
 
     htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
 
