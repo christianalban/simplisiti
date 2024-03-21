@@ -49,7 +49,9 @@ const startResize = (event: MouseEvent) => {
     const initialWidth = resizedWidth.value;
 
     const handleMouseMove = (event: MouseEvent) => {
-        const newWidth = initialWidth + (event.clientX - initialX);
+        const newWidth = props.position === 'left'
+            ? initialWidth + (event.clientX - initialX)
+            : initialWidth - (event.clientX - initialX);
         resizedWidth.value = newWidth < 200 ? 200 : newWidth;
     };
 
