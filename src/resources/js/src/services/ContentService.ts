@@ -2,6 +2,7 @@ import { DataTableItem, DataTableValue } from "../types/DataTable";
 import { DataSourceValue } from "../types/DataSource";
 import { Variable, VariableType } from "../types/Variable"
 import { useResources } from "./ResourceService";
+import { ContentValue } from "../types/Component";
 
 const { resourceFromId } = useResources();
 
@@ -74,14 +75,15 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 
         const attribute = [...rawReplace.matchAll(new RegExp(/\@{[{!]+\s*\$dt->(.*.)(!!|})+}/g, ))];
 
-        const variableValue = (value || variable.value) as DataSourceValue;
+
+        const variableValue = (value || variable.value) as ContentValue;
 
         if (!variableValue) return acc;
 
         const renderedBucle = variableValue.reduce((accBucle: string, valueBucle: any) => {
             return accBucle + attribute.reduce((accAttribute: string, attribute: string[]) => {
-                const attributeToReplace = attribute[1];
-                const valueForReplace = attribute[0];
+                const attributeToReplace = attribute[1].trim();
+                const valueForReplace = attribute[0].trim();
                 return accAttribute.replaceAll(valueForReplace, valueBucle[attributeToReplace]);
             }, rawReplace);
         }, '');
@@ -93,9 +95,13 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
     let htmlContent = html;
 
-    // htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataSourceValue);
+    if (variable.type === 'datatable') {
+        htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataTableValue);
+    }
 
-    htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
+    if (variable.type === 'text' || variable.type === 'textarea') {
+        htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
+    }
 
     return htmlContent;
 }

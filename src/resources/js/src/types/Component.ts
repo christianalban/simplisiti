@@ -15,3 +15,7 @@ export interface Component {
     content_id?: number
     content?: ComponentContent
 }
+
+export interface ContentValue {
+    [key: string]: any
+}

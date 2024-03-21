@@ -9,6 +9,6 @@ class TextAreaValue extends Value
     }
 
     public function merge(array|string|int | null $merge) {
-        return $merge['default'] ?? $this->default;
+        return $merge ?? $this->default;
     }
 }
