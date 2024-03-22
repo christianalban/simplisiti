@@ -48,9 +48,30 @@ class ActionManager {
             $path = $action->getPath();
             $callable = $action->getAction();
             Route::$method($path, function(Request $request, ...$params) use ($key, $callable) {
-                $this->runBeforeEvents($request, $key);
-                $response = $callable($request, ...$params);
-                $this->runAfterEvents($request, $key);
+                $response = null;
+
+                $data = $this->runBeforeEvents($request, $key);
+                if ($data) {
+                    $response = $data;
+                    if ($response->getSession()->has('errors')) {
+                        return $response;
+                    
+                    };
+                }
+                
+                $data = $callable($request, ...$params);
+                if ($data) {
+                    $response = $data;
+
+                    if ($response->getSession()->has('errors')) {
+                        return $response;
+                    };
+                }
+
+                $data = $this->runAfterEvents($request, $key);
+                if ($data) {
+                    $response = $data;
+                }
 
                 return $response;
             
@@ -71,30 +92,54 @@ class ActionManager {
         ];
     }
 
-    protected function runBeforeEvents(Request $request, string $key): void
+    protected function runBeforeEvents(Request $request, string $key)
     {
+        $response = null;
+
+        if (!isset($this->events[$key])) {
+            return $response;
+        }
+
         foreach ($this->events[$key]['before'] as $event) {
-            $event($request);
+            $data = $event($request);
+            
+            if ($data) {
+                $response = $data;
+            }
         }
+
+        return $response;
     }
 
-    protected function runAfterEvents(Request $request, string $key): void
+    protected function runAfterEvents(Request $request, string $key)
     {
+        $response = null;
+
+        if (!isset($this->events[$key])) {
+            return $response;
+        }
+
         foreach ($this->events[$key]['after'] as $event) {
-            $event($request);
+            $data = $event($request);
+
+            if ($data) {
+                $response = $data;
+            }
         }
+
+        return $response;
     }
 
-    public function beforeAction(string $key, Closure $event): self
+    public function beforeAction(string $key, Closure $action): self
     {
-        $this->events[$key]['before'][] = $event;
+        $this->events[$key]['before'][] = $action;
 
         return $this;
     }
 
-    public function afterAction(string $key, Closure $event): self
+    public function afterAction(string $key, Closure $action): self
     {
-        $this->events[$key]['after'][] = $event;
+        $this->events[$key]['after'][] = $action;
 
         return $this;
     }

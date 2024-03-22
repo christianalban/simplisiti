@@ -67,9 +67,7 @@ const confirmDeleteComponent = () => {
 }
 
 onMounted(() => {
-    getPage(pageId, {
-        withData: true,
-    }).then((response) => {
+    getPage(pageId).then((response) => {
         const page = response.data.data;
         name.value = page.name;
         url.value = page.url;

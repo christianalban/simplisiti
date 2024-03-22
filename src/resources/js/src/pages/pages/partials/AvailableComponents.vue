@@ -35,9 +35,7 @@ const cloneComponent = (component: Component) => {
 
 const loadComponents = () => {
     isLoading.value = true;
-    getComponents({
-        withData: true,
-    })
+    getComponents()
     .then((response) => {
         availableComponents.value = response.data.data;
     })
