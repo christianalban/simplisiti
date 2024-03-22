@@ -95,8 +95,8 @@ export const replaceBucleContentWithValues = (content: string, variable: Variabl
 export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
     let htmlContent = html;
 
-    if (variable.type === 'datatable') {
-        htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataTableValue);
+    if (variable.type === 'datatable' || variable.type === 'datasource') {
+        htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataTableValue|DataSourceValue);
     }
 
     if (variable.type === 'text' || variable.type === 'textarea' || variable.type === 'resource') {
