@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 class ActionManager {
     private array $actions = [];
     private array $events = [];
+    private array $after = [];
+    private array $before = [];
     private string $selectedKey;
 
     public function getActionList(): array
@@ -44,6 +46,8 @@ class ActionManager {
     public function registerActions(): void
     {
         foreach ($this->actions as $key => $action) {
+            $this->associateAfterEvent($key);
+            $this->associateBeforeEvent($key);
             $method = $action->getMethod();
             $path = $action->getPath();
             $callable = $action->getAction();
@@ -92,6 +96,20 @@ class ActionManager {
         ];
     }
 
+    private function associateAfterEvent(string $key): void
+    {
+        if (array_key_exists($key, $this->after)) {
+            $this->events[$key]['after'] = $this->after[$key];
+        }
+    }
+
+    private function associateBeforeEvent(string $key): void
+    {
+        if (array_key_exists($key, $this->before)) {
+            $this->events[$key]['before'] = $this->before[$key];
+        }
+    }
+
     protected function runBeforeEvents(Request $request, string $key)
     {
         $response = null;
@@ -132,14 +150,14 @@ class ActionManager {
 
     public function beforeAction(string $key, Closure $action): self
     {
-        $this->events[$key]['before'][] = $action;
+        $this->before[$key][] = $action;
 
         return $this;
     }
 
     public function afterAction(string $key, Closure $action): self
     {
-        $this->events[$key]['after'][] = $action;
+        $this->after[$key][] = $action;
 
         return $this;
     }
