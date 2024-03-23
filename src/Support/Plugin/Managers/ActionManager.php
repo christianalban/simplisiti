@@ -83,21 +83,28 @@ class ActionManager {
         }
     }
 
-    public function asEvent(): void
+    public function asEvent(?string $alias = null): void
     {
-        $this->registerEvent($this->selectedKey);
+        $this->registerEvent($this->selectedKey, $alias);
     }
 
-    private function registerEvent(string $key): void
+    private function registerEvent(string $key, ?string $alias = null): void
     {
         $this->events[$key] = [
             'before' => [],
-            'after' => []
+            'after' => [],
+            'alias' => $alias
         ];
     }
 
     private function associateAfterEvent(string $key): void
     {
+        $alias = $this->events[$key]['alias'];
+
+        if ($alias && array_key_exists($alias, $this->after)) {
+            $this->events[$key]['after'] = $this->after[$alias];
+        }
+
         if (array_key_exists($key, $this->after)) {
             $this->events[$key]['after'] = $this->after[$key];
         }
@@ -105,6 +112,12 @@ class ActionManager {
 
     private function associateBeforeEvent(string $key): void
     {
+        $alias = $this->events[$key]['alias'];
+
+        if ($alias && array_key_exists($alias, $this->before)) {
+            $this->events[$key]['before'] = $this->before[$alias];
+        }
+
         if (array_key_exists($key, $this->before)) {
             $this->events[$key]['before'] = $this->before[$key];
         }
