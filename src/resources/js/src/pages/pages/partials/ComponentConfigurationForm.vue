@@ -32,7 +32,7 @@ const restoreDefault = (component: Component, name: string) => {
                 <label>{{ variable.name }}&colon;</label>
                 <fa-icon class="component-configuration-set-default" icon="arrows-rotate" @click="restoreDefault(component, variable.name)"/>
             </div>
-            <control-type-selector v-if="component.content" v-model="component.content[variable.name]" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
+            <control-type-selector :editStructure="false" v-if="component.content" v-model="component.content[variable.name]" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
         </div>
     </div>
 </template>

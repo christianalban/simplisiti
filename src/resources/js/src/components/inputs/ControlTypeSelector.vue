@@ -25,6 +25,10 @@ const props = defineProps({
     },
     class: {
         type: String as PropType<string>,
+    },
+    editStructure: {
+        type: Boolean as PropType<boolean>,
+        default: true,
     }
 });
 
@@ -66,7 +70,7 @@ watch(type, () => {
     <input v-if="type === 'text'" type="text" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
     <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ value }}</textarea>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
-    <data-table v-else-if="type === 'datatable'" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
+    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
     <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
 </template>

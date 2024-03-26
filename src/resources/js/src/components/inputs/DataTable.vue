@@ -15,6 +15,10 @@ const props = defineProps({
         type: String as PropType<string>,
         required: false,
     },
+    editStructure: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    }
 });
 
 interface EmptyVariableDefaults {
@@ -140,9 +144,9 @@ watch(() => props.modelValue, (value) => {
                         <th class="sticky top-0 z-10" v-for="(column, index) of columns">
                             <div class="flex">
                                 <div class="w-full form-group">
-                                    <input class="input" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')"/>
-                                    <variable-type-selector class="w-5" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
-                                    <button v-if="columns.length > 1" type="button" class="button danger" @click="removeColumn(index)">
+                                    <input class="input w-full" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')" :readonly="!editStructure"/>
+                                    <variable-type-selector v-if="editStructure" class="w-5" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
+                                    <button v-if="columns.length > 1 && editStructure" type="button" class="button danger" @click="removeColumn(index)">
                                         <fa-icon icon="minus" />
                                     </button>
                                 </div>
@@ -150,7 +154,7 @@ watch(() => props.modelValue, (value) => {
                         </th>
                         <th class="sticky top-0 z-10">
                             <div class="flex justify-center">
-                                <button v-if="columns.length >= 1" type="button" class="button primary" @click="addColumn">
+                                <button v-if="columns.length >= 1 && editStructure" type="button" class="button primary" @click="addColumn">
                                     <fa-icon icon="plus" />
                                 </button>
                             </div>
