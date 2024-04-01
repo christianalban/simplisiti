@@ -10,7 +10,7 @@ class MinifyAction implements PreviewAction
 {
     private string $type;
 
-    public function __construct(string $type): self
+    public function __construct(string $type)
     {
         $this->type = $type;
 
