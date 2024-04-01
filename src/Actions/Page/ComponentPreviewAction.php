@@ -21,8 +21,6 @@ class ComponentPreviewAction implements PreviewAction
     {
         $contentRenderer = new ContentRender();
 
-        $contentHtml = $contentRenderer->renderComponentContent($this->component, $this->content);
-
-        return str_replace("\n", '<br>', $contentHtml);
+        return $contentRenderer->renderComponentContent($this->component, $this->content);
     }
 }
