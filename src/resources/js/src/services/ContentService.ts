@@ -29,9 +29,10 @@ export const valueOfDataTableType = (content: string|number|DataTableValue|DataS
             const obj =  dataTableValue.columns.reduce((accColumn: DataTableItem, column) => {
                 const field = row.find((row) => row.name === column.name);
                 const fieldVariable = field?.value || field?.default;
-                if (!field || !fieldVariable) return accColumn;
 
-                const valueOfType = getValueOfType(field?.type, fieldVariable);
+                const valueOfType = (!field?.type || !fieldVariable)
+                    ? null
+                    : getValueOfType(field?.type, fieldVariable);
 
                 accColumn[column.name] = valueOfType;
 
