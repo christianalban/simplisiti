@@ -28,7 +28,7 @@ interface EmptyVariableDefaults {
 
 const sharedChildrenDataTableColumns: Column[] = [];
 
-const emptyVariable = ({type, name}: EmptyVariableDefaults = { type: 'text', name: ''}) => {
+const emptyVariable = ({type, name}: EmptyVariableDefaults = { type: 'text', name: ''}): Variable => {
     let defaultValue: string | number | DataTableValue | null = '';
 
     if (type === 'datatable') {
@@ -121,8 +121,8 @@ const removeRow = (index: number) => {
 
 const takeStructureFromFirstRow = () => {
     rows.value[0].forEach((variable, index) => {
-        if (variable.type === 'datatable') {
-            sharedChildrenDataTableColumns[index] = variable.default.columns || [emptyColumn()];
+        if (variable.type === 'datatable' && typeof variable.default === 'object') {
+            sharedChildrenDataTableColumns[index] = variable.default?.columns || [emptyColumn()];
         }
     });
 };
@@ -130,7 +130,7 @@ const takeStructureFromFirstRow = () => {
 const populateSharedChildrenDataTableColumns = () => {
     rows.value.forEach((row) => {
         row.forEach((variable, index) => {
-            if (variable.type === 'datatable') {
+            if (variable.type === 'datatable' && variable.default && typeof variable.default === 'object') {
                 variable.default.columns = sharedChildrenDataTableColumns[index];
             }
             variable.name = columns.value[index]?.name || '';
@@ -168,11 +168,11 @@ watch(() => props.modelValue, (value) => {
 
 watch(columns, (value) => {
     rows.value.forEach((row) => {
-        row.forEach((variable, index) => {
+        for (let index = 0; index < value.length; index++) {
             if (!value[index]) {
                 row.splice(index, 1);
             }
-        });
+        }
 
         value.forEach((column, index) => {
             if (!row[index] || row[index].type !== column.type) {

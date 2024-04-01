@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, PropType } from 'vue';
+import { ref, onMounted, PropType } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
-import { ComponentContent, Component } from "../../types/Component.ts";
+import { Component, ContentValue } from "../../types/Component.ts";
 
 const observer = useContentObserver();
 
@@ -15,7 +15,9 @@ const props = defineProps({
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
-const updateIframe = async (componentContent?: ComponentContent) => {
+const updateIframe = async (componentContent: ContentValue) => {
+    if (!props.component.id) return;
+
     const content = await getComponentPreview(props.component.id, componentContent);
 
     if (iframe.value) {
@@ -65,10 +67,6 @@ const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
 
     return [link, script];
 };
-
-// watch(() => props.componentId, (componentId) => {
-//     updateIframe(componentId);
-// });
 
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));

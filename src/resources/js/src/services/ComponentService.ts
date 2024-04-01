@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Component, ComponentContent } from "../types/Component";
+import { Component } from "../types/Component";
 import { Options } from "../types/Data";
 import { addQueryToUrlFromOptions } from "../utils/helpers";
 import { Variable } from "../types/Variable";

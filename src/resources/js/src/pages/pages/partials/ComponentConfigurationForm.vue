@@ -7,7 +7,7 @@ import { useContentObserver } from '../../../services/ContentService.ts';
 
 const observer = useContentObserver();
 
-const props = defineProps({
+defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },

@@ -12,9 +12,6 @@ import { useResources } from "../../../services/ResourceService";
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
 import ComponentPreview from '../../../components/preview/ComponentPreview.vue';
 import { useSources } from '../../../services/DataSourceService';
-// import { getValueOfType } from '../../../services/ContentService';
-// import { getDefaultContent } from '../../../services/ComponentService';
-// import { replaceContentWithValues } from '../../../services/ContentService';
 import { useActions } from '../../../services/ActionService';
 import { useContentObserver } from '../../../services/ContentService.ts';
 

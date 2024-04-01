@@ -3,7 +3,7 @@ import { Page, ResourcePreview } from "../types/Page";
 import { baseURL } from "../axios";
 import { Options } from "../types/Data";
 import { addQueryToUrlFromOptions } from "../utils/helpers";
-import { ComponentContent } from "../types/Component";
+import { ContentValue } from "../types/Component";
 
 export const createPage = async (page: Page): Promise<any> => {
     return await axios.post('page', page)
@@ -31,6 +31,6 @@ export const getResourcePreviewUrl = (type: ResourcePreview): string => {
     return `${baseURL}/page/${type}/preview`
 }
 
-export const getComponentPreview = async (componentId: number, content: ComponentContent): Promise<any> => {
+export const getComponentPreview = async (componentId: number, content: ContentValue): Promise<any> => {
     return await axios.post(`${baseURL}/page/component/preview?component=${componentId}`, { content })
 }
