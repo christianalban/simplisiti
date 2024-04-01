@@ -2,8 +2,10 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Page\ComponentPreviewAction;
 use Alban\Simplisiti\Actions\Page\DeletePageAction;
 use Alban\Simplisiti\Actions\Page\MinifyAction;
+use Alban\Simplisiti\Actions\Page\PreviewAction;
 use Alban\Simplisiti\Actions\Page\StorePageAction;
 use Alban\Simplisiti\Actions\Page\UpdatePageAction;
 use Alban\Simplisiti\Http\Resources\PageResource;
@@ -12,7 +14,9 @@ use Alban\Simplisiti\Queries\Page\IndexQuery;
 use Alban\Simplisiti\Requests\Page\StorePageRequest;
 use Alban\Simplisiti\Requests\Page\UpdatePageRequest;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Exceptions\InvalidPagePreviewActionException;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class PageController extends Controller {
 
@@ -69,11 +73,24 @@ class PageController extends Controller {
         ]);
     }
 
-    public function preview(string $type, MinifyAction $action) {
-        return response($action->forType($type)->execute(), 200, [
-            'Content-Type' => $type === 'style'
-                ? 'text/css'
-                : 'text/javascript'
+    public function preview(Request $request, string $type) {
+        $action = match ($type) {
+            'style' => new MinifyAction($type),
+            'script' => new MinifyAction($type),
+            'component' => new ComponentPreviewAction($request),
+        };
+
+        if (!$action instanceof PreviewAction) {
+            throw new InvalidPagePreviewActionException($action::class);
+        }
+
+        $contentType = match ($type) {
+            'style' => 'text/css',
+            'script' => 'text/javascript',
+            'component' => 'text/html',
+        };
+        return response($action->execute(), 200, [
+            'Content-Type' => $contentType
         ]);
     }
 }

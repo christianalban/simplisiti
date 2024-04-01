@@ -4,6 +4,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Content\ContentRender;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
@@ -68,20 +69,8 @@ class PagesLoader
 
     protected function renderContent(Page $page): string
     {
-        return $page->sections->reduce(function ($buildedContent, $section) {
-            $section->components->each(function ($component) use (&$buildedContent) {
-                $html = $component->html;
-                $content = $component->content;
+        $contentRender = new ContentRender();
 
-                $container = View::make('simplisiti::container', [
-                    'name' => $component->name,
-                    'content' => Blade::render($html, $content),
-                ]);
-
-                $buildedContent .= $container->render() . PHP_EOL;
-            });
-
-            return $buildedContent;
-        }, '');
+        return $contentRender->renderPageContent($page);
     }
 }

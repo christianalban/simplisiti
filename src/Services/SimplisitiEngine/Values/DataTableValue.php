@@ -37,7 +37,7 @@ class DataTableValue extends Value
     }
 
     public function merge(array|string|int|null $merge) {
-        $rows = $this->mergeRecursive($merge ? $merge['rows'] : $this->default['rows']);
+        $rows = $this->mergeRecursive($merge ? $merge['rows'] : $this->default['rows'], $this->default['columns']);
 
         return [
             'columns' => $this->default['columns'],
@@ -45,22 +45,25 @@ class DataTableValue extends Value
         ];
     }
 
-    private function mergeRecursive(array $dataSet) {
+    private function mergeRecursive(array $dataSet, array $columns) {
         $data = [];
 
-        foreach($dataSet as $rowkey => $dataSetRows) {
-            $data[] = collect($dataSetRows)->map(function($row, $key) use ($rowkey) {
+        foreach($dataSet as $dataSetRows) {
+            $data[] = collect($dataSetRows)->map(function($row) use ($columns) {
+                // if (!collect($columns)->contains('name', $row['name'])) {
+                //     return null;
+                // }
                 if ($row['type'] === 'datatable') {
                     $row['default'] = [
                         'columns' => $row['default']['columns'],
-                        'rows' => $this->mergeRecursive($row['default']['rows']),
+                        'rows' => $this->mergeRecursive($row['default']['rows'], $row['default']['columns']),
                     ];
                 } else {
                     $row['default'] = Value::mergeContent($row, $row['default']);
                 }
 
                 return $row;
-            })->toArray();
+            })->filter()->toArray();
         }
 
         return $data;

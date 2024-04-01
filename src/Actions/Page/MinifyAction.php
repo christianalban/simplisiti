@@ -6,20 +6,20 @@ use Alban\Simplisiti\Models\Script;
 use Alban\Simplisiti\Models\Style;
 use MatthiasMullie\Minify;
 
-class MinifyAction
+class MinifyAction implements PreviewAction
 {
     private string $type;
 
-    public function forType(string $type): self
+    public function __construct(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function execute(string $type = null): string
+    public function execute(): string
     {
-        $minifier = match ($type ?? $this->type) {
+        $minifier = match ($this->type) {
             'style' => $this->minifyCss(),
             'script' => $this->minifyJs(),
         };

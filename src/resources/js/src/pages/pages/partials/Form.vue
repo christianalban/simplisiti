@@ -10,23 +10,26 @@ import FloatToolbar from '../../../components/FloatToolbar.vue';
 import PageSectionsButtonAdd from '../partials/PageSectionButtonAdd.vue';
 import { useResources } from "../../../services/ResourceService";
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
-import { getValueOfType } from '../../../services/ContentService';
-import { getDefaultContent } from '../../../services/ComponentService';
-import SectionPreview from '../../../components/preview/SectionPreview.vue';
+import ComponentPreview from '../../../components/preview/ComponentPreview.vue';
 import { useSources } from '../../../services/DataSourceService';
-import { replaceContentWithValues } from '../../../services/ContentService';
+// import { getValueOfType } from '../../../services/ContentService';
+// import { getDefaultContent } from '../../../services/ComponentService';
+// import { replaceContentWithValues } from '../../../services/ContentService';
 import { useActions } from '../../../services/ActionService';
+import { useContentObserver } from '../../../services/ContentService.ts';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
 const { loadActions } = useActions();
+
+const observer = useContentObserver();
 
 const props = defineProps({
     sections: {
         type: Array as PropType<Section[]>,
         default: () => [
             {order: 0, components: []},
-            {order: 0, components: []}
+            {order: 1, components: []}
         ],
     },
     pageEditionMode: {
@@ -69,28 +72,15 @@ const enterToEditingMode = (component: Component, sectionIndex: number) => {
     pageEditionMode.value = 'editing-component';
     selectedComponent.value = component;
     selectedSection.value = sectionIndex;
+    observer.attach(component);
 };
 
 const exitFromEditMode = (): void => {
     isInvisible.value = true;
     pageEditionMode.value = 'adding-component';
+    observer.detach();
     selectedComponent.value = null;
     selectedSection.value = null;
-};
-
-const renderHtmlComponent = (component: Component): string => {
-    component.content = component.content || getDefaultContent(component);
-
-    const html =  component.variables.reduce((html, variable) => {
-        const contentValue = component.content && component.content[variable.name]
-            ? component.content[variable.name]
-            : component.variables.find(v => v.name === variable.name)?.default;
-        const value = contentValue ? getValueOfType(variable.type, contentValue) : '';
-
-        return replaceContentWithValues(html, variable, value);
-    }, component.html);
-
-    return html;
 };
 
 const isCurrentComponentSelected = (component: Component, sectionIndex: number): boolean => {
@@ -162,7 +152,7 @@ onMounted(() => {
                                     <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
                                         <div v-autosize class="page-sections-preview">
                                             <div class="page-sections-preview-content" v-autosize>
-                                                <section-preview :content="renderHtmlComponent(component)"/>
+                                                <component-preview :component="component"/>
                                             </div>
                                             <div class="page-sections-item-buttons">
                                                 <button class="page-sections-components-grip-lines">

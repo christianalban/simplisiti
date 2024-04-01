@@ -60,8 +60,11 @@ const value = computed(() => {
     return props.modelValue || props.defaultValue;
 });
 
-watch(type, () => {
-    emit('update:model-value', '');
+watch(type, (value) => {
+    emit('update:model-value', value === 'datatable'
+        ? { columns: [{name: '', type: 'text'}], rows: [[{}]] }
+        : ''
+    );
 });
 
 </script>

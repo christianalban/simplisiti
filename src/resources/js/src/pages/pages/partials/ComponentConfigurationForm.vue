@@ -3,8 +3,11 @@ import { PropType } from 'vue';
 import { Component } from '../../../types/Component';
 import ControlTypeSelector from '../../../components/inputs/ControlTypeSelector.vue';
 import { FloatToolbarPosition } from '../../../types/FloatToolbar';
+import { useContentObserver } from '../../../services/ContentService.ts';
 
-defineProps({
+const observer = useContentObserver();
+
+const props = defineProps({
     component: {
         type: Object as PropType<Component|null>,
     },
@@ -23,6 +26,10 @@ const restoreDefault = (component: Component, name: string) => {
     component.content[name] = null;
 }
 
+const emitComponentContentUpdated = () => {
+    observer.update();
+}
+
 </script>
 
 <template>
@@ -32,7 +39,7 @@ const restoreDefault = (component: Component, name: string) => {
                 <label>{{ variable.name }}&colon;</label>
                 <fa-icon class="component-configuration-set-default" icon="arrows-rotate" @click="restoreDefault(component, variable.name)"/>
             </div>
-            <control-type-selector :editStructure="false" v-if="component.content" v-model="component.content[variable.name]" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
+            <control-type-selector :editStructure="false" v-if="component.content" v-model="component.content[variable.name]" @update:model-value="emitComponentContentUpdated" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
         </div>
     </div>
 </template>

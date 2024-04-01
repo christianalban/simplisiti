@@ -2,7 +2,10 @@ import { DataTableItem, DataTableValue } from "../types/DataTable";
 import { DataSourceValue } from "../types/DataSource";
 import { Variable, VariableType } from "../types/Variable"
 import { useResources } from "./ResourceService";
-import { ContentValue } from "../types/Component";
+// import { ContentValue } from "../types/Component";
+
+import { Component, ComponentContent, ContentValue } from "../types/Component";
+import { ContentSubscriptions } from "../types/Content";
 
 const { resourceFromId } = useResources();
 
@@ -57,51 +60,116 @@ export const getValueOfType = (type: VariableType, content: string|number|DataTa
             return '';
     }
 }
+//
+// export const replaceTextContentWithValues = (content: string, variable: Variable, value: string|number): string => {
+//     return content.replaceAll(new RegExp(`{{\\s*\\$${variable.name}\\s*}}`, 'g'), valueOfTextType(value));
+// } 
+//
+// export const replaceTextAreaContentWithValues = (content: string, variable: Variable, value: string|number): string => {
+//     return content.replaceAll(new RegExp(`{!!\\s*\\$${variable.name}\\s*!!}`, 'g'), valueOfTextType(value)).replaceAll(new RegExp('\n', 'g'), '<br>');
+// }
+//
+// export const replaceBucleContentWithValues = (content: string, variable: Variable, value: DataSourceValue | DataTableValue): string => {
+//     const match = [...content.matchAll(new RegExp(`<x-simplisiti::list-render.*${variable.name}.*?</x-simplisiti::list-render>`, 'gs'))];
+//
+//     return match.reduce((acc, html) => {
+//         const htmlContent = html[0];
+//         const rawReplace = htmlContent
+//             ? htmlContent
+//                 .replace(new RegExp(/<x-simplisiti::list-render.*items.*>/, 'm'), '')
+//                 .replace(new RegExp(/<\/x-simplisiti::list-render>/, 'm'), '')
+//             : '';
+//
+//         const attribute = [...rawReplace.matchAll(new RegExp(/\@{[{!]+\s*\$dt->(.*.)(!!|})+}/g, ))];
+//
+//
+//         const variableValue = (value || variable.value) as ContentValue;
+//
+//         if (!variableValue) return acc;
+//
+//         const renderedBucle = variableValue.reduce((accBucle: string, valueBucle: any) => {
+//             return accBucle + attribute.reduce((accAttribute: string, attribute: string[]) => {
+//                 const attributeToReplace = attribute[1].trim();
+//                 const valueForReplace = attribute[0].trim();
+//                 return accAttribute.replaceAll(valueForReplace, valueBucle[attributeToReplace]);
+//             }, rawReplace);
+//         }, '');
+//
+//         return acc.replace(htmlContent, renderedBucle);
+//     }, content);
+// }
+//
+// export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
+//     let htmlContent = html;
+//
+//     if (variable.type === 'datatable' || variable.type === 'datasource') {
+//         htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataTableValue|DataSourceValue);
+//     }
+//
+//     if (variable.type === 'textarea') {
+//         htmlContent = replaceTextAreaContentWithValues(htmlContent, variable, content as string|number);
+//     }
+//
+//     if (variable.type === 'text' || variable.type === 'resource') {
+//         htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
+//     }
+//
+//     return htmlContent;
 
-export const replaceTextContentWithValues = (content: string, variable: Variable, value: string|number): string => {
-    return content.replaceAll(new RegExp(`{{\\s*\\$${variable.name}\\s*}}`, 'g'), valueOfTextType(value));
-} 
+// export const getDefaultContent = (component: Component, name?: string): any => {
+//     if (name) {
+//         return component.variables.find(variable => variable.name === name)?.default || '';
+//     }
+//
+//     return component.variables.reduce<ComponentContent>((content, variable) => {
+//         content[variable.name] = variable.default || '';
+//         return content;
+//     }, {})
+// }
 
-export const replaceBucleContentWithValues = (content: string, variable: Variable, value: DataSourceValue | DataTableValue): string => {
-    const match = [...content.matchAll(new RegExp(`<x-simplisiti::list-render.*${variable.name}.*?</x-simplisiti::list-render>`, 'gs'))];
+export const parseComponentContent = (component: Component, content?: ComponentContent): ContentValue => {
+    const componentContent =  component.variables.reduce((carrier, variable) => {
+        const contentValue = content && content[variable.name]
+            ? content[variable.name]
+            : component.variables.find(v => v.name === variable.name)?.default;
+        const value = contentValue ? getValueOfType(variable.type, contentValue) : '';
 
-    return match.reduce((acc, html) => {
-        const htmlContent = html[0];
-        const rawReplace = htmlContent
-            ? htmlContent
-                .replace(new RegExp(/<x-simplisiti::list-render.*items.*>/, 'm'), '')
-                .replace(new RegExp(/<\/x-simplisiti::list-render>/, 'm'), '')
-            : '';
+        carrier[variable.name] = value;
 
-        const attribute = [...rawReplace.matchAll(new RegExp(/\@{[{!]+\s*\$dt->(.*.)(!!|})+}/g, ))];
+        return carrier;
+    }, {} as ContentValue);
 
+    return componentContent;
+};
 
-        const variableValue = (value || variable.value) as ContentValue;
+export class ContentObserver {
+    private component?: Component;
+    private subscribedComponents: ContentSubscriptions = {};
 
-        if (!variableValue) return acc;
-
-        const renderedBucle = variableValue.reduce((accBucle: string, valueBucle: any) => {
-            return accBucle + attribute.reduce((accAttribute: string, attribute: string[]) => {
-                const attributeToReplace = attribute[1].trim();
-                const valueForReplace = attribute[0].trim();
-                return accAttribute.replaceAll(valueForReplace, valueBucle[attributeToReplace]);
-            }, rawReplace);
-        }, '');
-
-        return acc.replace(htmlContent, renderedBucle);
-    }, content);
-}
-
-export const replaceContentWithValues = (html: string, variable: Variable, content: string|number|DataSourceValue|DataTableItem): string => {
-    let htmlContent = html;
-
-    if (variable.type === 'datatable' || variable.type === 'datasource') {
-        htmlContent = replaceBucleContentWithValues(htmlContent, variable, content as DataTableValue|DataSourceValue);
+    subscribe(component: Component, callback: () => {}): void {
+        if (component.id) {
+            this.subscribedComponents[component.id] = callback;
+        }
     }
 
-    if (variable.type === 'text' || variable.type === 'textarea' || variable.type === 'resource') {
-        htmlContent = replaceTextContentWithValues(htmlContent, variable, content as string|number);
+    attach(component: Component): void {
+        this.component = component;
     }
 
-    return htmlContent;
+    detach(): void {
+        this.component = undefined;
+    }
+
+    update(): void {
+        if (this.component && this.component.id) {
+            this.subscribedComponents[this.component.id]?.(parseComponentContent(this.component, this.component?.content) || {});
+        }
+    }
 }
+
+const observer = new ContentObserver();
+
+export const useContentObserver = (): ContentObserver => {
+    return observer;
+}
+

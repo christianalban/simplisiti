@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
 import ControlTypeSelector from "./ControlTypeSelector.vue";
-import { ref, PropType, onMounted, watch } from "vue";
+import { ref, PropType, onMounted, watch, nextTick } from "vue";
 import { Variable, VariableType } from '../../types/Variable';
 import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';
@@ -26,13 +26,23 @@ interface EmptyVariableDefaults {
     name: string;
 }
 
+const sharedChildrenDataTableColumns: Column[] = [];
 
 const emptyVariable = ({type, name}: EmptyVariableDefaults = { type: 'text', name: ''}) => {
+    let defaultValue: string | number | DataTableValue | null = '';
+
+    if (type === 'datatable') {
+        defaultValue = {
+            columns: [emptyColumn()],
+            rows: [[emptyVariable()]]
+        };
+    }
+
     return {
         name,
         type,
         value: '',
-        default: '',
+        default: defaultValue,
     };
 }
 const emptyColumn = (type: VariableType = 'text') => {
@@ -93,6 +103,8 @@ const addRow = () => {
     });
 
     rows.value.push(newRow);
+
+    populateSharedChildrenDataTableColumns();
 };
 
 const removeColumn = (index: number) => {
@@ -107,11 +119,36 @@ const removeRow = (index: number) => {
     rows.value.splice(index, 1);
 };
 
+const takeStructureFromFirstRow = () => {
+    rows.value[0].forEach((variable, index) => {
+        if (variable.type === 'datatable') {
+            sharedChildrenDataTableColumns[index] = variable.default.columns || [emptyColumn()];
+        }
+    });
+};
+
+const populateSharedChildrenDataTableColumns = () => {
+    rows.value.forEach((row) => {
+        row.forEach((variable, index) => {
+            if (variable.type === 'datatable') {
+                variable.default.columns = sharedChildrenDataTableColumns[index];
+            }
+            variable.name = columns.value[index]?.name || '';
+        });
+    });
+};
+
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
         const value = props.modelValue as DataTableValue;
         columns.value = value.columns;
         rows.value = value.rows;
+
+        if (rows.value.length) {
+            takeStructureFromFirstRow();
+
+            populateSharedChildrenDataTableColumns();
+        }
     }
 });
 
@@ -120,8 +157,36 @@ watch(() => props.modelValue, (value) => {
         const value = props.modelValue as DataTableValue;
         columns.value = value.columns;
         rows.value = value.rows;
+
+        if (rows.value.length) {
+            takeStructureFromFirstRow();
+
+            populateSharedChildrenDataTableColumns();
+        }
     }
 });
+
+watch(columns, (value) => {
+    rows.value.forEach((row) => {
+        row.forEach((variable, index) => {
+            if (!value[index]) {
+                row.splice(index, 1);
+            }
+        });
+
+        value.forEach((column, index) => {
+            if (!row[index] || row[index].type !== column.type) {
+                row[index] = emptyVariable({ type: column.type, name: column.name });
+            }
+        });
+    });
+
+    nextTick(() => {
+        takeStructureFromFirstRow();
+        populateSharedChildrenDataTableColumns();
+    });
+
+}, { deep: true });
 
 </script>
 
@@ -163,9 +228,9 @@ watch(() => props.modelValue, (value) => {
                 </thead>
                 <tbody>
                     <tr v-for="(variables, index) of rows" :key="`${index}:${name}`">
-                        <td v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex].name}:${variable.name}`">
+                        <td v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
                             <div class="flex">
-                                <control-type-selector v-model="variable.default" :name="variable.name" :type="variable.type"/>
+                                <control-type-selector v-model="variable.default" :edit-structure="editStructure" :name="variable.name" :type="variable.type"/>
                             </div>
                         </td>
                         <td>

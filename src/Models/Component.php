@@ -66,4 +66,11 @@ class Component extends Model
             get: fn () => $content
         );
     }
+
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class)
+            ->using(ComponentSection::class)
+            ->withPivot('order', 'content');
+    }
 }

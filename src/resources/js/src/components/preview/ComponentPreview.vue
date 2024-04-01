@@ -1,25 +1,32 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { getResourcePreviewUrl } from "../../services/PageService.ts";
+import { ref, watch, onMounted, PropType } from 'vue';
+import { getResourcePreviewUrl, getComponentPreview } from "../../services/PageService.ts";
+import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
+import { ComponentContent, Component } from "../../types/Component.ts";
+
+const observer = useContentObserver();
 
 const props = defineProps({
-    content: {
-        type: String,
-        default: '',
-    },
+    component: {
+        type: Object as PropType<Component>,
+        required: true,
+    }
 });
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
-const updateIframe = (content: string) => {
+const updateIframe = async (componentContent?: ComponentContent) => {
+    const content = await getComponentPreview(props.component.id, componentContent);
+
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
+
         if (!doc) return;
 
         const [styleLink, scriptLink] = loadResourcesPreview();
 
         doc.open();
-        doc.write(content);
+        doc.write(content.data);
         doc.head.appendChild(styleLink);
         doc.body.appendChild(scriptLink);
         doc.close();
@@ -33,6 +40,15 @@ const updateIframe = (content: string) => {
     }
 };
 
+const resizeIframe = () => {
+    if (iframe.value) {
+        const doc = iframe.value.contentDocument;
+        if (!doc) return;
+
+        const bodyHeight = doc.body.offsetHeight;
+        iframe.value.style.height = `${bodyHeight}px`;
+    }
+};
 
 const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     const link = document.createElement('link');
@@ -50,12 +66,15 @@ const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     return [link, script];
 };
 
-watch(() => props.content, (content) => {
-    updateIframe(content);
-});
+// watch(() => props.componentId, (componentId) => {
+//     updateIframe(componentId);
+// });
 
 onMounted(() => {
-    updateIframe(props.content);
+    updateIframe(parseComponentContent(props.component, props.component.content));
+    observer.subscribe(props.component, (content) => {
+        updateIframe(content).then(() => resizeIframe());
+    });
 });
 </script>
 
