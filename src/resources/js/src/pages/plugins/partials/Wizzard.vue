@@ -13,11 +13,11 @@ defineEmits(['installing', 'installed', 'uninstalling', 'uninstalled', 'error'])
 </script>
 
 <template>
-    <div class="flex flex-col overflow-x-auto h-screen">
+    <div class="flex flex-col">
         <div class="w-full">
             <input type="search" class="input" v-model="search" :placeholder="$t('plugins.placeholders.searchPlugin')" />
         </div>
-        <div class="flex flex-col py-4">
+        <div class="flex flex-col py-4 overflow-x-auto h-[65vh]">
             <div v-if="plugins?.length" v-for="(plugin, index) of plugins" :key="plugin.name">
                 <plugin-item
                     :plugin="plugin"

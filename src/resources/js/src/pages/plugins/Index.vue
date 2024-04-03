@@ -54,7 +54,7 @@ const errorPackageLog = ({ name }: Plugin) => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-screen py-2 overflow-hidden">
+    <div class="flex flex-col gap-4 py-2 overflow-hidden">
         <h1 class="title">{{ $t('plugins.titles.index') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>

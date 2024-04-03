@@ -99,6 +99,10 @@ class ActionManager {
 
     private function associateAfterEvent(string $key): void
     {
+        if (!isset($this->events[$key])) {
+            return;
+        }
+
         $alias = $this->events[$key]['alias'];
 
         if ($alias && array_key_exists($alias, $this->after)) {
@@ -112,6 +116,10 @@ class ActionManager {
 
     private function associateBeforeEvent(string $key): void
     {
+        if (!isset($this->events[$key])) {
+            return;
+        }
+
         $alias = $this->events[$key]['alias'];
 
         if ($alias && array_key_exists($alias, $this->before)) {

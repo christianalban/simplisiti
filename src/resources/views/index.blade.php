@@ -5,8 +5,8 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="/vendor/simplisiti/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simplisiti Panel</title>
-    <script type="module" crossorigin src="/vendor/simplisiti/assets/index-949cd063.js"></script>
-    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-77d4d4ba.css">
+    <script type="module" crossorigin src="/vendor/simplisiti/assets/index-a7ac04a5.js"></script>
+    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-419cd8b6.css">
   </head>
   <body>
     <div id="app"></div>

@@ -12,5 +12,6 @@
     @include('simplisiti::partials.body')
     {!! $content !!}
     @include('simplisiti::partials.scripts')
+    @include('simplisiti::partials.body-append')
   </body>
 </html>

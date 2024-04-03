@@ -13,7 +13,7 @@ class Action extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $action,
+        public ?string $action,
         public array $params = [],
     ) {}
 
@@ -22,10 +22,12 @@ class Action extends Component
      */
     public function render(): View|Closure|string
     {
-        $actionData = app(SimplisitiApp::class)->getActionManager()->getAction($this->action);
+        $actionData = $this->action
+            ? app(SimplisitiApp::class)->getActionManager()->getAction($this->action)
+            : null;
 
         return view('simplisiti::components.action', [
-            'method' => strtoupper($actionData->getMethod()),
+            'method' => $actionData ? strtoupper($actionData->getMethod()) : 'POST',
         ]);
     }
 }
