@@ -20,30 +20,32 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-screen py-2">
+    <div class="flex flex-col gap-4 h-full py-2">
         <h1 class="title">{{ $t('pages.titles.pagesList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'pages.create' }">{{ $t('pages.buttons.create') }}</router-link>
         </div>
-        <group :items="pagesGroup" v-slot="slotProps">
-            <ul class="w-2/3 grid gap-4">
-                <li v-for="page of slotProps.item" class="flex">
-                    <a :href="`/spanel/pages/${page.id}`" class="button primary w-full flex items-center justify-between">
-                        <div class="flex flex-col">
-                            <span class="font-semibold">{{ page.name }}</span>
-                            <span>{{ $t('pages.labels.urlParam', { url: page.url }) }}</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <span>{{ $t('pages.labels.sectionsCount', { count: page.sections_count }) }}</span>
-                            <a :href="page.url" class="button small default" target="_blank">
-                                <fa-icon icon="up-right-from-square" />
-                            </a>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </group>
+        <div class="overflow-y-auto">
+            <group :items="pagesGroup" v-slot="slotProps">
+                <ul class="w-full md:w-2/3 grid gap-4">
+                    <li v-for="page of slotProps.item" class="flex">
+                        <a :href="`/spanel/pages/${page.id}`" class="button primary w-full flex items-center justify-between">
+                            <div class="flex flex-col">
+                                <span class="font-semibold">{{ page.name }}</span>
+                                <span>{{ $t('pages.labels.urlParam', { url: page.url }) }}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span>{{ $t('pages.labels.sectionsCount', { count: page.sections_count }) }}</span>
+                                <a :href="page.url" class="button small default" target="_blank">
+                                    <fa-icon icon="up-right-from-square" />
+                                </a>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </group>
+        </div>
     </div>
 </template>
 

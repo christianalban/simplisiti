@@ -87,10 +87,12 @@ const startResize = (event: MouseEvent) => {
                 </div>
             </div>
             <div :class="['float-toolbar-buttons', {
-                'float-toolbar-buttons-vertical': position === 'top',
+                'float-toolbar-buttons-vertical': ['top', 'bottom'].includes(position),
                 'float-toolbar-buttons-horizontal': ['left', 'right'].includes(position),
                 left: position === 'left',
                 right: position === 'right',
+                bottom: position === 'bottom',
+                top: position === 'top',
             }]">
                 <button
                     :class="['float-toolbar-button', {
@@ -247,6 +249,10 @@ const startResize = (event: MouseEvent) => {
                 width: 100%;
                 .float-toolbar-button {
                     padding: 0.15rem 0.5rem;
+                }
+
+                &.bottom .float-toolbar-button {
+                    top: -28px;
                 }
             }
 

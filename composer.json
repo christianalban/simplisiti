@@ -21,8 +21,8 @@
         }
     },
     "require": {
-        "illuminate/database": "^10.0",
-        "illuminate/support": "^10.0",
+        "illuminate/database": "^10||^11",
+        "illuminate/support": "^10||^11",
         "matthiasmullie/minify": "^1.3"
     }
 }

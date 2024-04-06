@@ -40,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <form @submit.prevent="update" class="flex flex-col gap-4 h-screen py-2">
+    <form @submit.prevent="update" class="flex flex-col gap-4 h-full overflow-y-auto py-2">
         <h1 class="title">{{ $t('settings.titles.settingsList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>

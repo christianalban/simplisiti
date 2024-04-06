@@ -12,7 +12,7 @@ class UpdateComponentAction
 
     public function execute(Component $component, array $data): Component
     {
-        $data = $this->setApplicationSettings($data);
+        $data = $this->setApplicationSettings($data, $component);
 
         $component->update($data);
 

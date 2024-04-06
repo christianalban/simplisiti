@@ -64,14 +64,14 @@ const refreshResources = () => {
         :showCancel="false"
         :confirmLabel="$t('buttons.close')"
     >
-        <div class="flex justify-between mb-4">
+        <div class="flex flex-col md:flex-row gap-2 justify-between mb-4">
             <button type="button" @click="refreshResources" class="button secondary">
                 <fa-icon icon="sync" :class="{'animate-spin': isLoading}"/>
                 {{ $t('resources.buttons.refresh') }}
             </button>
             <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
         </div>
-        <div class="grid grid-cols-3 gap-2 overflow-y-auto max-h-[70vh]">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 overflow-y-auto max-h-[70vh]">
             <button type="button" @click="handleSelectResource(resource.id as number)" v-for="resource of filteredResources" class="button primary flex flex-col gap-2 justify-center items-center">
                 <resource-preview :url="resource.url" />
                 <span>{{ resource.name }}</span>

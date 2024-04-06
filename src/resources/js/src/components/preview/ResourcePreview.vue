@@ -18,7 +18,7 @@ defineProps({
 
 <style scoped>
 .resource-container {
-    @apply h-32 !max-h-full flex items-center justify-center;
+    @apply h-full flex items-center justify-center bg-gray-100;
 
     img, video {
         @apply !max-w-full !max-h-full;

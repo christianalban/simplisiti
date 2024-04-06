@@ -2,15 +2,20 @@
 
 namespace Alban\Simplisiti\Support\Action;
 
+use Alban\Simplisiti\Models\Component;
+
 trait HandleSettings {
     
-    public function setApplicationSettings(array $data): array
+    public function setApplicationSettings(array $data, Component $component): array
     {
-        $data['variables'] = collect($data['variables'])->map(function ($variable) {
-            $variable['applied_settings'] = [];
+        $data['variables'] = collect($data['variables'])->map(function ($variable) use ($component) {
+            $variables = collect(json_decode($component->getAttributes()['variables'], true));
+            $variable['applied_settings'] = $variables->firstWhere('name', $variable['name'])['applied_settings'] ?? [];
+
             if (!isset($variable['settings'])) {
                 return $variable;
             }
+
             foreach ($variable['settings'] as $setting) {
                 $collectSetting = collect($setting);
                 $variable['applied_settings'] = $collectSetting->flatMap(function ($settingItem) use ($variable) {

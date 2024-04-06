@@ -86,7 +86,7 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
         && selectedSection.value === sectionIndex;
 };
 
-const position = ref<FloatToolbarPosition>('left');
+const position = ref<FloatToolbarPosition>('bottom');
 
 const togglePosition = () => {
     position.value = position.value === 'left' ? 'right' : 'left';

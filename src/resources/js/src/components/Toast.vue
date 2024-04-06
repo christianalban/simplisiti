@@ -34,11 +34,11 @@ const props = defineProps({
     }
 
     &.bottom-right {
-        @apply bottom-0 right-0;
+        @apply left-0 md:left-auto bottom-0 right-0;
     }
 
     &.bottom-left {
-        @apply bottom-0 left-0;
+        @apply right-0 md:right-auto bottom-0 left-0;
     }
 }
 

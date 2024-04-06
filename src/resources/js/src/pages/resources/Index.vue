@@ -69,17 +69,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-screen py-2">
+    <div class="flex flex-col gap-4 h-full overflow-y-auto py-2">
         <h1 class="title">{{ $t('resources.titles.resourcesList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <button type="button" class="button primary" @click="handleShowCreateModal">{{ $t('resources.buttons.create') }}</button>
         </div>
-        <ul class="grid grid-cols-5 gap-4">
+        <ul class="grid grid-cols-2 md:grid-cols-5 gap-4">
             <li v-for="resource of resources" class="flex">
-                <div type="button" class="button primary w-full flex flex-col items-center justify-between">
+                <div type="button" class="rounded border border-blue-200 w-full flex flex-col items-center justify-between overflow-hidden">
                     <resource-preview :url="resource.url" />
-                    <div class="flex w-full justify-between mt-4">
+                    <div class="flex w-full justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
                         <span class="font-semibold">{{ resource.name }}</span>
                         <div class="flex gap-2">
                             <button @click="setSelectedResource(resource)">

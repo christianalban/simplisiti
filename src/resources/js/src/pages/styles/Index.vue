@@ -30,14 +30,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-screen py-2">
+    <div class="flex flex-col gap-4 h-full overflow-y-auto py-2">
         <h1 class="title">{{ $t('styles.titles.stylesList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'styles.create' }">{{ $t('styles.buttons.create') }}</router-link>
         </div>
         <draggable-list
-            class="w-1/5 grid gap-4"
+            class="md:w-1/5 grid gap-4"
             :list="styles"
             @update:list="saveOrder"
         />
