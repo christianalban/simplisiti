@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PropType, computed, ref } from 'vue';
 import { FloatToolbarPosition } from '../types/FloatToolbar';
+import { isMobileScreen } from '../utils/helpers.ts';
 
 const props = defineProps({
     position: {
@@ -26,6 +27,8 @@ const props = defineProps({
 const resizedWidth = ref(500);
 
 defineEmits(['update:isInvisible']);
+
+const isMobile = ref(isMobileScreen());
 
 const positionClass = computed(() => {
     return `position-${props.position}-0`;
@@ -64,10 +67,22 @@ const startResize = (event: MouseEvent) => {
     window.addEventListener('mouseup', handleMouseUp);
 };
 
+const floatWidth = computed(() => {
+    if (isMobile.value) {
+        return '100%';
+    }
+
+    if (props.canResize && !props.isInvisible) {
+        return `${resizedWidth.value}px`;
+    }
+
+    return `${ ['left', 'right'].includes(props.position) ? 'initial' : '100%'}`
+});
+
 </script>
 
 <template>
-    <div :style="{width: canResize && !isInvisible ? `${resizedWidth}px` : `${ ['left', 'right'].includes(position) ? 'initial' : '100%'}`}" :class="['float-toolbar', flexDirectionClass, positionClass, {
+    <div :style="{width: floatWidth}" :class="['float-toolbar', flexDirectionClass, positionClass, {
         'float-toolbar-top': position === 'top',
         'float-toolbar-right': ['left', 'right'].includes(position),
     }]">
@@ -124,10 +139,7 @@ const startResize = (event: MouseEvent) => {
 }
 
 .float-toolbar {
-    z-index: 100;
-    position: fixed;
-    display: flex;
-    max-width: 95vw;
+    @apply z-[100] fixed flex w-full md:max-w-[95vw];
 
     &.position-left {
         flex-direction: row;
@@ -198,13 +210,10 @@ const startResize = (event: MouseEvent) => {
         }
 
         .float-toolbar-accordion {
-            width: 100%;
-            height: 100%;
+            @apply w-full md:h-full;
 
             &.float-toolbar-accordion-contracted {
-                overflow: hidden;
-
-                
+                @apply overflow-hidden;
             }
 
             &.float-toolbar-accordion-contracted-vertical {
@@ -252,7 +261,7 @@ const startResize = (event: MouseEvent) => {
                 }
 
                 &.bottom .float-toolbar-button {
-                    top: -28px;
+                    top: -25px;
                 }
             }
 

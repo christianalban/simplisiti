@@ -49,3 +49,5 @@ export const addQueryToUrlFromOptions = (url: string, options?: Options, query?:
 
     return urlFinal;
 }
+
+export const isMobileScreen = (): boolean => window.innerWidth < 768;

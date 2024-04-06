@@ -34,12 +34,14 @@ const isInvisible = ref(true);
     <float-toolbar v-model:isInvisible="isInvisible" :showLabel="$t('pages.buttons.settings')">
         <div class="toolbar-container">
             <div class="toolbar-actions">
-                <router-link class="button-link" :to="{ name: 'pages.index' }">
-                    <fa-icon icon="arrow-left" />
-                    {{ $t('buttons.back') }}
-                </router-link>
-                <button v-if="showDelete" @click="$emit('delete')" type="button" class="button-link danger">{{ $t('buttons.delete') }}</button>
-                <button type="submit" class="button-link">{{ $t('buttons.save') }}</button>
+                <div class="flex gap-2">
+                    <router-link class="button secondary" :to="{ name: 'pages.index' }">
+                        <fa-icon icon="arrow-left" />
+                        {{ $t('buttons.back') }}
+                    </router-link>
+                    <button v-if="showDelete" @click="$emit('delete')" type="button" class="button danger">{{ $t('buttons.delete') }}</button>
+                    <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+                </div>
                 <h1 class="title">
                     {{ title }}
                     <a v-if="showDelete" :href="url" target="_blank">
@@ -70,10 +72,10 @@ const isInvisible = ref(true);
     @apply p-4;
 
     .toolbar-actions {
-        @apply flex gap-2 w-full mb-4 items-center;
+        @apply flex gap-2 w-full mb-4 flex-col md:flex-row;
 
         .title {
-            @apply ml-auto italic;
+            @apply md:ml-auto italic;
 
             a {
                 @apply ml-2 text-sm text-blue-500;
@@ -92,7 +94,7 @@ const isInvisible = ref(true);
     }
 
     .toolbar-route {
-        @apply grid grid-cols-3 gap-4;
+        @apply grid grid-cols-1 md:grid-cols-3 gap-4;
 
         .toolbar-route-input {
             @apply flex flex-col gap-1;

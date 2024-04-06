@@ -14,6 +14,7 @@ import ComponentPreview from '../../../components/preview/ComponentPreview.vue';
 import { useSources } from '../../../services/DataSourceService';
 import { useActions } from '../../../services/ActionService';
 import { useContentObserver } from '../../../services/ContentService.ts';
+import { isMobileScreen } from '../../../utils/helpers';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
@@ -86,7 +87,9 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
         && selectedSection.value === sectionIndex;
 };
 
-const position = ref<FloatToolbarPosition>('bottom');
+const isMobile = ref(isMobileScreen());
+
+const position = ref<FloatToolbarPosition>(isMobile.value ? 'bottom' : 'left');
 
 const togglePosition = () => {
     position.value = position.value === 'left' ? 'right' : 'left';
@@ -105,8 +108,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t('pages.buttons.components')" :canResize="true">
-        <div class="w-full p-4 h-screen flex flex-col overflow-y-auto">
+    <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t(pageEditionMode === 'editing-component' ? 'pages.buttons.settings' : 'pages.buttons.components')" :canResize="true">
+        <div class="w-full p-4 h-full flex flex-col overflow-y-auto h-[60vh]">
             <div :class="`component-configuration-title ${position}`">
                 <h2>{{ $t(`pages.titles.${title}`) }}</h2>
                 <div>
@@ -114,7 +117,7 @@ onMounted(() => {
                         <button type="button" class="button small default" @click="exitFromEditMode">
                             {{ $t('pages.buttons.exit') }}
                         </button>
-                        <button type="button" class="button small default button-position" @click="togglePosition">
+                        <button v-if="!isMobile" type="button" class="button small default button-position" @click="togglePosition">
                             <fa-icon icon="border-top-left" />
                         </button>
                     </div>
