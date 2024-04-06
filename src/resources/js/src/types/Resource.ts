@@ -1,7 +1,9 @@
 export interface Resource {
     id?: number
-    name: string
+    name?: string
     path?: string
     url?: string
-    file?: File
+    file?: File | File[]
 }
+
+export type ResourceUploadType = 'single' | 'batch'

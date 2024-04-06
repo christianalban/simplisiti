@@ -2,16 +2,20 @@
 import { ref } from 'vue';
 import ResourcesForm from './partials/Form.vue';
 import Modal from '../../components/Modal.vue';
-import { createResource } from '../../services/ResourceService';
+import { createResource, createResourceBatch } from '../../services/ResourceService';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-defineProps({
+const props = defineProps({
     showModal: {
         type: Boolean,
         required: true,
-    }
+    },
+    uploadType: {
+        type: String as PropType<ResourceUploadType>,
+        default: 'single',
+    },
 });
 
 const name = ref('');
@@ -20,10 +24,9 @@ const file = ref(undefined);
 const emit = defineEmits(['created', 'update:showModal']);
 
 const save = () => {
-    createResource({
-        name: name.value,
-        file: file.value,
-    })
+    const saveAction = props.uploadType === 'single' ? saveSingle : saveBatch;
+
+    saveAction()
     .then(() => {
         showToast({
             title: t('toasts.success'),
@@ -39,8 +42,17 @@ const save = () => {
             message: t('resources.toasts.errorCreated'),
             type: 'error',
         });
-    })
+    });
 }
+
+const saveSingle = () => createResource({
+    name: name.value,
+    file: file.value,
+});
+
+const saveBatch = () => createResourceBatch({
+    file: file.value,
+});
 
 </script>
 
@@ -55,6 +67,7 @@ const save = () => {
             v-model:name="name"
             v-model:file="file"
             :fileRequired="true"
+            :uploadType="uploadType"
         />
     </modal>
 </template>

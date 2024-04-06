@@ -13,6 +13,7 @@ class StoreResourceAction
         $data['mime_type'] = $data['file']->getMimeType();
         $data['extension'] = $data['file']->getClientOriginalExtension();
         $data['size'] = $data['file']->getSize();
+        $data['name'] = $data['name'] ?? $data['file']->getClientOriginalName();
 
         $resource = Resource::create($data);
 

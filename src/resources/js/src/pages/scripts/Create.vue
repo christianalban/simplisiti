@@ -39,10 +39,12 @@ const save = () => {
 
 <template>
     <form @submit.prevent="save">
-        <div class="flex gap-4 mb-4 w-full">
-            <router-link class="button default" :to="{ name: 'scripts.index' }">{{ $t('buttons.back') }}</router-link>
+        <div class="flex flex-col gap-4 mb-4 w-full">
             <h1 class="title">{{ $t('scripts.titles.createScript') }}</h1>
-            <button type="submit" class="button primary ml-auto">{{ $t('buttons.save') }}</button>
+            <div class="flex gap-2">
+                <router-link class="button default" :to="{ name: 'scripts.index' }">{{ $t('buttons.back') }}</router-link>
+                <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+            </div>
         </div>
         <scripts-form
             v-model:code="code"

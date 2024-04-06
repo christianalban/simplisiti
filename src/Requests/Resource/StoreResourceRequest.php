@@ -14,7 +14,7 @@ class StoreResourceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:resources',
+            'name' => 'nullable|string|max:255|unique:resources',
             'file' => 'required|file|mimetypes:image/jpeg,image/svg+xml,image/png,image/webp,video/mp4,application/pdf,image/gif,application/vnd.rar,application/x-7z-compressed,font/woff,font/woff2,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,font/ttf,image/vnd.microsoft.icon',
         ];
     }

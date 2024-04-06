@@ -3,11 +3,13 @@
 namespace Alban\Simplisiti\Controllers;
 
 use Alban\Simplisiti\Actions\Resource\DeleteResourceAction;
+use Alban\Simplisiti\Actions\Resource\StoreBatchResourceAction;
 use Alban\Simplisiti\Actions\Resource\StoreResourceAction;
 use Alban\Simplisiti\Actions\Resource\UpdateResourceAction;
 use Alban\Simplisiti\Http\Resources\ResourceResource;
 use Alban\Simplisiti\Models\Resource;
 use Alban\Simplisiti\Queries\Resource\IndexQuery;
+use Alban\Simplisiti\Requests\Resource\StoreBatchResourceRequest;
 use Alban\Simplisiti\Requests\Resource\StoreResourceRequest;
 use Alban\Simplisiti\Requests\Resource\UpdateResourceRequest;
 use App\Http\Controllers\Controller;
@@ -45,6 +47,15 @@ class ResourceController extends Controller {
 
         return response()->json([
             'message' => 'Resource deleted successfully',
+        ]);
+    }
+
+    public function storeBatch(StoreBatchResourceRequest $request, StoreBatchResourceAction $action) {
+
+        $action->execute($request->validated());
+
+        return response()->json([
+            'message' => 'Resource batch created successfully',
         ]);
     }
 }

@@ -6,17 +6,18 @@ import { updateResource } from '../../services/ResourceService';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
 import { Resource } from '../../types/Resource';
+import { ResourceUploadType } from '../../../types/Resource';
 
 const { t } = useI18n();
 const props = defineProps({
     selectedResource: {
-        type: Object as PropType<Resource|null>,
+        type: [Object, null] as PropType<Resource|null>,
         required: true,
     },
     showModal: {
         type: Boolean,
         required: true,
-    }
+    },
 });
 
 const name = ref('');

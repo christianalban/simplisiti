@@ -27,6 +27,7 @@ onMounted(() => {
             minimap: {
                 enabled: false,
             },
+            automaticLayout: true,
         });
 
         codeEditor.onDidChangeModelContent(() => {
@@ -46,7 +47,9 @@ watch(code, (code) => {
 </script>
 
 <template>
-    <div class="w-full h-full" ref="editor"></div>
+    <div class="overflow-hidden flex-1">
+        <div class="w-full h-full" ref="editor"></div>
+    </div>
 </template>
 
 <style scoped>

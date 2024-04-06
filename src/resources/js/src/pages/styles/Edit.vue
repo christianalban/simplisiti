@@ -76,11 +76,13 @@ onMounted(() => {
 
 <template>
     <form @submit.prevent="update">
-        <div class="flex gap-4 mb-4 w-full">
-            <router-link class="button default" :to="{ name: 'styles.index' }">{{ $t('buttons.back') }}</router-link>
+        <div class="flex flex-col gap-4 mb-4 w-full">
             <h1 class="title">{{ $t('styles.titles.updateStyle') }}</h1>
-            <button @click="showDeleteDialog" type="button" class="button danger ml-auto">{{ $t('buttons.delete') }}</button>
-            <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+            <div class="flex gap-2">
+                <router-link class="button default" :to="{ name: 'styles.index' }">{{ $t('buttons.back') }}</router-link>
+                <button @click="showDeleteDialog" type="button" class="button danger">{{ $t('buttons.delete') }}</button>
+                <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+            </div>
         </div>
         <styles-form
             v-model:code="code"

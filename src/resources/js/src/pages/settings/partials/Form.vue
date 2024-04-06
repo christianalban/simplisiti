@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 overflow-y-auto h-full">
         <div v-for="setting of props.settingMenu" class="flex flex-col gap-4">
             <h2 class="title">{{ setting.label }}</h2>
             <p class="text-sm italic" v-if="setting.description">{{ setting.description }}</p>

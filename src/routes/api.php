@@ -45,6 +45,7 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
 
     Route::controller(Controllers\ResourceController::class)->group(function () {
         Route::post('resource', 'store');
+        Route::post('resource/batch', 'storeBatch');
         Route::get('resource', 'index');
         Route::get('resource/{resource}', 'show');
         Route::put('resource/{resource}', 'update');

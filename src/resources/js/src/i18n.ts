@@ -206,6 +206,7 @@ const messages = {
             labels: {
                 resourceName: "Resource name",
                 resourceFile: "Resource file",
+                resourceFiles: "Files to upload",
             },
             toasts: {
                 created: "Resource created successfully.",
@@ -216,7 +217,7 @@ const messages = {
                 errorDeleted: "Resource couldn't be deleted.",
             },
             placeholders: {
-                resourceName: "Resource name",
+                resourceName: "Resource name (optional)",
                 resourceFile: "Resource file",
             },
             dialogs: {
@@ -227,6 +228,7 @@ const messages = {
             },
             buttons: {
                 create: "New resource",
+                createBatch: "Uplaod batch",
                 refresh: "Refresh resources list",
             },
         },
@@ -497,6 +499,7 @@ const messages = {
             labels: {
                 resourceName: "Nombre del recurso",
                 resourceFile: "Archivo del recurso",
+                resourceFiles: "Archivos a subir",
             },
             toasts: {
                 created: "Recurso creado correctamente.",
@@ -507,7 +510,7 @@ const messages = {
                 errorDeleted: "Recurso no pudo ser eliminado.",
             },
             placeholders: {
-                resourceName: "Nombre del recurso",
+                resourceName: "Nombre del recurso (optional)",
                 resourceFile: "Archivo del recurso",
             },
             dialogs: {
@@ -518,6 +521,7 @@ const messages = {
             },
             buttons: {
                 create: "Nuevo recurso",
+                createBatch: "Subir lote",
                 refresh: "Actualizar listado de recursos",
             },
         },

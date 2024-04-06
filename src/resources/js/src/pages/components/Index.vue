@@ -20,13 +20,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-full overflow-y-auto py-2">
+    <div class="flex flex-col gap-4 h-full py-2">
         <h1 class="title">{{ $t('components.titles.componentsList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <router-link class="button primary" :to="{ name: 'components.create' }">{{ $t('components.buttons.create') }}</router-link>
         </div>
-        <group :items="componentsGroup" v-slot="slotProps">
+        <group class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps">
             <div class="grid grid-cols-2 md:grid-cols-6 gap-4 py-4">
                 <router-link v-for="(item, key) in slotProps.item" :key="key" :to="{ name: 'components.edit', params: { component: item.id } }" class="tile">
                     <span class="tile-title">

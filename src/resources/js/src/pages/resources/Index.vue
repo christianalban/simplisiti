@@ -14,8 +14,15 @@ const showEditModal = ref(false);
 const showDeleteDialog = ref(false);
 const selectedResource = ref<Resource|null>(null);
 const { t } = useI18n();
+const uploadType = ref('single');
 
 const handleShowCreateModal = () => {
+    uploadType.value = 'single';
+    showCreateModal.value = true;
+}
+
+const handleShowCreateBatchModal = () => {
+    uploadType.value = 'batch';
     showCreateModal.value = true;
 }
 
@@ -69,17 +76,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 h-full overflow-y-auto py-2">
+    <div class="flex flex-col gap-4 h-full py-2">
         <h1 class="title">{{ $t('resources.titles.resourcesList') }}</h1>
         <div class="flex gap-2">
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <button type="button" class="button primary" @click="handleShowCreateModal">{{ $t('resources.buttons.create') }}</button>
+            <button type="button" class="button primary" @click="handleShowCreateBatchModal">{{ $t('resources.buttons.createBatch') }}</button>
         </div>
-        <ul class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <ul class="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-y-auto">
             <li v-for="resource of resources" class="flex">
-                <div type="button" class="rounded border border-blue-200 w-full flex flex-col items-center justify-between overflow-hidden">
+                <div type="button" class="rounded border border-blue-200 w-full flex flex-col items-center justify-between overflow-hidden h-44">
                     <resource-preview :url="resource.url" />
-                    <div class="flex w-full justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
+                    <div class="flex w-full h-10 justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
                         <span class="font-semibold">{{ resource.name }}</span>
                         <div class="flex gap-2">
                             <button @click="setSelectedResource(resource)">
@@ -97,6 +105,7 @@ onMounted(() => {
     <create-resource
         v-model:showModal="showCreateModal"
         @created="fetchResources"
+        :uploadType="uploadType"
     />
     <edit-resource
         v-model:showModal="showEditModal"

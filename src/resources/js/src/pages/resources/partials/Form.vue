@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { value } from '../../../utils/helpers';
+import { ResourceUploadType } from '../../../types/Resource';
 
-defineProps({
+const props = defineProps({
     name: {
         type: String,
         required: true,
     },
     file: {
-        type: [Object, null] as PropType<File|null>,
+        type: [Array, Object, null] as PropType<File[]|File|null>,
         default: null,
     },
     fileRequired: {
         type: Boolean,
         default: false,
+    },
+    uploadType: {
+        type: String as PropType<ResourceUploadType>,
+        default: 'single',
     },
 });
 
@@ -23,7 +28,9 @@ const handleFile = (event: EventTarget | null) => {
     if (!event) {
         return;
     }
-    emit('update:file', (event as HTMLInputElement).files?.[0] ?? null);
+    const files = props.uploadType === 'single' ? (event as HTMLInputElement).files?.[0] : [...(event as HTMLInputElement).files];
+
+    emit('update:file', files);
 }
 
 </script>
@@ -31,12 +38,20 @@ const handleFile = (event: EventTarget | null) => {
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2 w-full">
-            <label class="label">{{ $t('resources.labels.resourceName') }}</label>
-            <input type="text" :value="name" required @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('resources.placeholders.resourceName')"/>
+            <label class="label">{{ $t(`resources.labels.${uploadType === 'single' ? 'resourceFile' : 'resourceFiles'}`) }}</label>
+            <input
+                type="file"
+                :required="fileRequired"
+                @change="handleFile($event.target)"
+                class="input"
+                :multiple="uploadType === 'batch'"
+                :placeholder="$t('resources.placeholders.resourceFile')"
+                accept="image/jpeg,image/svg+xml,image/png,image/webp,video/mp4,application/pdf,image/gif,application/vnd.rar,application/x-7z-compressed,font/woff,font/woff2,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,font/ttf,image/vnd.microsoft.icon"
+            />
         </div>
-        <div class="flex flex-col gap-2 w-full">
-            <label class="label">{{ $t('resources.labels.resourceFile') }}</label>
-            <input type="file" :required="fileRequired" @change="handleFile($event.target)" class="input" :placeholder="$t('resources.placeholders.resourceFile')" accept="image/jpeg,image/svg+xml,image/png,image/webp,video/mp4,application/pdf,image/gif,application/vnd.rar,application/x-7z-compressed,font/woff,font/woff2,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,font/ttf,image/vnd.microsoft.icon"/>
+        <div class="flex flex-col gap-2 w-full" v-if="uploadType === 'single'">
+            <label class="label">{{ $t('resources.labels.resourceName') }}</label>
+            <input type="text" :value="name" @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('resources.placeholders.resourceName')"/>
         </div>
     </div>
 </template>

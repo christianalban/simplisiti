@@ -27,7 +27,7 @@ defineEmits(['update:code', 'update:name', 'update:isActive']);
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex gap-4">
-            <div class="flex flex-col gap-2 w-1/3">
+            <div class="flex flex-col gap-2 md:w-1/3">
                 <label class="label">{{ $t('scripts.labels.scriptName') }}</label>
                 <input type="text" :value="name" required @input="$emit('update:name', value($event.target))" class="input" :placeholder="$t('scripts.placeholders.scriptName')"/>
             </div>

@@ -16,6 +16,19 @@ export const createResource = async (resource: Resource): Promise<any> => {
     return await axios.post('resource', formData)
 }
 
+export const createResourceBatch = async (resource: Resource): Promise<any> => {
+    if (!resource.file) {
+        throw new Error('Files are required')
+    }
+
+    const formData = new FormData();
+    (resource.file as File[]).forEach((file: File) => {
+        formData.append('file[]', file);
+    });
+
+    return await axios.post('resource/batch', formData)
+}
+
 export const getResources = async (): Promise<any> => {
     return await axios.get('resource')
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Modal from '../Modal.vue';
+import { ref } from 'vue';
 
 defineProps({
     url: {
@@ -7,18 +9,40 @@ defineProps({
     },
 });
 
+const showModal = ref(false);
+
+const handleCloseModal = () => {
+    showModal.value = false;
+};
+
+const update = () => {
+    console.log('update');
+};
+
+const showPreview = () => {
+    showModal.value = true;
+};
+
 </script>
 
 <template>
-    <div class="resource-container">
+    <button type="button" class="resource-container" @click="showPreview">
         <video v-if="url?.match('.mp4')" :src="url" class="resource-preview" controls></video>
         <img v-else :src="url" class="resource-preview"/>
-    </div>
+    </button>
+    <modal
+        :title="''"
+        :showModal="showModal"
+        @close="handleCloseModal"
+        @confirm="update"
+    >
+        <img :src="url" class="resource-preview"/>
+    </modal>
 </template>
 
 <style scoped>
 .resource-container {
-    @apply h-full flex items-center justify-center bg-gray-100;
+    @apply flex flex-1 w-full items-center justify-center bg-gray-100 overflow-hidden;
 
     img, video {
         @apply !max-w-full !max-h-full;
