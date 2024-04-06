@@ -28,7 +28,7 @@ const handleFile = (event: EventTarget | null) => {
     if (!event) {
         return;
     }
-    const files = props.uploadType === 'single' ? (event as HTMLInputElement).files?.[0] : [...(event as HTMLInputElement).files];
+    const files = props.uploadType === 'single' ? (event as HTMLInputElement).files?.[0] : [...(event as HTMLInputElement).files ?? []];
 
     emit('update:file', files);
 }

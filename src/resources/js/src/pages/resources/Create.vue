@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, PropType } from 'vue';
 import ResourcesForm from './partials/Form.vue';
 import Modal from '../../components/Modal.vue';
 import { createResource, createResourceBatch } from '../../services/ResourceService';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
+import { ResourceUploadType } from '../../types/Resource';
 
 const { t } = useI18n();
 const props = defineProps({

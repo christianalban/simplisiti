@@ -20,7 +20,7 @@ const { resources, loadResources, resourceFromId } = useResources();
 
 const filteredResources = computed(() => {
     return resources.value.filter((resource) => {
-        return resource.name.toLowerCase().includes(search.value.toLowerCase());
+        return resource.name?.toLowerCase().includes(search.value.toLowerCase());
     });
 });
 

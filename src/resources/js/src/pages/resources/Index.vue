@@ -8,13 +8,15 @@ import DialogComponent from '../../components/Dialog.vue';
 import ResourcePreview from '../../components/preview/ResourcePreview.vue';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
+import { ResourceUploadType } from '../../types/Resource';
+
 const resources = ref<Resource[]>([]);
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
 const showDeleteDialog = ref(false);
 const selectedResource = ref<Resource|null>(null);
 const { t } = useI18n();
-const uploadType = ref('single');
+const uploadType = ref<ResourceUploadType>('single');
 
 const handleShowCreateModal = () => {
     uploadType.value = 'single';

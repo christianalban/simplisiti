@@ -6,7 +6,6 @@ import { updateResource } from '../../services/ResourceService';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
 import { Resource } from '../../types/Resource';
-import { ResourceUploadType } from '../../../types/Resource';
 
 const { t } = useI18n();
 const props = defineProps({
