@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>Simplisiti Panel</title>
     <script type="module" crossorigin src="/vendor/simplisiti/assets/index-fa07b5a0.js"></script>
-    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-0fb6717b.css">
+    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-33e20d90.css">
   </head>
   <body>
     <div id="app"></div>

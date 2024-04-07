@@ -60,17 +60,17 @@ class PluginManager {
                 }, $response->json('packages'));
 
                 // This is a dummy package
-                $packages[] = [
-                    'name' => 'simplisiti-tailwind',
-                    'version' => '1.0.0',
-                    'description' => 'Simplisiti Tailwind Plugin',
-                    'author' => 'Alban Xhaferllari',
-                    'email' => 'chris_alban@live.com',
-                    'website' => '',
-                    'md5' => 'd41d8cd98f00b204e9800998ecf8427e',
-                    'namespace' => 'Alban\\SimplisitiTailwind',
-                    'repository' => 'https://simplisiti.org',
-                ];
+                // $packages[] = [
+                //     'name' => 'simplisiti-tailwind',
+                //     'version' => '1.0.0',
+                //     'description' => 'Simplisiti Tailwind Plugin',
+                //     'author' => 'Alban Xhaferllari',
+                //     'email' => 'chris_alban@live.com',
+                //     'website' => '',
+                //     'md5' => 'd41d8cd98f00b204e9800998ecf8427e',
+                //     'namespace' => 'Alban\\SimplisitiTailwind',
+                //     'repository' => 'https://simplisiti.org',
+                // ];
 
                 $packageCache = [...$packageCache, ...$packages];
 
