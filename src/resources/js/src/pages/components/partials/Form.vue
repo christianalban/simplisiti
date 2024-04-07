@@ -85,7 +85,7 @@ onMounted(() => {
                     </button>
                     <h2 v-if="variablesExpanded" class="title">{{ $t('components.titles.variables') }}</h2>
                 </div>
-            <div v-if="variablesExpanded" class="flex flex-col flex-1 gap-2 bg-gray-100 p-2 rounded-lg overflow-y-auto max-h-[50vh]">
+            <div v-if="variablesExpanded" class="flex flex-col flex-1 gap-2 bg-gray-100 p-2 rounded-lg overflow-y-auto">
                     <div v-for="(variable, index) of variables" :key="variable.name">
                         <variable-config-item
                             v-model:type="variable.type"

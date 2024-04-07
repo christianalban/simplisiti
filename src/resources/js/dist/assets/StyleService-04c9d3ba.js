@@ -1,1 +1,0 @@
-import{b as e}from"./index-fa07b5a0.js";const s=async t=>await e.post("style",t),r=async()=>await e.get("style"),n=async t=>await e.get(`style/${t}`),y=async t=>await e.put(`style/${t.id}`,t),c=async t=>await e.delete(`style/${t}`),l=async t=>await e.put("style/order",{list:t});export{n as a,y as b,s as c,c as d,r as g,l as u};

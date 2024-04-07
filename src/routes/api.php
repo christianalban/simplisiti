@@ -21,6 +21,7 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
         Route::put('page/{page}', 'update');
         Route::delete('page/{page}', 'destroy');
         Route::group(['excluded_middleware' => 'throttle:api'], function () {
+            Route::get('page/plugin/{type}/preview', 'pluginPreview')->where('type', 'style|script');
             Route::match(['get', 'post'], 'page/{type}/preview', 'preview')->where('type', 'style|script|component');
         });
     });
