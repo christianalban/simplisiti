@@ -37,9 +37,11 @@ onMounted(() => {
                             </div>
                             <div class="flex gap-2">
                                 <span>{{ $t('pages.labels.sectionsCount', { count: page.sections_count }) }}</span>
-                                <a :href="page.url" class="button small default" target="_blank">
-                                    <fa-icon icon="up-right-from-square" />
-                                </a>
+                                <div>
+                                    <a :href="page.url" class="button small default" target="_blank">
+                                        <fa-icon icon="up-right-from-square" />
+                                    </a>
+                                </div>
                             </div>
                         </a>
                     </li>
