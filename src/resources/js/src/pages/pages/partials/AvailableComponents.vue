@@ -57,23 +57,25 @@ onMounted(() => {
         <fa-icon icon="sync" :class="{'animate-spin': isLoading}" />
         {{ $t('components.buttons.refresh') }}
     </button>
-    <group :items="componentsGroup" v-slot="slotProps">
-        <draggable 
-            class="grid grid-cols-2 gap-4"
-            v-model="slotProps.item" 
-            :group="{ name: 'components', pull: 'clone', put: false }"
-            :sort="false"
-            :clone="cloneComponent"
-            item-key="id">
-            <template #item="{element}">
-                <div class="tile h-24 cursor-pointer">
-                    <label class="tile-title cursor-grab active:cursor-grabbing">
-                        {{ componentName(element.name) }}
-                    </label>
-                </div>
-            </template>
-        </draggable>
-    </group>
+    <div class="overflow-y-auto mt-2">
+        <group :items="componentsGroup" v-slot="slotProps">
+            <draggable 
+                class="grid grid-cols-2 gap-4"
+                v-model="slotProps.item" 
+                :group="{ name: 'components', pull: 'clone', put: false }"
+                :sort="false"
+                :clone="cloneComponent"
+                item-key="id">
+                <template #item="{element}">
+                    <div class="tile h-24 cursor-pointer">
+                        <label class="tile-title cursor-grab active:cursor-grabbing">
+                            {{ componentName(element.name) }}
+                        </label>
+                    </div>
+                </template>
+            </draggable>
+        </group>
+    </div>
 </template>
 
 <style scoped lang="scss">
