@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, PropType } from 'vue';
-import { getResourcePreviewUrl, getComponentPreview } from "../../services/PageService.ts";
+import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
 
@@ -26,11 +26,14 @@ const updateIframe = async (componentContent: ContentValue) => {
         if (!doc) return;
 
         const [styleLink, scriptLink] = loadResourcesPreview();
+        const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
 
         doc.open();
         doc.write(content.data);
         doc.head.appendChild(styleLink);
+        doc.head.appendChild(pluginStyleLink);
         doc.body.appendChild(scriptLink);
+        doc.body.appendChild(pluginScriptLink);
         doc.close();
 
         iframe.value.onload = () => {
@@ -58,6 +61,22 @@ const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
 
     const styleUrl = getResourcePreviewUrl('style');
     const scriptUrl = getResourcePreviewUrl('script');
+
+    link.rel = 'stylesheet';
+    link.href = styleUrl
+
+    script.src = scriptUrl;
+    script.async = true;
+
+    return [link, script];
+};
+
+const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
+    const link = document.createElement('link');
+    const script = document.createElement('script');
+
+    const styleUrl = getPluginResourcePreviewUrl('style');
+    const scriptUrl = getPluginResourcePreviewUrl('script');
 
     link.rel = 'stylesheet';
     link.href = styleUrl

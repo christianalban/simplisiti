@@ -31,6 +31,11 @@ export const getResourcePreviewUrl = (type: ResourcePreview): string => {
     return `${baseURL}/page/${type}/preview`
 }
 
+export const getPluginResourcePreviewUrl = (type: ResourcePreview): string => {
+    return `${baseURL}/page/plugin/${type}/preview`
+}
+
 export const getComponentPreview = async (componentId: number, content: ContentValue): Promise<any> => {
     return await axios.post(`page/component/preview?component=${componentId}`, { content })
 }
+

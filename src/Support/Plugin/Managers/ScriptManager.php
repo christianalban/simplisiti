@@ -3,11 +3,15 @@
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Models\Script;
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-class ScriptManager {
+class ScriptManager implements AssetManager {
     private Collection $scripts;
     private array $pluginScripts;
 
@@ -38,5 +42,25 @@ class ScriptManager {
     public function getPluginScripts(): Collection
     {
         return collect($this->pluginScripts);
+    }
+
+    public function toString(): string
+    {
+        $app = app(SimplisitiApp::class);
+
+        if (Cache::has('pluginScripts')) {
+            $pluginScripts = Cache::get('pluginScripts');
+        } else {
+            $pluginScripts = $app->getScriptManager()->getPluginScripts();
+            Cache::put('pluginScripts', $pluginScripts);
+        }
+
+        return $pluginScripts->reduce(function ($carrier, $scripts) {
+            foreach($scripts as $style) {
+                $carrier .= $style;
+            }
+
+            return $carrier;
+        }, '');
     }
 }
