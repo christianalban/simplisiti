@@ -7,11 +7,15 @@ use Alban\Simplisiti\Models;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Exceptions\InvalidPluginException;
 use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
+use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterInstall;
+use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterLoad;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateHeader;
+use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateScript;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
+use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Facades\Http;
 
@@ -55,6 +59,19 @@ class PluginManager {
                     return $package;
                 }, $response->json('packages'));
 
+                // This is a dummy package
+                $packages[] = [
+                    'name' => 'simplisiti-tailwind',
+                    'version' => '1.0.0',
+                    'description' => 'Simplisiti Tailwind Plugin',
+                    'author' => 'Alban Xhaferllari',
+                    'email' => 'chris_alban@live.com',
+                    'website' => '',
+                    'md5' => 'd41d8cd98f00b204e9800998ecf8427e',
+                    'namespace' => 'Alban\\SimplisitiTailwind',
+                    'repository' => 'https://simplisiti.org',
+                ];
+
                 $packageCache = [...$packageCache, ...$packages];
 
                 $urlLogs[] = $repository->url . ' - ' . $response->status();
@@ -81,11 +98,13 @@ class PluginManager {
         }, $cacheManager->getFromCache('repositories:packages'));
     }
 
-    public function installPackage(string $name): void {
+    public function installPackage(string $name): Models\Plugin {
         $cacheManager = $this->app->getCacheManager();
 
         $packageList = array_column($cacheManager->getFromCache('repositories:packages'), null, 'name');
         $package = $packageList[$name];
+
+        // Download the package and unpack the tar file
 
         $response = Http::get($package['repository'] . '/' .$package['name'] .'.tar');
 
@@ -121,7 +140,7 @@ class PluginManager {
 
         $tar->extractTo($pluginPath);
 
-        Models\Plugin::create($package);
+        return Models\Plugin::create($package);
 
     }
 
@@ -145,6 +164,14 @@ class PluginManager {
         $plugin->delete();
     }
 
+    public function postInstall(Models\Plugin $installedPlugin): void {
+        $plugin = $this->loadPlugin($installedPlugin);
+
+        if ($plugin instanceof AfterInstall) {
+            $plugin->runAfterInstall();
+        }
+    }
+
     public function execute(): void {
         foreach ($this->history as $plugin) {
             if ($plugin instanceof ManipulateHeader) {
@@ -166,6 +193,14 @@ class PluginManager {
             if ($plugin instanceof ManipulateAction) {
                 $plugin->withActions($this->app->getActionManager());
             }
+
+            if ($plugin instanceof ManipulateStyle) {
+                $plugin->withStyles($this->app->getStyleManager());
+            }
+
+            if ($plugin instanceof ManipulateScript) {
+                $plugin->withScripts($this->app->getScriptManager());
+            }
         }
     }
     
@@ -176,6 +211,10 @@ class PluginManager {
 
         if (!($pluginObject instanceof Plugin)) {
             throw new InvalidPluginException($plugin->name, Plugin::class);
+        }
+
+        if ($pluginObject instanceof AfterLoad) {
+            $pluginObject->runAfterLoad();
         }
 
         return $pluginObject;

@@ -266,6 +266,7 @@ const messages = {
                 installing: "Installing",
                 uninstall: "Uninstall",
                 uninstalling: "Uninstalling",
+                unknown: "Unknown",
                 repositories: "Repositories",
                 addRepository: "Add repository",
             }
@@ -555,6 +556,7 @@ const messages = {
                 installing: "Instalando",
                 uninstall: "Desinstalar",
                 uninstalling: "Desinstalando",
+                unknown: "Desconocido",
                 repositories: "Repositorios",
                 addRepository: "Agregar repositorio",
             },

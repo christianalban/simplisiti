@@ -2,6 +2,8 @@
 
 namespace Alban\Simplisiti\Support\Plugin;
 
+// require __DIR__.'/../../../../vendor/autoload.php';
+
 use Alban\Simplisiti\Models\Setting;
 
 abstract class Plugin {
