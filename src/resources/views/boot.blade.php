@@ -8,10 +8,9 @@
         <link rel="icon" href="/sp-assets/favicon.ico">
         @include('simplisiti::partials.styles')
   </head>
-  <body>
+    <body {!! $app->getBodyManager()->getBodyAttributes()->implode(' ') !!}>
     @include('simplisiti::partials.body')
     {!! $content !!}
     @include('simplisiti::partials.scripts')
-    @include('simplisiti::partials.body-append')
   </body>
 </html>

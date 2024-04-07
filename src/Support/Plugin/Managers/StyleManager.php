@@ -30,6 +30,11 @@ class StyleManager implements AssetManager {
         return $this->styles;
     }
 
+    public function setStyles(array $styles): void
+    {
+        $this->styles = collect($styles);
+    }
+
     public function addPluginStyle(Plugin $plugin, string $name, string $style): void
     {
         $pluginPath = explode('\\', $plugin::class);

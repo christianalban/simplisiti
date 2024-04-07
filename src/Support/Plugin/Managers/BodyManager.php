@@ -6,12 +6,12 @@ use Illuminate\Support\Collection;
 
 class BodyManager {
     private Collection $body;
-    private Collection $bodyAppend;
+    private Collection $attributes;
 
     public function __construct(
     ) {
         $this->body = new Collection;
-        $this->bodyAppend = new Collection;
+        $this->attributes = new Collection;
     }
 
     public function addBody(string $body): void
@@ -24,13 +24,13 @@ class BodyManager {
         return $this->body;
     }
 
-    public function addBodyAppend(string $body): void
+    public function addBodyAttributes(string $attributes): void
     {
-        $this->bodyAppend->add($body);
+        $this->attributes->add($attributes);
     }
 
-    public function getBodyAppend(): Collection
+    public function getBodyAttributes(): Collection
     {
-        return $this->bodyAppend;
+        return $this->attributes;
     }
 }
