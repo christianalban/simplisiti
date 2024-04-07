@@ -109,7 +109,7 @@ onMounted(() => {
 
 <template>
     <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t(pageEditionMode === 'editing-component' ? 'pages.buttons.settings' : 'pages.buttons.components')" :canResize="true">
-        <div class="w-full p-4 flex flex-col overflow-y-auto h-[60vh]">
+        <div class="w-full p-4 flex flex-col overflow-y-auto h-[60vh] md:h-full">
             <div :class="`component-configuration-title ${position}`">
                 <h2>{{ $t(`pages.titles.${title}`) }}</h2>
                 <div>
