@@ -52,12 +52,14 @@ const refreshResources = () => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex gap-2 w-full flex-col justify-start !p-1 relative items-center">
+    <div class="button secondary flex gap-2 w-full flex-col justify-center !p-1 relative items-center">
         <div class="w-full flex items-center justify-center max-h-full">
-            <resource-preview :url="selectedResource?.url" />
+            <div class="h-full w-full flex">
+                <resource-preview :url="selectedResource?.url" />
+            </div>
         </div>
-        <span class="absolute top-1/4 bg-teal-500 rounded-lg text-white text-xs p-1 bg-opacity-50">{{ selectedResource ? $t('components.buttons.changeResource') : $t('components.buttons.selectResource') }}</span>
-    </button>
+        <button type="button" @click.stop="handleShowModal" class="absolute bg-teal-500 hover:bg-teal-600 transition-colors rounded-lg text-white text-xs p-1 bg-opacity-75">{{ selectedResource ? $t('components.buttons.changeResource') : $t('components.buttons.selectResource') }}</button>
+    </div>
     <modal
         :title="$t('components.titles.selectResource')"
         v-model:showModal="showModal"
@@ -72,10 +74,10 @@ const refreshResources = () => {
             <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-2 overflow-y-auto max-h-[70vh]">
-            <button type="button" @click="handleSelectResource(resource.id as number)" v-for="resource of filteredResources" class="button primary flex flex-col gap-2 justify-center items-center">
+            <div v-for="resource of filteredResources" class="button primary flex flex-col gap-2 justify-center items-center">
                 <resource-preview :url="resource.url" />
-                <span>{{ resource.name }}</span>
-            </button>
+                <p @click.stop="handleSelectResource(resource.id as number)" class="hover:underline cursor-pointer">{{ resource.name }} <span class="text-sm italic">({{ $t('resources.buttons.use') }})</span></p>
+            </div>
         </div>
     </modal>
 </template>

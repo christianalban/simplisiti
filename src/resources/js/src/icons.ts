@@ -24,6 +24,8 @@ import {
     faBrush,
     faMaximize,
     faMinimize,
+    faSun,
+    faMoon,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -52,6 +54,8 @@ library.add(
     faBrush,
     faMaximize,
     faMinimize,
+    faSun,
+    faMoon
 );
 
 export default FontAwesomeIcon;

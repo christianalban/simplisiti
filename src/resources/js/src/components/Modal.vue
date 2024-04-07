@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, PropType } from 'vue';
 
 interface ModalProps {
     returnValue: string;
@@ -12,8 +12,7 @@ interface ModalProps {
 
 const props = defineProps({
     title: {
-        type: String,
-        required: true,
+        type: [String, null] as PropType<string|null>,
     },
     showModal: {
         type: Boolean,
@@ -71,7 +70,7 @@ watch(showModal, (showModal) => {
 <template>
     <dialog ref="modal" class="p-4 rounded-lg min-w-[50vw]" @close="close">
         <form class="flex flex-col gap-4" ref="form">
-            <span class="font-bold">{{ props.title }}</span>
+            <span v-if="props.title" class="font-bold">{{ props.title }}</span>
             <div>
                 <slot></slot>
             </div>

@@ -9,34 +9,43 @@ defineProps({
     },
 });
 
+const darkBackground = ref(false);
+
 const showModal = ref(false);
 
 const handleCloseModal = () => {
     showModal.value = false;
 };
 
-const update = () => {
-    console.log('update');
-};
-
 const showPreview = () => {
     showModal.value = true;
+};
+
+const toggleBackground = () => {
+    darkBackground.value = !darkBackground.value;
 };
 
 </script>
 
 <template>
-    <button type="button" class="resource-container" @click="showPreview">
-        <video v-if="url?.match('.mp4')" :src="url" class="resource-preview" controls></video>
+    <button type="button" class="resource-container" @click.stop="showPreview">
+        <video v-if="url?.match('.mp4')" :src="url" class="resource-preview"></video>
         <img v-else :src="url" class="resource-preview"/>
     </button>
     <modal
-        :title="''"
         :showModal="showModal"
+        :showCancel="false"
+        :confirmLabel="$t('buttons.close')"
         @close="handleCloseModal"
-        @confirm="update"
     >
-        <img :src="url" class="resource-preview"/>
+        <div :class="['max-h-[35vw] overflow-hidden relative transition-colors p-4 flex justify-center items-center', { 'bg-gray-800': darkBackground, 'bg-white': !darkBackground}]">
+            <button type="button" :class="['absolute right-3 top-3', { 'text-white': darkBackground, 'text-gray-800': !darkBackground}]" @click.stop="toggleBackground">
+                <fa-icon v-if="darkBackground" icon="moon"></fa-icon>
+                <fa-icon v-else icon="sun"></fa-icon>
+            </button>
+            <video v-if="url?.match('.mp4')" :src="url" class="resource-preview" controls></video>
+            <img v-else :src="url" class="resource-preview"/>
+        </div>
     </modal>
 </template>
 

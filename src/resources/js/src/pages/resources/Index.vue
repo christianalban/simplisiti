@@ -87,10 +87,10 @@ onMounted(() => {
         </div>
         <ul class="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-y-auto">
             <li v-for="resource of resources" class="flex">
-                <div type="button" class="rounded border border-blue-200 w-full flex flex-col items-center justify-between overflow-hidden h-44">
+                <div type="button" class="rounded border-2 transition-colors border-blue-200 hover:border-blue-500 w-full flex flex-col items-center justify-between overflow-hidden h-44">
                     <resource-preview :url="resource.url" />
                     <div class="flex w-full h-10 justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
-                        <span class="font-semibold">{{ resource.name }}</span>
+                        <span class="font-semibold text-ellipsis overflow-hidden">{{ resource.name }}</span>
                         <div class="flex gap-2">
                             <button @click="setSelectedResource(resource)">
                                 <fa-icon icon="edit"/>

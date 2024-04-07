@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="/vendor/simplisiti/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>Simplisiti Panel</title>
-    <script type="module" crossorigin src="/vendor/simplisiti/assets/index-d150ea61.js"></script>
-    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-319d705f.css">
+    <script type="module" crossorigin src="/vendor/simplisiti/assets/index-163eb771.js"></script>
+    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-0fb6717b.css">
   </head>
   <body>
     <div id="app"></div>

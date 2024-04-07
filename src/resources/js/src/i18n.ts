@@ -230,6 +230,7 @@ const messages = {
                 create: "New resource",
                 createBatch: "Uplaod batch",
                 refresh: "Refresh resources list",
+                use: "Use",
             },
         },
         plugins: {
@@ -523,6 +524,7 @@ const messages = {
                 create: "Nuevo recurso",
                 createBatch: "Subir lote",
                 refresh: "Actualizar listado de recursos",
+                use: "Usar",
             },
         },
         plugins: {
