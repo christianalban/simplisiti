@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
 import ControlTypeSelector from "./ControlTypeSelector.vue";
-import { ref, PropType, onMounted, watch, nextTick, compute, computed } from "vue";
+import { ref, PropType, onMounted, watch, nextTick, computed } from "vue";
 import { Variable, VariableType } from '../../types/Variable';
 import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';

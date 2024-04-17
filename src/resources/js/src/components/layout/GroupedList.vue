@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import Group from '../Group.vue';
+import { PropType } from 'vue';
+import { GroupItem } from '../../types/Group';
 
 defineProps({
-    listGroup: Array,
+    listGroup: Array as PropType<GroupItem<any>[] | undefined>,
 });
 </script>
 

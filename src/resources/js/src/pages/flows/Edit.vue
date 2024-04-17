@@ -3,7 +3,6 @@ import PagesForm from "./partials/Form.vue";
 import DialogComponent from "../../components/Dialog.vue";
 import { onMounted, ref } from 'vue';
 import { Section } from '../../types/Section';
-import PageToolbar from './partials/PageToolbar.vue';
 import { deletePage, getPage, updatePage } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { useRoute, useRouter } from "vue-router";
@@ -43,9 +42,9 @@ const update = () => {
     })
 }
 
-const showDeleteDialog = () => {
-    showDialog.value = true;
-}
+// const showDeleteDialog = () => {
+//     showDialog.value = true;
+// }
 
 const confirmDeleteComponent = () => {
     deletePage(pageId)
@@ -82,14 +81,6 @@ onMounted(() => {
 
 <template>
     <form @submit.prevent="update">
-        <page-toolbar
-            :title="$t('pages.titles.editPage')"
-            :showDelete="true"
-            @delete="showDeleteDialog"
-            v-model:name="name"
-            v-model:url="url"
-            v-model:pageTitle="title"
-        />
         <pages-form
             v-model:sections="sections"
         />
