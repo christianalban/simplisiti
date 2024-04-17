@@ -19,6 +19,13 @@ const routes = [
             { path: 'resources', component: () => import("./pages/resources/Index.vue"), name: 'resources.index' },
             { path: 'settings', component: () => import("./pages/settings/Index.vue"), name: 'settings.index' },
             { path: 'plugins', component: () => import("./pages/plugins/Index.vue"), name: 'plugins.index' },
+            {
+                path: 'flows',
+                children: [
+                    { path: '', component: () => import("./pages/flows/Index.vue"), name: 'flows.index' },
+                    { path: 'create', component: () => import("./pages/flows/Create.vue"), name: 'flows.create' },
+                ]
+            }
         ]
     },
     {

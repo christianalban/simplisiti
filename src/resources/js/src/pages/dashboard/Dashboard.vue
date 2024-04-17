@@ -25,6 +25,10 @@ const toolLinks = [
         name: 'pages.index',
         title: 'titles.pages',
     },
+    // {
+    //     name: 'flows.index',
+    //     title: 'titles.flows',
+    // },
     {
         name: 'styles.index',
         title: 'titles.styles',

@@ -12,6 +12,7 @@ const messages = {
             resources: "Resources",
             settings: "Settings",
             plugins: "Plugins",
+            flows: "Flows",
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
@@ -121,6 +122,12 @@ const messages = {
                     message: "Are you sure you want to delete the page '{name}'?",
                 }
             }
+        },
+        flows: {
+            titles: {
+                flowsList: "Flows list",
+                createFlow: "Create new flow",
+            },
         },
         styles: {
             titles: {
@@ -307,6 +314,7 @@ const messages = {
             resources: "Recursos",
             settings: "Configuración",
             plugins: "Complementos",
+            flows: "Flujos",
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",
@@ -415,6 +423,15 @@ const messages = {
                     title: "Eliminar página",
                     message: "¿Está seguro que desea eliminar la página '{name}'?",
                 }
+            }
+        },
+        flows: {
+            titles: {
+                flowsList: "Listado de flujos",
+                createFlow: "Crear nuevo flujo",
+            },
+            buttons: {
+                create: "Nuevo flujo",
             }
         },
         styles: {

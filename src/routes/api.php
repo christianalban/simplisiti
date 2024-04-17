@@ -26,6 +26,14 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
         });
     });
 
+    Route::controller(Controllers\FlowController::class)->group(function () {
+        Route::get('flow', 'index');
+        Route::get('flow/{flow}', 'show');
+        Route::post('flow', 'store');
+        Route::put('flow/{flow}', 'update');
+        Route::delete('flow/{flow}', 'destroy');
+    });
+
     Route::controller(Controllers\StyleController::class)->group(function () {
         Route::post('style', 'store');
         Route::get('style', 'index');
