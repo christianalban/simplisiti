@@ -6,15 +6,18 @@ import { value } from '../../../utils/helpers';
 import { useResources } from "../../../services/ResourceService";
 import { useSources } from "../../../services/DataSourceService";
 import { useActions } from "../../../services/ActionService";
+import { usePages } from "../../../services/PageService";
 import { variableHasSettings } from '../../../services/VariableService.ts';
 import Modal from "../../../components/Modal.vue";
 import SettingForm from '../../settings/partials/Form.vue';
 import VariableConfigItem from '../../../components/inputs/VariableConfigItem.vue';
 import { SettingMenu } from '../../../types/Setting';
+import { getStorage, putStorage } from '../../../services/LocalStorageService';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
 const { loadActions } = useActions();
+const { loadPages } = usePages();
 
 const props = defineProps({
     code: {
@@ -32,7 +35,8 @@ const props = defineProps({
 });
 
 
-const variablesExpanded = ref(window.innerWidth > 768);
+console.log(getStorage('variables-expanded', window.innerWidth > 768));
+const variablesExpanded = ref(getStorage('variables-expanded', window.innerWidth > 768));
 const showSettings = ref(false);
 const settings = ref<SettingMenu[]>([]);
 
@@ -56,12 +60,14 @@ const displaySettings = (variable: Variable, settingsMenu: SettingMenu[]) => {
 
 const toggleVariablesExpanded = () => {
     variablesExpanded.value = !variablesExpanded.value;
+    putStorage('variables-expanded', variablesExpanded.value);
 };
 
 onMounted(() => {
     loadResources();
     loadSources();
     loadActions();
+    loadPages();
 });
 
 </script>

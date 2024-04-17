@@ -39,6 +39,7 @@ const messages = {
                 textarea: "Textarea",
                 datasource: "Datasource",
                 action: "Action",
+                page: "Page",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -237,7 +238,7 @@ const messages = {
                 create: "New resource",
                 createBatch: "Uplaod batch",
                 refresh: "Refresh resources list",
-                use: "Use",
+                select: "Select",
             },
         },
         plugins: {
@@ -341,6 +342,7 @@ const messages = {
                 textarea: "Área de texto",
                 datasource: "Fuente de datos",
                 action: "Acción",
+                page: "Página",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -542,7 +544,7 @@ const messages = {
                 create: "Nuevo recurso",
                 createBatch: "Subir lote",
                 refresh: "Actualizar listado de recursos",
-                use: "Usar",
+                select: "Seleccionar",
             },
         },
         plugins: {
@@ -606,6 +608,12 @@ const messages = {
         placeholders: {
             search: "Buscar",
             select: "Seleccionar",
+        },
+        dialogs: {
+            delete: {
+                title: "Eliminar",
+                message: "¿Está seguro que desea eliminar '{name}'?",
+            }
         },
     },
 }

@@ -52,7 +52,7 @@ const refreshResources = () => {
 </script>
 
 <template>
-    <div class="button secondary flex gap-2 w-full flex-col justify-center !p-1 relative items-center">
+    <div class="button secondary flex gap-2 w-full h-full flex-col justify-center !p-1 relative items-center">
         <div class="w-full flex items-center justify-center max-h-full">
             <div class="h-full w-full flex">
                 <resource-preview :url="selectedResource?.url" />
@@ -73,10 +73,10 @@ const refreshResources = () => {
             </button>
             <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 overflow-y-auto max-h-[70vh]">
-            <div v-for="resource of filteredResources" class="button primary flex flex-col gap-2 justify-center items-center">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 overflow-y-auto max-h-[70vh]">
+            <div v-for="resource of filteredResources" class="button primary aspect-square flex flex-col gap-2 justify-center items-center">
                 <resource-preview :url="resource.url" />
-                <p @click.stop="handleSelectResource(resource.id as number)" class="hover:underline cursor-pointer">{{ resource.name }} <span class="text-sm italic">({{ $t('resources.buttons.use') }})</span></p>
+                <p @click.stop="handleSelectResource(resource.id as number)" class="hover:underline cursor-pointer">{{ resource.name }} <span class="text-sm italic">({{ $t('resources.buttons.select') }})</span></p>
             </div>
         </div>
     </modal>

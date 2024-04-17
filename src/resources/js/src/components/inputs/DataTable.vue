@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
 import ControlTypeSelector from "./ControlTypeSelector.vue";
-import { ref, PropType, onMounted, watch, nextTick } from "vue";
+import { ref, PropType, onMounted, watch, nextTick, compute, computed } from "vue";
 import { Variable, VariableType } from '../../types/Variable';
 import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';
 import VariableTypeSelector from "./VariableTypeSelector.vue";
+import DialogComponent from "../Dialog.vue";
 
 const props = defineProps({
     modelValue: {
@@ -54,6 +55,8 @@ const emptyColumn = (type: VariableType = 'text') => {
 
 const columns = ref<Column[]>([emptyColumn()]);
 const rows = ref<Variable[][]>([[emptyVariable()]]);
+const showDialog = ref(false);
+const selectedColumnIndex = ref(0);
 
 const showModal = ref(false);
 
@@ -138,6 +141,20 @@ const populateSharedChildrenDataTableColumns = () => {
     });
 };
 
+const getSelectedColumnName = computed(() => {
+    return columns.value[selectedColumnIndex.value]?.name || '';
+});
+
+const showDeleteDialog = (index: number) => {
+    showDialog.value = true;
+    selectedColumnIndex.value = index;
+}
+
+const confirmDeleteComponent = () => {
+    removeColumn(selectedColumnIndex.value);
+    showDialog.value = false;
+}
+
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
         const value = props.modelValue as DataTableValue;
@@ -202,22 +219,22 @@ watch(columns, (value) => {
         :resetOnClose="false"
         @confirm="handleConfirm"
     >
-        <div class="overflow-y-auto h-[70vh]">
+        <div class="overflow-y-auto h-[75vh] rounded">
             <table class="w-full relative">
                 <thead>
                     <tr>
-                        <th class="sticky top-0 z-10" v-for="(column, index) of columns">
+                        <th :class="`p-2 bg-gray-100 sticky top-0 z-10 ${column.type}`" v-for="(column, index) of columns">
                             <div class="flex">
                                 <div class="w-full form-group">
                                     <input class="input w-full" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')" :readonly="!editStructure"/>
-                                    <variable-type-selector v-if="editStructure" class="w-5" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
-                                    <button v-if="columns.length > 1 && editStructure" type="button" class="button danger" @click="removeColumn(index)">
+                                    <variable-type-selector v-if="editStructure" class="!pl-0 w-3" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
+                                    <button v-if="columns.length > 1 && editStructure" type="button" class="button danger" @click="showDeleteDialog(index)">
                                         <fa-icon icon="minus" />
                                     </button>
                                 </div>
                             </div>
                         </th>
-                        <th class="sticky top-0 z-10">
+                        <th class="p-2 bg-gray-100 sticky top-0 z-10">
                             <div class="flex justify-center">
                                 <button v-if="columns.length >= 1 && editStructure" type="button" class="button primary" @click="addColumn">
                                     <fa-icon icon="plus" />
@@ -227,13 +244,13 @@ watch(columns, (value) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(variables, index) of rows" :key="`${index}:${name}`">
-                        <td v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
-                            <div class="flex">
+                    <tr class="group" v-for="(variables, index) of rows" :key="`${index}:${name}`">
+                        <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
+                            <div class="">
                                 <control-type-selector v-model="variable.default" :edit-structure="editStructure" :name="variable.name" :type="variable.type"/>
                             </div>
                         </td>
-                        <td>
+                        <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
                             <div class="flex flex-col gap-1">
                                 <button v-if="rows.length > 1" type="button" class="button danger" @click="removeRow(index)">
                                     <fa-icon icon="minus" />
@@ -248,7 +265,20 @@ watch(columns, (value) => {
             </table>
         </div>
     </modal>
+    <dialog-component
+        v-model:showDialog="showDialog"
+        :title="$t('dialogs.delete.title')"
+        :message="$t('dialogs.delete.message', { name: getSelectedColumnName })"
+        @confirm="confirmDeleteComponent"
+    />
 </template>
 
 <style scoped>
+.resource,
+.page,
+.datasource,
+.action,
+.datatable {
+    @apply w-44;
+}
 </style>

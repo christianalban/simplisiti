@@ -2,6 +2,7 @@
 import { PropType, computed, ref } from 'vue';
 import { FloatToolbarPosition } from '../types/FloatToolbar';
 import { isMobileScreen } from '../utils/helpers.ts';
+import { getStorage, putStorage } from '../services/LocalStorageService.ts';
 
 const props = defineProps({
     position: {
@@ -24,7 +25,7 @@ const props = defineProps({
     },
 });
 
-const resizedWidth = ref(500);
+const resizedWidth = ref(getStorage('float-toolbar-width', 500));
 
 defineEmits(['update:isInvisible']);
 
@@ -56,6 +57,8 @@ const startResize = (event: MouseEvent) => {
             ? initialWidth + (event.clientX - initialX)
             : initialWidth - (event.clientX - initialX);
         resizedWidth.value = newWidth < 200 ? 200 : newWidth;
+        
+        putStorage('float-toolbar-width', resizedWidth.value);
     };
 
     const handleMouseUp = () => {
@@ -123,7 +126,7 @@ const floatWidth = computed(() => {
         </div>
         <div
             v-if="canResize"
-            class="border-l-2 border-l-gray-200 hover:border-l-blue-500 transition-colors h-full hover:cursor-col-resize"
+            class="border-l-2 border-l-gray-400 hover:border-l-blue-500 transition-colors h-full hover:cursor-col-resize"
             @mousedown.prevent.stop="startResize"
         ></div>
     </div>

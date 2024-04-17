@@ -7,6 +7,7 @@ import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
 import DataSource from './DataSource.vue';
 import Action from './Action.vue';
+import Page from './Page.vue';
 
 const props = defineProps({
     type: {
@@ -76,6 +77,7 @@ watch(type, (value) => {
     <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
     <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
+    <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
 </template>
 
 <style scoped>

@@ -68,7 +68,7 @@ watch(showModal, (showModal) => {
 </script>
 
 <template>
-    <dialog ref="modal" class="p-4 rounded-lg min-w-[50vw]" @close="close">
+    <dialog ref="modal" class="p-4 rounded-lg min-w-[95vw]" @close="close">
         <form class="flex flex-col gap-4" ref="form">
             <span v-if="props.title" class="font-bold">{{ props.title }}</span>
             <div>

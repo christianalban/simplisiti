@@ -13,12 +13,15 @@ import { FloatToolbarPosition } from '../../../types/FloatToolbar';
 import ComponentPreview from '../../../components/preview/ComponentPreview.vue';
 import { useSources } from '../../../services/DataSourceService';
 import { useActions } from '../../../services/ActionService';
+import { usePages } from '../../../services/PageService';
 import { useContentObserver } from '../../../services/ContentService.ts';
 import { isMobileScreen } from '../../../utils/helpers';
+import { getStorage, putStorage } from '../../../services/LocalStorageService.ts';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
 const { loadActions } = useActions();
+const { loadPages } = usePages();
 
 const observer = useContentObserver();
 
@@ -89,10 +92,11 @@ const isCurrentComponentSelected = (component: Component, sectionIndex: number):
 
 const isMobile = ref(isMobileScreen());
 
-const position = ref<FloatToolbarPosition>(isMobile.value ? 'bottom' : 'left');
+const position = ref<FloatToolbarPosition>(getStorage('float-toolbar-position', isMobile.value ? 'bottom' : 'left') as FloatToolbarPosition);
 
 const togglePosition = () => {
     position.value = position.value === 'left' ? 'right' : 'left';
+    putStorage('float-toolbar-position', position.value);
 }
 
 const title = computed(() => {
@@ -103,6 +107,7 @@ onMounted(() => {
     loadResources();
     loadSources();
     loadActions();
+    loadPages();
 });
 
 </script>

@@ -2,7 +2,7 @@ import { DataTableValue } from "./DataTable";
 import { DataSourceValue } from "./DataSource";
 import { SettingMenu } from "./Setting";
 
-export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action';
+export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action' | 'page';
 
 export interface Variable {
     type: VariableType

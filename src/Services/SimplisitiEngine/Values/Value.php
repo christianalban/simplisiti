@@ -23,19 +23,15 @@ abstract class Value
 
     public static function parseValue(array $variable, array $options = [])
     {
-        $valueType = match ($variable['type']) {
-            'text' => TextValue::class,
-            'resource' => ResourceValue::class,
-            'datatable' => DataTableValue::class,
-            'textarea' => TextAreaValue::class,
-            'datasource' => DataSourceValue::class,
-            'action' => ActionValue::class,
-        };
-
-        return (new $valueType($variable, $options))->parse($options);
+        return self::makeValue($variable, $options)->parse();
     }
 
     public static function mergeContent(array $variable, array|string|int|null $content)
+    {
+        return self::makeValue($variable)->merge($content);
+    }
+
+    private static function makeValue(array $variable, array $options = [])
     {
         $valueType = match ($variable['type']) {
             'text' => TextValue::class,
@@ -44,8 +40,9 @@ abstract class Value
             'textarea' => TextAreaValue::class,
             'datasource' => DataSourceValue::class,
             'action' => ActionValue::class,
+            'page' => PageValue::class,
         };
 
-        return (new $valueType($variable))->merge($content);
+        return new $valueType($variable, $options);
     }
 }

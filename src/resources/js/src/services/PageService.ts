@@ -4,6 +4,9 @@ import { baseURL } from "../axios";
 import { Options } from "../types/Data";
 import { addQueryToUrlFromOptions } from "../utils/helpers";
 import { ContentValue } from "../types/Component";
+import { ref } from "vue";
+
+export const pages = ref<Page[]>([]);
 
 export const createPage = async (page: Page): Promise<any> => {
     return await axios.post('page', page)
@@ -39,3 +42,12 @@ export const getComponentPreview = async (componentId: number, content: ContentV
     return await axios.post(`page/component/preview?component=${componentId}`, { content })
 }
 
+export const loadPages = async (): Promise<void> => {
+    const response = await getPages();
+    pages.value = response.data.data;
+} 
+
+export const usePages = () => ({
+    pages,
+    loadPages,
+});
