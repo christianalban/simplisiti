@@ -5,7 +5,7 @@ import { Variable, VariableType } from "../types/Variable";
 export const variableHasSettings = (variableType: VariableType): boolean => {
     if (!variableType) return false;
 
-    return ['datasource', null].includes(variableType);
+    return ['datasource', 'resource', null].includes(variableType);
 }
 
 export const getComponentVariableSettings = async (componentId: string, variable: Variable): Promise<any> => {

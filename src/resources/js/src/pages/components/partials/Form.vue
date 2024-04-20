@@ -9,10 +9,11 @@ import { useActions } from "../../../services/ActionService";
 import { usePages } from "../../../services/PageService";
 import { variableHasSettings } from '../../../services/VariableService.ts';
 import Modal from "../../../components/Modal.vue";
-import SettingForm from '../../settings/partials/Form.vue';
 import VariableConfigItem from '../../../components/inputs/VariableConfigItem.vue';
 import { SettingMenu } from '../../../types/Setting';
 import { getStorage, putStorage } from '../../../services/LocalStorageService';
+import VariableSettings from '../../../components/inputs/VariableSettings.vue';
+import { ResourcePreset } from "../../../types/Resource.ts";
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
@@ -35,10 +36,10 @@ const props = defineProps({
 });
 
 
-console.log(getStorage('variables-expanded', window.innerWidth > 768));
 const variablesExpanded = ref(getStorage('variables-expanded', window.innerWidth > 768));
 const showSettings = ref(false);
-const settings = ref<SettingMenu[]>([]);
+const settings = ref<SettingMenu[]|ResourcePreset[]>([]);
+const selectedVariable = ref<Variable | null>(null);
 
 const emit = defineEmits(['update:code', 'update:variables', 'update:name']);
 
@@ -50,9 +51,14 @@ const removeVariable = (index: number) => {
     emit('update:variables', props.variables.filter((_, i) => i !== index));
 };
 
-const displaySettings = (variable: Variable, settingsMenu: SettingMenu[]) => {
+const displaySettings = (variable: Variable, settingsMenu?: SettingMenu[]|ResourcePreset[]) => {
     if (variableHasSettings(variable.type)) {
-        settings.value = settingsMenu || [];
+        selectedVariable.value = variable;
+        if (variable.type === 'resource') {
+            settings.value = variable.applied_settings || [];
+        } else {
+            settings.value = settingsMenu || variable.settings || [];
+        }
         variable.settings = settingsMenu;
         showSettings.value = true;
     }
@@ -97,6 +103,7 @@ onMounted(() => {
                             v-model:type="variable.type"
                             v-model:name="variable.name"
                             v-model:default="variable.default"
+                            :settings="variable.settings"
                             :showRemove="variables.length > 1"
                             @removeVariable="removeVariable(index)"
                             @displaySettings="displaySettings(variable, $event)"
@@ -112,8 +119,8 @@ onMounted(() => {
             </div>
         </div>
     </div>
-    <modal :title="$t('titles.settings')" v-model:showModal="showSettings" :resetOnClose="false">
-        <setting-form :settingMenu="settings" />
+    <modal :title="$t('titles.settings')" v-model:showModal="showSettings" @close="selectedVariable = null">
+        <variable-settings :variable="selectedVariable" v-model:settings="settings"/>
     </modal>
 </template>
 

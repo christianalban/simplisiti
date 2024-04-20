@@ -10,6 +10,8 @@ import { useRoute } from 'vue-router';
 import { value } from '../../utils/helpers.ts';
 import { DataTableValue } from "../../types/DataTable.ts";
 import { DataSourceValue } from "../../types/DataSource.ts";
+import { SettingMenu } from '../../types/Setting.ts';
+import { ResourcePreset } from '../../types/Resource.ts';
 
 const props = defineProps({
     type: {
@@ -23,6 +25,10 @@ const props = defineProps({
     default: {
         type: [String, Number, Object, null, undefined] as PropType<string | number | DataTableValue | DataSourceValue | null | undefined>,
         required: true,
+    },
+    settings: {
+        type: Array as PropType<SettingMenu[]|ResourcePreset[]>,
+        default: [],
     },
     showRemove: {
         type: Boolean,
@@ -44,10 +50,16 @@ const removeVariable = () => {
 };
 
 const displaySettings = () => {
-    getComponentVariableSettings(route.params.component as string, {type: props.type, name: props.name, default: props.default})
-        .then((settings) => {
-            emit('displaySettings', settings.data.data);
-        });
+    if (props.type === 'resource') {
+        emit('displaySettings', props.settings);
+    }
+
+    if (props.type === 'datasource') {
+        getComponentVariableSettings(route.params.component as string, {type: props.type, name: props.name, default: props.default})
+            .then((settings) => {
+                emit('displaySettings', settings.data.data);
+            });
+    }
 };
 
 const handleInput = (event: Event) => variableName.value = value(event.target);

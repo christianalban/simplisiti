@@ -30,6 +30,10 @@ export const deleteComponent = async (componentId: number): Promise<any> => {
 export const mapWithoutSettingsData = (variables: Variable[]): Variable[] => {
     const tempVariables = JSON.parse(JSON.stringify(variables)) as Variable[];
     return tempVariables.filter(variable => variable.name !== '').map(variable => {
+            if (variable.type === 'resource') {
+                return variable;
+            }
+
             variable.settings = variable.settings?.map(setting => {
                 setting.items = setting.items.map(item => ({
                     id: item.id,

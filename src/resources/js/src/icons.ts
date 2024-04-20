@@ -26,6 +26,7 @@ import {
     faMinimize,
     faSun,
     faMoon,
+    faCrop,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -55,7 +56,8 @@ library.add(
     faMaximize,
     faMinimize,
     faSun,
-    faMoon
+    faMoon,
+    faCrop
 );
 
 export default FontAwesomeIcon;
