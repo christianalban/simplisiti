@@ -27,6 +27,7 @@ import {
     faSun,
     faMoon,
     faCrop,
+    faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -57,7 +58,8 @@ library.add(
     faMinimize,
     faSun,
     faMoon,
-    faCrop
+    faCrop,
+    faSpinner
 );
 
 export default FontAwesomeIcon;

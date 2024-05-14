@@ -43,6 +43,7 @@ const messages = {
             },
             labels: {
                 componentName: "Component name (optional group)",
+                noPreview: "No preview available",
             },
             titles: {
                 componentsList: "Components list",
@@ -358,6 +359,7 @@ const messages = {
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
+                noPreview: "No hay vista previa disponible",
             },
             titles: {
                 componentsList: "Listado de componentes",

@@ -5,6 +5,7 @@ import Draggable from 'vuedraggable'
 import { Component, ComponentContent } from '../../../types/Component';
 import Group from '../../../components/Group.vue';
 import { groupItems, componentName } from '../../../utils/helpers';
+import ComponentFloatingPreview from '../../../components/preview/ComponentFloatingPreview.vue';
 
 const availableComponents = ref<Component[]>([]);
 
@@ -66,11 +67,16 @@ onMounted(() => {
                 :sort="false"
                 :clone="cloneComponent"
                 item-key="id">
-                <template #item="{element}">
+                <template #item="{element, index}">
                     <div class="tile h-24 cursor-pointer">
-                        <span class="tile-title cursor-pointer active:cursor-grabbing">
-                            {{ componentName(element.name) }}
-                        </span>
+                        <component-floating-preview
+                            :component="element" class="flex-1 tile-title cursor-pointer active:cursor-grabbing"
+                            :position="index % 2 === 0 ? 'left' : 'right'"
+                        >
+                            <div class="text-center">
+                                {{ componentName(element.name) }}
+                            </div>
+                        </component-floating-preview>
                     </div>
                 </template>
             </draggable>

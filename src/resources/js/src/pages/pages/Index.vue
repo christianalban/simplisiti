@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { getPages } from '../../services/PageService';
 import { Page } from '../../types/Page';
-import { groupItems } from '../../utils/helpers';
+import { groupItems, labelName } from '../../utils/helpers';
 import GroupedList from '../../components/layout/GroupedList.vue';
 
 const pages = ref<Page[]>([]);
@@ -30,7 +30,7 @@ onMounted(() => {
             <grouped-list :listGroup="pagesGroup" v-slot="page">
                 <a :href="`/spanel/pages/${page.item?.id}`" class="button primary w-full flex items-center justify-between">
                     <div class="flex flex-col">
-                        <span class="font-semibold">{{ page.item?.name }}</span>
+                        <span class="font-semibold">{{ labelName(page.item?.name) }}</span>
                         <span>{{ $t('pages.labels.urlParam', { url: page.item?.url }) }}</span>
                     </div>
                     <div class="flex gap-2">

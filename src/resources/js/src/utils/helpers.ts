@@ -16,7 +16,9 @@ export const groupItems = <T>(items: T[]): GroupItem<T>[] => items.map((data) =>
 
 export const nameParts = (name: string): string[] => name.match(/(^[0-9a-z_-]*)(\/[0-9a-z_-]+$)/) || [];
 
-export const componentName = (name: string): string => nameParts(name)[2]?.replace(/\//, '') || name;
+export const labelName = (name: string): string => nameParts(name)[2]?.replace(/\//, '') || name;
+
+export const componentName = (name: string): string => labelName(name);
 
 export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
     const group: Group<T> = {};

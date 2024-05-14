@@ -10,7 +10,11 @@ const props = defineProps({
     component: {
         type: Object as PropType<Component>,
         required: true,
-    }
+    },
+    html: {
+        type: [String, null] as PropType<string | null>,
+        default: null,
+    },
 });
 
 const iframe = ref<HTMLIFrameElement | null>(null);
@@ -18,7 +22,7 @@ const iframe = ref<HTMLIFrameElement | null>(null);
 const updateIframe = async (componentContent: ContentValue) => {
     if (!props.component.id) return;
 
-    const content = await getComponentPreview(props.component.id, componentContent);
+    const content = props.html ?? (await getComponentPreview(props.component.id, componentContent)).data;
 
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -29,7 +33,7 @@ const updateIframe = async (componentContent: ContentValue) => {
         const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
 
         doc.open();
-        doc.write(content.data);
+        doc.write(content);
         doc.head.appendChild(styleLink);
         doc.head.appendChild(pluginStyleLink);
         doc.body.appendChild(scriptLink);
