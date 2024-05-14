@@ -68,9 +68,9 @@ onMounted(() => {
                 item-key="id">
                 <template #item="{element}">
                     <div class="tile h-24 cursor-pointer">
-                        <label class="tile-title cursor-grab active:cursor-grabbing">
+                        <span class="tile-title cursor-pointer active:cursor-grabbing">
                             {{ componentName(element.name) }}
-                        </label>
+                        </span>
                     </div>
                 </template>
             </draggable>

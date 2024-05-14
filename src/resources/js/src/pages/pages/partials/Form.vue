@@ -114,7 +114,7 @@ onMounted(() => {
 
 <template>
     <float-toolbar v-model:isInvisible="isInvisible" :position="position" :showLabel="$t(pageEditionMode === 'editing-component' ? 'pages.buttons.settings' : 'pages.buttons.components')" :canResize="true">
-        <div class="w-full p-4 flex flex-col overflow-y-auto h-[60vh] md:h-full">
+        <div class="w-full p-4 flex flex-col h-[60vh] md:h-full">
             <div :class="`component-configuration-title ${position}`">
                 <h2>{{ $t(`pages.titles.${title}`) }}</h2>
                 <div>
@@ -149,29 +149,24 @@ onMounted(() => {
                             <draggable 
                                 class="page-sections-dreaggable"
                                 v-model="section.components" 
+                                :disabled="section.components.length === 1"
                                 group="components" 
                                 item-key="id"
-                                handle=".page-sections-components-grip-lines"
                             >
                                 <template #item="{element: component, index: componentIndex}">
                                     <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
                                         <div v-autosize class="page-sections-preview">
-                                            <div class="page-sections-preview-content" v-autosize>
+                                            <div class="page-sections-preview-content relative" v-autosize @click="enterToEditingMode(component, sectionIndex)">
+                                                <div class="absolute inset-0 cursor-pointer transition-colors hover:bg-yellow-400 active:bg-yellow-200 opacity-50 z-10"></div>
                                                 <component-preview :component="component"/>
                                             </div>
                                             <div class="page-sections-item-buttons">
-                                                <button class="page-sections-components-grip-lines">
-                                                    <fa-icon icon="grip" />
-                                                </button>
                                                 <div class="pages-secttions-component-buttons">
                                                     <button type="button" @click="removeComponent(section.components, componentIndex)">
                                                         <fa-icon icon="trash" />
                                                     </button>
-                                                    <button type="button" @click="enterToEditingMode(component, sectionIndex)">
-                                                        <fa-icon icon="file-invoice" />
-                                                    </button>
                                                     <span class="page-sections-label">
-                                                        {{ $t('pages.labels.component') }} {{ (component.order = componentIndex) + 1 }} - {{ component.name }}
+                                                        {{ component.name }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -244,7 +239,7 @@ onMounted(() => {
                     &:hover {
                         .page-sections-preview {
                             .page-sections-preview-content {
-                                @apply border-2 border-yellow-400;
+                                @apply border-4 border-yellow-400;
                             }
                             
                         }
@@ -253,7 +248,7 @@ onMounted(() => {
                     &.page-sections-item-selected {
                         .page-sections-preview {
                             .page-sections-preview-content {
-                                @apply border-2 border-yellow-400;
+                                @apply border-4 border-yellow-400;
                             }
                         }
                     }
@@ -263,12 +258,12 @@ onMounted(() => {
 
                         &:hover {
                             .page-sections-preview-content {
-                                @apply border-2 border-yellow-400;
+                                @apply border-4 border-yellow-400;
                             }
                         }
 
                         .page-sections-preview-content {
-                            @apply bg-white -z-10 border-2 border-transparent;
+                            @apply bg-white -z-10 border-4 border-transparent;
                         }
 
                         .page-sections-item-buttons {

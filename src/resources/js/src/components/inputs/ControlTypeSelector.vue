@@ -5,6 +5,7 @@ import { DataTableValue } from '../../types/DataTable';
 import { DataSourceValue } from '../../types/DataSource';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
+import TextAreaComponent from './TextArea.vue';
 import DataSource from './DataSource.vue';
 import Action from './Action.vue';
 import Page from './Page.vue';
@@ -37,6 +38,10 @@ const emit = defineEmits(['update:model-value']);
 
 const emitInputValue = (value: Event) => {
     emit('update:model-value', (value.target as HTMLInputElement).value);
+};
+
+const emitTextAreaValue = (value: string) => {
+    emit('update:model-value', value);
 };
 
 const emitResourceValue = (value: number) => {
@@ -72,7 +77,10 @@ watch(type, (value) => {
 
 <template>
     <input v-if="type === 'text'" type="text" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
+    <!--
     <textarea v-if="type === 'textarea'" class="input w-full" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" >{{ value }}</textarea>
+    -->
+    <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value" @update:modelValue="emitTextAreaValue($event)"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
     <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
     <data-source v-else-if="type === 'datasource'" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>

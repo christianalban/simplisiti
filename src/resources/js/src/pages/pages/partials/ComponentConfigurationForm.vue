@@ -52,7 +52,7 @@ const emitComponentContentUpdated = () => {
 }
 
 .component-configuration-parameters {
-    @apply flex flex-col gap-2 flex-1 overflow-auto;
+    @apply flex flex-col gap-2 flex-1;
 
     .component-configuration-label {
         @apply flex gap-2 items-center;

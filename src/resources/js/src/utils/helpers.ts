@@ -14,7 +14,7 @@ export const value = (value: EventTarget | null): string => {
 
 export const groupItems = <T>(items: T[]): GroupItem<T>[] => items.map((data) => ({ data }));
 
-export const nameParts = (name: string): string[] => name.match(/(^[a-z_-]*)(\/[a-z_-]+$)/) || [];
+export const nameParts = (name: string): string[] => name.match(/(^[0-9a-z_-]*)(\/[0-9a-z_-]+$)/) || [];
 
 export const componentName = (name: string): string => nameParts(name)[2]?.replace(/\//, '') || name;
 

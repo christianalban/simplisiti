@@ -12,7 +12,7 @@ abstract class Value
 
     public function __construct(array $variable, array $options = []) {
         $this->type = $variable['type'];
-        $this->name = $variable['name'];
+        $this->name = $variable['name'] ?? '';
         $this->default = $variable['default'];
         $this->applied_settings = $variable['applied_settings'] ?? [];
         $this->options = $options;

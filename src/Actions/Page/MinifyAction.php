@@ -46,6 +46,30 @@ class MinifyAction implements PreviewAction
             $minifier->add($style->styles);
         });
 
+        $minifier->add($this->getCkEditorCss());
+
         return $minifier;
+    }
+
+    private function getCkEditorCss(): string
+    {
+        $resetStyles = '
+            .ck-content * {
+                all: revert;
+            }
+            .ck-content .table table,
+            .ck-content .table table td,
+            .ck-content .table table th {
+                border: none;
+            }
+
+            .ck-content .page-break {
+                visibility: hidden;
+            }
+        ';
+
+        $content = file_get_contents(public_path('vendor/simplisiti-css/ckeditor.css'));
+
+        return $content . $resetStyles;
     }
 }

@@ -26,6 +26,7 @@ class ServiceProvider extends Support\ServiceProvider
 
         $this->publishes([
             __DIR__.'/resources/js/dist' => public_path('vendor/simplisiti'),
+            __DIR__.'/resources/css' => public_path('vendor/simplisiti-css'),
         ], 'public');
 
         $this->publishes([
