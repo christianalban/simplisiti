@@ -42,7 +42,7 @@ const loadComponentPreview = async () => {
         </div>
         <div class="invisible group-hover:visible shadow-lg">
             <div :class="`absolute preview-${position} bg-white top-full mt-4 scale-[0.2] z-10`" v-if="componentPreviewRender && !noPreview">
-                <component-preview :component="component" :html="componentPreviewRender"/>
+                <component-preview class="w-[1366px]" :component="component" :html="componentPreviewRender"/>
             </div>
             <div class="absolute top-full mt-4 z-10" v-else>
                 <div class="bg-white p-2 text-center">

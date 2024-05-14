@@ -102,7 +102,7 @@ onMounted(() => {
 <template>
     <div class="relative">
         <iframe
-            class="w-screen"
+            class="w-full"
             ref="iframe"
             sandbox="allow-scripts allow-same-origin"
         ></iframe>
