@@ -141,7 +141,9 @@ onMounted(() => {
         <ul class="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-y-auto">
             <li v-for="resource of resources" class="flex">
                 <div type="button" class="rounded border-2 transition-colors border-blue-200 hover:border-blue-500 w-full flex flex-col items-center justify-between overflow-hidden aspect-square">
-                    <resource-preview :url="resource.url" />
+                    <div class="text-9xl w-full h-full">
+                        <resource-preview :url="resource.url" />
+                    </div>
                     <div class="flex gap-2 w-full h-10 justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
                         <label class="font-semibold flex gap-2 flex-1 text-ellipsis overflow-hidden">
                             <input type="checkbox" class="form-checkbox" :value="resource?.id" v-model="selectedResourcesIds"/>

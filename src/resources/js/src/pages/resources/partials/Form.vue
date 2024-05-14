@@ -46,7 +46,7 @@ const handleFile = (event: EventTarget | null) => {
                 class="input"
                 :multiple="uploadType === 'batch'"
                 :placeholder="$t('resources.placeholders.resourceFile')"
-                accept="image/jpeg,image/svg+xml,image/png,image/webp,video/mp4,application/pdf,image/gif,application/vnd.rar,application/x-7z-compressed,font/woff,font/woff2,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,font/ttf,image/vnd.microsoft.icon"
+                accept="image/jpeg,image/svg+xml,image/png,image/webp,video/mp4,application/pdf,image/gif,application/zip,application/x-7z-compressed,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
             />
         </div>
         <div class="flex flex-col gap-2 w-full" v-if="uploadType === 'single'">

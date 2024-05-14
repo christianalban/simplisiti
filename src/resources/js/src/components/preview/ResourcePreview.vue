@@ -37,7 +37,11 @@ const toggleBackground = () => {
 
 <template>
     <button type="button" class="resource-container" @click.stop="showPreview">
-        <fa-icon v-if="url?.match('.pdf')" icon="file-pdf" class="text-9xl text-red-500"/>
+        <fa-icon v-if="url?.match('.pdf')" icon="file-pdf" class="text-red-500"/>
+        <fa-icon v-else-if="url?.match('.zip')" icon="file-zipper" class="text-gray-500"/>
+        <fa-icon v-else-if="url?.match(/\.docx|.doc/)" icon="file-word" class="text-blue-500"/>
+        <fa-icon v-else-if="url?.match(/\.xls|.xls/)" icon="file-excel" class="text-green-500"/>
+        <fa-icon v-else-if="url?.match(/\.pptx|.ppt/)" icon="file-powerpoint" class="text-orange-500"/>
         <video v-else-if="url?.match('.mp4')" :src="url" class="resource-preview-button"></video>
         <img v-else :src="url" class="resource-preview-button"/>
     </button>
@@ -63,7 +67,7 @@ const toggleBackground = () => {
 
 <style scoped>
 .resource-container {
-    @apply flex flex-1 w-full items-center justify-center bg-gray-100 overflow-hidden;
+    @apply flex flex-1 w-full h-full items-center justify-center bg-gray-100 overflow-hidden;
 
     .resource-preview-button
     {

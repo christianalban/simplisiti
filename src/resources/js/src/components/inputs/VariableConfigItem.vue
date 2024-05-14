@@ -68,6 +68,9 @@ const handleInput = (event: Event) => variableName.value = value(event.target);
 
 <template>
     <div class="form-group h-14">
+        <div class="variable-grip-lines button primary flex cursor-move !px-1 items-center justify-center">
+            <fa-icon icon="grip-lines" class="text-gray-500" />
+        </div>
         <variable-type-selector class="w-20" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
         <input type="text" class="input w-32" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
         <!-- inputs defaults accord selected type -->

@@ -14,6 +14,7 @@ import { SettingMenu } from '../../../types/Setting';
 import { getStorage, putStorage } from '../../../services/LocalStorageService';
 import VariableSettings from '../../../components/inputs/VariableSettings.vue';
 import { ResourcePreset } from "../../../types/Resource.ts";
+import Draggable from 'vuedraggable';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
@@ -97,18 +98,26 @@ onMounted(() => {
                     </button>
                     <h2 v-if="variablesExpanded" class="title">{{ $t('components.titles.variables') }}</h2>
                 </div>
-            <div v-if="variablesExpanded" class="flex flex-col flex-1 gap-2 bg-gray-100 p-2 rounded-lg">
-                    <div v-for="(variable, index) of variables" :key="variable.name">
-                        <variable-config-item
-                            v-model:type="variable.type"
-                            v-model:name="variable.name"
-                            v-model:default="variable.default"
-                            :settings="variable.settings"
-                            :showRemove="variables.length > 1"
-                            @removeVariable="removeVariable(index)"
-                            @displaySettings="displaySettings(variable, $event)"
-                        />
-                    </div>
+                <div v-if="variablesExpanded" class="flex flex-col flex-1 bg-gray-100 rounded-lg">
+                    <draggable
+                        class="flex flex-col flex-1 gap-2 p-2"
+                        :list="variables"
+                        group="variables"
+                        item-key="name"
+                        handle=".variable-grip-lines"
+                    >
+                        <template #item="{element: variable, index: variableIndex}">
+                            <variable-config-item
+                                v-model:type="variable.type"
+                                v-model:name="variable.name"
+                                v-model:default="variable.default"
+                                :settings="variable.settings"
+                                :showRemove="variables.length > 1"
+                                @removeVariable="removeVariable(variableIndex)"
+                                @displaySettings="displaySettings(variable, $event)"
+                            />
+                        </template>
+                    </draggable>
                 </div>
                 <div v-if="variablesExpanded" class="w-full mt-auto">
                     <button type="button" class="variable-button bg-teal-200 hover:bg-teal-300 text-teal-900 w-full rounded" @click="addVariable">

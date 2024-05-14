@@ -30,6 +30,10 @@ import {
     faSpinner,
     faFilePdf,
     faLink,
+    faFileZipper,
+    faFileWord,
+    faFileExcel,
+    faFilePowerpoint,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -64,6 +68,10 @@ library.add(
     faSpinner,
     faFilePdf,
     faLink,
+    faFileZipper,
+    faFileWord,
+    faFileExcel,
+    faFilePowerpoint,
 );
 
 export default FontAwesomeIcon;
