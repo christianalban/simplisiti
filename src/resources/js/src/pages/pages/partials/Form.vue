@@ -140,7 +140,6 @@ onMounted(() => {
                 @input="$emit('update:sections', $event)"
                 group="sections" 
                 item-key="id"
-                handle=".page-sections-grip-lines"
             >
                 <template #item="{element: section, index: sectionIndex}">
                     <div :class="['page-sections-list-content', {'page-sections-list-header': !sectionIndex, 'page-sections-list-footer': sectionIndex === sections.length - 1}]">
@@ -181,7 +180,6 @@ onMounted(() => {
                                 </template>
                             </draggable>
                             <div class="page-sections-buttons">
-                                <fa-icon v-if="sectionIndex && sectionIndex !== sections.length - 1" icon="grip" class="page-sections-grip-lines" />
                                 <span v-if="!sectionIndex">
                                     <fa-icon icon="heading" />
                                     {{ $t('pages.labels.header') }}

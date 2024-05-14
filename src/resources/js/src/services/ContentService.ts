@@ -17,7 +17,7 @@ export const valueOfTextType = (content: string|number|DataTableValue|DataSource
 
 export const valueOfResourceType = (content: string|number|DataTableValue|DataSourceValue): string => {
     if (typeof content === 'number' || typeof content === 'string') {
-        return resourceFromId(+content).url || '';
+        return resourceFromId(+content)?.url || '';
     }
     return '';
 }

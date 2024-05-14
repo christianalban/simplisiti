@@ -219,11 +219,11 @@ watch(columns, (value) => {
         :resetOnClose="false"
         @confirm="handleConfirm"
     >
-        <div class="overflow-y-auto h-[75vh] rounded">
+        <div class="overflow-auto h-[75vh] max-w-[95vw] rounded">
             <table class="w-full relative">
                 <thead>
                     <tr>
-                        <th :class="`p-2 bg-gray-100 sticky top-0 z-10 ${column.type}`" v-for="(column, index) of columns">
+                        <th :class="`min-w-[200px] p-2 bg-gray-100 sticky top-0 z-10 ${column.type}`" v-for="(column, index) of columns">
                             <div class="flex">
                                 <div class="w-full form-group">
                                     <input class="input w-full" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')" :readonly="!editStructure"/>
@@ -234,7 +234,7 @@ watch(columns, (value) => {
                                 </div>
                             </div>
                         </th>
-                        <th class="p-2 bg-gray-100 sticky top-0 z-10">
+                        <th class="sticky right-0 p-2 bg-gray-100 top-0 z-10">
                             <div class="flex justify-center">
                                 <button v-if="columns.length >= 1 && editStructure" type="button" class="button primary" @click="addColumn">
                                     <fa-icon icon="plus" />
@@ -246,16 +246,23 @@ watch(columns, (value) => {
                 <tbody>
                     <tr class="group" v-for="(variables, index) of rows" :key="`${index}:${name}`">
                         <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
-                            <div class="">
+                            <div class="h-10">
                                 <control-type-selector v-model="variable.default" :edit-structure="editStructure" :name="variable.name" :type="variable.type"/>
                             </div>
                         </td>
-                        <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
+                        <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
                             <div class="flex flex-col gap-1">
-                                <button v-if="rows.length > 1" type="button" class="button danger" @click="removeRow(index)">
+                                <button type="button" class="button danger" @click="removeRow(index)">
                                     <fa-icon icon="minus" />
                                 </button>
-                                <button v-if="index == rows.length - 1" type="button" class="button secondary" @click="addRow">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td :colspan="columns.length" class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200"></td>
+                        <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
+                            <div class="flex flex-col gap-1 w-min ml-auto">
+                                <button type="button" class="button secondary" @click="addRow">
                                     <fa-icon icon="plus" />
                                 </button>
                             </div>

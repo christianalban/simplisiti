@@ -24,8 +24,8 @@ import { Alignment } from '@ckeditor/ckeditor5-alignment';
 
 const props = defineProps({
     modelValue: {
-        type: String,
-        required: true,
+        type: [String, null] as PropType<string|null>,
+        default: '',
     },
     name: {
         type: String as PropType<string>,
@@ -160,20 +160,6 @@ const handleConfirm = () => {
 .ck-editor__editable {
     @apply max-h-[75vh];
 }
-
-/* .ck-sticky-panel .ck-sticky-panel__placeholder { */
-/*     @apply !h-0; */
-/* } */
-/* .ck .ck-sticky-panel .ck-sticky-panel__content_sticky{ */
-/*     @apply !static; */
-/* } */
-/* .ck .ck-sticky-panel .ck-dropdown__panel{ */
-/*     @apply !top-0; */
-/* } */
-
-/* .ck-rounded-corners .ck.ck-balloon-panel { */
-/*     z-index: 1000001; */
-/* } */
 
 :root {
     --ck-z-default: 100;
