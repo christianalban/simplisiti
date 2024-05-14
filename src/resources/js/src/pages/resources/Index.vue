@@ -40,7 +40,7 @@ const handleShowDeleteDialog = (resource: Resource) => {
     showDeleteDialog.value = true;
 }
 
-const handleShowDeleteBatchDialog = (resource: Resource) => {
+const handleShowDeleteBatchDialog = () => {
     showDeleteBatchDialog.value = true;
 }
 

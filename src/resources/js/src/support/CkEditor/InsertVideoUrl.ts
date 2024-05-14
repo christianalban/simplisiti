@@ -67,22 +67,22 @@ export class InsertVideoUrl extends Plugin {
             }
         } );
 
-        // Conversion from a view element to a model attribute.
-        conversion.for( 'upcast' ).elementToAttribute( {
-            view: {
-                name: 'video',
-                attributes: [ 'src' ]
-            },
-            model: {
-                key: 'videoUrl',
-                // Callback function provides access to the view element.
-                value: viewElement => {
-                    const src = viewElement.getAttribute( 'src' );
-
-                    return src;
-                }
-            }
-        } );
+        // // Conversion from a view element to a model attribute.
+        // conversion.for( 'upcast' ).elementToAttribute( {
+        //     view: {
+        //         name: 'video',
+        //         attributes: [ 'src' ]
+        //     },
+        //     model: {
+        //         key: 'videoUrl',
+        //         // Callback function provides access to the view element.
+        //         value: viewElement => {
+        //             const src = viewElement.getAttribute( 'src' );
+        //
+        //             return src;
+        //         }
+        //     }
+        // } );
 
     }
 }

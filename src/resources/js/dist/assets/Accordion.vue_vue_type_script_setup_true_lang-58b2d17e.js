@@ -1,0 +1,1 @@
+import{d as s,o as a,c as n,h as l,B as o,j as r,t as c}from"./index-c9121d9d.js";const i=["open"],d={class:"w-full"},_=s({__name:"Accordion",props:{title:String,open:Boolean},setup(e){return(t,p)=>(a(),n("details",{open:e.open},[l("summary",d,[o(t.$slots,"title",{},()=>[r(c(e.title),1)])]),o(t.$slots,"default")],8,i))}});export{_};

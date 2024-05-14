@@ -12,7 +12,7 @@ import VariableConfigItem from '../../../components/inputs/VariableConfigItem.vu
 import { SettingMenu } from '../../../types/Setting';
 import { getStorage, putStorage } from '../../../services/LocalStorageService';
 import VariableSettings from '../../../components/inputs/VariableSettings.vue';
-import { ResourcePreset } from "../../../types/Resource.ts";
+// import { ResourcePreset } from "../../../types/Resource.ts";
 import Draggable from 'vuedraggable';
 
 const { loadResources } = useResources();
@@ -34,7 +34,8 @@ const props = defineProps({
 
 const variablesExpanded = ref(getStorage('variables-expanded', window.innerWidth > 768));
 const showSettings = ref(false);
-const settings = ref<SettingMenu[]|ResourcePreset[]>([]);
+// const settings = ref<SettingMenu[]|ResourcePreset[]>([]);
+const settings = ref<SettingMenu[]>([]);
 const selectedVariable = ref<Variable | null>(null);
 
 const emit = defineEmits(['update:code', 'update:variables', 'update:name']);
@@ -47,7 +48,8 @@ const removeVariable = (index: number) => {
     emit('update:variables', props.variables.filter((_, i) => i !== index));
 };
 
-const displaySettings = (variable: Variable, settingsMenu?: SettingMenu[]|ResourcePreset[]) => {
+// const displaySettings = (variable: Variable, settingsMenu?: SettingMenu[]|ResourcePreset[]) => {
+const displaySettings = (variable: Variable, settingsMenu?: SettingMenu[]) => {
     if (variableHasSettings(variable.type)) {
         selectedVariable.value = variable;
         if (variable.type === 'resource') {

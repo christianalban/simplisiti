@@ -24,7 +24,7 @@ import { Alignment } from '@ckeditor/ckeditor5-alignment';
 
 const props = defineProps({
     modelValue: {
-        type: [String, null] as PropType<string|null>,
+        type: [String] as PropType<string>,
         default: '',
     },
     name: {
