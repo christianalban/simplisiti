@@ -40,12 +40,12 @@ const loadComponentPreview = async () => {
         <div class="h-full w-full" @mouseenter="loadComponentPreview">
             <slot></slot>
         </div>
-        <div class="invisible group-hover:visible">
-            <div :class="`absolute preview-${position} shadow bg-white top-full mt-4 scale-[0.2] z-10`" v-if="componentPreviewRender && !noPreview">
+        <div class="invisible group-hover:visible shadow-lg">
+            <div :class="`absolute preview-${position} bg-white top-full mt-4 scale-[0.2] z-10`" v-if="componentPreviewRender && !noPreview">
                 <component-preview :component="component" :html="componentPreviewRender"/>
             </div>
             <div class="absolute top-full mt-4 z-10" v-else>
-                <div class="bg-white shadow p-2 text-center">
+                <div class="bg-white p-2 text-center">
                     <p v-if="noPreview" class="text-center text-gray-500">{{ $t('components.labels.noPreview') }}</p>
                     <fa-icon v-else icon="spinner" class="animate-spin text-center text-gray-500"/>
                 </div>

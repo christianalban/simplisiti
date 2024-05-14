@@ -4,6 +4,7 @@ import { getComponents} from '../../services/ComponentService';
 import { Component } from '../../types/Component';
 import Group from '../../components/Group.vue';
 import { componentName, groupItems } from '../../utils/helpers';
+import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
 
 const components = ref<Component[]>([]);
 
@@ -29,9 +30,14 @@ onMounted(() => {
         <group class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps">
             <div class="grid grid-cols-2 md:grid-cols-6 gap-4 py-4">
                 <router-link v-for="(item, key) in slotProps.item" :key="key" :to="{ name: 'components.edit', params: { component: item.id } }" class="tile">
-                    <span class="tile-title">
-                        {{ componentName(item.name) }}
-                    </span>
+                    <component-floating-preview
+                        :component="item" class="flex-1 tile-title"
+                        :position="key % 2 === 0 ? 'left' : 'right'"
+                    >
+                        <div class="text-center">
+                            {{ componentName(item.name) }}
+                        </div>
+                    </component-floating-preview>
                 </router-link>
             </div>
         </group>
