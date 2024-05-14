@@ -20,7 +20,11 @@
     &.danger {
         @apply bg-red-100 text-red-900;
 
-        &:hover {
+        &[disabled] {
+            @apply bg-red-50;
+        }
+
+        &:not([disabled]):hover {
             @apply bg-red-200;
         }
     }

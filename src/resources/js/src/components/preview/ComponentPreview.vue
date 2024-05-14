@@ -93,9 +93,11 @@ const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => 
 
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));
-    observer.subscribe(props.component, (content) => {
-        updateIframe(content).then(() => resizeIframe());
-    });
+    if (!props.html) {
+        observer.subscribe(props.component, (content) => {
+            updateIframe(content).then(() => resizeIframe());
+        });
+    }
 });
 </script>
 

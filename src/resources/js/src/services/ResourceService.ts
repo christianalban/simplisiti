@@ -52,6 +52,10 @@ export const deleteResource = async (resourceId: number): Promise<any> => {
     return await axios.delete(`resource/${resourceId}`)
 }
 
+export const deleteResourceBatch = async (resourceId: number[]): Promise<any> => {
+    return await axios.delete(`resource/batch?ids=${resourceId.join(',')}`)
+}
+
 export const resources = ref<Resource[]>([]);
 
 export const loadResources = async (): Promise<void> => {

@@ -58,6 +58,7 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
         Route::get('resource', 'index');
         Route::get('resource/{resource}', 'show');
         Route::put('resource/{resource}', 'update');
+        Route::delete('resource/batch', 'destroyBatch');
         Route::delete('resource/{resource}', 'destroy');
     });
 

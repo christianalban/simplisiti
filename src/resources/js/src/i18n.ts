@@ -235,6 +235,8 @@ const messages = {
                 errorCreated: "Resource couldn't be created.",
                 errorUpdated: "Resource couldn't be updated.",
                 errorDeleted: "Resource couldn't be deleted.",
+                urlCopied: "URL copied to clipboard.",
+                urlErrorCopied: "Error copying URL to clipboard."
             },
             placeholders: {
                 resourceName: "Resource name (optional)",
@@ -244,6 +246,7 @@ const messages = {
                 delete: {
                     title: "Delete resource",
                     message: "Are you sure you want to delete the resource '{name}'?",
+                    batchMessage: "Are you sure you want to delete the selected resources?",
                 }
             },
             buttons: {
@@ -554,6 +557,8 @@ const messages = {
                 errorCreated: "Recurso no pudo ser creado.",
                 errorUpdated: "Recurso no pudo ser actualizado.",
                 errorDeleted: "Recurso no pudo ser eliminado.",
+                urlCopied: "URL copiada al portapapeles.",
+                urlErrorCopied: "Error copiando URL al portapapeles."
             },
             placeholders: {
                 resourceName: "Nombre del recurso (optional)",
@@ -563,6 +568,7 @@ const messages = {
                 delete: {
                     title: "Eliminar recurso",
                     message: "¿Está seguro que desea eliminar el recurso '{name}'?",
+                    batchMessage: "¿Está seguro que desea eliminar los recursos seleccionados?",
                 }
             },
             buttons: {

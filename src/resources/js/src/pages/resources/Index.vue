@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { deleteResource, getResources } from '../../services/ResourceService';
+import { deleteResource, deleteResourceBatch, getResources } from '../../services/ResourceService';
 import { Resource } from '../../types/Resource';
 import CreateResource from './Create.vue';
 import EditResource from './Edit.vue';
@@ -14,9 +14,12 @@ const resources = ref<Resource[]>([]);
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
 const showDeleteDialog = ref(false);
+const showDeleteBatchDialog = ref(false);
 const selectedResource = ref<Resource|null>(null);
 const { t } = useI18n();
 const uploadType = ref<ResourceUploadType>('single');
+
+const selectedResourcesIds = ref<number[]>([]);
 
 const handleShowCreateModal = () => {
     uploadType.value = 'single';
@@ -35,6 +38,10 @@ const handleShowEditModal = () => {
 const handleShowDeleteDialog = (resource: Resource) => {
     selectedResource.value = resource;
     showDeleteDialog.value = true;
+}
+
+const handleShowDeleteBatchDialog = (resource: Resource) => {
+    showDeleteBatchDialog.value = true;
 }
 
 const fetchResources = () => {
@@ -72,6 +79,51 @@ const confirmDeleteResource = () => {
     })
 }
 
+const copyLink = (resource: Resource) => {
+    if (!resource.url) {
+        return;
+    }
+    navigator.clipboard.writeText(resource.url)
+    .then(() => {
+        showToast({
+            title: t('toasts.success'),
+            message: t('resources.toasts.urlCopied'),
+            type: 'success',
+        });
+    })
+    .catch(() => {
+        showToast({
+            title: t('toasts.error'),
+            message: t('resources.toasts.urlErrorCopied'),
+            type: 'error',
+        });
+    });
+}
+
+const confirmDeleteBatchResource = () => {
+    if (selectedResourcesIds.value.length === 0) {
+        return;
+    }
+
+    deleteResourceBatch(selectedResourcesIds.value)
+    .then(() => {
+        showToast({
+            title: t('toasts.success'),
+            message: t('resources.toasts.deleted'),
+            type: 'success',
+        });
+        fetchResources();
+        selectedResourcesIds.value = [];
+    })
+    .catch(() => {
+        showToast({
+            title: t('toasts.error'),
+            message: t('resources.toasts.errorDeleted'),
+            type: 'error',
+        });
+    })
+}
+
 onMounted(() => {
     fetchResources();
 });
@@ -84,21 +136,26 @@ onMounted(() => {
             <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
             <button type="button" class="button primary" @click="handleShowCreateModal">{{ $t('resources.buttons.create') }}</button>
             <button type="button" class="button primary" @click="handleShowCreateBatchModal">{{ $t('resources.buttons.createBatch') }}</button>
+            <button type="button" v-if="selectedResourcesIds.length" @click="handleShowDeleteBatchDialog" class="button danger">{{ $t('buttons.delete') }}</button>
         </div>
         <ul class="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-y-auto">
             <li v-for="resource of resources" class="flex">
-                <div type="button" class="rounded border-2 transition-colors border-blue-200 hover:border-blue-500 w-full flex flex-col items-center justify-between overflow-hidden h-44">
+                <div type="button" class="rounded border-2 transition-colors border-blue-200 hover:border-blue-500 w-full flex flex-col items-center justify-between overflow-hidden aspect-square">
                     <resource-preview :url="resource.url" />
-                    <div class="flex w-full h-10 justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
-                        <span class="font-semibold text-ellipsis overflow-hidden">{{ resource.name }}</span>
-                        <div class="flex gap-2">
-                            <button @click="setSelectedResource(resource)">
-                                <fa-icon icon="edit"/>
-                            </button>
-                            <button @click="handleShowDeleteDialog(resource)">
-                                <fa-icon icon="trash" />
-                            </button>
-                        </div>
+                    <div class="flex gap-2 w-full h-10 justify-between bg-blue-100 p-2 text-xl md:text-base text-blue-900">
+                        <label class="font-semibold flex gap-2 flex-1 text-ellipsis overflow-hidden">
+                            <input type="checkbox" class="form-checkbox" :value="resource?.id" v-model="selectedResourcesIds"/>
+                            {{ resource.name }}
+                        </label>
+                        <button @click="copyLink(resource)">
+                            <fa-icon icon="link"/>
+                        </button>
+                        <button @click="setSelectedResource(resource)">
+                            <fa-icon icon="edit"/>
+                        </button>
+                        <button @click="handleShowDeleteDialog(resource)">
+                            <fa-icon icon="trash" />
+                        </button>
                     </div>
                 </div>
             </li>
@@ -119,6 +176,12 @@ onMounted(() => {
         :title="$t('resources.dialogs.delete.title')"
         :message="$t('resources.dialogs.delete.message', { name: selectedResource?.name || '' })"
         @confirm="confirmDeleteResource"
+    />
+    <dialog-component
+        v-model:showDialog="showDeleteBatchDialog"
+        :title="$t('resources.dialogs.delete.title')"
+        :message="$t('resources.dialogs.delete.batchMessage')"
+        @confirm="confirmDeleteBatchResource"
     />
 </template>
 
