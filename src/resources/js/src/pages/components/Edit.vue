@@ -78,17 +78,26 @@ onMounted(() => {
 
 <template>
     <form class="overflow-hidden h-full flex flex-col" @submit.prevent="update">
-        <div class="flex flex-col gap-4 mb-4 w-full">
+        <div class="flex flex-col mb-4 w-full">
             <h1 class="title">{{ $t('components.titles.editComponent') }}</h1>
-            <div class="flex gap-2">
-                <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
-                <button @click="showDeleteDialog" type="button" class="button danger">{{ $t('buttons.delete') }}</button>
-                <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+            <div class="flex gap-2 items-end">
+                <div class="flex">
+                    <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
+                </div>
+                <div>
+                    <button @click="showDeleteDialog" type="button" class="button danger">{{ $t('buttons.delete') }}</button>
+                </div>
+                <div>
+                    <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+                </div>
+                <div class="ml-auto flex flex-col gap-2 md:w-1/3">
+                    <label class="label">{{ $t('components.labels.componentName') }}</label>
+                    <input type="text" v-model="name" required class="input" :placeholder="$t('components.placeholders.componentName')"/>
+                </div>
             </div>
         </div>
         <components-form
             v-model:code="code"
-            v-model:name="name"
             v-model:variables="variables"
         />
     </form>
