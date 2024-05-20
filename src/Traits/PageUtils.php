@@ -49,7 +49,7 @@ trait PageUtils {
     public function parseComponentData($component): array {
         return [
             'id' => $component['id'],
-            'order' => $component['order'],
+            'order' => 0,
             'content' => collect($component['variables'])->reduce(function($content, $variable) use ($component) {
                 $content[$variable['name']] = null;
 
