@@ -39,7 +39,9 @@ const emitComponentContentUpdated = () => {
                 <label>{{ variable.name }}&colon;</label>
                 <fa-icon class="component-configuration-set-default" icon="arrows-rotate" @click="restoreDefault(component, variable.name)"/>
             </div>
-            <control-type-selector :editStructure="false" v-if="component.content" v-model="component.content[variable.name]" @update:model-value="emitComponentContentUpdated" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
+            <div class="max-h-[4rem] flex overflow-hidden">
+                <control-type-selector :editStructure="false" v-if="component.content" v-model="component.content[variable.name]" @update:model-value="emitComponentContentUpdated" :default-value="variable.default" :name="variable.name" :type="variable.type"/>
+            </div>
         </div>
     </div>
 </template>

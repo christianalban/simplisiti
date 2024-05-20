@@ -21,7 +21,7 @@ class StorePageRequest extends FormRequest
             'sections.*.order' => 'required|integer|min:0',
             'sections.*.components' => 'required|array',
             'sections.*.components.*.id' => 'required|integer|exists:components,id',
-            'sections.*.components.*.order' => 'required|integer|min:0',
+            'sections.*.components.*.order' => 'nullable|integer|min:0',
             'sections.*.components.*.variables' => 'nullable|array',
         ];
     }

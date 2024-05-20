@@ -77,8 +77,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 flex-1">
-        <div class="flex flex-col-reverse md:flex-row gap-4 w-full flex-1 pb-2">
+    <div class="flex flex-col gap-4 flex-1 overflow-hidden">
+        <div class="flex flex-col-reverse md:flex-row gap-4 w-full overflow-hidden flex-1 h-full pb-2">
             <div class="flex-1 flex flex-col overflow-hidden">
                 <h2 class="title mb-4">{{ $t('components.titles.code') }}</h2>
                 <code-editor :code="props.code" @update:code="$emit('update:code', $event)" language="html"/>
@@ -91,7 +91,7 @@ onMounted(() => {
                     </button>
                     <h2 v-if="variablesExpanded" class="title">{{ $t('components.titles.variables') }}</h2>
                 </div>
-                <div v-if="variablesExpanded" class="flex flex-col flex-1 bg-gray-100 rounded-lg">
+                <div v-if="variablesExpanded" class="overflow-y-auto flex flex-col flex-1 bg-gray-100 rounded-lg">
                     <draggable
                         class="flex flex-col flex-1 gap-2 p-2"
                         :list="variables"
