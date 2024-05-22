@@ -128,9 +128,13 @@ class SimplisitiApp extends BasePlugin
             return;
         }
 
-        $this->pluginManager = new PluginManager($this);
-        foreach (Plugin::enabled()->get() as $plugin) {
-            $this->pluginManager->add($plugin);
+        try {
+            $this->pluginManager = new PluginManager($this);
+            foreach (Plugin::enabled()->get() as $plugin) {
+                $this->pluginManager->add($plugin);
+            }
+        } catch (\Exception $e) {
+            return;
         }
     }
 
@@ -138,7 +142,12 @@ class SimplisitiApp extends BasePlugin
         if (!Schema::hasTable('plugins')) {
             return;
         }
-        $this->pluginManager->execute();
+
+        try {
+            $this->pluginManager->execute();
+        } catch (\Exception $e) {
+            return;
+        }
     }
 
     public function registerActions(): void {
