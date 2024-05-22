@@ -112,6 +112,7 @@ const buttonsLabelsMapping: { [key: string]: string } = {
     'not-installed': t('plugins.buttons.install'),
     'installing': t('plugins.buttons.installing'),
     'enabled': t('plugins.buttons.uninstall'),
+    'disabled': t('plugins.buttons.uninstall'),
     'uninstalling': t('plugins.buttons.uninstalling'),
     'unknown': t('plugins.buttons.unknown'),
 }
@@ -119,6 +120,7 @@ const buttonsLabelsMapping: { [key: string]: string } = {
 const buttonColorMapping: { [key: string]: string } = {
     'not-installed': 'primary',
     'enabled': 'danger',
+    'disabled': 'danger',
     'unknown': 'default',
 }
 
@@ -133,9 +135,9 @@ const buttonColorMapping: { [key: string]: string } = {
             <span class="text-gray-500 text-sm">{{ plugin.author }}</span>
             <p class="text-gray-500">{{ plugin.description }}</p>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 justify-end">
             <button v-if="['enabled', 'disabled'].includes(pluginStatus)" @click="toggle(plugin)" :class="['w-28 button', buttonColorToggleMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsToggleMapping[pluginStatus || 'uknown']"></button>
-            <button v-if="['not-installed'].includes(pluginStatus)" @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
+            <button v-if="['enabled', 'disabled', 'not-installed'].includes(pluginStatus)" @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
         </div>
     </div>
 </template>
