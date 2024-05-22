@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Plugin, PluginRequest, PluginStatus } from '../../../types/Plugin';
 import { useI18n } from 'vue-i18n';
-import { installPlugin, uninstallPlugin } from '../../../services/PluginService';
+import { installPlugin, uninstallPlugin, disablePlugin, enablePlugin } from '../../../services/PluginService';
 import { ref, PropType } from 'vue';
 
 const { t } = useI18n()
@@ -10,7 +10,7 @@ const props = defineProps({
     plugin: Object as PropType<Plugin>,
 })
 
-const emit = defineEmits(['installing', 'installed', 'uninstalling', 'uninstalled', 'error'])
+const emit = defineEmits(['installing', 'installed', 'uninstalling', 'uninstalled', 'error', 'disabling', 'disabled'])
 
 const pluginStatus = ref<PluginRequest|PluginStatus|'unknown'>(props.plugin?.status || 'unknown');
 
@@ -55,6 +55,59 @@ const excecute = (plugin: Plugin) => {
     }
 }
 
+const disable = (plugin: Plugin) => {
+    emit('disabling', plugin)
+    pluginStatus.value = 'disabling'
+
+    disablePlugin(plugin.name)
+    .then(() => {
+        pluginStatus.value = 'disabled'
+        emit('disabled', plugin)
+    })
+    .catch(() => {
+        pluginStatus.value = 'enabled'
+        emit('error', plugin)
+    })
+}
+
+const enable = (plugin: Plugin) => {
+    emit('disabling', plugin)
+    pluginStatus.value = 'disabling'
+
+    enablePlugin(plugin.name)
+    .then(() => {
+        pluginStatus.value = 'enabled'
+        emit('disabled', plugin)
+    })
+    .catch(() => {
+        pluginStatus.value = 'disabled'
+        emit('error', plugin)
+    })
+}
+
+const toggle = (plugin: Plugin) => {
+    switch (pluginStatus.value) {
+        case 'enabled':
+            disable(plugin)
+            break;
+        case 'disabled':
+            enable(plugin)
+            break;
+    }
+}
+
+const buttonsLabelsToggleMapping: { [key: string]: string } = {
+    'enabled': t('plugins.buttons.disable'),
+    'disabled': t('plugins.buttons.enable'),
+    'unknown': t('plugins.buttons.unknown'),
+}
+
+const buttonColorToggleMapping: { [key: string]: string } = {
+    'enabled': 'default',
+    'disabled': 'secondary',
+    'unknown': 'default',
+}
+
 const buttonsLabelsMapping: { [key: string]: string } = {
     'not-installed': t('plugins.buttons.install'),
     'installing': t('plugins.buttons.installing'),
@@ -80,7 +133,10 @@ const buttonColorMapping: { [key: string]: string } = {
             <span class="text-gray-500 text-sm">{{ plugin.author }}</span>
             <p class="text-gray-500">{{ plugin.description }}</p>
         </div>
-        <button @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
+        <div class="flex gap-2">
+            <button v-if="['enabled', 'disabled'].includes(pluginStatus)" @click="toggle(plugin)" :class="['w-28 button', buttonColorToggleMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsToggleMapping[pluginStatus || 'uknown']"></button>
+            <button v-if="['not-installed'].includes(pluginStatus)" @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
+        </div>
     </div>
 </template>
 

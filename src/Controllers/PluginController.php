@@ -2,6 +2,8 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Plugin\DisablePackageAction;
+use Alban\Simplisiti\Actions\Plugin\EnablePackageAction;
 use Alban\Simplisiti\Actions\Plugin\InstallPackageAction;
 use Alban\Simplisiti\Actions\Plugin\SyncRepositoriesAction;
 use Alban\Simplisiti\Actions\Plugin\UninstallPackageAction;
@@ -41,6 +43,22 @@ class PluginController extends Controller {
         return response()->json([
             'data' => $action->execute($request->validated()),
             'message' => 'Packages uninstalled successfully',
+        ]);
+    }
+
+    public function packagesDisable(InstallPackageRequest $request, DisablePackageAction $action) {
+        $action->execute($request->validated());
+
+        return response()->json([
+            'message' => 'Packages disabled successfully',
+        ]);
+    }
+
+    public function packagesEnable(InstallPackageRequest $request, EnablePackageAction $action) {
+        $action->execute($request->validated());
+
+        return response()->json([
+            'message' => 'Packages enabled successfully',
         ]);
     }
 

@@ -129,7 +129,7 @@ class SimplisitiApp extends BasePlugin
         }
 
         $this->pluginManager = new PluginManager($this);
-        foreach (Plugin::all() as $plugin) {
+        foreach (Plugin::enabled()->get() as $plugin) {
             $this->pluginManager->add($plugin);
         }
     }

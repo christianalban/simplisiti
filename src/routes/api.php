@@ -82,6 +82,8 @@ Route::prefix('api/spanel')->middleware(['auth:sanctum', 'api'])->group(function
         Route::get('plugin/packages', 'packagesList');
         Route::post('plugin/packages/install', 'packagesInstall');
         Route::post('plugin/packages/uninstall', 'packagesUninstall');
+        Route::post('plugin/packages/enable', 'packagesEnable');
+        Route::post('plugin/packages/disable', 'packagesDisable');
     });
 
     Route::controller(Controllers\CacheController::class)->group(function () {

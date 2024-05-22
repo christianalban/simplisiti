@@ -93,7 +93,7 @@ class PluginManager {
 
         $installedPlugins = Models\Plugin::all();
         return array_map(function ($package) use ($installedPlugins) {
-            $package['status'] = $installedPlugins->where('name', $package['name'])->first() ? 'enabled' : 'not-installed';
+            $package['status'] = $installedPlugins->where('name', $package['name'])->first()?->status ?? 'not-installed';
             return (object) $package;
         }, $cacheManager->getFromCache('repositories:packages'));
     }
@@ -162,6 +162,16 @@ class PluginManager {
         rmdir($pluginPath);
 
         $plugin->delete();
+    }
+
+    public function changeStatusPackage(string $name, string $status): void {
+        $plugin = Models\Plugin::where('name', $name)->first();
+
+        if (!$plugin) {
+            throw new PluginNotFoundException($name);
+        }
+
+        $plugin->update(['status' => $status]);
     }
 
     public function postInstall(Models\Plugin $installedPlugin): void {

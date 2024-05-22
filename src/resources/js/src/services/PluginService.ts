@@ -24,3 +24,11 @@ export const installPlugin = async (name: string): Promise<any> => {
 export const uninstallPlugin = async (name: string): Promise<any> => {
     return await axios.post(`plugin/packages/uninstall`, { name })
 }
+
+export const disablePlugin = async (name: string): Promise<any> => {
+    return await axios.post(`plugin/packages/disable`, { name })
+}
+
+export const enablePlugin = async (name: string): Promise<any> => {
+    return await axios.post(`plugin/packages/enable`, { name })
+}

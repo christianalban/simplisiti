@@ -36,7 +36,7 @@ const toggleBackground = () => {
 </script>
 
 <template>
-    <button type="button" class="resource-container" @click.stop="showPreview">
+    <button type="button" class="resource-container text-9xl" @click.stop="showPreview">
         <fa-icon v-if="url?.match('.pdf')" icon="file-pdf" class="text-red-500"/>
         <fa-icon v-else-if="url?.match('.zip')" icon="file-zipper" class="text-gray-500"/>
         <fa-icon v-else-if="url?.match(/\.docx|.doc/)" icon="file-word" class="text-blue-500"/>
@@ -71,7 +71,7 @@ const toggleBackground = () => {
 
     .resource-preview-button
     {
-        @apply w-full h-full object-cover;
+        @apply max-w-full max-h-full object-cover;
     }
 }
 </style>

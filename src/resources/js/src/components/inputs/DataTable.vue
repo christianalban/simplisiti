@@ -246,7 +246,7 @@ watch(columns, (value) => {
                 <tbody>
                     <tr class="group" v-for="(variables, index) of rows" :key="`${index}:${name}`">
                         <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
-                            <div class="h-10">
+                            <div class="h-10 flex">
                                 <control-type-selector v-model="variable.default" :edit-structure="editStructure" :name="variable.name" :type="variable.type"/>
                             </div>
                         </td>

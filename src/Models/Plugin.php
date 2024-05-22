@@ -10,10 +10,16 @@ class Plugin extends Model
         'name',
         'version',
         'description',
+        'status',
         'author',
         'email',
         'website',
         'md5',
         'namespace',
     ];
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('status', 'enabled');
+    }
 }
