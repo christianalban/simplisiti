@@ -101,8 +101,6 @@ onMounted(() => {
         </div>
         <styles-form
             v-model:code="code"
-            v-model:name="name"
-            v-model:isActive="isActive"
         />
     </form>
     <dialog-component
