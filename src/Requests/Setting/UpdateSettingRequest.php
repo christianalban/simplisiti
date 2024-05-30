@@ -17,7 +17,7 @@ class UpdateSettingRequest extends FormRequest
             'items' => 'required|array',
             'items.*.plugin' => 'required|string',
             'items.*.name' => 'required|string',
-            'items.*.value' => 'required|string',
+            'items.*.value' => 'nullable|string',
         ];
     }
 }

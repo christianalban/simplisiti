@@ -17,7 +17,7 @@ trait HandleSettings {
             }
 
             foreach ($variable['settings'] as $setting) {
-                $collectSetting = collect($setting);
+                $collectSetting = collect($setting['items']);
                 if ($variable['type'] === 'datasource') {
                     $variable['applied_settings'] = $this->collectDatasourceSettings($variable, $collectSetting);
                 } else if ($variable['type'] === 'resource') {
@@ -33,14 +33,12 @@ trait HandleSettings {
 
     private function collectDatasourceSettings($variable, $collectSetting): array
     {
-        return $collectSetting->flatMap(function ($settingItem) use ($variable) {
-            return collect($settingItem)->map(function ($value) use ($variable) {
-                $value['plugin'] = $variable['default'];
-
-                $objectValue = (object) $value;
-                $objectValue->value = ['value' => $objectValue->value];
-                return $objectValue;
-            })->toArray();
+        return $collectSetting->map(function ($settingItem) use ($variable) {
+            return (object) [
+                'plugin' => $settingItem['plugin'],
+                'name' => $settingItem['name'],
+                'value' => ['value' => $settingItem['value']],
+            ];
         })->toArray();
     }
 

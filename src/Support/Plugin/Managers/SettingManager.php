@@ -63,11 +63,17 @@ class SettingManager {
                 $settingMenu[$setting['plugin']]['items'][] = $setting;
             } else {
                 $settingMenu[$setting['plugin']] = [
-                    'plugin' => $this->getSettingEntries()[$setting['plugin']]['plugin'],
-                    'label' => $this->getSettingEntries()[$setting['plugin']]['label'],
-                    'description' => $this->getSettingEntries()[$setting['plugin']]['description'],
+                    'plugin' => null,
+                    'label' => null,
+                    'description' => null,
                     'items' => [$setting],
                 ];
+
+                if (isset($this->getSettingEntries()[$setting['plugin']])) {
+                    $settingMenu[$setting['plugin']]['plugin'] = $this->getSettingEntries()[$setting['plugin']]['plugin'];
+                    $settingMenu[$setting['plugin']]['label'] = $this->getSettingEntries()[$setting['plugin']]['label'];
+                    $settingMenu[$setting['plugin']]['description'] = $this->getSettingEntries()[$setting['plugin']]['description'];
+                }
             }
         }
 

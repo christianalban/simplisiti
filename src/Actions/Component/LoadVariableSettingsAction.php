@@ -20,7 +20,6 @@ class LoadVariableSettingsAction
             'applied_settings' => $variable['applied_settings'] ?? [],
         ]);
 
-
         return $data['settings'];
     }
 }

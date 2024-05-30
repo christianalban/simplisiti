@@ -2,10 +2,14 @@
 import { PropType } from 'vue';
 import { SettingMenu } from '../../../types/Setting';
 
-const props = defineProps({
+defineProps({
     settingMenu: {
         type: Object as PropType<SettingMenu[]>,
         required: true,
+    },
+    expanded: {
+        type: Boolean,
+        default: false,
     },
 });
 
@@ -13,11 +17,11 @@ const props = defineProps({
 
 <template>
     <div class="flex flex-col gap-4 overflow-y-auto h-full">
-        <div v-for="setting of props.settingMenu" class="flex flex-col gap-4">
-            <h2 class="title">{{ setting.label }}</h2>
+        <div v-if="settingMenu.length" v-for="setting of settingMenu" class="flex flex-col gap-4">
+            <h2 class="title" v-if="setting.label">{{ setting.label }}</h2>
             <p class="text-sm italic" v-if="setting.description">{{ setting.description }}</p>
-            <div class="grid gap-4 md:grid-cols-2">
-                <div v-for="item of setting.items" class="flex flex-col gap-2">
+            <div class="flex gap-4 w-full items-end flex-wrap">
+                <div v-for="item of setting.items" :class="`flex flex-col gap-2 ${expanded ? 'w-full' : 'w-1/2'}`">
                     <label class="font-bold">{{ item.label }} {{ item.required ? '*' : '' }}</label>
                     <p class="text-sm italic" v-if="item.description">{{ item.description }}</p>
                     <input v-if="item.type === 'text' || item.type === 'number' " :type="item.type" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
@@ -28,6 +32,9 @@ const props = defineProps({
                     </select>
                 </div>
             </div>
+        </div>
+        <div v-else>
+            <p class="text-center">{{ $t('settings.placeholders.noSettings') }}</p>
         </div>
     </div>
 </template>

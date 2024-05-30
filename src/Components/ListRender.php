@@ -14,7 +14,7 @@ class ListRender extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public array $items,
+        public ?array $items = [],
     ) {
         $this->dataSourceRecovery = new DataSourceRecovery;
     }

@@ -32,7 +32,7 @@ const emit = defineEmits(['update:settings']);
 </script>
 
 <template>
-    <setting-form v-if="variable?.type === 'datasource'" :settingMenu="settings as SettingMenu[]" />
+    <setting-form v-if="variable?.type === 'datasource'" :expanded="true" :settingMenu="settings as SettingMenu[]" />
     <!--
     <resource-presets-settings v-else-if="variable?.type === 'resource'" :url="variable.value as string" :settings="settings as ResourcePreset[]" @update:settings="emitResourceSettings"/>
     -->

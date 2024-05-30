@@ -171,6 +171,9 @@ const messages = {
                 createSetting: "Create new setting",
                 updateSetting: "Edit setting",
             },
+            placeholders: {
+                noSettings: "No settings available",
+            },
             toasts: {
                 successUpdated: "Setting updated successfully.",
                 errorUpdated: "Setting couldn't be updated.",
@@ -498,6 +501,9 @@ const messages = {
             toasts: {
                 successUpdated: "Configuración actualizada correctamente.",
                 errorUpdated: "Configuración no pudo ser actualizada.",
+            },
+            placeholders: {
+                noSettings: "No hay configuraciones disponibles",
             },
         },
         scripts: {
