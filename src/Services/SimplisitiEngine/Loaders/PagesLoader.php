@@ -32,6 +32,8 @@ class PagesLoader
         $this->app->loadActions(); 
 
         $this->app->loadPlugins();
+
+        $this->app->loadParameters();
     }
     
     public static function loadPages(): void
@@ -55,7 +57,8 @@ class PagesLoader
         }
 
         $pages->each(function (Page $page) {
-            Route::get($page->url, function () use ($page) {
+            Route::get($page->url, function (...$params) use ($page) {
+                $this->app->setRequestParameters($page->url, $params);
                 return View::make('simplisiti::boot', [
                     'content' => $this->renderContent($page),
                     'title' => $page->title,

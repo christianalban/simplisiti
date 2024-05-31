@@ -1,6 +1,8 @@
 <?php
 namespace Alban\Simplisiti\Support\Plugin\Containers;
 
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
@@ -9,18 +11,20 @@ class DataContainer
 {
     private SettingManager $settingManager;
     private Collection $appliedSettings;
+    private ParameterManager $parameterManager;
 
     public function __construct(
         private $data
     ) {
+        $app = app(SimplisitiApp::class);
         $this->settingManager = new SettingManager;
+        $this->parameterManager = $app->getParameterManager();
     }
 
     public function getSettingManager(): SettingManager
     {
         return $this->settingManager;
     }
-    
 
     public function getSettingMenu(Collection|EloquentCollection $settingValues): array
     {
@@ -41,5 +45,10 @@ class DataContainer
     public function getSettingValue(string $name): mixed
     {
         return $this->appliedSettings->where('name', $name)->first()->value['value'] ?? null;
+    }
+
+    public function getParameter(string $key): mixed
+    {
+        return $this->parameterManager->getParameter($key);
     }
 }

@@ -7,6 +7,7 @@ use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
+use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
@@ -33,6 +34,8 @@ class SimplisitiApp extends BasePlugin
     private DataSourceManager $dataSourceManager;
 
     private ActionManager $actionManager;
+
+    private ParameterManager $parameterManager;
 
     public function getStyleManager(): StyleManager
     {
@@ -79,6 +82,11 @@ class SimplisitiApp extends BasePlugin
         return $this->actionManager;
     }
 
+    public function getParameterManager(): ParameterManager
+    {
+        return $this->parameterManager;
+    }
+
     public function init(): void {
         $this->initPlugins();
     }
@@ -89,6 +97,10 @@ class SimplisitiApp extends BasePlugin
         }
 
         $this->styleManager = new StyleManager;
+    }
+
+    public function loadParameters(): void {
+        $this->parameterManager = new ParameterManager;
     }
 
     public function loadHeaders(): void {
@@ -152,5 +164,9 @@ class SimplisitiApp extends BasePlugin
 
     public function registerActions(): void {
         $this->actionManager->registerActions();
+    }
+
+    public function setRequestParameters(string $url, array $parameters): void {
+        $this->parameterManager->addParameters($url, $parameters);
     }
 }
