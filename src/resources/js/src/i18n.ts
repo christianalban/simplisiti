@@ -54,6 +54,7 @@ const messages = {
                 selectResource: "Select resource",
                 fillData: "Fill data",
                 editContent: "Edit content",
+                graphical: "Graphical",
             },
             buttons: {
                 create: "New component",
@@ -378,6 +379,7 @@ const messages = {
                 selectResource: "Seleccionar recurso",
                 fillData: "Completar datos",
                 editContent: "Editar contenido",
+                graphical: "Gráfico",
             },
             buttons: {
                 create: "Nuevo componente",

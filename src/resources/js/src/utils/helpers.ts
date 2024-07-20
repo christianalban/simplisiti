@@ -8,8 +8,14 @@ export const inputValue = (value: EventTarget | null): string => {
     return (value as HTMLInputElement).value;
 }
 
-export const value = (value: EventTarget | null): string => {
-    return inputValue(value).toLowerCase().trim().replaceAll(' ', '');
+export const value = (value: string | EventTarget | null): string => {
+    let valueFinal = '';
+    if (typeof value === 'string') {
+        valueFinal = value;
+    } else {
+        valueFinal = inputValue(value);
+    }
+    return valueFinal.toLowerCase().trim().replaceAll(' ', '');
 }
 
 export const groupItems = <T>(items: T[]): GroupItem<T>[] => items.map((data) => ({ data }));

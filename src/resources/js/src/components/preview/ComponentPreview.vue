@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, PropType } from 'vue';
-import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl } from "../../services/PageService.ts";
+import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
 
@@ -15,38 +15,30 @@ const props = defineProps({
         type: [String, null] as PropType<string | null>,
         default: null,
     },
+    allowEdit: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
-const updateIframe = async (componentContent: ContentValue) => {
-    if (!props.component.id) return;
-
-    const content = props.html ?? (await getComponentPreview(props.component.id, componentContent)).data;
-
-    if (iframe.value) {
-        const doc = iframe.value.contentDocument;
-
-        if (!doc) return;
-
-        const [styleLink, scriptLink] = loadResourcesPreview();
-        const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
-
-        doc.open();
-        doc.write(content);
-        doc.head.appendChild(styleLink);
-        doc.head.appendChild(pluginStyleLink);
-        doc.body.appendChild(scriptLink);
-        doc.body.appendChild(pluginScriptLink);
-        doc.close();
-
-        iframe.value.onload = () => {
-            const bodyHeight = doc.body.scrollHeight;
-            if (iframe.value) {
-                iframe.value.style.height = `${bodyHeight}px`;
-            }
-        };
-    }
+const loadFontFace = () => {
+    const styleIcons = document.createElement('style');
+    styleIcons.innerHTML = `
+        @font-face {
+          font-family: 'fontello';
+          src: url('http://localhost/api/spanel/page/editor/font/fontello.eot?75699607');
+          src: url('http://localhost/api/spanel/page/editor/font/fontello.eot?75699607#iefix') format('embedded-opentype'),
+               url('http://localhost/api/spanel/page/editor/font/fontello.woff?75699607') format('woff'),
+               url('http://localhost/api/spanel/page/editor/font/fontello.ttf?75699607') format('truetype'),
+               url('http://localhost/api/spanel/page/editor/font/fontello.svg?75699607#fontello') format('svg');
+          font-weight: normal;
+          font-style: normal;
+        }
+    `;
+    
+    return [styleIcons];
 };
 
 const resizeIframe = () => {
@@ -57,6 +49,39 @@ const resizeIframe = () => {
         const bodyHeight = doc.body.offsetHeight;
         iframe.value.style.height = `${bodyHeight}px`;
     }
+};
+
+const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
+    const scriptEditor = document.createElement('script');
+    const styleEditor = document.createElement('link');
+    const scriptVue = document.createElement('script');
+    const scriptVueApp = document.createElement('script');
+
+    const scriptEditorUrl = getResourceEditorEngine('script');
+    const styleEditorUrl = getResourceEditorEngine('style');
+    const scriptVueUrl = 'https://unpkg.com/vue@3/dist/vue.global.js';
+
+    styleEditor.rel = 'stylesheet';
+    styleEditor.href = styleEditorUrl;
+
+    scriptVue.src = scriptVueUrl;
+
+    scriptEditor.src = scriptEditorUrl;
+
+    scriptVueApp.innerHTML = `
+        const appContainer = document.createElement('div');
+        appContainer.id = 'simplisiti-component-editor-app';
+        appContainer.innerHTML = '<simplisiti-component-editor/>';
+        document.body.appendChild(appContainer);
+        window.addEventListener('load', () => {
+            const { createApp } = Vue;
+            const app = createApp({});
+            app.use(SimplisitiComponentEditor);
+            app.mount('#simplisiti-component-editor-app');
+        });
+    `;
+
+    return [styleEditor, scriptEditor, scriptVue, scriptVueApp];
 };
 
 const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
@@ -91,24 +116,70 @@ const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => 
     return [link, script];
 };
 
+const updateIframe = async (componentContent: ContentValue) => {
+    if (!props.component.id) return;
+
+    const content = props.html || (await getComponentPreview(props.component.id, componentContent)).data;
+
+    if (iframe.value) {
+        const doc = iframe.value.contentDocument;
+
+        if (!doc) return;
+
+        const [styleLink, scriptLink] = loadResourcesPreview();
+        const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
+
+        doc.open();
+        doc.write(content);
+        doc.head.appendChild(styleLink);
+        doc.head.appendChild(pluginStyleLink);
+        doc.body.appendChild(scriptLink);
+        doc.body.appendChild(pluginScriptLink);
+
+        if (props.allowEdit) {
+            const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink] = loadResourcesEditor();
+            const [fontFace] = loadFontFace();
+
+            doc.head.appendChild(styleEditorLink);
+            doc.head.appendChild(fontFace);
+            doc.body.appendChild(scriptVueLink);
+            doc.body.appendChild(scriptEditorLink);
+            doc.body.appendChild(scriptVueAppLink);
+        }
+
+        doc.close();
+
+        iframe.value.onload = () => {
+            const bodyHeight = doc.body.scrollHeight;
+            if (props.allowEdit) {
+                return;
+            }
+            if (iframe.value) {
+                iframe.value.style.height = `${bodyHeight}px`;
+            }
+        };
+    }
+};
+
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));
-    if (!props.html) {
-        observer.subscribe(props.component, (content) => {
-            updateIframe(content).then(() => resizeIframe());
-        });
-    }
+    // if (!props.html) {
+    //     observer.subscribe(props.component, (content) => {
+    //         updateIframe(content).then(() => resizeIframe());
+    //     });
+    // }
 });
 </script>
 
 <template>
     <div class="relative">
         <iframe
-            class="w-full"
+            :class="['w-full', { 'h-full': allowEdit }]"
             ref="iframe"
             sandbox="allow-scripts allow-same-origin"
+            loading="lazy"
         ></iframe>
-        <div class="absolute inset-0"></div>
+        <div class="absolute inset-0" v-if="!allowEdit"></div>
     </div>
 </template>
 

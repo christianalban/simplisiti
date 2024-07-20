@@ -34,6 +34,10 @@ export const getResourcePreviewUrl = (type: ResourcePreview): string => {
     return `${baseURL}/page/${type}/preview`
 }
 
+export const getResourceEditorEngine = (type: ResourcePreview): string => {
+    return `${baseURL}/page/editor/${type}/engine`
+}
+
 export const getPluginResourcePreviewUrl = (type: ResourcePreview): string => {
     return `${baseURL}/page/plugin/${type}/preview`
 }

@@ -7,22 +7,26 @@ import { useRoute, useRouter } from "vue-router";
 import { Variable } from "../../types/Variable";
 import { showToast } from "../../services/ToastService";
 import { useI18n } from "vue-i18n";
+import { Component } from "../../types/Component";
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const code = ref('');
-const name = ref('');
 const showDialog = ref(false);
 const variables = ref<Variable[]>([]);
 const componentId = +route.params.component;
+const component = ref<Component>({
+    name: '',
+    html: '',
+    variables: []
+});
 
 const update = () => {
     updateComponent({
         id: componentId,
-        html: code.value,
+        html: component.value.html,
         variables: mapWithoutSettingsData(variables.value),
-        name: name.value,
+        name: component.value.name,
     })
     .then(() => {
         showToast({
@@ -68,9 +72,10 @@ onMounted(() => {
         withData: false,
     }).then((response) => {
         const data = response.data.data;
-        code.value = data.html;
-        name.value = data.name;
-        variables.value = data.variables.length ? data.variables : [{type: 'text', name: '', default: ''}];
+        // code.value = data.html;
+        // name.value = data.name;
+        // variables.value = data.variables.length ? data.variables : [{type: 'text', name: '', default: ''}];
+        component.value = data;
     });
 });
 
@@ -92,19 +97,20 @@ onMounted(() => {
                 </div>
                 <div class="ml-auto flex flex-col gap-2 md:w-1/3">
                     <label class="label">{{ $t('components.labels.componentName') }}</label>
-                    <input type="text" v-model="name" required class="input" :placeholder="$t('components.placeholders.componentName')"/>
+                    <input type="text" v-model="component.name" required class="input" :placeholder="$t('components.placeholders.componentName')"/>
                 </div>
             </div>
         </div>
         <components-form
-            v-model:code="code"
-            v-model:variables="variables"
+            v-model:code="component.html"
+            v-model:variables="component.variables"
+            :component="component"
         />
     </form>
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('components.dialogs.delete.title')"
-        :message="$t('components.dialogs.delete.message', { name: name })"
+        :message="$t('components.dialogs.delete.message', { name: component.name })"
         @confirm="confirmDeleteComponent"
     />
 </template>

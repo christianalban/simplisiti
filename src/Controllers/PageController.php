@@ -90,6 +90,7 @@ class PageController extends Controller {
             'script' => 'text/javascript',
             'component' => 'text/html',
         };
+
         return response($action->execute(), 200, [
             'Content-Type' => $contentType
         ]);
@@ -113,6 +114,47 @@ class PageController extends Controller {
         };
 
         return response($action->toString(), 200, [
+            'Content-Type' => $contentType
+        ]);
+    }
+
+    public function editorEngine(string $type) {
+        $path = match ($type) {
+            'script' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/simplisiti-component-editor.umd.cjs',
+            'style' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/style.css',
+        };
+
+        $engineResource = base_path($path);
+
+        $content = file_get_contents($engineResource);
+
+        $contentType = match ($type) {
+            'style' => 'text/css',
+            'script' => 'text/javascript',
+        };
+
+        return response($content, 200, [
+            'Content-Type' => $contentType
+        ]);
+    }
+
+    public function fontEngine(string $font) {
+        $path = 'vendor/alban/simplisiti/src/resources/font/' . $font;
+
+        $engineResource = base_path($path);
+
+        $content = file_get_contents($engineResource);
+
+        $extension = pathinfo($engineResource, PATHINFO_EXTENSION);
+
+        $contentType = match ($extension) {
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
+            'otf' => 'font/otf',
+        };
+
+        return response($content, 200, [
             'Content-Type' => $contentType
         ]);
     }
