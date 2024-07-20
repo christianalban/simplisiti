@@ -1,8 +1,15 @@
-import { Component } from 'vue';
+import { AsyncComponentLoader, Component, FunctionalComponent } from 'vue';
+
+export interface WizardComponentImported {
+    icon: string;
+    title: string;
+    component: Component | FunctionalComponent;
+}
 
 export interface WizardComponent {
+    title: string;
     icon: string;
-    component: Component | (() => Promise<Component>);
+    component: AsyncComponentLoader<Component | FunctionalComponent>;
 }
 
 export interface WizardViewsTabs {
@@ -11,7 +18,8 @@ export interface WizardViewsTabs {
 
 export const WizardViews: WizardViewsTabs = {
     'layout': {
-        icon: 'square-full',
+        title: 'Layout',
+        icon: 'object-group',
         component: () => import('../../components/wizard/views/Layout.vue')
     },
 }

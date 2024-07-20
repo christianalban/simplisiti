@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, computed, onMounted, ref } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import { HTML_TITLES } from '../enginge/constants/HtmlTagsMappings';
 import Wizard from './Wizard.vue';
 
@@ -16,23 +16,31 @@ const isClosed = ref(false);
 const emit = defineEmits(['close']);
 
 const calculatePosition = (element: HTMLElement | null) => {
-    if (!element) return;
+    setTimeout(() => {
+        if (!element) return;
 
-    const rect = element.getBoundingClientRect();
-    const top = rect.top;
-    const left = rect.left + rect.width + 10;
+        const rect = element.getBoundingClientRect();
+        const top = rect.top;
+        const bottom = rect.bottom;
+        const left = rect.left + rect.width + 10;
 
-    if (popup.value) {
-        popup.value.style.top = `${top}px`;
-
-        const bodyWidth = document.body.offsetWidth;
-        if (popup.value.parentElement?.offsetWidth && left + popup.value.offsetWidth > bodyWidth) {
-            popup.value.style.left = `${left - popup.value.offsetWidth - 20}px`;
-            popup.value.style.top = `${top + 10}px`;
-        } else {
+        if (popup.value) {
+            popup.value.style.top = `${top}px`;
             popup.value.style.left = `${left}px`;
+
+            const bodyWidth = document.body.offsetWidth;
+            if ((left + popup.value.offsetWidth) > bodyWidth) {
+                popup.value.style.top = `${top + 10}px`;
+                popup.value.style.left = `${left - popup.value.offsetWidth - 20}px`;
+            }
+
+            const bodyHeight = document.body.offsetHeight;
+            if ((top + popup.value.offsetHeight) > bodyHeight) {
+                popup.value.style.top = 'auto';
+                popup.value.style.bottom = `${bottom - popup.value.offsetHeight + 20}px`;
+            }
         }
-    }
+    }, 50);
 };
 
 const type = computed(() => {
@@ -48,19 +56,18 @@ const emitClosed = (event: Event) => {
     }, 300);
 };
 
-onMounted(() => {
-    calculatePosition(element);
-});
+calculatePosition(element);
+
 </script>
 
 <template>
-    <div :class="['sp-configuration-popup', {'sp-configuration-popup_closed': isClosed}]" ref="popup">
+    <div :class="['sp-configuration-popup', {'sp-configuration-popup_closed': isClosed}]" ref="popup" @click.stop="undefined">
         <div class="sp-configuration-popup__header">
             <h4>{{ type }}</h4>
-            <fa-icon class="sp-configuration-popup__close" icon="times" @click.stop="emitClosed($event)" />
+            <fa-icon class="sp-configuration-popup__close" icon="times" @click="emitClosed($event)" />
         </div>
         <div class="sp-configuration-popup__body">
-            <wizard :element="element" />
+            <wizard v-if="element" :element="element" />
         </div>
     </div>
 </template>
@@ -69,14 +76,16 @@ onMounted(() => {
 .sp-configuration-popup {
     position: fixed;
     background-color: white;
+    border-radius: 5px;
     padding: 5px 10px;
     z-index: 1000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: auto;
-    animation: fadeIn 0.3s linear forwards;
+    animation: fadeIn 0.25s linear forwards;
+    min-width: max-content;
 
     &.sp-configuration-popup_closed {
-        animation: fadeOut 0.3s linear forwards;
+        animation: fadeOut 0.25s linear forwards;
     }
 
     & > .sp-configuration-popup__header {

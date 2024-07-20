@@ -66,4 +66,8 @@ onMounted(() => {
     transition: border-color 0.3s ease;
     border: 2px solid rgb(37 99 235);
 }
+
+body {
+    height: 100%
+}
 </style>

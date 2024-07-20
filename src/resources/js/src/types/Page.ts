@@ -11,4 +11,4 @@ export interface Page {
     sections_count?: number
 }
 
-export type ResourcePreview = 'style' | 'script';
+export type ResourcePreview = 'style' | 'script' | 'layout';

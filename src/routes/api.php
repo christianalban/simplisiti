@@ -22,7 +22,7 @@ Route::prefix('api/spanel')->middleware(['api'])->group(function () {
         Route::delete('page/{page}', 'destroy');
         Route::group(['excluded_middleware' => 'throttle:api'], function () {
             Route::get('page/editor/font/{font}', 'fontEngine')->where('type', 'style|script');
-            Route::get('page/editor/{type}/engine', 'editorEngine')->where('type', 'style|script');
+            Route::get('page/editor/{type}/engine', 'editorEngine')->where('type', 'style|script|layout');
             Route::get('page/plugin/{type}/preview', 'pluginPreview')->where('type', 'style|script');
             Route::match(['get', 'post'], 'page/{type}/preview', 'preview')->where('type', 'style|script|component');
         });

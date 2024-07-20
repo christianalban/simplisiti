@@ -54,15 +54,20 @@ const resizeIframe = () => {
 const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     const scriptEditor = document.createElement('script');
     const styleEditor = document.createElement('link');
+    const layoutEditor = document.createElement('link');
     const scriptVue = document.createElement('script');
     const scriptVueApp = document.createElement('script');
 
     const scriptEditorUrl = getResourceEditorEngine('script');
     const styleEditorUrl = getResourceEditorEngine('style');
+    const layoutEditorUrl = getResourceEditorEngine('layout');
     const scriptVueUrl = 'https://unpkg.com/vue@3/dist/vue.global.js';
 
     styleEditor.rel = 'stylesheet';
     styleEditor.href = styleEditorUrl;
+
+    layoutEditor.rel = 'stylesheet';
+    layoutEditor.href = layoutEditorUrl;
 
     scriptVue.src = scriptVueUrl;
 
@@ -81,7 +86,7 @@ const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
         });
     `;
 
-    return [styleEditor, scriptEditor, scriptVue, scriptVueApp];
+    return [styleEditor, scriptEditor, scriptVue, scriptVueApp, layoutEditor];
 };
 
 const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
@@ -137,10 +142,11 @@ const updateIframe = async (componentContent: ContentValue) => {
         doc.body.appendChild(pluginScriptLink);
 
         if (props.allowEdit) {
-            const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink] = loadResourcesEditor();
+            const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink, layoutEditor] = loadResourcesEditor();
             const [fontFace] = loadFontFace();
 
             doc.head.appendChild(styleEditorLink);
+            doc.head.appendChild(layoutEditor);
             doc.head.appendChild(fontFace);
             doc.body.appendChild(scriptVueLink);
             doc.body.appendChild(scriptEditorLink);

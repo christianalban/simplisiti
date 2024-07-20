@@ -122,6 +122,7 @@ class PageController extends Controller {
         $path = match ($type) {
             'script' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/simplisiti-component-editor.umd.cjs',
             'style' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/style.css',
+            'layout' => 'vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/layout.css',
         };
 
         $engineResource = base_path($path);
@@ -130,6 +131,7 @@ class PageController extends Controller {
 
         $contentType = match ($type) {
             'style' => 'text/css',
+            'layout' => 'text/css',
             'script' => 'text/javascript',
         };
 
