@@ -1,12 +1,14 @@
 import { AsyncComponentLoader, Component, FunctionalComponent } from 'vue';
 
 export interface WizardComponentImported {
+    tab?: AvailableWizards;
     icon: string;
     title: string;
     component: Component | FunctionalComponent;
 }
 
 export interface WizardComponent {
+    tab?: AvailableWizards;
     title: string;
     icon: string;
     component: AsyncComponentLoader<Component | FunctionalComponent>;
@@ -20,7 +22,12 @@ export const WizardViews: WizardViewsTabs = {
     'layout': {
         title: 'Layout',
         icon: 'object-group',
-        component: () => import('../../components/wizard/views/Layout.vue')
+        component: () => import('../../components/wizard/views/layout/Layout.vue')
+    },
+    'spacing': {
+        title: 'Espaciado',
+        icon: 'expand',
+        component: () => import('../../components/wizard/views/spacing/Spacing.vue')
     },
 }
 
@@ -31,9 +38,11 @@ export interface AvailableWizardViews {
 export const AvailableWizard: AvailableWizardViews = {
     'container': [
         'layout',
+        'spacing',
     ],
     'ancord': [
+        'spacing',
     ],
 };
 
-export type AvailableWizards = 'layout';
+export type AvailableWizards = 'layout' | 'spacing';

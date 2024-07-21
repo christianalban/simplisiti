@@ -6,6 +6,9 @@ export const aliasFromTagName = (tagName: string): WizardComponent[] => {
     const availableWizard = AvailableWizard[alias];
 
     return availableWizard.map((wizard) => {
-        return WizardViews[wizard];
+        return {
+            tab: wizard,
+            ...WizardViews[wizard],
+        };
     });
 }

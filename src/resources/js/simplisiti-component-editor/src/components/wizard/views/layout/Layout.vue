@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { GridType, MAX_COL, MAX_ROW } from '../../../enginge/constants/Layout';
+import { computed, ref } from 'vue';
+import { DisplayType, GridType, MAX_COL, MAX_ROW } from '../../../../enginge/constants/Layout';
 
+const display = ref<DisplayType|null>(null);
 
 const computeClassesFor = (gridType: GridType): number[] => {
     const maxOptions = gridType === 'rows' ? MAX_ROW : MAX_COL;
@@ -23,31 +24,37 @@ const rowsOptions = computed(() => computeClassesFor('rows'));
     <div  class="sp-layout__container">
         <div class="sp-layout__header">
             <label>
-                <input type="radio" name="display" value="flex" />
+                <input type="radio" name="display" value="sp-layout-display-flex" v-model="display"/>
                 <fa-icon icon="arrows-left-right" />
                 Flexible
             </label>
             <label>
-                <input type="radio" name="display" value="grid"/>
+                <input type="radio" name="display" value="sp-layout-display-grid" v-model="display"/>
                 <fa-icon icon="table-cells" />
                 Tabla
             </label>
         </div>
         <div class="sp-layout__body">
             <div class="sp-layout__body">
-                <div class="sp-layout__grid-container">
+                <div class="sp-layout__grid-container" v-if="display === 'sp-layout-display-grid'">
                     <div class="sp-layout__grid-item sp-layout__columns-container">
-                        <label>Columas</label>
+                        <label>
+                            <fa-icon icon="grip" />
+                            Columas
+                        </label>
                         <select name="" id="">
                             <option value=""></option>
-                            <option v-for="option in columnsOptions" :key="option" :value="option">{{ option }}</option>
+                            <option v-for="option in columnsOptions" :key="option" :value="`sp-layout-columns-${option}`">{{ option }}</option>
                         </select>
                     </div>
                     <div class="sp-layout__grid-item sp-layout__rows-container">
-                        <label>Filas</label>
+                        <label>
+                            <fa-icon icon="grip-vertical" />
+                            Filas
+                        </label>
                         <select name="" id="">
                             <option value=""></option>
-                            <option v-for="option in rowsOptions" :key="option" :value="option">{{ option }}</option>
+                            <option v-for="option in rowsOptions" :key="option" :value="`sp-layout-rows-${option}`">{{ option }}</option>
                         </select>
                     </div>
                 </div>

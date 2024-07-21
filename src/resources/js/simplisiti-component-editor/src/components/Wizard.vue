@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Component, PropType, defineAsyncComponent, onMounted, ref, shallowReactive, shallowRef } from 'vue';
+import { Component, PropType, computed, defineAsyncComponent, onMounted, ref, shallowReactive, shallowRef } from 'vue';
 import { aliasFromTagName } from '../enginge/helpers/HtmlAlias';
-import { WizardComponentImported } from '../enginge/constants/WizardPages';
+import { AvailableWizards, WizardComponentImported } from '../enginge/constants/WizardPages';
 
 const { element } = defineProps({
     element: {
@@ -11,28 +11,35 @@ const { element } = defineProps({
 });
 
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
-const selectedTab = shallowRef<Component | null>(null);
+const selectedTab = shallowRef<Component | undefined>(undefined);
+const selectedTabWizard = ref<AvailableWizards | undefined>(undefined);
+
+const availableWizard = computed(() => aliasFromTagName(element.tagName.toLowerCase()));
 
 const getAvailabeTabs = async () => {
-    const availableWizard = aliasFromTagName(element.tagName.toLowerCase());
-
-    for (const wizard of availableWizard) {
+    for (const wizard of availableWizard.value) {
         availableTabs.push({
             component: defineAsyncComponent(wizard.component),
             icon: wizard.icon,
             title: wizard.title,
+            tab: wizard.tab,
         });
     }
 };
 
 const selectTab = (tab: WizardComponentImported) => {
     selectedTab.value = tab.component;
+    selectedTabWizard.value = tab.tab;
 };
 
 const selectFirstTab = () => {
     if (availableTabs.length > 0) {
         selectTab(availableTabs[0]);
     }
+};
+
+const isTabActive = (tab: WizardComponentImported) => {
+    return selectedTabWizard.value === tab.tab;
 };
 
 onMounted(async () => {
@@ -46,7 +53,7 @@ onMounted(async () => {
     <div class="sp-wizard-popup__tabs-container">
         <div class="sp-wizard-popup__tabs">
             <div class="sp-wizard-popup__tab" v-for="availableTab of availableTabs">
-                <button class="sp-wizard-popup__tab-button" :title="availableTab.title" @click="selectTab(availableTab)">
+                <button :class="['sp-wizard-popup__tab-button', { 'sp-wizard-popup__tab-button__active': isTabActive(availableTab) }]" :title="availableTab.title" @click="selectTab(availableTab)">
                     <fa-icon :icon="availableTab.icon" />
                 </button>
             </div>
@@ -62,9 +69,9 @@ onMounted(async () => {
 <style scoped>
 
 .sp-wizard-popup__tabs-container {
+    width: 215px;
     & > .sp-wizard-popup__tabs {
         display: flex;
-        gap: 1rem;
     }
 
     .sp-wizard-popup__tab-button {
@@ -75,7 +82,8 @@ onMounted(async () => {
         margin: 0;
         transition: background-color 0.2s;
 
-        &:hover {
+        &:hover,
+        &.sp-wizard-popup__tab-button__active {
             background-color: #e0e0e0;
         }
     }

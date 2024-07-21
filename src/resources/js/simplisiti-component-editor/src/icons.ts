@@ -3,6 +3,9 @@ import {
     faArrowsLeftRight,
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
+    faExpand,
+    faGrip,
+    faGripVertical,
     faObjectGroup,
     faTableCells,
     faXmark
@@ -16,7 +19,10 @@ library.add(
     faArrowsLeftRight,
     faArrowsUpToLine,
     faTableCells,
-    faObjectGroup
+    faObjectGroup,
+    faExpand,
+    faGrip,
+    faGripVertical,
 );
 
 export default FontAwesomeIcon;
