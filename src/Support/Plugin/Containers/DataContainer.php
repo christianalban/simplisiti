@@ -34,7 +34,12 @@ class DataContainer
     public function getData(array $settings): mixed
     {
         $this->appliedSettings = collect($settings);
-        return call_user_func($this->data, $this);
+        try {
+            return call_user_func($this->data, $this);
+        } catch (\Exception $e) {
+            // TODO: Log error
+            return '';
+        }
     }
 
     public function getSettings(): Collection

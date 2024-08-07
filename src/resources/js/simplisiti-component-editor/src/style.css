@@ -172,3 +172,141 @@ div.sp-style__layout-grid-template__rows-11 {
 div.sp-style__layout-grid-template__rows-12 {
     grid-template-rows: repeat(12, 1fr);
 }
+
+/* Gap Spacing */
+
+div.sp-style__layout-gap__0 {
+    gap: 0px;
+}
+
+div.sp-style__layout-gap__0_5 {
+    gap: 2px;
+}
+
+div.sp-style__layout-gap__1 {
+    gap: 4px;
+}
+
+div.sp-style__layout-gap__1_5 {
+    gap: 6px;
+}
+
+div.sp-style__layout-gap__2 {
+    gap: 8px;
+}
+
+div.sp-style__layout-gap__2_5 {
+    gap: 10px;
+}
+
+div.sp-style__layout-gap__3 {
+    gap: 12px;
+}
+
+div.sp-style__layout-gap__3_5 {
+    gap: 14px;
+}
+
+div.sp-style__layout-gap__4 {
+    gap: 16px;
+}
+
+div.sp-style__layout-gap__5 {
+    gap: 20px;
+}
+
+div.sp-style__layout-gap__6 {
+    gap: 24px;
+}
+
+div.sp-style__layout-gap__7 {
+    gap: 28px;
+}
+
+div.sp-style__layout-gap__8 {
+    gap: 32px;
+}
+
+div.sp-style__layout-gap__9 {
+    gap: 36px;
+}
+
+div.sp-style__layout-gap__10 {
+    gap: 40px;
+}
+
+div.sp-style__layout-gap__11 {
+    gap: 44px;
+}
+
+div.sp-style__layout-gap__12 {
+    gap: 48px;
+}
+
+div.sp-style__layout-gap__14 {
+    gap: 56px;
+}
+
+div.sp-style__layout-gap__16 {
+    gap: 64px;
+}
+
+div.sp-style__layout-gap__20 {
+    gap: 80px;
+}
+
+div.sp-style__layout-gap__24 {
+    gap: 96px;
+}
+
+div.sp-style__layout-gap__28 {
+    gap: 112px;
+}
+
+div.sp-style__layout-gap__32 {
+    gap: 128px;
+}
+
+div.sp-style__layout-gap__36 {
+    gap: 144px;
+}
+
+div.sp-style__layout-gap__40 {
+    gap: 160px;
+}
+
+div.sp-style__layout-gap__44 {
+    gap: 176px;
+}
+
+div.sp-style__layout-gap__48 {
+    gap: 192px;
+}
+
+div.sp-style__layout-gap__52 {
+    gap: 208px;
+}
+
+div.sp-style__layout-gap__56 {
+    gap: 224px;
+}
+
+div.sp-style__layout-gap__60 {
+    gap: 240px;
+}
+
+div.sp-style__layout-gap__64 {
+    gap: 256px;
+}
+
+div.sp-style__layout-gap__72 {
+    gap: 288px;
+}
+
+div.sp-style__layout-gap__80 {
+    gap: 320px;
+}
+
+div.sp-style__layout-gap__96 {
+    gap: 384px;
+}

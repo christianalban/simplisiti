@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, PropType, ref } from 'vue';
 import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
+import { SelectOption } from '../../../../enginge/constants/Select';
+import { spacingItems, Spacings, SpacingSteps } from '../../../../enginge/constants/Spacing';
 
 const props = defineProps({
     spClassList: {
@@ -15,10 +17,19 @@ const verticalAlignment = ref<VerticalAligment|null>(null);
 const flexDirection = ref<FlexDirection|null>(null);
 const gridColumns = ref<GridColumns|null>(null);
 const gridRows = ref<GridRows|null>(null);
+const gapSpacing = ref<Spacings|null>(null);
 
 const propagateGroup = <T>(group: string) => {
     return props.spClassList.find(item => item.startsWith(group)) as T
 }
+
+const computeGapOptions = (): SelectOption[] => {
+    return spacingItems((step) => `sp-style__layout-gap__${step}`)
+};
+
+const gapSpacingOptions = computed(() => {
+    return computeGapOptions();
+});
 
 const propagateClassList = () => {
     display.value = propagateGroup<DisplayType>('sp-style__layout-display__');
@@ -27,6 +38,7 @@ const propagateClassList = () => {
     flexDirection.value = propagateGroup<FlexDirection>('sp-style__layout-flex-direction__');
     gridColumns.value = propagateGroup<GridColumns>('sp-style__layout-grid-template__columns-');
     gridRows.value = propagateGroup<GridRows>('sp-style__layout-grid-template__rows-');
+    gapSpacing.value = propagateGroup<Spacings>('sp-style__layout-gap__');
 }
 
 const emit = defineEmits(['update']);
@@ -53,6 +65,7 @@ const notify = () => {
         flexDirection.value,
         gridColumns.value,
         gridRows.value,
+        gapSpacing.value,
     ].filter(item => item);
 
     emit('update', cleanedClassList);
@@ -90,6 +103,18 @@ onMounted(() => {
                             <option value=""></option>
                             <option value="sp-style__layout-flex-direction__row">Fila</option>
                             <option value="sp-style__layout-flex-direction__column">Columna</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sp-layout__gap-spacing-container">
+                    <div class="sp-layout__grid-item sp-layout__gap-container">
+                        <label>
+                            <fa-icon icon="arrow-down-wide-short" />
+                            Espaciado
+                        </label>
+                        <select v-model="gapSpacing" @change="notify">
+                            <option value=""></option>
+                            <option v-for="option in gapSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                         </select>
                     </div>
                 </div>
@@ -182,11 +207,11 @@ onMounted(() => {
     }
 }
 
-.sp-layout__flex-container {
-    .sp-layout__flex-direction-container {
-        display: flex;
-        flex-direction: column;
-    }
+.sp-layout__flex-direction-container,
+.sp-layout__gap-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
 }
 
 .sp-layout__horizontal-alignment-container {
