@@ -1,16 +1,19 @@
-import { defineComponent as D, ref as m, computed as x, onMounted as I, resolveComponent as N, openBlock as r, createElementBlock as d, createElementVNode as t, withDirectives as a, vModelRadio as u, createVNode as n, createTextVNode as h, vModelSelect as w, createCommentVNode as U, Fragment as L, renderList as z, toDisplayString as k, pushScopeId as R, popScopeId as B } from "vue";
-import { _ as E } from "./main-BZqKBJdk.js";
-const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { class: "sp-layout__container" }, $ = { class: "sp-layout__header" }, G = { class: "sp-layout__body" }, H = { class: "sp-layout__body" }, q = {
+import { defineComponent as D, ref as m, computed as U, onMounted as I, resolveComponent as N, openBlock as r, createElementBlock as d, createElementVNode as t, withDirectives as a, vModelRadio as _, createVNode as n, createTextVNode as h, vModelSelect as w, createCommentVNode as V, Fragment as L, renderList as k, toDisplayString as z, pushScopeId as R, popScopeId as B } from "vue";
+import { _ as E } from "./main-CJJbjdzs.js";
+const T = 12, W = 12, y = (g) => (R("data-v-a93b9397"), g = g(), B(), g), X = { class: "sp-layout__container" }, $ = { class: "sp-layout__header" }, G = { class: "sp-layout__body" }, H = { class: "sp-layout__body" }, q = {
   key: 0,
   class: "sp-layout__flex-container"
-}, J = { class: "sp-layout__grid-item sp-layout__flex-direction-container" }, K = /* @__PURE__ */ c(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), P = /* @__PURE__ */ c(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__row" }, "Fila", -1)), Q = /* @__PURE__ */ c(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__column" }, "Columna", -1)), Y = [
+}, J = { class: "sp-layout__grid-item sp-layout__flex-direction-container" }, K = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), P = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__row" }, "Fila", -1)), Q = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__column" }, "Columna", -1)), Y = [
   K,
   P,
   Q
 ], Z = {
   key: 1,
   class: "sp-layout__grid-container"
-}, tt = { class: "sp-layout__grid-item sp-layout__columns-container" }, lt = /* @__PURE__ */ c(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), et = ["value"], ot = { class: "sp-layout__grid-item sp-layout__rows-container" }, st = /* @__PURE__ */ c(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), at = ["value"], nt = { class: "sp-layout__horizontal-alignment-container" }, it = /* @__PURE__ */ c(() => /* @__PURE__ */ t("label", null, "Horizontal", -1)), ut = { class: "sp-layout__buttons-container" }, _t = { class: "sp-layout__button__aligment" }, pt = { class: "sp-layout__button__aligment" }, rt = { class: "sp-layout__button__aligment" }, dt = { class: "sp-layout__button__aligment" }, ct = { class: "sp-layout__vertical-alignment-container" }, yt = /* @__PURE__ */ c(() => /* @__PURE__ */ t("label", null, "Vertical", -1)), vt = { class: "sp-layout__buttons-container" }, mt = { class: "sp-layout__button__aligment" }, gt = { class: "sp-layout__button__aligment" }, ht = { class: "sp-layout__button__aligment" }, bt = /* @__PURE__ */ D({
+}, tt = { class: "sp-layout__grid-item sp-layout__columns-container" }, lt = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), et = ["value"], ot = { class: "sp-layout__grid-item sp-layout__rows-container" }, st = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), at = ["value"], nt = { class: "sp-layout__horizontal-alignment-container" }, it = /* @__PURE__ */ y(() => /* @__PURE__ */ t("label", null, "Horizontal", -1)), ut = { class: "sp-layout__buttons-container" }, _t = { class: "sp-layout__button__aligment" }, pt = { class: "sp-layout__button__aligment" }, rt = { class: "sp-layout__button__aligment" }, dt = {
+  key: 0,
+  class: "sp-layout__button__aligment"
+}, yt = { class: "sp-layout__vertical-alignment-container" }, ct = /* @__PURE__ */ y(() => /* @__PURE__ */ t("label", null, "Vertical", -1)), vt = { class: "sp-layout__buttons-container" }, mt = { class: "sp-layout__button__aligment" }, gt = { class: "sp-layout__button__aligment" }, ht = { class: "sp-layout__button__aligment" }, bt = /* @__PURE__ */ D({
   __name: "Layout",
   props: {
     spClassList: {
@@ -20,16 +23,16 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
   },
   emits: ["update"],
   setup(g, { emit: j }) {
-    const A = g, _ = m(null), i = m(null), p = m(null), b = m(null), f = m(null), C = m(null), y = (v) => A.spClassList.find((e) => e.startsWith(v)), F = () => {
-      _.value = y("sp-style__layout-display__"), i.value = y("sp-style__layout-justify-content__"), p.value = y("sp-style__layout-align-items__"), b.value = y("sp-style__layout-flex-direction__"), f.value = y("sp-style__layout-grid-template__columns-"), C.value = y("sp-style__layout-grid-template__rows-");
-    }, M = j, V = (v) => {
+    const A = g, u = m(null), i = m(null), p = m(null), b = m(null), f = m(null), C = m(null), c = (v) => A.spClassList.find((e) => e.startsWith(v)), F = () => {
+      u.value = c("sp-style__layout-display__"), i.value = c("sp-style__layout-justify-content__"), p.value = c("sp-style__layout-align-items__"), b.value = c("sp-style__layout-flex-direction__"), f.value = c("sp-style__layout-grid-template__columns-"), C.value = c("sp-style__layout-grid-template__rows-");
+    }, M = j, x = (v) => {
       const e = v === "rows" ? T : W, o = [];
       for (let l = 0; l < e; l++)
         o.push(l + 1);
       return o;
-    }, O = x(() => V("columns")), S = x(() => V("rows")), s = () => {
+    }, O = U(() => x("columns")), S = U(() => x("rows")), s = () => {
       const v = [
-        _.value,
+        u.value,
         i.value,
         p.value,
         b.value,
@@ -49,10 +52,10 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
               type: "radio",
               name: "display",
               value: "sp-style__layout-display__flex",
-              "onUpdate:modelValue": e[0] || (e[0] = (l) => _.value = l),
+              "onUpdate:modelValue": e[0] || (e[0] = (l) => u.value = l),
               onChange: s
             }, null, 544), [
-              [u, _.value]
+              [_, u.value]
             ]),
             n(o, { icon: "arrows-left-right" }),
             h(" Flexible ")
@@ -62,10 +65,10 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
               type: "radio",
               name: "display",
               value: "sp-style__layout-display__grid",
-              "onUpdate:modelValue": e[1] || (e[1] = (l) => _.value = l),
+              "onUpdate:modelValue": e[1] || (e[1] = (l) => u.value = l),
               onChange: s
             }, null, 544), [
-              [u, _.value]
+              [_, u.value]
             ]),
             n(o, { icon: "table-cells" }),
             h(" Tabla ")
@@ -73,7 +76,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
         ]),
         t("div", G, [
           t("div", H, [
-            _.value === "sp-style__layout-display__flex" ? (r(), d("div", q, [
+            u.value === "sp-style__layout-display__flex" ? (r(), d("div", q, [
               t("div", J, [
                 t("label", null, [
                   n(o, { icon: "arrow-down-wide-short" }),
@@ -86,8 +89,8 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                   [w, b.value]
                 ])
               ])
-            ])) : U("", !0),
-            _.value === "sp-style__layout-display__grid" ? (r(), d("div", Z, [
+            ])) : V("", !0),
+            u.value === "sp-style__layout-display__grid" ? (r(), d("div", Z, [
               t("div", tt, [
                 t("label", null, [
                   n(o, { icon: "grip" }),
@@ -98,10 +101,10 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                   onChange: s
                 }, [
                   lt,
-                  (r(!0), d(L, null, z(O.value, (l) => (r(), d("option", {
+                  (r(!0), d(L, null, k(O.value, (l) => (r(), d("option", {
                     key: l,
                     value: `sp-style__layout-grid-template__columns-${l}`
-                  }, k(l), 9, et))), 128))
+                  }, z(l), 9, et))), 128))
                 ], 544), [
                   [w, f.value]
                 ])
@@ -116,15 +119,15 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                   onChange: s
                 }, [
                   st,
-                  (r(!0), d(L, null, z(S.value, (l) => (r(), d("option", {
+                  (r(!0), d(L, null, k(S.value, (l) => (r(), d("option", {
                     key: l,
                     value: `sp-style__layout-grid-template__rows-${l}`
-                  }, k(l), 9, at))), 128))
+                  }, z(l), 9, at))), 128))
                 ], 544), [
                   [w, C.value]
                 ])
               ])
-            ])) : U("", !0),
+            ])) : V("", !0),
             t("div", nt, [
               it,
               t("div", ut, [
@@ -137,7 +140,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[5] || (e[5] = (l) => i.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, i.value]
+                    [_, i.value]
                   ])
                 ]),
                 t("label", pt, [
@@ -149,7 +152,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[6] || (e[6] = (l) => i.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, i.value]
+                    [_, i.value]
                   ])
                 ]),
                 t("label", rt, [
@@ -161,10 +164,10 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[7] || (e[7] = (l) => i.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, i.value]
+                    [_, i.value]
                   ])
                 ]),
-                t("label", dt, [
+                u.value === "sp-style__layout-display__flex" ? (r(), d("label", dt, [
                   n(o, { icon: "bars" }),
                   a(t("input", {
                     type: "radio",
@@ -173,13 +176,13 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[8] || (e[8] = (l) => i.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, i.value]
+                    [_, i.value]
                   ])
-                ])
+                ])) : V("", !0)
               ])
             ]),
-            t("div", ct, [
-              yt,
+            t("div", yt, [
+              ct,
               t("div", vt, [
                 t("label", mt, [
                   n(o, { icon: "arrows-up-to-line" }),
@@ -190,7 +193,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[9] || (e[9] = (l) => p.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, p.value]
+                    [_, p.value]
                   ])
                 ]),
                 t("label", gt, [
@@ -202,7 +205,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[10] || (e[10] = (l) => p.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, p.value]
+                    [_, p.value]
                   ])
                 ]),
                 t("label", ht, [
@@ -214,7 +217,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
                     "onUpdate:modelValue": e[11] || (e[11] = (l) => p.value = l),
                     onChange: s
                   }, null, 544), [
-                    [u, p.value]
+                    [_, p.value]
                   ])
                 ])
               ])
@@ -224,7 +227,7 @@ const T = 12, W = 12, c = (g) => (R("data-v-b18449c6"), g = g(), B(), g), X = { 
       ]);
     };
   }
-}), wt = /* @__PURE__ */ E(bt, [["__scopeId", "data-v-b18449c6"]]);
+}), wt = /* @__PURE__ */ E(bt, [["__scopeId", "data-v-a93b9397"]]);
 export {
   wt as default
 };

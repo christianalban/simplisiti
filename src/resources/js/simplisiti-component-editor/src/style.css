@@ -9,41 +9,73 @@ div.sp-style__layout-display__grid {
     display: grid;
 }
 
-div.sp-style__layout-justify-content__start {
+/* Aligment Flex */
+
+div.sp-style__layout-display__flex.sp-style__layout-justify-content__start {
     justify-content: flex-start;
 }
 
-div.sp-style__layout-justify-content__center {
+div.sp-style__layout-display__flex.sp-style__layout-justify-content__center {
     justify-content: center;
 }
 
-div.sp-style__layout-justify-content__end {
+div.sp-style__layout-display__flex.sp-style__layout-justify-content__end {
     justify-content: flex-end;
 }
 
-div.sp-style__layout-justify-content__between {
+div.sp-style__layout-display__flex.sp-style__layout-justify-content__between {
     justify-content: space-between
 }
 
-div.sp-style__layout-align-items__start {
+div.sp-style__layout-display__flex.sp-style__layout-align-items__start {
     align-items: flex-start;
 }
 
-div.sp-style__layout-align-items__center {
+div.sp-style__layout-display__flex.sp-style__layout-align-items__center {
     align-items: center;
 }
 
-div.sp-style__layout-align-items__end {
+div.sp-style__layout-display__flex.sp-style__layout-align-items__end {
     align-items: flex-end;
 }
 
-div.sp-style__layout-flex-direction__row {
+/* Flex Direction */
+
+div.sp-style__layout-display__flex.sp-style__layout-flex-direction__row {
     flex-direction: row;
 }
 
-div.sp-style__layout-flex-direction__column {
+div.sp-style__layout-display__flex.sp-style__layout-flex-direction__column {
     flex-direction: column;
 }
+
+/* Aligment Grid */
+
+div.sp-style__layout-display__grid.sp-style__layout-justify-content__start {
+    justify-items: start;
+}
+
+div.sp-style__layout-display__grid.sp-style__layout-justify-content__center {
+    justify-items: center;
+}
+
+div.sp-style__layout-display__grid.sp-style__layout-justify-content__end {
+    justify-items: end;
+}
+
+div.sp-style__layout-display__grid.sp-style__layout-align-items__start {
+    align-items: end;
+}
+
+div.sp-style__layout-display__grid.sp-style__layout-align-items__center {
+    align-items: center;
+}
+
+div.sp-style__layout-display__grid.sp-style__layout-align-items__end {
+    align-items: start;
+}
+
+/* Grid Columns and Rows */
 
 div.sp-style__layout-grid-template__columns-1 {
     grid-template-columns: 1fr;

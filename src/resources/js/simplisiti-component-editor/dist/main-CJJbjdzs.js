@@ -9,12 +9,12 @@ const Nn = {
   layout: {
     title: "Layout",
     icon: "object-group",
-    component: () => import("./Layout-CuYQ0bUR.js")
+    component: () => import("./Layout-DbVuh-I3.js")
   },
   spacing: {
     title: "Espaciado",
     icon: "expand",
-    component: () => import("./Spacing-MJWB3HkA.js")
+    component: () => import("./Spacing-CEb2uoW4.js")
   }
 }, Tn = {
   container: [

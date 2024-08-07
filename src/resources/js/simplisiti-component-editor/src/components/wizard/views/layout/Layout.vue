@@ -130,7 +130,7 @@ onMounted(() => {
                             <fa-icon icon="arrows-up-to-line" />
                             <input type="radio" name="horizontal" value="sp-style__layout-justify-content__end" v-model="horizontalAlignment" @change="notify"/>
                         </label>
-                        <label class="sp-layout__button__aligment">
+                        <label class="sp-layout__button__aligment" v-if="display === 'sp-style__layout-display__flex'">
                             <fa-icon icon="bars" />
                             <input type="radio" name="horizontal" value="sp-style__layout-justify-content__between" v-model="horizontalAlignment" @change="notify"/>
                         </label>
