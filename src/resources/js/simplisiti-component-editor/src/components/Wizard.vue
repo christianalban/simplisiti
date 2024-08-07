@@ -10,6 +10,10 @@ const { element } = defineProps({
     }
 });
 
+const spClassList = ref<string[]>([]);
+
+spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
+
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedTab = shallowRef<Component | undefined>(undefined);
 const selectedTabWizard = ref<AvailableWizards | undefined>(undefined);
@@ -76,7 +80,7 @@ onMounted(async () => {
     </div>
     <div class="sp-wizard-popup__content">
         <div class="sp-wizard-popup__content-header">
-            <component :is="selectedTab" @update="emitUpdate"></component>
+            <component :is="selectedTab" @update="emitUpdate" :sp-class-list="spClassList"></component>
         </div>
     </div>
 </template>

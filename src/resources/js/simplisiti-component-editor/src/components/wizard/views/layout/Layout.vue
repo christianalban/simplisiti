@@ -1,10 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, PropType, ref } from 'vue';
 import { DisplayType, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
+
+const props = defineProps({
+    spClassList: {
+        type: Array as PropType<string[]>,
+        default: [],
+    },
+});
 
 const display = ref<DisplayType|null>(null);
 const horizontalAlignment = ref<HorizontalAligment|null>(null);
 const verticalAlignment = ref<VerticalAligment|null>(null);
+
+const propagateClassList = () => {
+    display.value = props.spClassList.find(item => item.startsWith('sp-style__layout-display__')) as DisplayType;
+    horizontalAlignment.value = props.spClassList.find(item => item.startsWith('sp-style__layout-justify-content__')) as HorizontalAligment;
+    verticalAlignment.value = props.spClassList.find(item => item.startsWith('sp-style__layout-align-items__')) as VerticalAligment;
+}
 
 const emit = defineEmits(['update']);
 
@@ -31,6 +44,10 @@ const notify = () => {
 
     emit('update', cleanedClassList);
 }
+
+onMounted(() => {
+    propagateClassList();
+});
 
 </script>
 
