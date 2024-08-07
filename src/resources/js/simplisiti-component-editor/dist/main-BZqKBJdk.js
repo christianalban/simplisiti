@@ -1,22 +1,22 @@
-import { defineComponent as et, ref as Z, shallowReactive as wn, shallowRef as _n, computed as O, onMounted as Te, resolveComponent as ze, openBlock as $, createElementBlock as pt, Fragment as ie, createElementVNode as j, renderList as kn, unref as On, normalizeClass as Ie, createVNode as Me, createBlock as Gt, resolveDynamicComponent as En, defineAsyncComponent as Sn, withModifiers as Fe, toDisplayString as Cn, createCommentVNode as De, watch as Pn, h as je } from "vue";
+import { defineComponent as et, ref as Z, shallowReactive as wn, shallowRef as _n, computed as O, onMounted as Le, resolveComponent as Te, openBlock as $, createElementBlock as pt, Fragment as ie, createElementVNode as j, renderList as kn, unref as On, normalizeClass as Ie, createVNode as Me, createBlock as Gt, resolveDynamicComponent as En, defineAsyncComponent as Sn, withModifiers as Fe, toDisplayString as Cn, createCommentVNode as De, watch as Pn, h as je } from "vue";
 const Nn = {
   div: "Contenedor",
   a: "Enlace"
-}, Ln = {
+}, zn = {
   div: "container",
   a: "ancord"
-}, Tn = {
+}, Ln = {
   layout: {
     title: "Layout",
     icon: "object-group",
-    component: () => import("./Layout-b9AB8tWZ.js")
+    component: () => import("./Layout-CuYQ0bUR.js")
   },
   spacing: {
     title: "Espaciado",
     icon: "expand",
-    component: () => import("./Spacing-CYF3zKm3.js")
+    component: () => import("./Spacing-MJWB3HkA.js")
   }
-}, zn = {
+}, Tn = {
   container: [
     "layout",
     "spacing"
@@ -25,10 +25,10 @@ const Nn = {
     "spacing"
   ]
 }, In = (t) => {
-  const e = Ln[t];
-  return zn[e].map((a) => ({
+  const e = zn[t];
+  return Tn[e].map((a) => ({
     tab: a,
-    ...Tn[a]
+    ...Ln[a]
   }));
 }, Mn = { class: "sp-wizard-popup__tabs-container" }, Fn = { class: "sp-wizard-popup__tabs" }, Dn = { class: "sp-wizard-popup__tab" }, jn = ["title", "onClick"], Rn = { class: "sp-wizard-popup__content" }, Wn = { class: "sp-wizard-popup__content-header" }, Un = /* @__PURE__ */ et({
   __name: "Wizard",
@@ -69,10 +69,10 @@ const Nn = {
         }
       }));
     };
-    return Te(async () => {
+    return Le(async () => {
       await s(), l();
     }), (m, h) => {
-      const _ = ze("fa-icon");
+      const _ = Te("fa-icon");
       return $(), pt(ie, null, [
         j("div", Mn, [
           j("div", Fn, [
@@ -137,7 +137,7 @@ const Nn = {
       }, 300);
     };
     return o(n), (l, f) => {
-      const g = ze("fa-icon");
+      const g = Te("fa-icon");
       return $(), pt("div", {
         class: Ie(["sp-configuration-popup", { "sp-configuration-popup_closed": r.value }]),
         ref_key: "popup",
@@ -178,7 +178,7 @@ const Nn = {
     }, r = () => {
       n.value && n.value.classList.remove("sp-element__active"), n.value = null, e.value = !1;
     };
-    return Te(() => {
+    return Le(() => {
       const i = document.querySelectorAll("div"), o = document.querySelectorAll("a");
       a(i), a(o);
     }), (i, o) => {
@@ -405,7 +405,7 @@ var b = "classic", He = "duotone", E = "sharp", S = "sharp-duotone", Vn = [b, He
     "kit-duotone": "fakd"
   }
 };
-const I = "___FONT_AWESOME___", Nt = 16, Xe = "fa", Ve = "svg-inline--fa", V = "data-fa-i2svg", Lt = "data-fa-pseudo-element", ua = "data-fa-pseudo-element-pending", Vt = "data-prefix", Kt = "data-icon", ue = "fontawesome-i2svg", ma = "async", da = ["HTML", "HEAD", "STYLE", "SCRIPT"], Ke = (() => {
+const I = "___FONT_AWESOME___", Nt = 16, Xe = "fa", Ve = "svg-inline--fa", V = "data-fa-i2svg", zt = "data-fa-pseudo-element", ua = "data-fa-pseudo-element-pending", Vt = "data-prefix", Kt = "data-icon", ue = "fontawesome-i2svg", ma = "async", da = ["HTML", "HEAD", "STYLE", "SCRIPT"], Ke = (() => {
   try {
     return process.env.NODE_ENV === "production";
   } catch {
@@ -427,22 +427,22 @@ Qe[b] = {
   ...ce.kit,
   ...ce["kit-duotone"]
 };
-const G = ft(Qe), Tt = {
+const G = ft(Qe), Lt = {
   ...ra
 };
-Tt[b] = {
-  ...Tt[b],
+Lt[b] = {
+  ...Lt[b],
   ...fe.kit,
   ...fe["kit-duotone"]
 };
-const lt = ft(Tt), zt = {
+const lt = ft(Lt), Tt = {
   ...aa
 };
-zt[b] = {
-  ...zt[b],
+Tt[b] = {
+  ...Tt[b],
   ...fa.kit
 };
-const X = ft(zt), It = {
+const X = ft(Tt), It = {
   ...ea
 };
 It[b] = {
@@ -520,7 +520,7 @@ function wa(t) {
     ot.splice(ot.indexOf(t), 1);
   };
 }
-const D = Nt, L = {
+const D = Nt, z = {
   size: 16,
   x: 0,
   y: 0,
@@ -567,7 +567,7 @@ function At(t) {
   return Object.keys(t || {}).reduce((e, n) => e + "".concat(n, ": ").concat(t[n].trim(), ";"), "");
 }
 function Qt(t) {
-  return t.size !== L.size || t.x !== L.x || t.y !== L.y || t.rotate !== L.rotate || t.flipX || t.flipY;
+  return t.size !== z.size || t.x !== z.x || t.y !== z.y || t.rotate !== z.rotate || t.flipX || t.flipY;
 }
 function Ea(t) {
   let {
@@ -1188,7 +1188,7 @@ M[I] || (M[I] = {});
 M[I].styles || (M[I].styles = {});
 M[I].hooks || (M[I].hooks = {});
 M[I].shims || (M[I].shims = []);
-var T = M[I];
+var L = M[I];
 const nn = [], an = function() {
   y.removeEventListener("DOMContentLoaded", an), yt = 1, nn.map((t) => t());
 };
@@ -1219,7 +1219,7 @@ var St = function(e, n, a, r) {
     l = i[c], f = s(f, e[l], l, e);
   return f;
 };
-function La(t) {
+function za(t) {
   const e = [];
   let n = 0;
   const a = t.length;
@@ -1234,10 +1234,10 @@ function La(t) {
   return e;
 }
 function Mt(t) {
-  const e = La(t);
+  const e = za(t);
   return e.length === 1 ? e[0].toString(16) : null;
 }
-function Ta(t, e) {
+function La(t, e) {
   const n = t.length;
   let a = t.charCodeAt(e), r;
   return a >= 55296 && a <= 56319 && n > e + 1 && (r = t.charCodeAt(e + 1), r >= 56320 && r <= 57343) ? (a - 55296) * 1024 + r - 56320 + 65536 : a;
@@ -1253,15 +1253,15 @@ function Ft(t, e) {
   const {
     skipHooks: a = !1
   } = n, r = pe(e);
-  typeof T.hooks.addPack == "function" && !a ? T.hooks.addPack(t, pe(e)) : T.styles[t] = {
-    ...T.styles[t] || {},
+  typeof L.hooks.addPack == "function" && !a ? L.hooks.addPack(t, pe(e)) : L.styles[t] = {
+    ...L.styles[t] || {},
     ...r
   }, t === "fas" && Ft("fa", e);
 }
 const {
   styles: H,
-  shims: za
-} = T, Ia = {
+  shims: Ta
+} = L, Ia = {
   [b]: Object.values(X[b]),
   [E]: Object.values(X[E]),
   [S]: Object.values(X[S])
@@ -1291,7 +1291,7 @@ const fn = () => {
       a[s] = i;
     }), a;
   });
-  const e = "far" in H || u.autoFetchSvg, n = St(za, (a, r) => {
+  const e = "far" in H || u.autoFetchSvg, n = St(Ta, (a, r) => {
     const i = r[0];
     let o = r[1];
     const s = r[2];
@@ -1353,7 +1353,7 @@ function wt(t) {
   let e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   const {
     family: n = b
-  } = e, a = G[n][t], r = lt[n][t] || lt[n][a], i = t in T.styles ? t : null;
+  } = e, a = G[n][t], r = lt[n][t] || lt[n][a], i = t in L.styles ? t : null;
   return r || i || null;
 }
 const Wa = {
@@ -1471,7 +1471,7 @@ function jt(t) {
   } = t;
   const n = t.prefix || U();
   if (e)
-    return e = R(n, e) || e, de(mn.definitions, n, e) || de(T.styles, n, e);
+    return e = R(n, e) || e, de(mn.definitions, n, e) || de(L.styles, n, e);
 }
 const mn = new Ua(), Ha = () => {
   u.autoReplaceSvg = !1, u.observeMutations = !1, K("noAuto");
@@ -1537,7 +1537,7 @@ const mn = new Ua(), Ha = () => {
   const {
     autoReplaceSvgRoot: e = y
   } = t;
-  (Object.keys(T.styles).length > 0 || u.autoFetchSvg) && F && u.autoReplaceSvg && C.dom.i2svg({
+  (Object.keys(L.styles).length > 0 || u.autoFetchSvg) && F && u.autoReplaceSvg && C.dom.i2svg({
     node: e
   });
 };
@@ -1743,7 +1743,7 @@ function qa(t) {
 }
 const {
   styles: Ct
-} = T;
+} = L;
 function Rt(t) {
   const e = t[0], n = t[1], [a] = t.slice(4);
   let r = null;
@@ -1964,7 +1964,7 @@ function fr() {
     title: null,
     titleId: null,
     prefix: null,
-    transform: L,
+    transform: z,
     symbol: !1,
     mask: {
       iconName: null,
@@ -1994,7 +1994,7 @@ function Ae(t) {
     title: t.getAttribute("title"),
     titleId: t.getAttribute("data-fa-title-id"),
     prefix: a,
-    transform: L,
+    transform: z,
     mask: {
       iconName: null,
       prefix: null,
@@ -2012,25 +2012,25 @@ function Ae(t) {
 }
 const {
   styles: ur
-} = T;
+} = L;
 function yn(t) {
   const e = u.autoReplaceSvg === "nest" ? Ae(t, {
     styleParser: !1
   }) : Ae(t);
   return ~e.extra.classes.indexOf(Ze) ? B("generateLayersText", t, e) : B("generateSvgReplacementMutation", t, e);
 }
-let z = /* @__PURE__ */ new Set();
+let T = /* @__PURE__ */ new Set();
 qe.map((t) => {
-  z.add("fa-".concat(t));
+  T.add("fa-".concat(t));
 });
-Object.keys(G[b]).map(z.add.bind(z));
-Object.keys(G[E]).map(z.add.bind(z));
-Object.keys(G[S]).map(z.add.bind(z));
-z = [...z];
+Object.keys(G[b]).map(T.add.bind(T));
+Object.keys(G[E]).map(T.add.bind(T));
+Object.keys(G[S]).map(T.add.bind(T));
+T = [...T];
 function we(t) {
   let e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
   if (!F) return Promise.resolve();
-  const n = y.documentElement.classList, a = (f) => n.add("".concat(ue, "-").concat(f)), r = (f) => n.remove("".concat(ue, "-").concat(f)), i = u.autoFetchSvg ? z : qe.map((f) => "fa-".concat(f)).concat(Object.keys(ur));
+  const n = y.documentElement.classList, a = (f) => n.add("".concat(ue, "-").concat(f)), r = (f) => n.remove("".concat(ue, "-").concat(f)), i = u.autoFetchSvg ? T : qe.map((f) => "fa-".concat(f)).concat(Object.keys(ur));
   i.includes("fa") || i.push("fa");
   const o = [".".concat(Ze, ":not([").concat(V, "])")].concat(i.map((f) => ".".concat(f, ":not([").concat(V, "])"))).join(", ");
   if (o.length === 0)
@@ -2085,7 +2085,7 @@ function dr(t) {
 const pr = function(t) {
   let e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   const {
-    transform: n = L,
+    transform: n = z,
     symbol: a = !1,
     mask: r = null,
     maskId: i = null,
@@ -2120,7 +2120,7 @@ const pr = function(t) {
     prefix: g,
     iconName: m,
     transform: {
-      ...L,
+      ...z,
       ...n
     },
     symbol: a,
@@ -2280,7 +2280,7 @@ var gr = {
       text(t) {
         let e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
         const {
-          transform: n = L,
+          transform: n = z,
           title: a = null,
           classes: r = [],
           attributes: i = {},
@@ -2295,7 +2295,7 @@ var gr = {
         }), he({
           content: t,
           transform: {
-            ...L,
+            ...z,
             ...n
           },
           title: a,
@@ -2345,7 +2345,7 @@ const vr = new RegExp('"', "ug"), _e = [1105920, 1112319], ke = {
   return t[e] = n[900] || [...Object.entries(n)][0][1], t;
 }, {});
 function Ar(t) {
-  const e = t.replace(vr, ""), n = Ta(e, 0), a = n >= _e[0] && n <= _e[1], r = e.length === 2 ? e[0] === e[1] : !1;
+  const e = t.replace(vr, ""), n = La(e, 0), a = n >= _e[0] && n <= _e[1], r = e.length === 2 ? e[0] === e[1] : !1;
   return {
     value: Mt(r ? e[0] : e),
     isSecondary: a || r
@@ -2360,7 +2360,7 @@ function Oe(t, e) {
   return new Promise((a, r) => {
     if (t.getAttribute(n) !== null)
       return a();
-    const o = nt(t.children).filter((m) => m.getAttribute(Lt) === e)[0], s = W.getComputedStyle(t, e), c = s.getPropertyValue("font-family"), l = c.match(ha), f = s.getPropertyValue("font-weight"), g = s.getPropertyValue("content");
+    const o = nt(t.children).filter((m) => m.getAttribute(zt) === e)[0], s = W.getComputedStyle(t, e), c = s.getPropertyValue("font-family"), l = c.match(ha), f = s.getPropertyValue("font-weight"), g = s.getPropertyValue("content");
     if (o && !l)
       return t.removeChild(o), a();
     if (l && g !== "none" && g !== "") {
@@ -2380,7 +2380,7 @@ function Oe(t, e) {
         const v = fr(), {
           extra: A
         } = v;
-        A.attributes[Lt] = e, Wt(d, h).then((P) => {
+        A.attributes[zt] = e, Wt(d, h).then((P) => {
           const mt = ee({
             ...v,
             icons: {
@@ -2405,7 +2405,7 @@ function _r(t) {
   return Promise.all([Oe(t, "::before"), Oe(t, "::after")]);
 }
 function kr(t) {
-  return t.parentNode !== document.head && !~da.indexOf(t.tagName.toUpperCase()) && !t.getAttribute(Lt) && (!t.parentNode || t.parentNode.tagName !== "svg");
+  return t.parentNode !== document.head && !~da.indexOf(t.tagName.toUpperCase()) && !t.getAttribute(zt) && (!t.parentNode || t.parentNode.tagName !== "svg");
 }
 function Ee(t) {
   if (F)
@@ -2750,7 +2750,7 @@ var Pr = {
       };
     };
   }
-}, Lr = {
+}, zr = {
   hooks() {
     return {
       parseNodeAttributes(t, e) {
@@ -2759,12 +2759,12 @@ var Pr = {
       }
     };
   }
-}, Tr = [Pa, gr, hr, yr, br, Or, Er, Sr, Pr, Nr, Lr];
-Ya(Tr, {
+}, Lr = [Pa, gr, hr, yr, br, Or, Er, Sr, Pr, Nr, zr];
+Ya(Lr, {
   mixoutsTo: C
 });
 C.noAuto;
-const bn = C.config, zr = C.library;
+const bn = C.config, Tr = C.library;
 C.dom;
 const vt = C.parse;
 C.findIconDefinition;
@@ -2783,33 +2783,37 @@ const Fr = {
   icon: [448, 512, ["navicon"], "f0c9", "M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"]
 }, jr = {
   prefix: "fas",
+  iconName: "arrow-down-wide-short",
+  icon: [576, 512, ["sort-amount-asc", "sort-amount-down"], "f160", "M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7 96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 301.7 32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l32 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-32 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-96 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-160 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L320 96z"]
+}, Rr = {
+  prefix: "fas",
   iconName: "arrows-left-right",
   icon: [512, 512, ["arrows-h"], "f07e", "M406.6 374.6l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224l-293.5 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288l293.5 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"]
-}, Rr = {
+}, Wr = {
   prefix: "fas",
   iconName: "object-group",
   icon: [576, 512, [], "f247", "M32 119.4C12.9 108.4 0 87.7 0 64C0 28.7 28.7 0 64 0c23.7 0 44.4 12.9 55.4 32l337.1 0C467.6 12.9 488.3 0 512 0c35.3 0 64 28.7 64 64c0 23.7-12.9 44.4-32 55.4l0 273.1c19.1 11.1 32 31.7 32 55.4c0 35.3-28.7 64-64 64c-23.7 0-44.4-12.9-55.4-32l-337.1 0c-11.1 19.1-31.7 32-55.4 32c-35.3 0-64-28.7-64-64c0-23.7 12.9-44.4 32-55.4l0-273.1zM456.6 96L119.4 96c-5.6 9.7-13.7 17.8-23.4 23.4l0 273.1c9.7 5.6 17.8 13.7 23.4 23.4l337.1 0c5.6-9.7 13.7-17.8 23.4-23.4l0-273.1c-9.7-5.6-17.8-13.7-23.4-23.4zM128 160c0-17.7 14.3-32 32-32l128 0c17.7 0 32 14.3 32 32l0 96c0 17.7-14.3 32-32 32l-128 0c-17.7 0-32-14.3-32-32l0-96zM256 320l32 0c35.3 0 64-28.7 64-64l0-32 64 0c17.7 0 32 14.3 32 32l0 96c0 17.7-14.3 32-32 32l-128 0c-17.7 0-32-14.3-32-32l0-32z"]
-}, Wr = {
+}, Ur = {
   prefix: "fas",
   iconName: "table-cells",
   icon: [512, 512, ["th"], "f00a", "M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm88 64l0 64-88 0 0-64 88 0zm56 0l88 0 0 64-88 0 0-64zm240 0l0 64-88 0 0-64 88 0zM64 224l88 0 0 64-88 0 0-64zm232 0l0 64-88 0 0-64 88 0zm64 0l88 0 0 64-88 0 0-64zM152 352l0 64-88 0 0-64 88 0zm56 0l88 0 0 64-88 0 0-64zm240 0l0 64-88 0 0-64 88 0z"]
-}, Ur = {
+}, Br = {
   prefix: "fas",
   iconName: "grip-vertical",
   icon: [320, 512, [], "f58e", "M40 352l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zm192 0l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zM40 320c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0zM232 192l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zM40 160c-22.1 0-40-17.9-40-40L0 72C0 49.9 17.9 32 40 32l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0zM232 32l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40z"]
-}, Br = {
+}, Yr = {
   prefix: "fas",
   iconName: "arrows-left-right-to-line",
   icon: [640, 512, [], "e4ba", "M32 64c17.7 0 32 14.3 32 32l0 320c0 17.7-14.3 32-32 32s-32-14.3-32-32L0 96C0 78.3 14.3 64 32 64zm214.6 73.4c12.5 12.5 12.5 32.8 0 45.3L205.3 224l229.5 0-41.4-41.4c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l96 96c12.5 12.5 12.5 32.8 0 45.3l-96 96c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 288l-229.5 0 41.4 41.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-96-96c-12.5-12.5-12.5-32.8 0-45.3l96-96c12.5-12.5 32.8-12.5 45.3 0zM640 96l0 320c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-320c0-17.7 14.3-32 32-32s32 14.3 32 32z"]
-}, Yr = {
+}, Hr = {
   prefix: "fas",
   iconName: "grip",
   icon: [448, 512, ["grip-horizontal"], "f58d", "M128 136c0-22.1-17.9-40-40-40L40 96C17.9 96 0 113.9 0 136l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48zm0 192c0-22.1-17.9-40-40-40l-48 0c-22.1 0-40 17.9-40 40l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48zm32-192l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48c0-22.1-17.9-40-40-40l-48 0c-22.1 0-40 17.9-40 40zM288 328c0-22.1-17.9-40-40-40l-48 0c-22.1 0-40 17.9-40 40l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48zm32-192l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48c0-22.1-17.9-40-40-40l-48 0c-22.1 0-40 17.9-40 40zM448 328c0-22.1-17.9-40-40-40l-48 0c-22.1 0-40 17.9-40 40l0 48c0 22.1 17.9 40 40 40l48 0c22.1 0 40-17.9 40-40l0-48z"]
-}, Hr = {
+}, $r = {
   prefix: "fas",
   iconName: "expand",
   icon: [448, 512, [], "f065", "M32 32C14.3 32 0 46.3 0 64l0 96c0 17.7 14.3 32 32 32s32-14.3 32-32l0-64 64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7 14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0 0-64zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0 0 64c0 17.7 14.3 32 32 32s32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-96 0zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32l0-96z"]
-}, $r = {
+}, Gr = {
   prefix: "fas",
   iconName: "xmark",
   icon: [384, 512, [128473, 10005, 10006, 10060, 215, "close", "multiply", "remove", "times"], "f00d", "M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"]
@@ -2835,7 +2839,7 @@ function N(t) {
   }
   return t;
 }
-function Gr(t, e) {
+function Xr(t, e) {
   if (typeof t != "object" || !t) return t;
   var n = t[Symbol.toPrimitive];
   if (n !== void 0) {
@@ -2845,8 +2849,8 @@ function Gr(t, e) {
   }
   return (e === "string" ? String : Number)(t);
 }
-function Xr(t) {
-  var e = Gr(t, "string");
+function Vr(t) {
+  var e = Xr(t, "string");
   return typeof e == "symbol" ? e : e + "";
 }
 function xt(t) {
@@ -2858,14 +2862,14 @@ function xt(t) {
   }, xt(t);
 }
 function k(t, e, n) {
-  return e = Xr(e), e in t ? Object.defineProperty(t, e, {
+  return e = Vr(e), e in t ? Object.defineProperty(t, e, {
     value: n,
     enumerable: !0,
     configurable: !0,
     writable: !0
   }) : t[e] = n, t;
 }
-function Vr(t, e) {
+function Kr(t, e) {
   if (t == null) return {};
   var n = {};
   for (var a in t)
@@ -2875,9 +2879,9 @@ function Vr(t, e) {
     }
   return n;
 }
-function Kr(t, e) {
+function qr(t, e) {
   if (t == null) return {};
-  var n = Vr(t, e), a, r;
+  var n = Kr(t, e), a, r;
   if (Object.getOwnPropertySymbols) {
     var i = Object.getOwnPropertySymbols(t);
     for (r = 0; r < i.length; r++)
@@ -2886,15 +2890,15 @@ function Kr(t, e) {
   return n;
 }
 function Ht(t) {
-  return qr(t) || Qr(t) || Zr(t) || Jr();
-}
-function qr(t) {
-  if (Array.isArray(t)) return $t(t);
+  return Qr(t) || Zr(t) || Jr(t) || ti();
 }
 function Qr(t) {
+  if (Array.isArray(t)) return $t(t);
+}
+function Zr(t) {
   if (typeof Symbol < "u" && t[Symbol.iterator] != null || t["@@iterator"] != null) return Array.from(t);
 }
-function Zr(t, e) {
+function Jr(t, e) {
   if (t) {
     if (typeof t == "string") return $t(t, e);
     var n = Object.prototype.toString.call(t).slice(8, -1);
@@ -2907,11 +2911,11 @@ function $t(t, e) {
   for (var n = 0, a = new Array(e); n < e; n++) a[n] = t[n];
   return a;
 }
-function Jr() {
+function ti() {
   throw new TypeError(`Invalid attempt to spread non-iterable instance.
 In order to be iterable, non-array objects must have a [Symbol.iterator]() method.`);
 }
-var ti = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, vn = { exports: {} };
+var ei = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, vn = { exports: {} };
 (function(t) {
   (function(e) {
     var n = function(d, p, v) {
@@ -2978,20 +2982,20 @@ var ti = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : t
       }
     };
     t.exports ? t.exports = w : e.humps = w;
-  })(ti);
+  })(ei);
 })(vn);
-var ei = vn.exports, ni = ["class", "style"];
-function ai(t) {
+var ni = vn.exports, ai = ["class", "style"];
+function ri(t) {
   return t.split(";").map(function(e) {
     return e.trim();
   }).filter(function(e) {
     return e;
   }).reduce(function(e, n) {
-    var a = n.indexOf(":"), r = ei.camelize(n.slice(0, a)), i = n.slice(a + 1).trim();
+    var a = n.indexOf(":"), r = ni.camelize(n.slice(0, a)), i = n.slice(a + 1).trim();
     return e[r] = i, e;
   }, {});
 }
-function ri(t) {
+function ii(t) {
   return t.split(/\s+/).reduce(function(e, n) {
     return e[n] = !0, e;
   }, {});
@@ -3006,10 +3010,10 @@ function re(t) {
     var f = t.attributes[l];
     switch (l) {
       case "class":
-        c.class = ri(f);
+        c.class = ii(f);
         break;
       case "style":
-        c.style = ai(f);
+        c.style = ri(f);
         break;
       default:
         c.attrs[l] = f;
@@ -3021,7 +3025,7 @@ function re(t) {
     style: {}
   });
   n.class;
-  var i = n.style, o = i === void 0 ? {} : i, s = Kr(n, ni);
+  var i = n.style, o = i === void 0 ? {} : i, s = qr(n, ai);
   return je(t.tag, N(N(N({}, e), {}, {
     class: r.class,
     style: N(N({}, r.style), o)
@@ -3032,7 +3036,7 @@ try {
   xn = process.env.NODE_ENV === "production";
 } catch {
 }
-function ii() {
+function oi() {
   if (!xn && console && typeof console.error == "function") {
     var t;
     (t = console).error.apply(t, arguments);
@@ -3041,7 +3045,7 @@ function ii() {
 function st(t, e) {
   return Array.isArray(e) && e.length > 0 || !Array.isArray(e) && e ? k({}, t, e) : {};
 }
-function oi(t) {
+function si(t) {
   var e, n = (e = {
     "fa-spin": t.spin,
     "fa-pulse": t.pulse,
@@ -3059,7 +3063,7 @@ function oi(t) {
     return a;
   });
 }
-function Le(t) {
+function ze(t) {
   if (t && xt(t) === "object" && t.prefix && t.iconName && t.icon)
     return t;
   if (vt.icon)
@@ -3079,7 +3083,7 @@ function Le(t) {
       iconName: t
     };
 }
-var si = et({
+var li = et({
   name: "FontAwesomeIcon",
   props: {
     border: {
@@ -3201,13 +3205,13 @@ var si = et({
   },
   setup: function(e, n) {
     var a = n.attrs, r = O(function() {
-      return Le(e.icon);
+      return ze(e.icon);
     }), i = O(function() {
-      return st("classes", oi(e));
+      return st("classes", si(e));
     }), o = O(function() {
       return st("transform", typeof e.transform == "string" ? vt.transform(e.transform) : e.transform);
     }), s = O(function() {
-      return st("mask", Le(e.mask));
+      return st("mask", ze(e.mask));
     }), c = O(function() {
       return Ir(r.value, N(N(N(N({}, i.value), o.value), s.value), {}, {
         symbol: e.symbol,
@@ -3218,7 +3222,7 @@ var si = et({
     });
     Pn(c, function(f) {
       if (!f)
-        return ii("Could not find one or more icon(s)", r.value, s.value);
+        return oi("Could not find one or more icon(s)", r.value, s.value);
     }, {
       immediate: !0
     });
@@ -3288,24 +3292,25 @@ et({
     };
   }
 });
-zr.add(
-  $r,
-  Br,
-  jr,
-  Fr,
-  Wr,
-  Rr,
-  Hr,
+Tr.add(
+  Gr,
   Yr,
+  Rr,
+  Fr,
   Ur,
-  Dr
+  Wr,
+  $r,
+  Hr,
+  Br,
+  Dr,
+  jr
 );
-const ci = {
+const fi = {
   install: (t) => {
-    t.component("simplisiti-component-editor", Xn), t.component("fa-icon", si);
+    t.component("simplisiti-component-editor", Xn), t.component("fa-icon", li);
   }
 };
 export {
   Re as _,
-  ci as m
+  fi as m
 };

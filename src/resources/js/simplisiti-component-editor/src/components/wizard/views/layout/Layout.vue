@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, PropType, ref } from 'vue';
-import { DisplayType, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
+import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
 
 const props = defineProps({
     spClassList: {
@@ -12,11 +12,21 @@ const props = defineProps({
 const display = ref<DisplayType|null>(null);
 const horizontalAlignment = ref<HorizontalAligment|null>(null);
 const verticalAlignment = ref<VerticalAligment|null>(null);
+const flexDirection = ref<FlexDirection|null>(null);
+const gridColumns = ref<GridColumns|null>(null);
+const gridRows = ref<GridRows|null>(null);
+
+const propagateGroup = <T>(group: string) => {
+    return props.spClassList.find(item => item.startsWith(group)) as T
+}
 
 const propagateClassList = () => {
-    display.value = props.spClassList.find(item => item.startsWith('sp-style__layout-display__')) as DisplayType;
-    horizontalAlignment.value = props.spClassList.find(item => item.startsWith('sp-style__layout-justify-content__')) as HorizontalAligment;
-    verticalAlignment.value = props.spClassList.find(item => item.startsWith('sp-style__layout-align-items__')) as VerticalAligment;
+    display.value = propagateGroup<DisplayType>('sp-style__layout-display__');
+    horizontalAlignment.value = propagateGroup<HorizontalAligment>('sp-style__layout-justify-content__');
+    verticalAlignment.value = propagateGroup<VerticalAligment>('sp-style__layout-align-items__');
+    flexDirection.value = propagateGroup<FlexDirection>('sp-style__layout-flex-direction__');
+    gridColumns.value = propagateGroup<GridColumns>('sp-style__layout-grid-template__columns-');
+    gridRows.value = propagateGroup<GridRows>('sp-style__layout-grid-template__rows-');
 }
 
 const emit = defineEmits(['update']);
@@ -40,6 +50,9 @@ const notify = () => {
         display.value,
         horizontalAlignment.value,
         verticalAlignment.value,
+        flexDirection.value,
+        gridColumns.value,
+        gridRows.value,
     ].filter(item => item);
 
     emit('update', cleanedClassList);
@@ -67,15 +80,28 @@ onMounted(() => {
         </div>
         <div class="sp-layout__body">
             <div class="sp-layout__body">
+                <div class="sp-layout__flex-container" v-if="display === 'sp-style__layout-display__flex'">
+                    <div class="sp-layout__grid-item sp-layout__flex-direction-container">
+                        <label>
+                            <fa-icon icon="arrow-down-wide-short" />
+                            Dirección
+                        </label>
+                        <select v-model="flexDirection" @change="notify">
+                            <option value=""></option>
+                            <option value="sp-style__layout-flex-direction__row">Fila</option>
+                            <option value="sp-style__layout-flex-direction__column">Columna</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="sp-layout__grid-container" v-if="display === 'sp-style__layout-display__grid'">
                     <div class="sp-layout__grid-item sp-layout__columns-container">
                         <label>
                             <fa-icon icon="grip" />
                             Columas
                         </label>
-                        <select name="" id="">
+                        <select v-model="gridColumns" @change="notify">
                             <option value=""></option>
-                            <option v-for="option in columnsOptions" :key="option" :value="`sp-style__layout-columns__${option}`">{{ option }}</option>
+                            <option v-for="option in columnsOptions" :key="option" :value="`sp-style__layout-grid-template__columns-${option}`">{{ option }}</option>
                         </select>
                     </div>
                     <div class="sp-layout__grid-item sp-layout__rows-container">
@@ -83,9 +109,9 @@ onMounted(() => {
                             <fa-icon icon="grip-vertical" />
                             Filas
                         </label>
-                        <select name="" id="">
+                        <select v-model="gridRows" @change="notify">
                             <option value=""></option>
-                            <option v-for="option in rowsOptions" :key="option" :value="`sp-style__layout-rows__${option}`">{{ option }}</option>
+                            <option v-for="option in rowsOptions" :key="option" :value="`sp-style__layout-grid-template__rows-${option}`">{{ option }}</option>
                         </select>
                     </div>
                 </div>
@@ -151,6 +177,13 @@ onMounted(() => {
     gap: 0.5rem;
 
     .sp-layout__grid-item {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.sp-layout__flex-container {
+    .sp-layout__flex-direction-container {
         display: flex;
         flex-direction: column;
     }

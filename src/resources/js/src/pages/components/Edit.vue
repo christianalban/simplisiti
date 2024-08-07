@@ -4,7 +4,6 @@ import ComponentsForm from "./partials/Form.vue";
 import DialogComponent from "../../components/Dialog.vue";
 import { deleteComponent, getComponent, updateComponent, mapWithoutSettingsData } from "../../services/ComponentService";
 import { useRoute, useRouter } from "vue-router";
-import { Variable } from "../../types/Variable";
 import { showToast } from "../../services/ToastService";
 import { useI18n } from "vue-i18n";
 import { Component } from "../../types/Component";
@@ -13,7 +12,6 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const showDialog = ref(false);
-const variables = ref<Variable[]>([]);
 const componentId = +route.params.component;
 const component = ref<Component>({
     name: '',
@@ -25,7 +23,7 @@ const update = () => {
     updateComponent({
         id: componentId,
         html: component.value.html,
-        variables: mapWithoutSettingsData(variables.value),
+        variables: mapWithoutSettingsData(component.value.variables),
         name: component.value.name,
     })
     .then(() => {

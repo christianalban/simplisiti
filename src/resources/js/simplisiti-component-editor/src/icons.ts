@@ -1,5 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+    faArrowDownWideShort,
     faArrowsLeftRight,
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
@@ -25,6 +26,7 @@ library.add(
     faGrip,
     faGripVertical,
     faBars,
+    faArrowDownWideShort,
 );
 
 export default FontAwesomeIcon;
