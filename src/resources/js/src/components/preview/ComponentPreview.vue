@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, PropType } from 'vue';
+import { ref, onMounted, PropType, onUnmounted } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
@@ -23,6 +23,8 @@ const props = defineProps({
         default: false,
     },
 });
+
+const emit = defineEmits(['update']);
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
@@ -173,14 +175,31 @@ const updateIframe = async (componentContent: ContentValue) => {
     }
 };
 
+const onElementChange = async (event: any) => {
+    editorEngine.updateClassOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.spClassList);
+
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    emit('update', composedHtml);
+};
+
+const listenElementEvents = () => {
+    window.document.addEventListener('elementChange', onElementChange);
+};
+
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));
+    listenElementEvents();
     // updateIframe();
     // if (!props.html) {
     //     observer.subscribe(props.component, (content) => {
     //         updateIframe(content).then(() => resizeIframe());
     //     });
     // }
+});
+
+onUnmounted(() => {
+    window.document.removeEventListener('elementChange', onElementChange);
 });
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, onMounted, onUnmounted, ref, watch } from "vue";
+import { PropType, onMounted, ref, watch } from "vue";
 import CodeEditor from "../../../components/CodeEditor.vue";
 import { Variable } from "../../../types/Variable";
 import { useResources } from "../../../services/ResourceService";
@@ -105,29 +105,16 @@ const loadComponentPreview = async () => {
 
 }
 
-const onElementChange = (event: any) => {
-    console.log('elementChange', event);
-};
-
-const listenElementEvents = () => {
-    window.document.addEventListener('elementChange', onElementChange);
-};
-
 onMounted(() => {
     loadResources();
     loadSources();
     loadActions();
     loadPages();
     // loadComponentPreview();
-    listenElementEvents();
 });
 
 watch(() => props.component, (old) => {
     // loadComponentPreview();
-});
-
-onUnmounted(() => {
-    window.document.removeEventListener('elementChange', onElementChange);
 });
 
 </script>
@@ -141,6 +128,7 @@ onUnmounted(() => {
                 :component="component"
                 :html="componentPreviewRender"
                 :allowEdit="true"
+                @update="$emit('update:code', $event)"
             />
         </template>
         <template #code>

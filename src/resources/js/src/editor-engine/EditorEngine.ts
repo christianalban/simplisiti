@@ -38,4 +38,25 @@ export class EditorEngine {
             }, 100);
         });
     }
+
+    public updateClassOfElementBySimplisitiId(simplisitiId: string, spClassList: string[]): void {
+        const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`);
+
+        if (element === null) {
+            return;
+        }
+
+        element.classList.forEach((className: string) => {
+            setTimeout(() => {
+                if (className.startsWith('sp-style')) {
+                    element.classList.remove(className);
+                }
+            }, 100);
+        });
+        spClassList.forEach((className: string) => {
+            setTimeout(() => {
+                element.classList.add(className)
+            }, 100);
+        });
+    }
 }

@@ -59,6 +59,12 @@ const emitUpdate = (event: string[]) => {
             element.classList.add(className)
         }, 100);
     });
+    window.parent.document.dispatchEvent(new CustomEvent('elementChange', {
+        detail: {
+            simplisitiId: element.dataset.simplisitiid,
+            spClassList: event,
+        },
+    }));
 };
 
 onMounted(async () => {
