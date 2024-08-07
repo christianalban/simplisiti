@@ -42,6 +42,21 @@ const isTabActive = (tab: WizardComponentImported) => {
     return selectedTabWizard.value === tab.tab;
 };
 
+const emitUpdate = (event: string[]) => {
+    element.classList.forEach((className: string) => {
+        setTimeout(() => {
+            if (className.startsWith('sp-style')) {
+                element.classList.remove(className);
+            }
+        }, 100);
+    });
+    event.forEach((className: string) => {
+        setTimeout(() => {
+            element.classList.add(className)
+        }, 100);
+    });
+};
+
 onMounted(async () => {
     await getAvailabeTabs()
     selectFirstTab();
@@ -61,7 +76,7 @@ onMounted(async () => {
     </div>
     <div class="sp-wizard-popup__content">
         <div class="sp-wizard-popup__content-header">
-            <component :is="selectedTab"></component>
+            <component :is="selectedTab" @update="emitUpdate"></component>
         </div>
     </div>
 </template>

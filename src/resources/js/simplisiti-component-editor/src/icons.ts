@@ -3,6 +3,7 @@ import {
     faArrowsLeftRight,
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
+    faBars,
     faExpand,
     faGrip,
     faGripVertical,
@@ -23,6 +24,7 @@ library.add(
     faExpand,
     faGrip,
     faGripVertical,
+    faBars,
 );
 
 export default FontAwesomeIcon;

@@ -3,8 +3,11 @@ import { ref, onMounted, PropType } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
+import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
 
 const observer = useContentObserver();
+
+const editorEngine = new EditorEngine();
 
 const props = defineProps({
     component: {
@@ -124,7 +127,10 @@ const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => 
 const updateIframe = async (componentContent: ContentValue) => {
     if (!props.component.id) return;
 
-    const content = props.html || (await getComponentPreview(props.component.id, componentContent)).data;
+    editorEngine.setHtmlString(props.component.html);
+
+    // const content = props.html || (await getComponentPreview(props.component.id, componentContent)).data;
+    const content = (await editorEngine.compose().getComposedHtmlString());
 
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -143,11 +149,11 @@ const updateIframe = async (componentContent: ContentValue) => {
 
         if (props.allowEdit) {
             const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink, layoutEditor] = loadResourcesEditor();
-            const [fontFace] = loadFontFace();
+            // const [fontFace] = loadFontFace();
 
             doc.head.appendChild(styleEditorLink);
             doc.head.appendChild(layoutEditor);
-            doc.head.appendChild(fontFace);
+            // doc.head.appendChild(fontFace);
             doc.body.appendChild(scriptVueLink);
             doc.body.appendChild(scriptEditorLink);
             doc.body.appendChild(scriptVueAppLink);
@@ -169,6 +175,7 @@ const updateIframe = async (componentContent: ContentValue) => {
 
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));
+    // updateIframe();
     // if (!props.html) {
     //     observer.subscribe(props.component, (content) => {
     //         updateIframe(content).then(() => resizeIframe());

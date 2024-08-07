@@ -1,1 +1,36 @@
+div.sp-style__layout-display__flex {
+    display: flex;
+    flex-direction: row;
+}
 
+div.sp-style__layout-display__grid {
+    display: grid;
+}
+
+div.sp-style__layout-justify-content__start {
+    justify-content: flex-start;
+}
+
+div.sp-style__layout-justify-content__center {
+    justify-content: center;
+}
+
+div.sp-style__layout-justify-content__end {
+    justify-content: flex-end;
+}
+
+div.sp-style__layout-justify-content__between {
+    justify-content: space-between
+}
+
+div.sp-style__layout-align-items__start {
+    align-items: flex-start;
+}
+
+div.sp-style__layout-align-items__center {
+    align-items: center;
+}
+
+div.sp-style__layout-align-items__end {
+    align-items: flex-end;
+}

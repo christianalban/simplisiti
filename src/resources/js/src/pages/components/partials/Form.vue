@@ -118,12 +118,11 @@ onMounted(() => {
     loadSources();
     loadActions();
     loadPages();
-    loadComponentPreview();
+    // loadComponentPreview();
     listenElementEvents();
 });
 
 watch(() => props.component, (old) => {
-    console.log('component', old, props.component);
     // loadComponentPreview();
 });
 

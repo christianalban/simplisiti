@@ -1,5 +1,6 @@
 import App from "./App.vue"
 import icons from './icons'
+import './style.css'
 
 export default {
     install: (app: any) => {
