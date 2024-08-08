@@ -1,7 +1,7 @@
 import { defineComponent as E, ref as m, computed as x, onMounted as R, resolveComponent as $, openBlock as i, createElementBlock as _, createElementVNode as t, withDirectives as s, vModelRadio as r, createVNode as n, createTextVNode as g, vModelSelect as V, createCommentVNode as U, Fragment as k, renderList as L, toDisplayString as z, pushScopeId as B, popScopeId as G } from "vue";
 import { s as T } from "./Spacing-B7YPeZlN.js";
-import { _ as W } from "./main-3Qp25jYS.js";
-const X = 12, H = 12, y = (h) => (B("data-v-77167799"), h = h(), G(), h), q = { class: "sp-layout__container" }, J = { class: "sp-layout__header" }, K = { class: "sp-layout__body" }, P = { class: "sp-layout__body" }, Q = {
+import { _ as W } from "./main-C81sWyDM.js";
+const X = 12, H = 12, y = (h) => (B("data-v-6d595c23"), h = h(), G(), h), q = { class: "sp-layout__container" }, J = { class: "sp-layout__header" }, K = { class: "sp-layout__body" }, P = { class: "sp-layout__body" }, Q = {
   key: 0,
   class: "sp-layout__flex-container"
 }, Y = { class: "sp-layout__grid-item sp-layout__flex-direction-container" }, Z = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "" }, null, -1)), tt = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__row" }, "Fila", -1)), lt = /* @__PURE__ */ y(() => /* @__PURE__ */ t("option", { value: "sp-style__layout-flex-direction__column" }, "Columna", -1)), et = [
@@ -249,7 +249,7 @@ const X = 12, H = 12, y = (h) => (B("data-v-77167799"), h = h(), G(), h), q = { 
       ]);
     };
   }
-}), jt = /* @__PURE__ */ W(Lt, [["__scopeId", "data-v-77167799"]]);
+}), jt = /* @__PURE__ */ W(Lt, [["__scopeId", "data-v-6d595c23"]]);
 export {
   jt as default
 };

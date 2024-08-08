@@ -1,6 +1,6 @@
 import { defineComponent as g, computed as i, openBlock as l, createElementBlock as n, createElementVNode as e, toDisplayString as o, Fragment as _, renderList as u, pushScopeId as m, popScopeId as S, createVNode as v } from "vue";
 import { S as k } from "./Spacing-B7YPeZlN.js";
-import { _ as b } from "./main-3Qp25jYS.js";
+import { _ as b } from "./main-C81sWyDM.js";
 const c = (s) => (m("data-v-17ec4c84"), s = s(), S(), s), O = { class: "sp-spacing__container" }, x = { class: "sp-spacing__select-container" }, q = { class: "sp-spacing__select-item" }, w = /* @__PURE__ */ c(() => /* @__PURE__ */ e("label", null, "Arriba", -1)), A = /* @__PURE__ */ c(() => /* @__PURE__ */ e("option", { value: "" }, null, -1)), B = ["value"], D = { class: "sp-spacing__select-item" }, E = /* @__PURE__ */ c(() => /* @__PURE__ */ e("label", null, "Abajo", -1)), N = /* @__PURE__ */ c(() => /* @__PURE__ */ e("option", { value: "" }, null, -1)), V = ["value"], j = { class: "sp-spacing__select-item" }, z = /* @__PURE__ */ c(() => /* @__PURE__ */ e("label", null, "Izquierda", -1)), C = /* @__PURE__ */ c(() => /* @__PURE__ */ e("option", { value: "" }, null, -1)), F = ["value"], L = { class: "sp-spacing__select-item" }, M = /* @__PURE__ */ c(() => /* @__PURE__ */ e("label", null, "Derecha", -1)), P = /* @__PURE__ */ c(() => /* @__PURE__ */ e("option", { value: "" }, null, -1)), G = ["value"], H = /* @__PURE__ */ g({
   __name: "SpacingSelect",
   props: {

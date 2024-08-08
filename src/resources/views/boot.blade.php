@@ -7,6 +7,7 @@
         <title>{{ $title }}</title>
         <link rel="icon" href="/sp-assets/favicon.ico">
         <link rel="stylesheet" href="/vendor/simplisiti-css/ckeditor.css">
+        <link rel="stylesheet" href="/vendor/simplisiti-css/simplisiti-component-editor/style.css">
         <style>
             .ck-content * {
                 all: revert;

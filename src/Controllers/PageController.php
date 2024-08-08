@@ -122,7 +122,7 @@ class PageController extends Controller {
         $path = match ($type) {
             'script' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/simplisiti-component-editor.umd.cjs',
             'style' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/style.css',
-            'layout' => 'vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/layout.css',
+            'layout' => 'vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/style.css',
         };
 
         $engineResource = base_path($path);

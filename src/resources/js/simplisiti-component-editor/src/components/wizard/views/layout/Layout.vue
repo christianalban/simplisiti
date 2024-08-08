@@ -2,7 +2,7 @@
 import { computed, onMounted, PropType, ref } from 'vue';
 import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
 import { SelectOption } from '../../../../enginge/constants/Select';
-import { spacingItems, Spacings, SpacingSteps } from '../../../../enginge/constants/Spacing';
+import { spacingItems, Spacings } from '../../../../enginge/constants/Spacing';
 
 const props = defineProps({
     spClassList: {

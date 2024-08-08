@@ -48,6 +48,8 @@ class MinifyAction implements PreviewAction
 
         $minifier->add($this->getCkEditorCss());
 
+        $minifier->add($this->getSimplisitiStylesCss());
+
         return $minifier;
     }
 
@@ -71,5 +73,12 @@ class MinifyAction implements PreviewAction
         $content = file_get_contents(public_path('vendor/simplisiti-css/ckeditor.css'));
 
         return $content . $resetStyles;
+    }
+
+    private function getSimplisitiStylesCss(): string
+    {
+        $content = file_get_contents(base_path('vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/style.css'));
+
+        return $content;
     }
 }
