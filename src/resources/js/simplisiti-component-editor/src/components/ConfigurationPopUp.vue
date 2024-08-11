@@ -35,9 +35,18 @@ const calculatePosition = (element: HTMLElement | null) => {
             }
 
             const bodyHeight = document.body.offsetHeight;
+
             if ((top + popup.value.offsetHeight) > bodyHeight) {
                 popup.value.style.top = 'auto';
                 popup.value.style.bottom = `${bottom - popup.value.offsetHeight + 20}px`;
+
+                if (popup.value.offsetTop < 0) {
+                    popup.value.style.bottom = '20px';
+                }
+            }
+
+            if (popup.value.offsetTop < 0) {
+                popup.value.style.top = '20px';
             }
         }
     }, 50);

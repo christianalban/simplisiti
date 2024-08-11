@@ -9,12 +9,12 @@ const Nn = {
   layout: {
     title: "Layout",
     icon: "object-group",
-    component: () => import("./Layout-B050C9tS.js")
+    component: () => import("./Layout-Bo8LDQRZ.js")
   },
   spacing: {
     title: "Espaciado",
     icon: "expand",
-    component: () => import("./Spacing-C8FEg18_.js")
+    component: () => import("./Spacing-Br969PdR.js")
   }
 }, Tn = {
   container: [
@@ -124,7 +124,7 @@ const Nn = {
           const _ = document.body.offsetWidth;
           h + a.value.offsetWidth > _ && (a.value.style.top = `${g + 10}px`, a.value.style.left = `${h - a.value.offsetWidth - 20}px`);
           const x = document.body.offsetHeight;
-          g + a.value.offsetHeight > x && (a.value.style.top = "auto", a.value.style.bottom = `${m - a.value.offsetHeight + 20}px`);
+          g + a.value.offsetHeight > x && (a.value.style.top = "auto", a.value.style.bottom = `${m - a.value.offsetHeight + 20}px`, a.value.offsetTop < 0 && (a.value.style.bottom = "20px")), a.value.offsetTop < 0 && (a.value.style.top = "20px");
         }
       }, 50);
     }, s = O(() => {
@@ -162,7 +162,7 @@ const Nn = {
       ], 2);
     };
   }
-}), Gn = /* @__PURE__ */ Re($n, [["__scopeId", "data-v-317d171c"]]), Xn = /* @__PURE__ */ et({
+}), Gn = /* @__PURE__ */ Re($n, [["__scopeId", "data-v-f88fd076"]]), Xn = /* @__PURE__ */ et({
   __name: "App",
   setup(t) {
     const e = Z(!1), n = Z(null), a = (i) => {
