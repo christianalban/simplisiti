@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
 import { Component } from '../../types/Component';
-import { getComponentPreview } from '../../services/PageService';
-import { parseComponentContent } from '../../services/ContentService';
 import ComponentPreview from './ComponentPreview.vue';
 import { FloatPosition } from '../../types/FloatPreview';
 
@@ -26,8 +24,7 @@ const loadComponentPreview = async () => {
     }
 
     try {
-        const content = await getComponentPreview(component.id, parseComponentContent(component, component.content));
-        componentPreviewRender.value = content.data;
+        componentPreviewRender.value = component.html
     } catch (error) {
         noPreview.value = true;
     }

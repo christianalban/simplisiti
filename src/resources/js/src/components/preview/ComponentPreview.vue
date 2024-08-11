@@ -28,24 +28,6 @@ const emit = defineEmits(['update']);
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
-const loadFontFace = () => {
-    const styleIcons = document.createElement('style');
-    styleIcons.innerHTML = `
-        @font-face {
-          font-family: 'fontello';
-          src: url('http://localhost/api/spanel/page/editor/font/fontello.eot?75699607');
-          src: url('http://localhost/api/spanel/page/editor/font/fontello.eot?75699607#iefix') format('embedded-opentype'),
-               url('http://localhost/api/spanel/page/editor/font/fontello.woff?75699607') format('woff'),
-               url('http://localhost/api/spanel/page/editor/font/fontello.ttf?75699607') format('truetype'),
-               url('http://localhost/api/spanel/page/editor/font/fontello.svg?75699607#fontello') format('svg');
-          font-weight: normal;
-          font-style: normal;
-        }
-    `;
-    
-    return [styleIcons];
-};
-
 const resizeIframe = () => {
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -126,13 +108,12 @@ const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => 
     return [link, script];
 };
 
-const updateIframe = async (componentContent: ContentValue) => {
+const updateIframe = async () => {
     if (!props.component.id) return;
 
-    editorEngine.setHtmlString(props.component.html);
+    editorEngine.setHtmlString(props.html || props.component.html);
 
-    // const content = props.html || (await getComponentPreview(props.component.id, componentContent)).data;
-    const content = (await editorEngine.compose().getComposedHtmlString());
+    const content = await editorEngine.compose().getComposedHtmlString();
 
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -151,11 +132,9 @@ const updateIframe = async (componentContent: ContentValue) => {
 
         if (props.allowEdit) {
             const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink, layoutEditor] = loadResourcesEditor();
-            // const [fontFace] = loadFontFace();
 
             doc.head.appendChild(styleEditorLink);
             doc.head.appendChild(layoutEditor);
-            // doc.head.appendChild(fontFace);
             doc.body.appendChild(scriptVueLink);
             doc.body.appendChild(scriptEditorLink);
             doc.body.appendChild(scriptVueAppLink);
