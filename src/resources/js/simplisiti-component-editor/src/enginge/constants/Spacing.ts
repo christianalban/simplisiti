@@ -83,3 +83,10 @@ export const spacingItems = (callback: (step: string) => string): SelectOption[]
         label: step,
     }))
 }
+
+export interface SpacingConfig {
+    top?: Spacings;
+    bottom?: Spacings;
+    left?: Spacings;
+    right?: Spacings;
+}

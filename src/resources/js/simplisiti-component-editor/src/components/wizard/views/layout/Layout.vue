@@ -3,6 +3,7 @@ import { computed, onMounted, PropType, ref } from 'vue';
 import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
 import { SelectOption } from '../../../../enginge/constants/Select';
 import { spacingItems, Spacings } from '../../../../enginge/constants/Spacing';
+import { propagateClassGroup } from '../../../../enginge/helpers/HtmlAlias';
 
 const props = defineProps({
     spClassList: {
@@ -20,7 +21,7 @@ const gridRows = ref<GridRows|null>(null);
 const gapSpacing = ref<Spacings|null>(null);
 
 const propagateGroup = <T>(group: string) => {
-    return props.spClassList.find(item => item.startsWith(group)) as T
+    return propagateClassGroup<T>(group, props.spClassList);
 }
 
 const computeGapOptions = (): SelectOption[] => {

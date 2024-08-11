@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { SpacingBorder, SpacingSteps, SpacingType } from '../../../../enginge/constants/Spacing';
-import { SelectOption } from '../../../../enginge/constants/Select';
-const { type } = defineProps({
+import { SpacingBorder, SpacingConfig, SpacingSteps, SpacingType } from '../../../../../enginge/constants/Spacing';
+import { SelectOption } from '../../../../../enginge/constants/Select';
+const { type, spacingConfig } = defineProps({
     title: {
         type: String,
         required: true,
@@ -10,12 +10,23 @@ const { type } = defineProps({
     type: {
         type: String as PropType<SpacingType>,
         required: true,
+    },
+    spacingConfig: {
+        type: Object as PropType<SpacingConfig>,
+        default: () => ({
+            top: '',
+            bottom: '',
+            left: '',
+            right: '',
+        }),
     }
 });
 
+const emit = defineEmits(['update:spacingConfig']);
+
 const computeSpacingOptions = (spacingBorder: SpacingBorder): SelectOption[] => {
     return SpacingSteps.map((step) => ({
-        value: `sp-spacing__${type}-${spacingBorder}__${step}`,
+        value: `sp-style__${type}-${spacingBorder}__${step}`,
         label: step,
     }));
 };
@@ -36,6 +47,10 @@ const rightSpacingOptions = computed(() => {
     return computeSpacingOptions('right');
 });
 
+const updateSpacingConfig = () => {
+    emit('update:spacingConfig', spacingConfig);
+};
+
 </script>
 
 <template>
@@ -46,28 +61,28 @@ const rightSpacingOptions = computed(() => {
         <div class="sp-spacing__select-container">
             <div class="sp-spacing__select-item">
                 <label>Arriba</label>
-                <select>
+                <select v-model="spacingConfig.top" @change="updateSpacingConfig">
                     <option value=""></option>
                     <option v-for="option in upSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
             <div class="sp-spacing__select-item">
                 <label>Abajo</label>
-                <select>
+                <select v-model="spacingConfig.bottom" @change="updateSpacingConfig">
                     <option value=""></option>
                     <option v-for="option in bottomSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
             <div class="sp-spacing__select-item">
                 <label>Izquierda</label>
-                <select>
+                <select v-model="spacingConfig.left" @change="updateSpacingConfig">
                     <option value=""></option>
                     <option v-for="option in leftSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
             <div class="sp-spacing__select-item">
                 <label>Derecha</label>
-                <select>
+                <select v-model="spacingConfig.right" @change="updateSpacingConfig">
                     <option value=""></option>
                     <option v-for="option in rightSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>

@@ -24,6 +24,9 @@ export class EditorEngine {
         const divs: HTMLElement[] = this.getElements();
 
         divs.forEach((div: HTMLElement) => {
+            if (div.dataset.simplisitiid) {
+                return;
+            }
             div.dataset.simplisitiid = Math.random().toString(36).substring(7);
         });
 

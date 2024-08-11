@@ -9,12 +9,12 @@ const Nn = {
   layout: {
     title: "Layout",
     icon: "object-group",
-    component: () => import("./Layout-CPZ5if_b.js")
+    component: () => import("./Layout-B050C9tS.js")
   },
   spacing: {
     title: "Espaciado",
     icon: "expand",
-    component: () => import("./Spacing-CYxLdNiX.js")
+    component: () => import("./Spacing-C8FEg18_.js")
   }
 }, Tn = {
   container: [
@@ -30,7 +30,7 @@ const Nn = {
     tab: a,
     ...Ln[a]
   }));
-}, Mn = { class: "sp-wizard-popup__tabs-container" }, Fn = { class: "sp-wizard-popup__tabs" }, Dn = { class: "sp-wizard-popup__tab" }, jn = ["title", "onClick"], Rn = { class: "sp-wizard-popup__content" }, Wn = { class: "sp-wizard-popup__content-header" }, Un = /* @__PURE__ */ et({
+}, fi = (t, e) => e.find((n) => n.startsWith(t)), Mn = { class: "sp-wizard-popup__tabs-container" }, Fn = { class: "sp-wizard-popup__tabs" }, Dn = { class: "sp-wizard-popup__tab" }, jn = ["title", "onClick"], Rn = { class: "sp-wizard-popup__content" }, Wn = { class: "sp-wizard-popup__content-header" }, Un = /* @__PURE__ */ et({
   __name: "Wizard",
   props: {
     element: {
@@ -3305,12 +3305,13 @@ Tr.add(
   Dr,
   jr
 );
-const fi = {
+const ui = {
   install: (t) => {
     t.component("simplisiti-component-editor", Xn), t.component("fa-icon", li);
   }
 };
 export {
   Re as _,
-  fi as m
+  ui as m,
+  fi as p
 };

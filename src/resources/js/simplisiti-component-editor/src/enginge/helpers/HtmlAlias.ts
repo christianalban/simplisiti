@@ -12,3 +12,7 @@ export const aliasFromTagName = (tagName: string): WizardComponent[] => {
         };
     });
 }
+
+export const propagateClassGroup = <T>(group: string, spClassList: string[]) => {
+    return spClassList.find(item => item.startsWith(group)) as T
+}
