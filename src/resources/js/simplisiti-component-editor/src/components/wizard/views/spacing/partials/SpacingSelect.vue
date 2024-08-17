@@ -26,7 +26,7 @@ const emit = defineEmits(['update:spacingConfig']);
 
 const computeSpacingOptions = (spacingBorder: SpacingBorder): SelectOption[] => {
     return SpacingSteps.map((step) => ({
-        value: `sp-style__${type}-${spacingBorder}__${step}`,
+        value: `sp-style__spacing-${type}-${spacingBorder}__${step}`,
         label: step,
     }));
 };

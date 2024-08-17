@@ -127,7 +127,7 @@ onMounted(() => {
                         </label>
                         <select v-model="gridColumns" @change="notify">
                             <option value=""></option>
-                            <option v-for="option in columnsOptions" :key="option" :value="`sp-style__layout-grid-template__columns-${option}`">{{ option }}</option>
+                            <option v-for="option in columnsOptions" :key="`sp-style__layout-grid-template__columns-${option}`" :value="`sp-style__layout-grid-template__columns-${option}`">{{ option }}</option>
                         </select>
                     </div>
                     <div class="sp-layout__grid-item sp-layout__rows-container">
@@ -137,7 +137,7 @@ onMounted(() => {
                         </label>
                         <select v-model="gridRows" @change="notify">
                             <option value=""></option>
-                            <option v-for="option in rowsOptions" :key="option" :value="`sp-style__layout-grid-template__rows-${option}`">{{ option }}</option>
+                            <option v-for="option in rowsOptions" :key="`sp-style__layout-grid-template__rows-${option}`" :value="`sp-style__layout-grid-template__rows-${option}`">{{ option }}</option>
                         </select>
                     </div>
                 </div>

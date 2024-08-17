@@ -5,6 +5,7 @@ export interface WizardComponentImported {
     icon: string;
     title: string;
     component: Component | FunctionalComponent;
+    spClassList: string[];
 }
 
 export interface WizardComponent {

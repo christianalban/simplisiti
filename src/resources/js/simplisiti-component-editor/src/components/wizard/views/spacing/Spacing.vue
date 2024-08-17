@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, onMounted, ref } from 'vue';
 import SpacingSelect from './partials/SpacingSelect.vue';
-import { SpacingConfig, SpacingConfigType, Spacings } from '../../../../enginge/constants/Spacing';
+import { SpacingConfig, Spacings } from '../../../../enginge/constants/Spacing';
 import { propagateClassGroup } from '../../../../enginge/helpers/HtmlAlias';
 
 const props = defineProps({
@@ -44,7 +44,6 @@ const propagateClassList = () => {
 }
 
 const notify = () => {
-    console.log(marginConfig);
     const cleanedClassList = [
         marginConfig.value.top,
         marginConfig.value.bottom,
