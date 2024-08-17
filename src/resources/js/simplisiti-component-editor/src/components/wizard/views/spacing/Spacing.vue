@@ -61,6 +61,7 @@ const notify = () => {
 
 onMounted(() => {
     propagateClassList();
+    notify();
 });
 
 </script>

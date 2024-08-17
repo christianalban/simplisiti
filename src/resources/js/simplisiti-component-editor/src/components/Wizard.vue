@@ -15,23 +15,20 @@ const spClassList = ref<string[]>([]);
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedWizard = ref<WizardComponentImported|undefined>(undefined);
 
-const getAvailabeTabs = async () => {
+const getAvailabeTabs = () => {
     for (const wizard of aliasFromTagName(element.tagName.toLowerCase())) {
         availableTabs.push({
             component: defineAsyncComponent(wizard.component),
             icon: wizard.icon,
             title: wizard.title,
             tab: wizard.tab,
-            spClassList: [],
+            spClassList: spClassList.value,
         });
     }
 };
 
 const selectTab = (tab: WizardComponentImported) => {
     selectedWizard.value = tab;
-    availableTabs.forEach((availableTab) => {
-        availableTab.spClassList = spClassList.value;
-    });
 };
 
 const selectFirstTab = () => {
@@ -57,6 +54,17 @@ const clearSpStyles = (): Promise<void> => {
     });
 };
 
+const addSpStyles = (classList: string[]) => {
+    return new Promise<void>((resolve) => {
+        classList.forEach((className: string) => {
+            setTimeout(() => {
+                element.classList.add(className);
+                resolve();
+            }, 100);
+        });
+    });
+};
+
 const emitUpdate = (event: string[]) => {
     if (selectedWizard.value?.spClassList) {
         selectedWizard.value.spClassList = event;
@@ -67,17 +75,15 @@ const emitUpdate = (event: string[]) => {
 
     clearSpStyles()
         .then(() => {
-           flattedSpClassList.forEach((className: string) => {
-                setTimeout(() => {
-                    element.classList.add(className)
-                }, 100);
+            addSpStyles(flattedSpClassList)
+            .then(() => {
+                window.parent.document.dispatchEvent(new CustomEvent('elementChange', {
+                    detail: {
+                        simplisitiId: element.dataset.simplisitiid,
+                        spClassList: flattedSpClassList,
+                    },
+                }));
             });
-            window.parent.document.dispatchEvent(new CustomEvent('elementChange', {
-                detail: {
-                    simplisitiId: element.dataset.simplisitiid,
-                    spClassList: flattedSpClassList,
-                },
-            })); 
         });
 };
 
@@ -85,9 +91,9 @@ const updateClassList = () => {
     spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
 };
 
-onMounted(async () => {
-    await getAvailabeTabs()
+onMounted(() => {
     updateClassList();
+    getAvailabeTabs()
     selectFirstTab();
 });
 
