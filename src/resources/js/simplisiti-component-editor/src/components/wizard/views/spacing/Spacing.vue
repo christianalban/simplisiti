@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { PropType, onMounted, ref } from 'vue';
 import SpacingSelect from './partials/SpacingSelect.vue';
-import { SpacingConfig, Spacings } from '../../../../enginge/constants/Spacing';
-import { propagateClassGroup } from '../../../../enginge/helpers/HtmlAlias';
+import { SpacingConfig, Spacings } from '../../../../engine/constants/Spacing';
+import { propagateClassGroup } from '../../../../engine/helpers/HtmlAlias';
 
 const props = defineProps({
     spClassList: {

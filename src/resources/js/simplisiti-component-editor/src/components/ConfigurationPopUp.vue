@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType, computed, ref } from 'vue';
-import { HTML_TITLES } from '../enginge/constants/HtmlTagsMappings';
+import { HTML_TITLES } from '../engine/constants/HtmlTagsMappings';
 import Wizard from './Wizard.vue';
 
 const { element } = defineProps({

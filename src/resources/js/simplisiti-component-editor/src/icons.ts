@@ -8,9 +8,11 @@ import {
     faExpand,
     faGrip,
     faGripVertical,
+    faLink,
     faObjectGroup,
+    faSquare,
     faTableCells,
-    faXmark
+    faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -27,6 +29,8 @@ library.add(
     faGripVertical,
     faBars,
     faArrowDownWideShort,
+    faSquare,
+    faLink
 );
 
 export default FontAwesomeIcon;

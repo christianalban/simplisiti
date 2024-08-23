@@ -62,4 +62,14 @@ export class EditorEngine {
             }, 100);
         });
     }
+
+    public updateContainerContentBySimplisitiId(simplisitiId: string, content: string): void {
+        const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`);
+
+        if (element === null) {
+            return;
+        }
+
+        element.innerHTML = content;
+    }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
-import { aliasFromTagName } from '../enginge/helpers/HtmlAlias';
-import { WizardComponentImported } from '../enginge/constants/WizardPages';
+import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
+import { WizardComponentImported } from '../engine/constants/WizardPages';
 
 const { element } = defineProps({
     element: {
@@ -49,7 +49,7 @@ const clearSpStyles = (): Promise<void> => {
                     element.classList.remove(className);
                 }
                 resolve();
-            }, 100);
+            }, 0);
         });
     });
 };
@@ -60,7 +60,7 @@ const addSpStyles = (classList: string[]) => {
             setTimeout(() => {
                 element.classList.add(className);
                 resolve();
-            }, 100);
+            }, 0);
         });
     });
 };

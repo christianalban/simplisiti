@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, PropType, ref } from 'vue';
-import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../enginge/constants/Layout';
-import { SelectOption } from '../../../../enginge/constants/Select';
-import { spacingItems, Spacings } from '../../../../enginge/constants/Spacing';
-import { propagateClassGroup } from '../../../../enginge/helpers/HtmlAlias';
+import { DisplayType, FlexDirection, GridColumns, GridRows, GridType, HorizontalAligment, MAX_COL, MAX_ROW, VerticalAligment } from '../../../../engine/constants/Layout';
+import { SelectOption } from '../../../../engine/constants/Select';
+import { spacingItems, Spacings } from '../../../../engine/constants/Spacing';
+import { propagateClassGroup } from '../../../../engine/helpers/HtmlAlias';
 
 const props = defineProps({
     spClassList: {

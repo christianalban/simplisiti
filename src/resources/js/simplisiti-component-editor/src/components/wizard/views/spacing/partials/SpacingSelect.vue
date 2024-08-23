@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { SpacingBorder, SpacingConfig, SpacingSteps, SpacingType } from '../../../../../enginge/constants/Spacing';
-import { SelectOption } from '../../../../../enginge/constants/Select';
+import { SpacingBorder, SpacingConfig, SpacingSteps, SpacingType } from '../../../../../engine/constants/Spacing';
+import { SelectOption } from '../../../../../engine/constants/Select';
 const { type, spacingConfig } = defineProps({
     title: {
         type: String,

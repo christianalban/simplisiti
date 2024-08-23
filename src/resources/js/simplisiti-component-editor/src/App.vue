@@ -1,39 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, watch } from 'vue';
 import ConfigurationPopUp from './components/ConfigurationPopUp.vue';
+import ElementFloatingPanel from './components/ElementFloatingPanel.vue';
+import {    element, isElementAddingMode, isPopUpOpened } from './engine/services/ElementManagerService';
+import { ElementInterface } from './engine/factories/ElementInterface';
 
-const isPopUpOpened = ref(false);
-const element = ref<HTMLElement | null>(null);
 
 const addEventListener = (elements: NodeList) => {
-    elements.forEach((node: Node) => {
-        node.addEventListener('click', (event: Event) => {
-            if (!isPopUpOpened.value) {
-                isPopUpOpened.value = true;
-                element.value = node as HTMLElement;
-                (node as HTMLElement).classList.add('sp-element__active');
-            }
-            event.preventDefault();
-            event.stopPropagation();
-        });
-
-        node.addEventListener('mouseover', (event: Event) => {
-            if (!isPopUpOpened.value) {
-                (node as HTMLElement).classList.add('sp-element__active');
-            }
-            event.preventDefault();
-            event.stopPropagation();
-        });
-
-        node.addEventListener('mouseout', (event: Event) => {
-            if (!isPopUpOpened.value) {
-                (node as HTMLElement).classList.remove('sp-element__active');
-            }
-            event.preventDefault();
-            event.stopPropagation();
-        });
-    });
+    elements.forEach((node: Node) => ElementInterface.addElementListeners(node));
 };
+
+watch(isElementAddingMode, (value) => {
+    const componentPreview = document.getElementById('simplisiti-component-preview');
+
+    if (value) {
+        componentPreview?.classList.add('sp-element__add-element-mode');
+    } else {
+        componentPreview?.classList.remove('sp-element__add-element-mode');
+    }
+});
 
 const closePopUp = () => {
     if (element.value) {
@@ -44,8 +29,8 @@ const closePopUp = () => {
 };
 
 onMounted(() => {
-    const divs = document.querySelectorAll('div');
-    const ancords = document.querySelectorAll('a');
+    const divs = document.querySelectorAll('#simplisiti-component-preview div');
+    const ancords = document.querySelectorAll('#simplisiti-component-preview a');
     addEventListener(divs);
     addEventListener(ancords);
 });
@@ -58,15 +43,27 @@ onMounted(() => {
         :type="element?.tagName"
         @close.stop="closePopUp"
     />
+    <element-floating-panel />
 </template>
 
 <style>
 .sp-element__active {
     cursor: pointer;
     transition: border-color 0.3s ease;
-    border: 2px solid rgb(37 99 235);
+    border: 2px solid #2563eb;
 }
 
+.sp-element__add-element-mode {
+    div.sp-element__active {
+        border-color: #0d9488;
+    }
+}
+
+.sp-element__placeholder {
+    padding: 5px;
+    background-color: #0d9488;
+    border-radius: 2.5px;
+}
 body {
     height: 100%
 }

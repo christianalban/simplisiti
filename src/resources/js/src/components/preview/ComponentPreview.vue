@@ -114,6 +114,9 @@ const updateIframe = async () => {
     editorEngine.setHtmlString(props.html || props.component.html);
 
     const content = await editorEngine.compose().getComposedHtmlString();
+    const contentContainer = document.createElement('div');
+    contentContainer.id = 'simplisiti-component-preview';
+    contentContainer.innerHTML = content;
 
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -123,8 +126,13 @@ const updateIframe = async () => {
         const [styleLink, scriptLink] = loadResourcesPreview();
         const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
 
+        const metaViewport = doc.createElement('meta');
+        metaViewport.name = 'viewport';
+        metaViewport.content = 'width=device-width, initial-scale=1.0';
+
         doc.open();
-        doc.write(content);
+        doc.write(contentContainer.outerHTML);
+        doc.head.appendChild(metaViewport);
         doc.head.appendChild(styleLink);
         doc.head.appendChild(pluginStyleLink);
         doc.body.appendChild(scriptLink);
@@ -162,8 +170,17 @@ const onElementChange = async (event: any) => {
     emit('update', composedHtml);
 };
 
+const onContentChange = async (event: any) => {
+    editorEngine.updateContainerContentBySimplisitiId(event.detail.simplisitiId, event.detail.content);
+
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    emit('update', composedHtml);
+};
+
 const listenElementEvents = () => {
     window.document.addEventListener('elementChange', onElementChange);
+    window.document.addEventListener('contentChange', onContentChange);
 };
 
 onMounted(() => {
@@ -179,6 +196,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.document.removeEventListener('elementChange', onElementChange);
+    window.document.removeEventListener('contentChange', onContentChange);
 });
 </script>
 
