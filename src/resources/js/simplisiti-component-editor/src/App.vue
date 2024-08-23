@@ -8,6 +8,9 @@ import { ElementInterface } from './engine/factories/ElementInterface';
 
 const addEventListener = (elements: NodeList) => {
     elements.forEach((node: Node) => ElementInterface.addElementListeners(node));
+
+    const componentPreview = document.getElementById('simplisiti-component-preview');
+    if (componentPreview) ElementInterface.addElementListeners(componentPreview);
 };
 
 watch(isElementAddingMode, (value) => {
@@ -63,6 +66,10 @@ onMounted(() => {
     padding: 5px;
     background-color: #0d9488;
     border-radius: 2.5px;
+}
+
+#simplisiti-component-preview:empty {
+    padding: 10px;
 }
 body {
     height: 100%

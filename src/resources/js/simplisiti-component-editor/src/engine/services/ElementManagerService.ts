@@ -43,12 +43,10 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
     const newElement = elementFactory.create();
     placeHolderBox?.replaceWith(newElement);
 
-    console.log(element.childNodes.length)
     if (element.innerHTML.match(/-empty-/) && element.childNodes.length === 2) {
         element.innerHTML = element.innerHTML.replace(/-empty-/, '');
     }
 
-    console.log('asdf', element.dataset.simplisitiid, element.innerHTML)
     isElementAddingMode.value = false;
     toAddElementPlaceholder.value = null;
 
