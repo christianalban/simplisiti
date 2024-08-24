@@ -2,6 +2,7 @@
 import { onMounted, ref, toRefs, watch } from 'vue';
 import * as monaco from 'monaco-editor';
 
+const tab = '    ';
 const props = defineProps({
     code: {
         type: String,
@@ -19,10 +20,27 @@ const editor = ref(null);
 
 let codeEditor: any = null;
 
+const formatHTML = (html: string) => {
+    let result = '';
+    let indentLevel = 0;
+
+    html.split(/(?=<)|(?<=>)/).forEach(function (element) {
+        element = element.trim();
+        if (element) {
+            if (element.match(/^<\/\w/)) indentLevel--;
+            indentLevel = Math.max(indentLevel, 0);
+            result += tab.repeat(indentLevel) + element + '\n';
+            if (element.match(/^<\w[^>]*[^\/]>$/)) indentLevel++;
+        }
+    });
+
+    return result.trim();
+};
+
 onMounted(() => {
     if (editor.value) {
         codeEditor = monaco.editor.create(editor.value, {
-            value: props.code,
+            value: formatHTML(props.code),
             language: props.language,
             minimap: {
                 enabled: false,
