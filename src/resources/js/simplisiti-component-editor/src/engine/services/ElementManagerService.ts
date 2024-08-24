@@ -21,6 +21,7 @@ export const selectElement = (event: Event, node: Node) => {
 
 export const activateElement = (event: Event, node: Node) => {
     if (!isPopUpOpened.value) {
+        deactivateAllElements();
         (node as HTMLElement).classList.add('sp-element__active');
     }
     event.preventDefault();
@@ -56,7 +57,7 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
     window.parent.document.dispatchEvent(new CustomEvent('contentChange', {
         detail: {
             simplisitiId: element.dataset.simplisitiid,
-            content: element.innerHTML,
+            content: element.innerHTML.replace(/sp-element__active/, ''), //TODO: remove active class
         },
     }));
 
@@ -65,6 +66,13 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
 
     event.preventDefault();
     event.stopPropagation();
+}
+
+const deactivateAllElements = () => {
+    const activeElementsToDeactivate = document.querySelectorAll('.sp-element__active');
+    activeElementsToDeactivate.forEach((element) => {
+        element.classList.remove('sp-element__active');
+    });
 }
 
 const displayToAddElementPlaceholder = (event: Event, node: Node) => {
