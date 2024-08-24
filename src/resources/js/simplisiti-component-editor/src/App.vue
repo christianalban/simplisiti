@@ -56,6 +56,10 @@ onMounted(() => {
     border: 2px solid #2563eb;
 }
 
+div.sp-element__active {
+    border: 2px solid #db27d2;
+}
+
 .sp-element__add-element-mode {
     div.sp-element__active {
         border-color: #0d9488;

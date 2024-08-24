@@ -170,6 +170,14 @@ const onElementChange = async (event: any) => {
     emit('update', composedHtml);
 };
 
+const onElementRemoved = async (event: any) => {
+    editorEngine.removeElementBySimplisitiId(event.detail.simplisitiId);
+
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    emit('update', composedHtml);
+};
+
 const onContentChange = async (event: any) => {
     editorEngine.updateContainerContentBySimplisitiId(event.detail.simplisitiId, event.detail.content);
 
@@ -181,6 +189,7 @@ const onContentChange = async (event: any) => {
 const listenElementEvents = () => {
     window.document.addEventListener('elementChange', onElementChange);
     window.document.addEventListener('contentChange', onContentChange);
+    window.document.addEventListener('elementRemoved', onElementRemoved);
 };
 
 onMounted(() => {

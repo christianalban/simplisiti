@@ -12,6 +12,7 @@ import {
     faObjectGroup,
     faSquare,
     faTableCells,
+    faTrash,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -30,7 +31,8 @@ library.add(
     faBars,
     faArrowDownWideShort,
     faSquare,
-    faLink
+    faLink,
+    faTrash,
 );
 
 export default FontAwesomeIcon;

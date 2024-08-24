@@ -72,4 +72,14 @@ export class EditorEngine {
 
         element.innerHTML = content;
     }
+
+    public removeElementBySimplisitiId(simplisitiId: string): void {
+        const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`);
+
+        if (element === null) {
+            return;
+        }
+
+        element.remove();
+    }
 }

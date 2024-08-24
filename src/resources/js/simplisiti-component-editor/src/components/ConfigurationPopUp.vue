@@ -59,10 +59,23 @@ const type = computed(() => {
 });
 
 const emitClosed = (event: Event) => {
-    isClosed.value = true;
     setTimeout(() => {
         emit('close', event);
+        isClosed.value = true;
     }, 300);
+};
+
+const deleteElement = (event: Event) => {
+    if (element) {
+        element.remove();
+        window.parent.document.dispatchEvent(new CustomEvent('elementRemoved', {
+            detail: {
+                simplisitiId: element.dataset.simplisitiid,
+            },
+        }));
+        emit('close', event);
+    }
+    isClosed.value = true;
 };
 
 calculatePosition(element);
@@ -73,7 +86,12 @@ calculatePosition(element);
     <div :class="['sp-configuration-popup', {'sp-configuration-popup_closed': isClosed}]" ref="popup" @click.stop="undefined">
         <div class="sp-configuration-popup__header">
             <h4>{{ type }}</h4>
-            <fa-icon class="sp-configuration-popup__close" icon="times" @click="emitClosed($event)" />
+            <button class="sp-configuration-popup__button" @click="deleteElement">
+                <fa-icon icon="trash" />
+            </button>
+            <button class="sp-configuration-popup__button" @click="emitClosed">
+                <fa-icon icon="times" />
+            </button>
         </div>
         <div class="sp-configuration-popup__body">
             <wizard v-if="element" :element="element" />
@@ -99,7 +117,7 @@ calculatePosition(element);
 
     & > .sp-configuration-popup__header {
         display: flex;
-        justify-content: space-between;
+        gap: 10px;
         align-items: center;
         padding: 5px 0;
         border-bottom: 1px solid #ccc;
@@ -111,6 +129,11 @@ calculatePosition(element);
 
         & > .sp-configuration-popup__close {
             cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        & > .sp-configuration-popup__button:nth-child(2) {
+            margin-left: auto;
         }
     }
 }
