@@ -43,8 +43,8 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
     const newElement = elementFactory.create();
     placeHolderBox?.replaceWith(newElement);
 
-    if (element.innerHTML.match(/-empty-/) && element.childNodes.length === 2) {
-        element.innerHTML = element.innerHTML.replace(/-empty-/, '');
+    if (element.innerHTML.startsWith('-empty-')) {
+        element.innerHTML = element.innerHTML.replace('-empty-', '');
     }
 
     isElementAddingMode.value = false;
