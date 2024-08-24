@@ -2,7 +2,7 @@
 import { onMounted, watch } from 'vue';
 import ConfigurationPopUp from './components/ConfigurationPopUp.vue';
 import ElementFloatingPanel from './components/ElementFloatingPanel.vue';
-import {    element, isElementAddingMode, isPopUpOpened } from './engine/services/ElementManagerService';
+import { element, isElementAddingMode, isPopUpOpened } from './engine/services/ElementManagerService';
 import { ElementInterface } from './engine/factories/ElementInterface';
 
 

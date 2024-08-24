@@ -1,4 +1,4 @@
-import { activateElement, deactivateElement, dragElement, dropElementOnContainer, selectElement } from "../services/ElementManagerService";
+import { activateElement, deactivateElement, displayPlaceholder, dropElementOnContainer, moveElement, selectElement } from "../services/ElementManagerService";
 
 export abstract class ElementInterface {
     abstract createElement(): HTMLElement;
@@ -18,11 +18,13 @@ export abstract class ElementInterface {
 
         const element = node as Element;
         if (element.tagName === 'DIV') {
-            element.addEventListener('dragover', (event: Event) => dragElement(event, node));
+            element.addEventListener('dragover', (event: Event) => displayPlaceholder(event, node));
             element.addEventListener('drop', (event: Event) => dropElementOnContainer(event, node));
         }
 
         element.setAttribute('draggable', 'true');
+
+        node.addEventListener('drag', (event: Event) => moveElement(event, node));
     }
 }
     

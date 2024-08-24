@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { HTML_ICONS, HTML_TITLES } from '../engine/constants/HtmlTagsMappings';
-import { isElementAddingMode, toAddElementPlaceholder } from '../engine/services/ElementManagerService';
+import { enableElementAddingMode } from '../engine/services/ElementManagerService';
 
 const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
     return {
@@ -10,10 +10,6 @@ const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
     };
 });
 
-const enableElementAddingMode = (tagName: string) => {
-    isElementAddingMode.value = true;
-    toAddElementPlaceholder.value = tagName;
-};
 </script>
 
 <template>
