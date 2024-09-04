@@ -142,8 +142,8 @@ onMounted(() => {
                         </select>
                     </div>
                 </div>
-                <div class="sp-layout__horizontal-alignment-container">
-                    <label>Horizontal</label>
+                <div :class="`sp-layout__horizontal-alignment-container ${flexDirection}`">
+                    <label>{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Vertical' : 'Horizontal' }}</label>
                     <div class="sp-layout__buttons-container">
                         <label class="sp-layout__button__aligment">
                             <fa-icon icon="arrows-up-to-line" />
@@ -163,8 +163,8 @@ onMounted(() => {
                         </label>
                     </div>
                 </div>
-                <div class="sp-layout__vertical-alignment-container">
-                    <label>Vertical</label>
+                <div :class="`sp-layout__vertical-alignment-container ${flexDirection}`">
+                    <label>{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Horizontal' : 'Vertical' }}</label>
                     <div class="sp-layout__buttons-container">
                         <label class="sp-layout__button__aligment">
                             <fa-icon icon="arrows-up-to-line" />
@@ -228,6 +228,21 @@ onMounted(() => {
             transform: rotate(90deg);
         }
     }
+
+    &.sp-style__layout-flex-direction__column {
+        & > .sp-layout__buttons-container {
+            & > .sp-layout__button__aligment:first-child {
+                transform: rotate(0deg);
+            }
+            & > .sp-layout__button__aligment:nth-child(2) {
+                transform: rotate(90deg);
+            }
+            & > .sp-layout__button__aligment:nth-child(3),
+            & > .sp-layout__button__aligment:last-child {
+                transform: rotate(180deg);
+            }
+        }
+    }
 }
 
 .sp-layout__vertical-alignment-container {
@@ -239,6 +254,20 @@ onMounted(() => {
         }
         & > .sp-layout__button__aligment:last-child {
             transform: rotate(180deg);
+        }
+    }
+
+    &.sp-style__layout-flex-direction__column {
+        & > .sp-layout__buttons-container {
+            & > .sp-layout__button__aligment:first-child {
+                transform: rotate(-90deg);
+            }
+            & > .sp-layout__button__aligment:nth-child(2) {
+                transform: rotate(0deg);
+            }
+            & > .sp-layout__button__aligment:last-child {
+                transform: rotate(90deg);
+            }
         }
     }
 }
