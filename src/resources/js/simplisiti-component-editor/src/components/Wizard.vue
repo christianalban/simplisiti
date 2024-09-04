@@ -2,6 +2,7 @@
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
 import { WizardComponentImported } from '../engine/constants/WizardPages';
+import { dispatchElementChange } from '../engine/services/ElementEventDispatcherService';
 
 const { element } = defineProps({
     element: {
@@ -77,12 +78,9 @@ const emitUpdate = (event: string[]) => {
         .then(() => {
             addSpStyles(flattedSpClassList)
             .then(() => {
-                window.parent.document.dispatchEvent(new CustomEvent('elementChange', {
-                    detail: {
-                        simplisitiId: element.dataset.simplisitiid,
-                        spClassList: flattedSpClassList,
-                    },
-                }));
+                if (element.dataset.simplisitiid) {
+                    dispatchElementChange(element.dataset.simplisitiid, flattedSpClassList);
+                }
             });
         });
 };

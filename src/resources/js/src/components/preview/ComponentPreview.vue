@@ -115,7 +115,7 @@ const updateIframe = async () => {
 
     const content = await editorEngine.compose().getComposedHtmlString();
     const contentContainer = document.createElement('div');
-    contentContainer.id = 'simplisiti-component-preview';
+    contentContainer.dataset.simplisitiid = 'simplisiti-component-preview';
     contentContainer.innerHTML = content;
 
     if (iframe.value) {

@@ -9,12 +9,12 @@ import { ElementInterface } from './engine/factories/ElementInterface';
 const addEventListener = (elements: NodeList) => {
     elements.forEach((node: Node) => ElementInterface.addElementListeners(node));
 
-    const componentPreview = document.getElementById('simplisiti-component-preview');
+    const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
     if (componentPreview) ElementInterface.addElementListeners(componentPreview);
 };
 
 watch(isElementAddingMode, (value) => {
-    const componentPreview = document.getElementById('simplisiti-component-preview');
+    const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
 
     if (value) {
         componentPreview?.classList.add('sp-element__add-element-mode');
@@ -32,8 +32,8 @@ const closePopUp = () => {
 };
 
 onMounted(() => {
-    const divs = document.querySelectorAll('#simplisiti-component-preview div');
-    const ancords = document.querySelectorAll('#simplisiti-component-preview a');
+    const divs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] div');
+    const ancords = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] a');
     addEventListener(divs);
     addEventListener(ancords);
 });
@@ -72,7 +72,7 @@ div.sp-element__active {
     border-radius: 2.5px;
 }
 
-#simplisiti-component-preview:empty {
+[data-simplisitiid="simplisiti-component-preview"]:empty {
     padding: 10px;
 }
 body {

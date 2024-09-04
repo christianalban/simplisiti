@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { createFactory } from "../factories/ElementFactory";
 import { SupportedTags } from "../constants/HtmlTagsMappings";
+import { dispatchContentChange, dispatchElementRemoved } from "./ElementEventDispatcherService";
 
 let placeHolderBox: HTMLDivElement | null = null;
 
@@ -48,18 +49,13 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
         element.innerHTML = element.innerHTML.replace('-empty-', '');
     }
 
-    window.parent.document.dispatchEvent(new CustomEvent('elementRemoved', {
-        detail: {
-            simplisitiId: toAddElementPlaceholder.value?.dataset.simplisitiid,
-        },
-    }));
+    if (toAddElementPlaceholder.value?.dataset.simplisitiid) {
+        dispatchElementRemoved(toAddElementPlaceholder.value?.dataset.simplisitiid);
+    }
 
-    window.parent.document.dispatchEvent(new CustomEvent('contentChange', {
-        detail: {
-            simplisitiId: element.dataset.simplisitiid,
-            content: element.innerHTML.replace(/sp-element__active/, ''), //TODO: remove active class
-        },
-    }));
+    if (element.dataset.simplisitiid || element.id === 'simplisiti-component-preview') {
+        dispatchContentChange(element.dataset.simplisitiid, element.innerHTML.replace(/sp-element__active/, ''));
+    }
 
     isElementAddingMode.value = false;
     toAddElementPlaceholder.value = null;

@@ -63,7 +63,12 @@ export class EditorEngine {
         });
     }
 
-    public updateContainerContentBySimplisitiId(simplisitiId: string, content: string): void {
+    public updateContainerContentBySimplisitiId(simplisitiId: string | undefined, content: string): void {
+        if (simplisitiId === 'simplisiti-component-preview') {
+            this.document.body.innerHTML = content;
+            return;
+        }
+
         const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`);
 
         if (element === null) {

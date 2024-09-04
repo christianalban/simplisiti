@@ -2,6 +2,7 @@
 import { PropType, computed, ref } from 'vue';
 import { HTML_TITLES } from '../engine/constants/HtmlTagsMappings';
 import Wizard from './Wizard.vue';
+import { dispatchElementRemoved } from '../engine/services/ElementEventDispatcherService';
 
 const { element } = defineProps({
     element: {
@@ -68,11 +69,9 @@ const emitClosed = (event: Event) => {
 const deleteElement = (event: Event) => {
     if (element) {
         element.remove();
-        window.parent.document.dispatchEvent(new CustomEvent('elementRemoved', {
-            detail: {
-                simplisitiId: element.dataset.simplisitiid,
-            },
-        }));
+        if (element.dataset.simplisitiid) {
+            dispatchElementRemoved(element.dataset.simplisitiid);
+        }
         emit('close', event);
     }
     isClosed.value = true;
