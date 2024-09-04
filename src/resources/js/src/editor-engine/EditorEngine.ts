@@ -30,14 +30,19 @@ export class EditorEngine {
             div.dataset.simplisitiid = Math.random().toString(36).substring(7);
         });
 
-
         return this;
+    }
+
+    public clearHtmlString(): string {
+        let html = this.document.body.innerHTML;
+        html = html.replaceAll('draggable="true"', '');
+        return html;
     }
 
     public async getComposedHtmlString(): Promise<string> {
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve(this.document.body.innerHTML);
+                resolve(this.clearHtmlString());
             }, 100);
         });
     }

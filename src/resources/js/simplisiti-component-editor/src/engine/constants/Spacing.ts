@@ -78,10 +78,12 @@ export const SpacingSteps: Spacings[] = [
 ];
 
 export const spacingItems = (callback: (step: string) => string): SelectOption[] => {
-    return SpacingSteps.map((step) => ({
-        value: callback(step).replace('.', '_'),
-        label: step,
-    }))
+    return SpacingSteps.map((step) => {
+        return ({
+            value: callback(step).replace('.', '_'),
+            label: step,
+        })
+    })
 }
 
 export interface SpacingConfig {

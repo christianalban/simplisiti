@@ -30,6 +30,11 @@ export const WizardViews: WizardViewsTabs = {
         icon: 'expand',
         component: () => import('../../components/wizard/views/spacing/Spacing.vue')
     },
+    'font': {
+        title: 'Fuente',
+        icon: 'font',
+        component: () => import('../../components/wizard/views/font/Font.vue')
+    },
 }
 
 export interface AvailableWizardViews {
@@ -43,7 +48,8 @@ export const AvailableWizard: AvailableWizardViews = {
     ],
     'ancord': [
         'spacing',
+        'font',
     ],
 };
 
-export type AvailableWizards = 'layout' | 'spacing';
+export type AvailableWizards = 'layout' | 'spacing' | 'font';

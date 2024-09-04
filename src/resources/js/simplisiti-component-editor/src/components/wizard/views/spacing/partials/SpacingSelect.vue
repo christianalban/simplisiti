@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { SpacingBorder, SpacingConfig, SpacingSteps, SpacingType } from '../../../../../engine/constants/Spacing';
+import { SpacingBorder, SpacingConfig, spacingItems, SpacingSteps, SpacingType } from '../../../../../engine/constants/Spacing';
 import { SelectOption } from '../../../../../engine/constants/Select';
 const { type, spacingConfig } = defineProps({
     title: {
@@ -25,10 +25,7 @@ const { type, spacingConfig } = defineProps({
 const emit = defineEmits(['update:spacingConfig']);
 
 const computeSpacingOptions = (spacingBorder: SpacingBorder): SelectOption[] => {
-    return SpacingSteps.map((step) => ({
-        value: `sp-style__spacing-${type}-${spacingBorder}__${step}`,
-        label: step,
-    }));
+    return spacingItems((step) => `sp-style__spacing-${type}-${spacingBorder}__${step}`);
 };
 
 const upSpacingOptions = computed(() => {

@@ -1415,3 +1415,72 @@ a {
         padding-bottom: 384px;
     }
 }
+
+/* Font Color and Font Size */
+a {
+    /* Font */
+    &.sp-style__font-size__12 {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+
+    &.sp-style__font-size__14 {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    &.sp-style__font-size__16 {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    &.sp-style__font-size__18 {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    &.sp-style__font-size__20 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    &.sp-style__font-size__24 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    &.sp-style__font-size__30 {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+    }
+
+    &.sp-style__font-size__36 {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+
+    &.sp-style__font-size__48 {
+        font-size: 3rem;
+        line-height: 1;
+    }
+
+    &.sp-style__font-size__60 {
+        font-size: 3.75rem;
+        line-height: 1;
+    }
+
+    &.sp-style__font-size__72 {
+        font-size: 4.5rem;
+        line-height: 1;
+    }
+
+    &.sp-style__font-size__96 {
+        font-size: 6rem;
+        line-height: 1;
+    }
+
+    &.sp-style__font-size__128 {
+        font-size: 8rem;
+        line-height: 1;
+    }
+}
