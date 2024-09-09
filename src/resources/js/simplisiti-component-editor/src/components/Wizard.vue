@@ -29,6 +29,10 @@ const getAvailabeTabs = () => {
             tab: wizard.tab,
             spClassList: spClassList.value,
             spStyleList: spStyleList.value,
+            spContent: {
+                content: '',
+                type: 'text',
+            },
         });
     }
 };
