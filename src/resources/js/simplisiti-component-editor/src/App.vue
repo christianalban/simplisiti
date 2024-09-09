@@ -50,10 +50,19 @@ onMounted(() => {
 </template>
 
 <style>
-.sp-element__active {
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-    border: 2px solid #2563eb;
+[data-simplisitiid="simplisiti-component-preview"] {
+    div,
+    a {
+        border: 2px solid transparent;
+    }
+}
+div,
+a {
+    &.sp-element__active {
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+        border: 2px solid #2563eb;
+    }
 }
 
 div.sp-element__active {

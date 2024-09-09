@@ -19,9 +19,14 @@ const propagateContent = () => {
     }
 }
 
-const emit = defineEmits(['update:spContent']);
+const emit = defineEmits(['update:spContent', 'update:spClassList']);
+
+const notifyClassList = () => {
+    emit('update:spClassList', []);
+}
 
 const notifyContent = () => {
+    notifyClassList();
     emit('update:spContent', {
         content: content.value,
         type: contentType.value,
@@ -31,6 +36,7 @@ const notifyContent = () => {
 onMounted(() => {
     propagateContent();
     notifyContent();
+    notifyClassList();
 });
 
 </script>

@@ -52,38 +52,50 @@ const isTabActive = (tab: WizardComponentImported) => {
     return selectedWizard.value?.tab === tab.tab;
 };
 
+const removeElementClass = (className: string): Promise<void> => {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            element.classList.remove(className);
+            resolve();
+        }, 10);
+    });
+};
+
+const addElementClass = (className: string): Promise<void> => {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            element.classList.add(className);
+            resolve();
+        }, 10);
+    });
+};
+
 const clearSpClasses = (): Promise<void> => {
     return new Promise<void>((resolve) => {
-        element.classList.forEach((className: string) => {
-            setTimeout(() => {
-                if (className.startsWith('sp-style')) {
-                    element.classList.remove(className);
-                }
-                resolve();
-            }, 0);
+        element.classList.forEach(async (className: string) => {
+            if (className.startsWith('sp-style')) {
+                await removeElementClass(className);
+            }
         });
+        resolve();
     });
 };
 
 const addSpClasses = (classList: string[]) => {
     return new Promise<void>((resolve) => {
-        classList.forEach((className: string) => {
-            setTimeout(() => {
-                element.classList.add(className);
-                resolve();
-            }, 0);
+        classList.forEach(async (className: string) => {
+            await addElementClass(className);
         });
+        resolve();
     });
 };
 
 const addSpStyles = (styleList: StyleValue) => {
     return new Promise<void>((resolve) => {
         for (const style in styleList) {
-            setTimeout(() => {
-                element.style.setProperty(style, styleList[style]);
-                resolve();
-            }, 0);
+            element.style.setProperty(style, styleList[style]);
         }
+        resolve();
     });
 };
 
@@ -94,9 +106,9 @@ const addSpContent = (content: ContentTypeValue) => {
     });
 };
 
-const emitUpdateClassList = (event: string[]) => {
-    if (selectedWizard.value?.spClassList) {
-        selectedWizard.value.spClassList = event;
+const emitUpdateClassList = (event: string[], toUpdateWizard: WizardComponentImported) => {
+    if (toUpdateWizard?.spClassList) {
+        toUpdateWizard.spClassList = event;
     }
     
     const flattedSpClassList = availableTabs.flatMap((availableTab) => availableTab.spClassList);
@@ -179,15 +191,19 @@ onMounted(() => {
     </div>
     <div class="sp-wizard-popup__content">
         <div class="sp-wizard-popup__content-header">
-            <component
-                :is="selectedWizard?.component"
-                :sp-class-list="selectedWizard?.spClassList"
-                @update:spClassList="emitUpdateClassList"
-                :sp-style-list="selectedWizard?.spStyleList"
-                @update:spStyleList="emitUpdateStyleList"
-                :element="element"
-                @update:spContent="emitUpdateContent"
-            ></component>
+            <div v-for="availableTab of availableTabs">
+                <div v-show="isTabActive(availableTab)">
+                    <component
+                        :is="availableTab?.component"
+                        :sp-class-list="availableTab?.spClassList"
+                        @update:spClassList="emitUpdateClassList($event, availableTab)"
+                        :sp-style-list="availableTab?.spStyleList"
+                        @update:spStyleList="emitUpdateStyleList"
+                        :element="element"
+                        @update:spContent="emitUpdateContent"
+                    ></component>
+                </div>
+            </div>
         </div>
     </div>
 </template>

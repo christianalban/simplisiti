@@ -1,6 +1,5 @@
 div,
 a {
-    border: 2px solid transparent;
     /* Layout */
     &.sp-style__layout-display__flex {
         display: flex;
