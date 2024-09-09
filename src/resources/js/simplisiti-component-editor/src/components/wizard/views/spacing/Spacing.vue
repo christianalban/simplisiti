@@ -11,7 +11,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['update']);
+const emit = defineEmits(['update:spClassList']);
 
 const marginConfig = ref<SpacingConfig>({
     top: undefined,
@@ -56,7 +56,7 @@ const notify = () => {
         paddingConfig.value.right,
     ].filter(item => item);
 
-    emit('update', cleanedClassList);
+    emit('update:spClassList', cleanedClassList);
 }
 
 onMounted(() => {

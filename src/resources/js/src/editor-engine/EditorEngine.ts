@@ -1,4 +1,5 @@
 import { HTML_TAGS } from "../types/EditorEngine";
+import { StyleValue } from "../types/Style";
 
 export class EditorEngine {
     private htmlString!: string;
@@ -66,6 +67,20 @@ export class EditorEngine {
                 element.classList.add(className)
             }, 100);
         });
+    }
+
+    public updateStyleOfElementBySimplisitiId(simplisitiId: string, spClassList: StyleValue): void {
+        const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`) as HTMLElement;
+
+        if (element === null) {
+            return;
+        }
+
+        for (const style in spClassList) {
+            setTimeout(() => {
+                element.style.setProperty(style, spClassList[style]);
+            }, 100);
+        }
     }
 
     public updateContainerContentBySimplisitiId(simplisitiId: string | undefined, content: string): void {

@@ -6,6 +6,7 @@ export interface WizardComponentImported {
     title: string;
     component: Component | FunctionalComponent;
     spClassList: string[];
+    spStyleList: StyleValue;
 }
 
 export interface WizardComponent {
@@ -53,3 +54,13 @@ export const AvailableWizard: AvailableWizardViews = {
 };
 
 export type AvailableWizards = 'layout' | 'spacing' | 'font';
+
+export interface StyleValue {
+    [key: string]: string;
+}
+
+export type StylesProperties = 'color';
+
+export const StylesPropertiesList: StylesProperties[] = [
+    'color',
+];

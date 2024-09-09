@@ -1,3 +1,5 @@
+import { StyleValue } from "../constants/WizardPages";
+
 const dispatchElementEvent = (eventName: string, detail: any): void => {
     window.parent.document.dispatchEvent(new CustomEvent(eventName, { detail }));
 }
@@ -10,6 +12,10 @@ export const dispatchContentChange = (simplisitiId: string | undefined, content:
     dispatchElementEvent('contentChange', { simplisitiId, content });
 }
 
-export const dispatchElementChange = (simplisitiId: string, spClassList: string[]): void => {
-    dispatchElementEvent('elementChange', { simplisitiId, spClassList });
+export const dispatchClassChange = (simplisitiId: string, spClassList: string[]): void => {
+    dispatchElementEvent('classChange', { simplisitiId, spClassList });
+}
+
+export const dispatchStyleChange = (simplisitiId: string, spStyleList: StyleValue): void => {
+    dispatchElementEvent('styleChange', { simplisitiId, spStyleList });
 }

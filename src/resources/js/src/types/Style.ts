@@ -4,3 +4,7 @@ export interface Style {
     styles?: string
     is_active?: boolean
 }
+
+export interface StyleValue {
+    [key: string]: string;
+}

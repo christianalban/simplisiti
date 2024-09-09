@@ -42,7 +42,7 @@ const propagateClassList = () => {
     gapSpacing.value = propagateGroup<Spacings>('sp-style__layout-gap__');
 }
 
-const emit = defineEmits(['update']);
+const emit = defineEmits(['update:spClassList']);
 
 const computeClassesFor = (gridType: GridType): number[] => {
     const maxOptions = gridType === 'rows' ? MAX_ROW : MAX_COL;
@@ -69,7 +69,7 @@ const notify = () => {
         gapSpacing.value,
     ].filter(item => item);
 
-    emit('update', cleanedClassList);
+    emit('update:spClassList', cleanedClassList);
 }
 
 onMounted(() => {

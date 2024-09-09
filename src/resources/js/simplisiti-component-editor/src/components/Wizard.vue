@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
-import { WizardComponentImported } from '../engine/constants/WizardPages';
-import { dispatchElementChange } from '../engine/services/ElementEventDispatcherService';
+import { StylesProperties, StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
+import { dispatchClassChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
 
 const { element } = defineProps({
     element: {
@@ -12,6 +12,7 @@ const { element } = defineProps({
 });
 
 const spClassList = ref<string[]>([]);
+const spStyleList = ref<StyleValue>({});
 
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedWizard = ref<WizardComponentImported|undefined>(undefined);
@@ -24,6 +25,7 @@ const getAvailabeTabs = () => {
             title: wizard.title,
             tab: wizard.tab,
             spClassList: spClassList.value,
+            spStyleList: spStyleList.value,
         });
     }
 };
@@ -42,7 +44,7 @@ const isTabActive = (tab: WizardComponentImported) => {
     return selectedWizard.value?.tab === tab.tab;
 };
 
-const clearSpStyles = (): Promise<void> => {
+const clearSpClasses = (): Promise<void> => {
     return new Promise<void>((resolve) => {
         element.classList.forEach((className: string) => {
             setTimeout(() => {
@@ -55,7 +57,7 @@ const clearSpStyles = (): Promise<void> => {
     });
 };
 
-const addSpStyles = (classList: string[]) => {
+const addSpClasses = (classList: string[]) => {
     return new Promise<void>((resolve) => {
         classList.forEach((className: string) => {
             setTimeout(() => {
@@ -66,7 +68,18 @@ const addSpStyles = (classList: string[]) => {
     });
 };
 
-const emitUpdate = (event: string[]) => {
+const addSpStyles = (styleList: StyleValue) => {
+    return new Promise<void>((resolve) => {
+        for (const style in styleList) {
+            setTimeout(() => {
+                element.style.setProperty(style, styleList[style]);
+                resolve();
+            }, 0);
+        }
+    });
+};
+
+const emitUpdateClassList = (event: string[]) => {
     if (selectedWizard.value?.spClassList) {
         selectedWizard.value.spClassList = event;
     }
@@ -74,14 +87,32 @@ const emitUpdate = (event: string[]) => {
     const flattedSpClassList = availableTabs.flatMap((availableTab) => availableTab.spClassList);
     spClassList.value = flattedSpClassList;
 
-    clearSpStyles()
+    clearSpClasses()
         .then(() => {
-            addSpStyles(flattedSpClassList)
+            addSpClasses(flattedSpClassList)
             .then(() => {
                 if (element.dataset.simplisitiid) {
-                    dispatchElementChange(element.dataset.simplisitiid, flattedSpClassList);
+                    dispatchClassChange(element.dataset.simplisitiid, flattedSpClassList);
                 }
             });
+        });
+};
+
+const emitUpdateStyleList = (event: StyleValue) => {
+    if (selectedWizard.value?.spStyleList) {
+        selectedWizard.value.spStyleList = event;
+    }
+    
+    const flattedSpStyleList = availableTabs.reduce((acc, availableTab) => {
+        return { ...acc, ...availableTab.spStyleList };
+    }, {});
+    spStyleList.value = flattedSpStyleList;
+
+    addSpStyles(flattedSpStyleList)
+        .then(() => {
+            if (element.dataset.simplisitiid) {
+                dispatchStyleChange(element.dataset.simplisitiid, flattedSpStyleList);
+            }
         });
 };
 
@@ -89,8 +120,17 @@ const updateClassList = () => {
     spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
 };
 
+const updateStyleList = () => {
+    for (let style in element.style) {
+        if (StylesPropertiesList.includes(style as StylesProperties)) {
+            spStyleList.value[style] = element.style[style];
+        }
+    }
+};
+
 onMounted(() => {
     updateClassList();
+    updateStyleList();
     getAvailabeTabs()
     selectFirstTab();
 });
@@ -109,7 +149,13 @@ onMounted(() => {
     </div>
     <div class="sp-wizard-popup__content">
         <div class="sp-wizard-popup__content-header">
-            <component :is="selectedWizard?.component" @update="emitUpdate" :sp-class-list="selectedWizard?.spClassList"></component>
+            <component
+                :is="selectedWizard?.component"
+                :sp-class-list="selectedWizard?.spClassList"
+                @update:spClassList="emitUpdateClassList"
+                :sp-style-list="selectedWizard?.spStyleList"
+                @update:spStyleList="emitUpdateStyleList"
+            ></component>
         </div>
     </div>
 </template>

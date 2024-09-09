@@ -162,8 +162,16 @@ const updateIframe = async () => {
     }
 };
 
-const onElementChange = async (event: any) => {
+const onClassChange = async (event: any) => {
     editorEngine.updateClassOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.spClassList);
+
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    emit('update', composedHtml);
+};
+
+const onStyleChange = async (event: any) => {
+    editorEngine.updateStyleOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.spStyleList);
 
     const composedHtml = await editorEngine.getComposedHtmlString();
 
@@ -187,7 +195,8 @@ const onContentChange = async (event: any) => {
 };
 
 const listenElementEvents = () => {
-    window.document.addEventListener('elementChange', onElementChange);
+    window.document.addEventListener('classChange', onClassChange);
+    window.document.addEventListener('styleChange', onStyleChange);
     window.document.addEventListener('contentChange', onContentChange);
     window.document.addEventListener('elementRemoved', onElementRemoved);
 };
@@ -204,8 +213,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    window.document.removeEventListener('elementChange', onElementChange);
+    window.document.removeEventListener('classChange', onClassChange);
+    window.document.removeEventListener('styleChange', onStyleChange);
     window.document.removeEventListener('contentChange', onContentChange);
+    window.document.removeEventListener('elementRemoved', onElementRemoved);
 });
 </script>
 
