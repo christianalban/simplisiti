@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, computed, ref } from 'vue';
+import { PropType, computed, onMounted, ref } from 'vue';
 import { HTML_TITLES } from '../engine/constants/HtmlTagsMappings';
 import Wizard from './Wizard.vue';
 import { dispatchElementRemoved } from '../engine/services/ElementEventDispatcherService';
@@ -18,38 +18,32 @@ const emit = defineEmits(['close']);
 
 const calculatePosition = (element: HTMLElement | null) => {
     setTimeout(() => {
-        if (!element) return;
+        if (!element || !popup.value) return;
 
         const rect = element.getBoundingClientRect();
-        const top = rect.top;
-        const bottom = rect.bottom;
-        const left = rect.left + rect.width + 10;
+        const bodyWidth = document.body.offsetWidth;
+        const bodyHeight = document.body.offsetHeight;
+        const popupWidth = 250;
+        const padding = 10;
 
-        if (popup.value) {
-            popup.value.style.top = `${top}px`;
-            popup.value.style.left = `${left}px`;
+        let top = rect.top;
+        let left = rect.left + rect.width + padding;
 
-            const bodyWidth = document.body.offsetWidth;
-            if ((left + popup.value.offsetWidth) > bodyWidth) {
-                popup.value.style.top = `${top + 10}px`;
-                popup.value.style.left = `${left - popup.value.offsetWidth - 20}px`;
-            }
+        if (left + popupWidth > bodyWidth) {
+            left = rect.right - popupWidth;
+            top = rect.top - popup.value.offsetHeight - padding;
 
-            const bodyHeight = document.body.offsetHeight;
-
-            if ((top + popup.value.offsetHeight) > bodyHeight) {
-                popup.value.style.top = 'auto';
-                popup.value.style.bottom = `${bottom - popup.value.offsetHeight + 20}px`;
-
-                if (popup.value.offsetTop < 0) {
-                    popup.value.style.bottom = '20px';
-                }
-            }
-
-            if (popup.value.offsetTop < 0) {
-                popup.value.style.top = '20px';
+            if (top < padding) {
+                top = padding;
             }
         }
+
+        if (top + popup.value.offsetHeight > bodyHeight) {
+            top = bodyHeight - popup.value.offsetHeight - padding;
+        }
+
+        popup.value.style.top = `${top}px`;
+        popup.value.style.left = `${left}px`;
     }, 50);
 };
 
@@ -77,7 +71,17 @@ const deleteElement = (event: Event) => {
     isClosed.value = true;
 };
 
+const tabChange = () => {
+    calculatePosition(element);
+};
+
 calculatePosition(element);
+
+onMounted(() => {
+    document.addEventListener('scroll', () => {
+        calculatePosition(element);
+    });
+});
 
 </script>
 
@@ -93,7 +97,7 @@ calculatePosition(element);
             </button>
         </div>
         <div class="sp-configuration-popup__body">
-            <wizard v-if="element" :element="element" />
+            <wizard v-if="element" :element="element" @tabChange="tabChange" />
         </div>
     </div>
 </template>

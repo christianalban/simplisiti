@@ -17,6 +17,8 @@ const spStyleList = ref<StyleValue>({});
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedWizard = ref<WizardComponentImported|undefined>(undefined);
 
+const emit = defineEmits(['tabChange']);
+
 const getAvailabeTabs = () => {
     for (const wizard of aliasFromTagName(element.tagName.toLowerCase())) {
         availableTabs.push({
@@ -32,6 +34,7 @@ const getAvailabeTabs = () => {
 
 const selectTab = (tab: WizardComponentImported) => {
     selectedWizard.value = tab;
+    emit('tabChange', tab.tab);
 };
 
 const selectFirstTab = () => {
