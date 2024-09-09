@@ -2,7 +2,8 @@
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
 import { StylesProperties, StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
-import { dispatchClassChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
+import { dispatchClassChange, dispatchContentChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
+import { ContentTypeValue } from '../engine/constants/Content';
 
 const { element } = defineProps({
     element: {
@@ -82,6 +83,13 @@ const addSpStyles = (styleList: StyleValue) => {
     });
 };
 
+const addSpContent = (content: ContentTypeValue) => {
+    return new Promise<void>((resolve) => {
+        element.innerHTML = content.content;
+        resolve();
+    });
+};
+
 const emitUpdateClassList = (event: string[]) => {
     if (selectedWizard.value?.spClassList) {
         selectedWizard.value.spClassList = event;
@@ -105,9 +113,9 @@ const emitUpdateStyleList = (event: StyleValue) => {
     if (selectedWizard.value?.spStyleList) {
         selectedWizard.value.spStyleList = event;
     }
-    
+ 
     const flattedSpStyleList = availableTabs.reduce((acc, availableTab) => {
-        return { ...acc, ...availableTab.spStyleList };
+        return { ...acc, ...availableTab.spStyleList, ...event };
     }, {});
     spStyleList.value = flattedSpStyleList;
 
@@ -119,13 +127,28 @@ const emitUpdateStyleList = (event: StyleValue) => {
         });
 };
 
+const emitUpdateContent = (event: ContentTypeValue) => {
+    if (selectedWizard.value?.spContent) {
+        selectedWizard.value.spContent = event;
+    }
+    
+    addSpContent(event)
+        .then(() => {
+            if (element.dataset.simplisitiid) {
+                if (event.type === 'text') {
+                    dispatchContentChange(element.dataset.simplisitiid, event.content);
+                }
+            }
+        });
+};
+
 const updateClassList = () => {
     spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
 };
 
 const updateStyleList = () => {
     for (let style in element.style) {
-        if (StylesPropertiesList.includes(style as StylesProperties)) {
+        if (StylesPropertiesList.includes(style as StylesProperties) && element.style[style] !== '') {
             spStyleList.value[style] = element.style[style];
         }
     }
@@ -158,6 +181,8 @@ onMounted(() => {
                 @update:spClassList="emitUpdateClassList"
                 :sp-style-list="selectedWizard?.spStyleList"
                 @update:spStyleList="emitUpdateStyleList"
+                :element="element"
+                @update:spContent="emitUpdateContent"
             ></component>
         </div>
     </div>

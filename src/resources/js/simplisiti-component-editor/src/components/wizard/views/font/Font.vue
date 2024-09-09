@@ -102,6 +102,10 @@ onMounted(() => {
         flex-direction: column;
     }
 
+    .sp-font__select-item__full {
+        grid-column: 1 / span 2;
+    }
+
     .sp-font__select-color {
         height: 20px;
         width: 100%;

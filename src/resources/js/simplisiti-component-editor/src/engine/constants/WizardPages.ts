@@ -1,4 +1,5 @@
 import { AsyncComponentLoader, Component, FunctionalComponent } from 'vue';
+import { ContentTypeValue } from './Content';
 
 export interface WizardComponentImported {
     tab?: AvailableWizards;
@@ -7,6 +8,7 @@ export interface WizardComponentImported {
     component: Component | FunctionalComponent;
     spClassList: string[];
     spStyleList: StyleValue;
+    spContent: ContentTypeValue;
 }
 
 export interface WizardComponent {
@@ -36,6 +38,11 @@ export const WizardViews: WizardViewsTabs = {
         icon: 'font',
         component: () => import('../../components/wizard/views/font/Font.vue')
     },
+    'content': {
+        title: 'Contenido',
+        icon: 'paragraph',
+        component: () => import('../../components/wizard/views/content/Content.vue')
+    },
 }
 
 export interface AvailableWizardViews {
@@ -50,10 +57,11 @@ export const AvailableWizard: AvailableWizardViews = {
     'ancord': [
         'spacing',
         'font',
+        'content',
     ],
 };
 
-export type AvailableWizards = 'layout' | 'spacing' | 'font';
+export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content';
 
 export interface StyleValue {
     [key: string]: string;

@@ -11,6 +11,7 @@ import {
     faGripVertical,
     faLink,
     faObjectGroup,
+    faParagraph,
     faSquare,
     faTableCells,
     faTrash,
@@ -35,6 +36,7 @@ library.add(
     faLink,
     faTrash,
     faFont,
+    faParagraph,
 );
 
 export default FontAwesomeIcon;
