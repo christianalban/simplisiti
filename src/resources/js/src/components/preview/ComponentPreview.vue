@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, PropType, onUnmounted } from 'vue';
+import { ref, onMounted, PropType, onUnmounted, watch } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
@@ -27,16 +27,6 @@ const props = defineProps({
 const emit = defineEmits(['update']);
 
 const iframe = ref<HTMLIFrameElement | null>(null);
-
-const resizeIframe = () => {
-    if (iframe.value) {
-        const doc = iframe.value.contentDocument;
-        if (!doc) return;
-
-        const bodyHeight = doc.body.offsetHeight;
-        iframe.value.style.height = `${bodyHeight}px`;
-    }
-};
 
 const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     const scriptEditor = document.createElement('script');
@@ -204,12 +194,10 @@ const listenElementEvents = () => {
 onMounted(() => {
     updateIframe(parseComponentContent(props.component, props.component.content));
     listenElementEvents();
-    // updateIframe();
-    // if (!props.html) {
-    //     observer.subscribe(props.component, (content) => {
-    //         updateIframe(content).then(() => resizeIframe());
-    //     });
-    // }
+});
+
+watch(() => props.html, (old) => {
+    updateIframe(parseComponentContent(props.component, props.component.content));
 });
 
 onUnmounted(() => {

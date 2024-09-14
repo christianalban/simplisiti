@@ -28,11 +28,10 @@ onMounted(() => {
             <router-link class="button primary" :to="{ name: 'components.create' }">{{ $t('components.buttons.create') }}</router-link>
         </div>
         <group class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps">
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 py-4">
-                <router-link v-for="(item, key) in slotProps.item" :key="key" :to="{ name: 'components.edit', params: { component: item.id } }" class="tile">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
+                <router-link v-for="item in slotProps.item" :key="item.id" :to="{ name: 'components.edit', params: { component: item.id } }">
                     <component-floating-preview
-                        :component="item" class="flex-1 tile-title"
-                        :position="key % 2 === 0 ? 'left' : 'right'"
+                        :component="item" class="flex-1"
                     >
                         <div class="text-center">
                             {{ componentName(item.name) }}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
+import { PropType, ref, onMounted, onBeforeUnmount } from 'vue';
 import { Component } from '../../types/Component';
 import ComponentPreview from './ComponentPreview.vue';
 import { FloatPosition } from '../../types/FloatPreview';
@@ -9,59 +9,73 @@ const { component } = defineProps({
         type: Object as PropType<Component>,
         required: true,
     },
-    position: {
-        type: String as PropType<FloatPosition>,
-        default: 'left',
-    },
 });
 
 const componentPreviewRender = ref<string | null>(null);
-const noPreview = ref(false);
+const previewContainer = ref<HTMLDivElement | null>(null);
+const previewComponent = ref<HTMLElement | null>(null);
+const scaleFactor = ref('scale(1)');
+const reloadPreview = ref(false);
 
-const loadComponentPreview = async () => {
-    if (!component.id || componentPreviewRender.value || noPreview.value) {
-        return;
-    }
-
-    try {
-        componentPreviewRender.value = component.html
-    } catch (error) {
-        noPreview.value = true;
-    }
-
+const calcScaleFactor = (): Promise<void> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            if (!previewContainer.value) resolve('scale(1)');
+            const scale = previewContainer.value.offsetWidth / 1366;
+            resolve(`scale(${scale})`);
+        }, 50);
+    });
 }
+
+const setScaleFactor = async (): string => {
+    scaleFactor.value = await calcScaleFactor();
+}
+
+const handleResize = (entries) => {
+    for (let entry of entries) {
+        reloadPreview.value = false;
+        setScaleFactor().then(() => {
+            reloadPreview.value = true;
+        });
+    }
+};
+
+const loadComponentPreview = () => {
+    componentPreviewRender.value = component.html
+}
+
+const resizeObserver = new ResizeObserver(handleResize);
+
+onMounted(() => {
+    loadComponentPreview();
+    if (previewContainer.value) {
+        resizeObserver.observe(previewContainer.value);  // Empezamos a observar el elemento
+    }
+});
+
+onBeforeUnmount(() => {
+    if (previewContainer.value) {
+        resizeObserver.unobserve(previewContainer.value);  // Dejamos de observar cuando el componente se desmonte
+  }
+});
 </script>
 
 <template>
-    <div class="relative group">
-        <div class="h-full w-full" @mouseenter="loadComponentPreview">
-            <slot></slot>
-        </div>
-        <div class="invisible group-hover:visible">
-            <div :class="`absolute preview-${position} border-4 shadow-xl rounded-2xl overflow-hidden border-blue-300 bg-white top-full mt-4 scale-[0.2] z-10`" v-if="componentPreviewRender && !noPreview">
-                <component-preview
-                    v-if="component?.id"
-                    class="w-[1366px] h-[768px]"
-                    :component="component"
-                    :html="componentPreviewRender"
-                />
-            </div>
-            <div class="absolute top-full mt-4 z-10 border shadow-lg rounded-lg border-blue-300" v-else>
-                <div class="bg-white p-2 text-center">
-                    <p v-if="noPreview" class="text-center text-gray-500">{{ $t('components.labels.noPreview') }}</p>
-                    <fa-icon v-else icon="spinner" class="animate-spin text-center text-gray-500"/>
-                </div>
-            </div>
+    <div class="relative group w-full pb-[56.25%] h-0">
+        <div ref="previewContainer" :class="`absolute inset-0 shadow rounded overflow-hidden bg-white z-10`">
+            <component-preview
+                ref="previewComponent"
+                v-if="reloadPreview"
+                class="w-[1366px] h-[768px] preview-left"
+                :style="{ transform: scaleFactor }"
+                :component="component"
+                :html="componentPreviewRender"
+            />
         </div>
     </div>
 </template>
 
 <style scoped>
-.preview-right {
-    transform-origin: top right;
-    @apply right-0;
-}
-
 .preview-left {
     transform-origin: top left;
     @apply left-0;
