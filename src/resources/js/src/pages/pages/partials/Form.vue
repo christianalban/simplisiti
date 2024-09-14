@@ -123,7 +123,7 @@ onMounted(() => {
                             {{ $t('pages.buttons.exit') }}
                         </button>
                         <button v-if="!isMobile" type="button" class="button small default button-position" @click="togglePosition">
-                            <fa-icon icon="border-top-left" />
+                            <fa-icon icon="arrows-down-to-line" />
                         </button>
                     </div>
                 </div>
@@ -311,14 +311,14 @@ onMounted(() => {
     }
 
     .button-position {
-        @apply -scale-x-100;
+        @apply -rotate-90;
     }
 
     &.right {
         @apply flex-row-reverse;
 
         .button-position {
-            @apply scale-x-100;
+            @apply rotate-90;
         }
 
         .form-group {

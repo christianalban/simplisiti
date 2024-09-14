@@ -34,6 +34,7 @@ import {
     faFileWord,
     faFileExcel,
     faFilePowerpoint,
+    faArrowsDownToLine,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -72,6 +73,7 @@ library.add(
     faFileWord,
     faFileExcel,
     faFilePowerpoint,
+    faArrowsDownToLine,
 );
 
 export default FontAwesomeIcon;
