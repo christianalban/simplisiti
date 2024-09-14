@@ -112,6 +112,7 @@ const messages = {
                 exit: "Exit",
                 settings: "Settings",
                 components: "Components",
+                show: "Show",
             },
             toasts: {
                 created: "Page created successfully.",
@@ -437,6 +438,7 @@ const messages = {
                 exit: "Salir",
                 settings: "Configuración",
                 components: "Componentes",
+                show: "Visualizar",
             },
             toasts: {
                 created: "Página creada correctamente.",

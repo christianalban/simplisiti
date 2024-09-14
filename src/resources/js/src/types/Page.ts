@@ -8,7 +8,6 @@ export interface Page {
     name: string
     url: string
     sections: Section[]
-    sections_count?: number
 }
 
 export type ResourcePreview = 'style' | 'script' | 'layout';

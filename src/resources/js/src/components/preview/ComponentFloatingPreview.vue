@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="relative group w-full pb-[56.25%] h-0">
-        <div ref="previewContainer" :class="`absolute inset-0 shadow rounded overflow-hidden bg-white z-10`">
+        <div ref="previewContainer" :class="`absolute inset-0 overflow-hidden bg-white z-10`">
             <component-preview
                 ref="previewComponent"
                 v-if="reloadPreview"

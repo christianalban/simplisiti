@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, PropType, onUnmounted, watch } from 'vue';
+import { ref, onMounted, PropType, onUnmounted, onBeforeUnmount } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component, ContentValue } from "../../types/Component.ts";
 import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
 
 const observer = useContentObserver();
+
+const loaded = ref(false);
 
 const editorEngine = new EditorEngine();
 
@@ -148,6 +150,8 @@ const updateIframe = async () => {
             if (iframe.value) {
                 iframe.value.style.height = `${bodyHeight}px`;
             }
+
+            loaded.value = true;
         };
     }
 };
@@ -185,19 +189,35 @@ const onContentChange = async (event: any) => {
 };
 
 const listenElementEvents = () => {
+    if (!props.allowEdit) return;
+
     window.document.addEventListener('classChange', onClassChange);
     window.document.addEventListener('styleChange', onStyleChange);
     window.document.addEventListener('contentChange', onContentChange);
     window.document.addEventListener('elementRemoved', onElementRemoved);
 };
 
+const interserctionObserver = new IntersectionObserver((entries) => {
+    for (let entry of entries) {
+        if (entry.isIntersecting && !loaded.value) {
+            setTimeout(() => {
+                updateIframe();
+            }, 100);
+        }
+    }
+});
+
 onMounted(() => {
-    updateIframe(parseComponentContent(props.component, props.component.content));
+    if (iframe.value) {
+        interserctionObserver.observe(iframe.value);
+    }
     listenElementEvents();
 });
 
-watch(() => props.html, (old) => {
-    updateIframe(parseComponentContent(props.component, props.component.content));
+onBeforeUnmount(() => {
+    if (iframe.value) {
+        interserctionObserver.unobserve(iframe.value);
+    }
 });
 
 onUnmounted(() => {

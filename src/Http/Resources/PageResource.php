@@ -20,7 +20,6 @@ class PageResource extends JsonResource
             'url' => $this->url,
             'title' => $this->title,
             'sections' => SectionResource::collection($this->whenLoaded('sections')),
-            'sections_count' => $this->when($this->sections_count, $this->sections_count),
         ];
     }
 }

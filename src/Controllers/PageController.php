@@ -38,8 +38,8 @@ class PageController extends Controller {
 
     public function index(IndexQuery $query) {
         $pages = $query->query()
-        ->withCount('sections')
-        ->get();
+            ->with('sections.components')
+            ->get();
 
         return PageResource::collection($pages);
     }
