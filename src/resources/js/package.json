@@ -42,6 +42,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@visao/ckeditor5-video": "^28.0.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.16",

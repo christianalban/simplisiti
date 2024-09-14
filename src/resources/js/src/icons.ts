@@ -35,7 +35,14 @@ import {
     faFileExcel,
     faFilePowerpoint,
     faArrowsDownToLine,
+    faCubes,
+    faPager,
+    faPalette,
+    faPhotoFilm,
+    faGears,
+    faToolbox,
 } from '@fortawesome/free-solid-svg-icons'
+import { faCss3, faJs } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
@@ -74,6 +81,14 @@ library.add(
     faFileExcel,
     faFilePowerpoint,
     faArrowsDownToLine,
+    faCubes,
+    faPager,
+    faPalette,
+    faJs,
+    faCss3,
+    faPhotoFilm,
+    faGears,
+    faToolbox,
 );
 
 export default FontAwesomeIcon;

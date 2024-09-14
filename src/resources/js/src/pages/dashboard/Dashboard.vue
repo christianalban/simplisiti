@@ -20,10 +20,12 @@ const toolLinks = [
     {
         name: 'components.index',
         title: 'titles.components',
+        icon: 'cubes',
     },
     {
         name: 'pages.index',
         title: 'titles.pages',
+        icon: 'pager',
     },
     // {
     //     name: 'flows.index',
@@ -32,22 +34,27 @@ const toolLinks = [
     {
         name: 'styles.index',
         title: 'titles.styles',
+        icon: ['fab', 'css3'],
     },
     {
         name: 'scripts.index',
         title: 'titles.scripts',
+        icon: ['fab', 'js'],
     },
     {
         name: 'resources.index',
         title: 'titles.resources',
+        icon: 'photo-film',
     },
     {
         name: 'settings.index',
         title: 'titles.settings',
+        icon: 'gears',
     },
     {
         name: 'plugins.index',
         title: 'titles.plugins',
+        icon: 'toolbox',
     },
 ];
 
@@ -123,12 +130,15 @@ onMounted(() => {
 <template>
     <div class="grid md:place-items-center h-full">
         <div class="dashboard w-full bg-white">
-            <div class="grid grid-cols-1 md:grid-cols-2 rounded-lg gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 rounded-lg gap-8">
                 <div>
                     <h2 class="title">{{ $t('titles.dashboard') }}</h2>
-                    <ul class="border border-gray-200 rounded-lg">
-                        <li v-for="{ name, title } of toolLinks" :key="name">
-                            <router-link class="tool-link" :to="{ name  }">{{ $t(title) }}</router-link>
+                    <ul class="grid grid-cols-3 gap-4">
+                        <li v-for="{ name, title, icon } of toolLinks" :key="name">
+                            <router-link class="tool-link flex flex-col gap-4 items-center justify-center" :to="{ name  }">
+                                <fa-icon class="text-5xl" :icon="icon"/>
+                                {{ $t(title) }}
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -168,7 +178,7 @@ onMounted(() => {
 li {
     @apply flex;
     .tool-link {
-        @apply px-4 py-2 w-full transition;
+        @apply px-4 py-2 w-full transition border border-gray-100 rounded-2xl aspect-square shadow-lg;
         &:hover {
             @apply bg-gray-100;
             text-decoration: underline;
