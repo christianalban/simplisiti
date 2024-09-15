@@ -36,10 +36,12 @@ onMounted(() => {
     const ancords = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] a');
     const paragraphs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] p');
     const header1 = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] h1');
+    const image = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] img');
     addEventListener(divs);
     addEventListener(ancords);
     addEventListener(paragraphs);
     addEventListener(header1);
+    addEventListener(image);
 });
 </script>
 
@@ -58,14 +60,16 @@ onMounted(() => {
     div,
     a,
     p,
-    h1 {
+    h1,
+    img {
         border: 2px solid transparent;
     }
 }
 div,
 a,
 p,
-h1 {
+h1,
+img {
     &.sp-element__active {
         cursor: pointer;
         transition: border-color 0.3s ease;

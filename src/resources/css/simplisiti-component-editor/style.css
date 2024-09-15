@@ -1,7 +1,8 @@
 div,
 a,
 p,
-h1 {
+h1,
+img {
     /* Layout */
     &.sp-style__layout-display__flex {
         display: flex;
@@ -1421,7 +1422,8 @@ h1 {
 /* Font Color and Font Size */
 a,
 p,
-h1 {
+h1,
+img {
     /* Font */
     &.sp-style__font-size__12 {
         font-size: 0.75rem;

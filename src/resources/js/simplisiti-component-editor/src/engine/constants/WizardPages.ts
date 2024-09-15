@@ -77,6 +77,9 @@ export const AvailableWizard: AvailableWizardViews = {
         'font',
         'content',
     ],
+    'image': [
+        'spacing',
+    ],
 };
 
 export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url';
