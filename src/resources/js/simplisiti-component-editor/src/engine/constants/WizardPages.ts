@@ -67,6 +67,11 @@ export const AvailableWizard: AvailableWizardViews = {
         'content',
         'url',
     ],
+    'paragraph': [
+        'spacing',
+        'font',
+        'content',
+    ],
 };
 
 export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url';

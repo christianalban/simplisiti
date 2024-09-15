@@ -34,8 +34,10 @@ const closePopUp = () => {
 onMounted(() => {
     const divs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] div');
     const ancords = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] a');
+    const paragraphs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] p');
     addEventListener(divs);
     addEventListener(ancords);
+    addEventListener(paragraphs);
 });
 </script>
 
@@ -52,12 +54,14 @@ onMounted(() => {
 <style>
 [data-simplisitiid="simplisiti-component-preview"] {
     div,
-    a {
+    a,
+    p {
         border: 2px solid transparent;
     }
 }
 div,
-a {
+a,
+p {
     &.sp-element__active {
         cursor: pointer;
         transition: border-color 0.3s ease;

@@ -4,6 +4,7 @@ export const ContentTypeMapping: {
     [key: string]: ContentType;
 } = {
     'a': 'text',
+    'p': 'text',
 }
 
 export interface ContentTypeValue {

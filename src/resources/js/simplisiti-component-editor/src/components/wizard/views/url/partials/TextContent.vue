@@ -1,13 +1,11 @@
 <script setup lang="ts">
+import { PropType } from 'vue';
+
 
 defineProps({
     content: {
-        type: String,
+        type: [String, null] as PropType<string | null>,
         required: true,
-    },
-    title: {
-        type: String,
-        default: 'Texto',
     },
 });
 
@@ -23,7 +21,7 @@ const updateContent = (event: Event) => {
 
 <template>
     <div class="sp-font__select-item">
-        <label>{{ title }}</label>
+        <label>Url</label>
         <textarea class="sp-font__select-text" :value="content" @input="updateContent($event)"></textarea>
     </div>
 </template>

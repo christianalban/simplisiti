@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <text-content v-if="content" v-model:content="content" @change="notifyContent" title="URL" />
+        <text-content v-model:content="content" @change="notifyContent" />
     </div>
 </template>
 

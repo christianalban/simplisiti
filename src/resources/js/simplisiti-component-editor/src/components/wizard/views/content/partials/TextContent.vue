@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { PropType } from 'vue';
+
 
 defineProps({
     content: {
-        type: String,
+        type: [String, null] as PropType<string | null>,
         required: true,
     },
 });
