@@ -10,6 +10,7 @@ import {
     faFont,
     faGrip,
     faGripVertical,
+    faHeading,
     faLink,
     faObjectGroup,
     faParagraph,
@@ -39,6 +40,7 @@ library.add(
     faFont,
     faParagraph,
     faCube,
+    faHeading,
 );
 
 export default FontAwesomeIcon;

@@ -6,6 +6,7 @@ export const HTML_TITLES: HtmlTagMapping = {
     'div': 'Contenedor',
     'a': 'Enlace',
     'p': 'Párrafo',
+    'h1': 'Cabecera 1',
 }
 
 export interface HtmlAliasMapping {
@@ -20,16 +21,18 @@ export const HTML_ALIAS: HtmlAliasMapping = {
     'div': 'container',
     'a': 'ancord',
     'p': 'paragraph',
+    'h1': 'header1',
 }
 
 export const HTML_ICONS: HtmlIconsMapping = {
     'div': 'square',
     'a': 'link',
     'p': 'paragraph',
+    'h1': 'heading',
 }
 
-export type SupportedAlias = 'container' | 'ancord' | 'paragraph';
+export type SupportedAlias = 'container' | 'ancord' | 'paragraph' | 'header1';
 
-export type SupportedIcons = 'square' | 'link' | 'paragraph';
+export type SupportedIcons = 'square' | 'link' | 'paragraph' | 'heading';
 
-export type SupportedTags = 'div' | 'a' | 'p';
+export type SupportedTags = 'div' | 'a' | 'p' | 'h1';
