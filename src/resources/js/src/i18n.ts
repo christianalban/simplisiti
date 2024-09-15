@@ -13,6 +13,11 @@ const messages = {
             settings: "Settings",
             plugins: "Plugins",
             flows: "Flows",
+            greetings: {
+                morning: "Good morning",
+                afternoon: "Good afternoon",
+                night: "Good night",
+            },
         },
         status: {
             components: "There isn't any component created yet. | {count} component loaded successfully. | {count} components loaded successfully.",
@@ -339,6 +344,11 @@ const messages = {
             settings: "Configuración",
             plugins: "Complementos",
             flows: "Flujos",
+            greetings: {
+                morning: "Buenos días",
+                afternoon: "Buenas tardes",
+                night: "Buenas noches",
+            },
         },
         status: {
             components: "No hay componentes creados aún. | {count} componente cargado correctamente. | {count} componentes cargados correctamente.",

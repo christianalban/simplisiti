@@ -125,6 +125,19 @@ onMounted(() => {
         resourcesCount.value = response.data.data.length;
     });
 });
+
+const greeting = computed(() => {
+    const date = new Date();
+    const hour = date.getHours();
+    
+    if (hour >= 6 && hour < 12) {
+        return 'titles.greetings.morning';
+    } else if (hour >= 12 && hour < 18) {
+        return 'titles.greetings.afternoon';
+    } else {
+        return 'titles.greetings.night';
+    }
+});
 </script>
 
 <template>
@@ -143,7 +156,8 @@ onMounted(() => {
                     </ul>
                 </div>
                 <div>
-                    <h2 class="title">{{ $t('titles.status') }}</h2>
+                    <h2 class="mb-4 font-bold text-4xl">{{ $t(greeting) }}</h2>
+                    <h3 class="title">{{ $t('titles.status') }}</h3>
                     <ul class="">
                         <li class="tool-status" v-for="status of toolStatus">
                             <fa-icon v-if="!status.counter" class="text-yellow-500" icon="triangle-exclamation"/>
