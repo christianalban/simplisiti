@@ -4,7 +4,7 @@ use Alban\Simplisiti\Controllers;
 use Illuminate\Support\Facades\Route;
 
 // For Develop remove the `auth:sanctum` middleware
-Route::prefix('api/spanel')->middleware(['api'])->group(function () {
+Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function () {
     Route::controller(Controllers\ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');
