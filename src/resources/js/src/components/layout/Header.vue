@@ -11,7 +11,13 @@ defineProps({
     modelValue: String,
 });
 
-defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
+
+const emitUpdate = (event: Event) => {
+    const element = event.target as HTMLInputElement;
+
+    emit('update:modelValue', element.value)
+};
 </script>
 
 <template>
@@ -25,7 +31,7 @@ defineEmits(['update:modelValue']);
         </div>
         <div class="flex flex-col gap-2">
             <label for="filter" class="title">{{ searchTitle }}</label>
-            <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" type="search" id="filter" class="input" :placeholder="$t('placeholders.search')" />
+            <input :value="modelValue" @input="emitUpdate" type="search" id="filter" class="input" :placeholder="$t('placeholders.search')" />
         </div>
     </div>
 </template>

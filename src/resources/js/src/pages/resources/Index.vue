@@ -26,9 +26,15 @@ const filter = ref<string>('');
 
 const filteredResources = computed(() => {
     return resources.value.filter((resource) => {
+        if (!resource.name) {
+            return true;
+        }
+
         return compareStrings(resource.name, filter.value);
     });
 });
+
+const emit = defineEmits(['update:modelValue']);
 
 const handleShowCreateModal = () => {
     uploadType.value = 'single';
@@ -133,6 +139,12 @@ const confirmDeleteBatchResource = () => {
     })
 }
 
+const updateFilter = (event: Event) => {
+    const element = event.target as HTMLInputElement;
+
+    emit('update:modelValue', element.value);
+}
+
 onMounted(() => {
     fetchResources();
 });
@@ -152,7 +164,7 @@ onMounted(() => {
             </div>
             <div class="flex flex-col gap-2">
                 <label for="filter" class="title">{{ $t('placeholders.search') }}</label>
-                <input v-model="filter" @input="$emit('update:modelValue', $event.target.value)" type="search" id="filter" class="input" :placeholder="$t('placeholders.search')" />
+                <input v-model="filter" @input="$emit('update:modelValue', updateFilter)" type="search" id="filter" class="input" :placeholder="$t('placeholders.search')" />
             </div>
         </div>
         <ul class="grid grid-cols-2 lg:grid-cols-5 gap-4 overflow-y-auto">

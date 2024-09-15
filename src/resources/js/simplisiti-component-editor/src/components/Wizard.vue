@@ -34,6 +34,10 @@ const getAvailabeTabs = () => {
                 content: '',
                 type: 'text',
             },
+            spAttribute: {
+                content: '',
+                type: 'src',
+            },
         });
     }
 };

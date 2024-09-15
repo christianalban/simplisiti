@@ -27,7 +27,7 @@ const groupedItems = computed<Group<T>>((): Group<T> => {
 
     const group = groupBy<T>(filtered, props.filterBy);
 
-    return group.data;
+    return group;
 });
 </script>
 

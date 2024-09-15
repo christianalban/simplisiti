@@ -2,7 +2,6 @@
 import { PropType, ref, onMounted, onBeforeUnmount } from 'vue';
 import { Component } from '../../types/Component';
 import ComponentPreview from './ComponentPreview.vue';
-import { FloatPosition } from '../../types/FloatPreview';
 
 const { component } = defineProps({
     component: {
@@ -17,27 +16,25 @@ const previewComponent = ref<HTMLElement | null>(null);
 const scaleFactor = ref('scale(1)');
 const reloadPreview = ref(false);
 
-const calcScaleFactor = (): Promise<void> => {
+const calcScaleFactor = (): Promise<string> => {
     return new Promise((resolve) => {
         setTimeout(() => {
             if (!previewContainer.value) resolve('scale(1)');
-            const scale = previewContainer.value.offsetWidth / 1366;
+            const scale = (previewContainer.value?.offsetWidth || 0 / 1366);
             resolve(`scale(${scale})`);
         }, 50);
     });
 }
 
-const setScaleFactor = async (): string => {
+const setScaleFactor = async (): Promise<void> => {
     scaleFactor.value = await calcScaleFactor();
 }
 
-const handleResize = (entries) => {
-    for (let entry of entries) {
-        reloadPreview.value = false;
-        setScaleFactor().then(() => {
-            reloadPreview.value = true;
-        });
-    }
+const handleResize = () => {
+    reloadPreview.value = false;
+    setScaleFactor().then(() => {
+        reloadPreview.value = true;
+    });
 };
 
 const loadComponentPreview = () => {

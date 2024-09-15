@@ -2,7 +2,7 @@
 import { ref, onMounted, PropType, onUnmounted, onBeforeUnmount } from 'vue';
 import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
-import { Component, ContentValue } from "../../types/Component.ts";
+import { Component } from "../../types/Component.ts";
 import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
 
 const observer = useContentObserver();

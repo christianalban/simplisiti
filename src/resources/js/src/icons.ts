@@ -1,4 +1,4 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { IconDefinition, library } from '@fortawesome/fontawesome-svg-core'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import {
     faCheck,
@@ -84,8 +84,8 @@ library.add(
     faCubes,
     faPager,
     faPalette,
-    faJs,
-    faCss3,
+    faJs as IconDefinition,
+    faCss3 as IconDefinition,
     faPhotoFilm,
     faGears,
     faToolbox,

@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue';
 import { getPages } from '../../services/PageService';
 import { Page } from '../../types/Page';
 import { Component } from '../../types/Component';
-import { groupItems, labelName, componentsOfPage } from '../../utils/helpers';
+import { groupItems, labelName } from '../../utils/helpers';
 import Group from '../../components/Group.vue';
 import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
 import HeaderComponent from '../../components/layout/Header.vue';
@@ -44,14 +44,14 @@ onMounted(() => {
         <div class="overflow-y-auto">
             <group class="h-full overflow-y-auto" :filter="filter" :items="pagesGroup" v-slot="page">
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
-                    <a :href="`/spanel/pages/${page.id}`" v-for="page of page.item" class="flex flex-col border-blue-200 shadow-lg rounded-lg border-4 hover:border-blue-200 overflow-hidden">
+                    <a :href="`/spanel/pages/${pageItem.id}`" v-for="pageItem of page.item" class="flex flex-col border-blue-200 shadow-lg rounded-lg border-4 hover:border-blue-200 overflow-hidden">
                         <div class="flex items-center justify-between gap-2 bg-blue-200 px-2 py-1">
                             <div class="flex flex-col">
-                                <span class="font-semibold">{{ labelName(page.name) }}</span>
-                                <span>{{ page.url }}</span>
+                                <span class="font-semibold">{{ labelName(pageItem.name) }}</span>
+                                <span>{{ pageItem.url }}</span>
                             </div>
                             <div>
-                                <a :href="page.url" class="button small default" target="_blank">
+                                <a :href="pageItem.url" class="button small default" target="_blank">
                                     {{ $t('pages.buttons.show') }}
                                     <fa-icon icon="up-right-from-square" />
                                 </a>
@@ -59,7 +59,7 @@ onMounted(() => {
                         </div>
                         <div class="overflow-hidden w-full aspect-[3/4]">
                             <component-floating-preview
-                                v-for="component of componentsOfPage(page)"
+                                v-for="component of componentsOfPage(pageItem)"
                                 :component="component"
                             />
                         </div>

@@ -30,7 +30,7 @@ export const compareStrings = (value: string, filter: string): boolean => {
     return value.toLowerCase().includes(filter.toLowerCase());
 }
 
-export const groupBy = <T>(items: GroupItem<T>[], key: string): GroupItem<T> => {
+export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
     const group: Group<T> = {};
     
     const data = items.reduce((acc, item) => { 
@@ -45,7 +45,7 @@ export const groupBy = <T>(items: GroupItem<T>[], key: string): GroupItem<T> => 
         return acc;
     }, group);
 
-    return { data } as GroupItem<T>;
+    return data;
 }
 
 export const filterBy = <T>(items: GroupItem<T>[], value: string, key: string): GroupItem<T>[] => {

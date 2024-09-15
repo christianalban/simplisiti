@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component, ComponentContent } from '../../../types/Component';
 import Group from '../../../components/Group.vue';
-import { groupItems, componentName, labelName } from '../../../utils/helpers';
+import { groupItems, componentName } from '../../../utils/helpers';
 import ComponentFloatingPreview from '../../../components/preview/ComponentFloatingPreview.vue';
 
 const availableComponents = ref<Component[]>([]);
