@@ -26,7 +26,7 @@ const props = defineProps({
     },
     lazy: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 });
 
@@ -115,7 +115,7 @@ const updateIframe = async () => {
         const componentContent = parseComponentContent(props.component, props.component.content);
         content = (await getComponentPreview(props.component.id, componentContent)).data;
     } else {
-        content = editorEngine.compose().getComposedHtmlString();
+        content = await editorEngine.compose().getComposedHtmlString();
     }
 
     const contentContainer = document.createElement('div');
@@ -200,6 +200,14 @@ const onContentChange = async (event: any) => {
     emit('update', composedHtml);
 };
 
+const onAttributeChange = async (event: any) => {
+    editorEngine.updateAttributeOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.attribute);
+
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    emit('update', composedHtml);
+};
+
 const resizeIframe = () => {
     if (iframe.value) {
         const doc = iframe.value.contentDocument;
@@ -217,6 +225,7 @@ const listenElementEvents = () => {
     window.document.addEventListener('styleChange', onStyleChange);
     window.document.addEventListener('contentChange', onContentChange);
     window.document.addEventListener('elementRemoved', onElementRemoved);
+    window.document.addEventListener('attributeChange', onAttributeChange);
 };
 
 const interserctionObserver = new IntersectionObserver((entries) => {
@@ -230,13 +239,14 @@ const interserctionObserver = new IntersectionObserver((entries) => {
 });
 
 onMounted(() => {
-    if (iframe.value) {
+    if (iframe.value && !props.allowEdit) {
         interserctionObserver.observe(iframe.value);
     }
     listenElementEvents();
+    updateIframe();
 
     if (!props.html && props.lazy) {
-        observer.subscribe(props.component, (content) => {
+        observer.subscribe(props.component, () => {
             updateIframe().then(() => resizeIframe());
         });
     }
@@ -253,6 +263,7 @@ onUnmounted(() => {
     window.document.removeEventListener('styleChange', onStyleChange);
     window.document.removeEventListener('contentChange', onContentChange);
     window.document.removeEventListener('elementRemoved', onElementRemoved);
+    window.document.removeEventListener('attributeChange', onAttributeChange);
 });
 </script>
 

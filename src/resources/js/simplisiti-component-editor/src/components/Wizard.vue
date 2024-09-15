@@ -2,8 +2,9 @@
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
 import { StylesProperties, StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
-import { dispatchClassChange, dispatchContentChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
+import { dispatchAttributeChange, dispatchClassChange, dispatchContentChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
 import { ContentTypeValue } from '../engine/constants/Content';
+import { AttributeTypeValue } from '../engine/constants/Attribute';
 
 const { element } = defineProps({
     element: {
@@ -106,6 +107,13 @@ const addSpContent = (content: ContentTypeValue) => {
     });
 };
 
+const addSpAttribute = (attribute: AttributeTypeValue) => {
+    return new Promise<void>((resolve) => {
+        element.setAttribute(attribute.type, attribute.content);
+        resolve();
+    });
+};
+
 const emitUpdateClassList = (event: string[], toUpdateWizard: WizardComponentImported) => {
     if (toUpdateWizard?.spClassList) {
         toUpdateWizard.spClassList = event;
@@ -158,6 +166,19 @@ const emitUpdateContent = (event: ContentTypeValue) => {
         });
 };
 
+const emitUpdateAttribute = (event: AttributeTypeValue) => {
+    if (selectedWizard.value?.spAttribute) {
+        selectedWizard.value.spAttribute = event;
+    }
+    
+    addSpAttribute(event)
+        .then(() => {
+            if (element.dataset.simplisitiid) {
+                dispatchAttributeChange(element.dataset.simplisitiid, event);
+            }
+        });
+};
+
 const updateClassList = () => {
     spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
 };
@@ -201,6 +222,7 @@ onMounted(() => {
                         @update:spStyleList="emitUpdateStyleList"
                         :element="element"
                         @update:spContent="emitUpdateContent"
+                        @update:spAttribute="emitUpdateAttribute"
                     ></component>
                 </div>
             </div>

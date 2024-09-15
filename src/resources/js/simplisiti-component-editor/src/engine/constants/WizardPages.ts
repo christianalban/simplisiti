@@ -1,5 +1,6 @@
 import { AsyncComponentLoader, Component, FunctionalComponent } from 'vue';
 import { ContentTypeValue } from './Content';
+import { AttributeTypeValue } from './Attribute';
 
 export interface WizardComponentImported {
     tab?: AvailableWizards;
@@ -9,6 +10,7 @@ export interface WizardComponentImported {
     spClassList: string[];
     spStyleList: StyleValue;
     spContent: ContentTypeValue;
+    spAttribute: AttributeTypeValue;
 }
 
 export interface WizardComponent {
@@ -43,6 +45,11 @@ export const WizardViews: WizardViewsTabs = {
         icon: 'paragraph',
         component: () => import('../../components/wizard/views/content/Content.vue')
     },
+    'url': {
+        title: 'URL',
+        icon: 'link',
+        component: () => import('../../components/wizard/views/url/Url.vue')
+    },
 }
 
 export interface AvailableWizardViews {
@@ -58,10 +65,11 @@ export const AvailableWizard: AvailableWizardViews = {
         'spacing',
         'font',
         'content',
+        'url',
     ],
 };
 
-export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content';
+export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url';
 
 export interface StyleValue {
     [key: string]: string;

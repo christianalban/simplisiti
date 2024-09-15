@@ -1,3 +1,4 @@
+import { AttributeValue } from "../types/Attribute";
 import { HTML_TAGS } from "../types/EditorEngine";
 import { StyleValue } from "../types/Style";
 
@@ -96,6 +97,18 @@ export class EditorEngine {
         }
 
         element.innerHTML = content;
+    }
+
+    public updateAttributeOfElementBySimplisitiId(simplisitiId: string, spAttribute: AttributeValue): void {
+        const element = this.document.querySelector(`[data-simplisitiid="${simplisitiId}"]`) as HTMLElement;
+
+        if (element === null) {
+            return;
+        }
+
+        setTimeout(() => {
+            element.setAttribute(spAttribute.type, spAttribute.content);
+        }, 100);
     }
 
     public removeElementBySimplisitiId(simplisitiId: string): void {

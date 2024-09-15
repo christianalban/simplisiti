@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, PropType, ref } from 'vue';
+import { onMounted, PropType, ref } from 'vue';
 import TextContent from './partials/TextContent.vue';
-import { ContentTypeMapping } from '../../../../engine/constants/Content';
 
 const props = defineProps({
     element: {
@@ -11,15 +10,12 @@ const props = defineProps({
 });
 
 const content = ref<any>(null);
-const contentType = computed(() => props.element ? ContentTypeMapping[props.element.tagName.toLowerCase()] : null);
 
 const propagateContent = () => {
-    if (contentType.value === 'text') {
-        content.value = props.element?.innerHTML;
-    }
+    content.value = props.element?.getAttribute('href') || '';
 }
 
-const emit = defineEmits(['update:spContent', 'update:spClassList']);
+const emit = defineEmits(['update:spAttribute', 'update:spClassList']);
 
 const notifyClassList = () => {
     emit('update:spClassList', []);
@@ -27,9 +23,9 @@ const notifyClassList = () => {
 
 const notifyContent = () => {
     notifyClassList();
-    emit('update:spContent', {
+    emit('update:spAttribute', {
         content: content.value,
-        type: contentType.value,
+        type: 'href',
     });
 }
 
@@ -43,7 +39,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <text-content v-if="contentType === 'text' && content" v-model:content="content" @change="notifyContent" />
+        <text-content v-if="content" v-model:content="content" @change="notifyContent" title="URL" />
     </div>
 </template>
 

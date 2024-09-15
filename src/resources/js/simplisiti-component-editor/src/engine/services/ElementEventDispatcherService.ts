@@ -1,3 +1,4 @@
+import { AttributeTypeValue } from "../constants/Attribute";
 import { StyleValue } from "../constants/WizardPages";
 
 const dispatchElementEvent = (eventName: string, detail: any): void => {
@@ -18,4 +19,8 @@ export const dispatchClassChange = (simplisitiId: string, spClassList: string[])
 
 export const dispatchStyleChange = (simplisitiId: string, spStyleList: StyleValue): void => {
     dispatchElementEvent('styleChange', { simplisitiId, spStyleList });
+}
+
+export const dispatchAttributeChange = (simplisitiId: string | undefined, attribute: AttributeTypeValue): void => {
+    dispatchElementEvent('attributeChange', { simplisitiId, attribute });
 }
