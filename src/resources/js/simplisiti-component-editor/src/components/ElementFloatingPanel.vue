@@ -24,7 +24,7 @@ const toggleVisibilityToolbox = () => {
         <div :class="['sp-element__floating-panel', { 'sp-element__floating-panel__closed': !toolBoxVisible }]">
             <div class="sp-element__element-content">
                 <div>
-                    <h2>Elementos</h2>
+                    <h2 class="sp-element__title">Elementos</h2>
                 </div>
                 <div v-for="{icon, title, element} of elementIcons" class="sp-element__icons-container" :title="title" @dragstart="enableElementAddingMode(element)" draggable="true">
                     <fa-icon :icon="icon" class="sp-element__icon"/>
@@ -42,6 +42,12 @@ const toggleVisibilityToolbox = () => {
 </template>
 
 <style scoped>
+.sp-element__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
 .sp-element__floating-container {
     position: fixed;
     top: 0;
