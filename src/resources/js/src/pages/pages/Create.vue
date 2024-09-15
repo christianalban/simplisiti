@@ -7,7 +7,6 @@ import PagesForm from "./partials/Form.vue";
 import { showToast } from '../../services/ToastService';
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { PageEditionMode } from '../../types/Page';
 
 const name = ref('');
 const url = ref('');
@@ -15,7 +14,6 @@ const title = ref('');
 const sections = ref<Section[]>([]);
 const router = useRouter();
 const { t } = useI18n();
-const pageEditionMode = ref<PageEditionMode>('adding-component');
 
 const save = () => {
     createPage({
@@ -50,11 +48,9 @@ const save = () => {
             v-model:name="name"
             v-model:url="url"
             v-model:pageTitle="title"
-            :pageEditionMode="pageEditionMode"
         />
         <pages-form
             v-model:sections="sections"
-            v-model:pageEditionMode="pageEditionMode"
         />
     </form>
 

@@ -18,10 +18,6 @@ defineProps({
         type: String,
         default: '',
     },
-    pageEditionMode: {
-        type: String,
-        default: 'adding-component',
-    },
 })
 
 defineEmits(['delete', 'update:name', 'update:pageTitle', 'update:url'])
