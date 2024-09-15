@@ -244,6 +244,10 @@ onMounted(() => {
     }
     listenElementEvents();
 
+    if (props.allowEdit) {
+        updateIframe();
+    }
+
     if (!props.html) {
         observer.subscribe(props.component, () => {
             updateIframe().then(() => resizeIframe());
