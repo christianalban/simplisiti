@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { deleteResource, deleteResourceBatch, getResources } from '../../services/ResourceService';
 import { Resource } from '../../types/Resource';
 import CreateResource from './Create.vue';
@@ -9,6 +9,7 @@ import ResourcePreview from '../../components/preview/ResourcePreview.vue';
 import { showToast } from '../../services/ToastService';
 import { useI18n } from 'vue-i18n';
 import { ResourceUploadType } from '../../types/Resource';
+import { compareStrings } from '../../utils/helpers';
 
 const resources = ref<Resource[]>([]);
 const showCreateModal = ref(false);
@@ -20,6 +21,14 @@ const { t } = useI18n();
 const uploadType = ref<ResourceUploadType>('single');
 
 const selectedResourcesIds = ref<number[]>([]);
+
+const filter = ref<string>('');
+
+const filteredResources = computed(() => {
+    return resources.value.filter((resource) => {
+        return compareStrings(resource.name, filter.value);
+    });
+});
 
 const handleShowCreateModal = () => {
     uploadType.value = 'single';
@@ -131,15 +140,23 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col gap-4 h-full py-2">
-        <h1 class="title">{{ $t('resources.titles.resourcesList') }}</h1>
-        <div class="flex gap-2">
-            <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
-            <button type="button" class="button primary" @click="handleShowCreateModal">{{ $t('resources.buttons.create') }}</button>
-            <button type="button" class="button primary" @click="handleShowCreateBatchModal">{{ $t('resources.buttons.createBatch') }}</button>
-            <button type="button" v-if="selectedResourcesIds.length" @click="handleShowDeleteBatchDialog" class="button danger">{{ $t('buttons.delete') }}</button>
+        <div class="flex justify-between">
+            <div class="flex flex-col gap-2">
+                <h1 class="title">{{ $t('resources.titles.resourcesList') }}</h1>
+                <div class="flex gap-2">
+                    <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
+                    <button type="button" class="button primary" @click="handleShowCreateModal">{{ $t('resources.buttons.create') }}</button>
+                    <button type="button" class="button primary" @click="handleShowCreateBatchModal">{{ $t('resources.buttons.createBatch') }}</button>
+                    <button type="button" v-if="selectedResourcesIds.length" @click="handleShowDeleteBatchDialog" class="button danger">{{ $t('buttons.delete') }}</button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="filter" class="title">{{ $t('placeholders.search') }}</label>
+                <input v-model="filter" @input="$emit('update:modelValue', $event.target.value)" type="search" id="filter" class="input" :placeholder="$t('placeholders.search')" />
+            </div>
         </div>
-        <ul class="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-y-auto">
-            <li v-for="resource of resources" class="flex">
+        <ul class="grid grid-cols-2 lg:grid-cols-5 gap-4 overflow-y-auto">
+            <li v-for="resource of filteredResources" class="flex">
                 <div type="button" class="rounded border-2 transition-colors border-blue-200 hover:border-blue-500 w-full flex flex-col items-center justify-between overflow-hidden aspect-square">
                     <div class="w-full flex-1 overflow-hidden">
                         <resource-preview :url="resource.url" />

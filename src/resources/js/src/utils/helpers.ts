@@ -26,10 +26,14 @@ export const labelName = (name: string): string => nameParts(name)[2]?.replace(/
 
 export const componentName = (name: string): string => labelName(name);
 
-export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
+export const compareStrings = (value: string, filter: string): boolean => {
+    return value.toLowerCase().includes(filter.toLowerCase());
+}
+
+export const groupBy = <T>(items: GroupItem<T>[], key: string): GroupItem<T> => {
     const group: Group<T> = {};
     
-    return items.reduce((acc, item) => { 
+    const data = items.reduce((acc, item) => { 
         const data = item.data as any;
         const groupKeys = nameParts(data[key]);
         const groupKey = groupKeys && groupKeys[1] ? groupKeys[1] : 'default';
@@ -40,6 +44,14 @@ export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
         acc[groupKey].push(data);
         return acc;
     }, group);
+
+    return { data } as GroupItem<T>;
+}
+
+export const filterBy = <T>(items: GroupItem<T>[], value: string, key: string): GroupItem<T>[] => {
+    return items.filter((item) => {
+        return ((item.data as any)[key] as any).toLowerCase().includes(value.toLowerCase());
+    });
 }
 
 export const addQueryToUrlFromOptions = (url: string, options?: Options, query?: QueryParams): string => {

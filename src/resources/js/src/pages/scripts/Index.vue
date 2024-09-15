@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { getScripts, updateOrder } from '../../services/ScriptService';
 import { Script } from '../../types/Script';
 import { ListItem } from '../../types/List';
 import DraggableList from '../../components/DraggableList.vue';
+import { compareStrings } from '../../utils/helpers';
+import HeaderComponent from '../../components/layout/Header.vue';
 
 const scripts = ref<ListItem[]>([]);
+const filter = ref<string>('');
+
+const filteredScripts = computed(() => {
+    return scripts.value.filter((script) => {
+        return compareStrings(script.name, filter.value);
+    });;
+});
 
 const saveOrder = (list: ListItem[]) => {
     const orderedList = list.map(({ id }, index) => ({
@@ -31,15 +40,19 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col gap-4 h-full py-2">
-        <h1 class="title">{{ $t('scripts.titles.scriptsList') }}</h1>
-        <div class="flex gap-2">
-            <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
-            <router-link class="button primary" :to="{ name: 'scripts.create' }">{{ $t('scripts.buttons.create') }}</router-link>
-        </div>
+        <header-component
+            :title="$t('scripts.titles.scriptsList')"
+            backName="dashboard"
+            :backTitle="$t('buttons.back')"
+            createName="scripts.create"
+            :createTitle="$t('scripts.buttons.create')"
+            :searchTitle="$t('placeholders.search')"
+            v-model="filter"
+        />
         <div class="flex-1 overflow-y-auto">
             <draggable-list
                 class="md:w-1/5 grid gap-4"
-                :list="scripts"
+                :list="filteredScripts"
                 @update:list="saveOrder"
             />
         </div>

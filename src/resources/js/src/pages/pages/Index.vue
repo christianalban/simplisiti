@@ -6,8 +6,11 @@ import { Component } from '../../types/Component';
 import { groupItems, labelName, componentsOfPage } from '../../utils/helpers';
 import Group from '../../components/Group.vue';
 import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
+import HeaderComponent from '../../components/layout/Header.vue';
 
 const pages = ref<Page[]>([]);
+
+const filter = ref<string>('');
 
 const pagesGroup = computed(() => {
     return groupItems(pages.value);
@@ -29,13 +32,17 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col gap-4 h-full py-2">
-        <h1 class="title">{{ $t('pages.titles.pagesList') }}</h1>
-        <div class="flex gap-2">
-            <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
-            <router-link class="button primary" :to="{ name: 'pages.create' }">{{ $t('pages.buttons.create') }}</router-link>
-        </div>
+        <header-component
+            :title="$t('pages.titles.pagesList')"
+            backName="dashboard"
+            :backTitle="$t('buttons.back')"
+            createName="pages.create"
+            :createTitle="$t('pages.buttons.create')"
+            :searchTitle="$t('placeholders.search')"
+            v-model="filter"
+        />
         <div class="overflow-y-auto">
-            <group class="h-full overflow-y-auto" :items="pagesGroup" v-slot="page">
+            <group class="h-full overflow-y-auto" :filter="filter" :items="pagesGroup" v-slot="page">
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                     <a :href="`/spanel/pages/${page.id}`" v-for="page of page.item" class="flex flex-col border border-blue-200 shadow rounded overflow-hidden">
                         <div class="flex items-center justify-between gap-2 bg-blue-200 px-2 py-1">

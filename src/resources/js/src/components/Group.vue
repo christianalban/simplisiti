@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T">
 import { PropType, computed } from 'vue';
 import { GroupItem, Group } from '../types/Group';
-import { groupBy } from '../utils/helpers';
+import { groupBy, filterBy } from '../utils/helpers';
 import Accordion from './Accordion.vue';
 
 const props = defineProps({
@@ -10,14 +10,24 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    filter: {
+        type: String,
+        default: '',
+    },
+    filterBy: {
+        type: String,
+        default: 'name',
+    },
 })
 
 const groupedItems = computed<Group<T>>((): Group<T> => {
     if (!props.items) return {};
 
-    const group = groupBy<T>(props.items, 'name');
+    const filtered = filterBy(props.items, props.filter, props.filterBy);
 
-    return group;
+    const group = groupBy<T>(filtered, props.filterBy);
+
+    return group.data;
 });
 </script>
 

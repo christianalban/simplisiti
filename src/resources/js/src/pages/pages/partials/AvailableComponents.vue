@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component, ComponentContent } from '../../../types/Component';
 import Group from '../../../components/Group.vue';
-import { groupItems, componentName } from '../../../utils/helpers';
+import { groupItems, componentName, labelName } from '../../../utils/helpers';
 import ComponentFloatingPreview from '../../../components/preview/ComponentFloatingPreview.vue';
 
 const availableComponents = ref<Component[]>([]);
@@ -14,6 +14,8 @@ const componentsGroup = computed(() => {
 });
 
 const isLoading = ref(false);
+
+const filter = ref<string>('');
 
 const cloneComponent = (component: Component) => {
     const content: ComponentContent = {};
@@ -58,8 +60,9 @@ onMounted(() => {
         <fa-icon icon="sync" :class="{'animate-spin': isLoading}" />
         {{ $t('components.buttons.refresh') }}
     </button>
+    <input v-model="filter" type="search" class="input mt-4" :placeholder="$t('placeholders.search')" />
     <div class="overflow-y-auto mt-2">
-        <group :items="componentsGroup" v-slot="slotProps">
+        <group :items="componentsGroup" v-slot="slotProps" :filter="filter">
             <draggable 
                 class="grid grid-cols-2 gap-4"
                 v-model="slotProps.item" 
@@ -68,15 +71,16 @@ onMounted(() => {
                 :clone="cloneComponent"
                 item-key="id">
                 <template #item="{element, index}">
-                    <div class="tile h-24 cursor-pointer">
+                    <div class="tile h-24 cursor-pointer flex flex-col">
+                        <div class="flex items-center justify-between px-2 py-1">
+                            <div class="flex flex-col">
+                                <span class="font-semibold">{{ componentName(element.name) }}</span>
+                            </div>
+                        </div>
                         <component-floating-preview
                             :component="element" class="flex-1 tile-title cursor-pointer active:cursor-grabbing"
                             :position="index % 2 === 0 ? 'left' : 'right'"
-                        >
-                            <div class="text-center">
-                                {{ componentName(element.name) }}
-                            </div>
-                        </component-floating-preview>
+                        />
                     </div>
                 </template>
             </draggable>
