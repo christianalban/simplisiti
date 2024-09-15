@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, onMounted, ref, watch } from "vue";
+import { PropType, onMounted, ref } from "vue";
 import CodeEditor from "../../../components/CodeEditor.vue";
 import { Variable } from "../../../types/Variable";
 import { useResources } from "../../../services/ResourceService";
@@ -19,8 +19,6 @@ import { Tab } from "../../../types/Tab.ts";
 import { useI18n } from "vue-i18n";
 import ComponentPreview from '../../../components/preview/ComponentPreview.vue';
 import { Component } from "../../../types/Component.ts";
-import { parseComponentContent } from '../../../services/ContentService';
-import { getComponentPreview } from '../../../services/PageService';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
@@ -92,29 +90,11 @@ const toggleVariablesExpanded = () => {
     putStorage('variables-expanded', variablesExpanded.value);
 };
 
-const loadComponentPreview = async () => {
-    try {
-        if (!props.component || !props.component.id) {
-            return;
-        }
-
-        const content = await getComponentPreview(props.component.id, parseComponentContent(props.component, props.component.content));
-        componentPreviewRender.value = content.data;
-    } catch (error) {
-    }
-
-}
-
 onMounted(() => {
     loadResources();
     loadSources();
     loadActions();
     loadPages();
-    // loadComponentPreview();
-});
-
-watch(() => props.component, (old) => {
-    // loadComponentPreview();
 });
 
 </script>
