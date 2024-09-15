@@ -243,9 +243,8 @@ onMounted(() => {
         interserctionObserver.observe(iframe.value);
     }
     listenElementEvents();
-    updateIframe();
 
-    if (!props.html && props.lazy) {
+    if (!props.html) {
         observer.subscribe(props.component, () => {
             updateIframe().then(() => resizeIframe());
         });
