@@ -24,6 +24,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    lazy: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const emit = defineEmits(['update']);
@@ -105,7 +109,15 @@ const updateIframe = async () => {
 
     editorEngine.setHtmlString(props.html || props.component.html);
 
-    const content = await editorEngine.compose().getComposedHtmlString();
+    let content = props.component.html;
+
+    if (props.lazy) {
+        const componentContent = parseComponentContent(props.component, props.component.content);
+        content = (await getComponentPreview(props.component.id, componentContent)).data;
+    } else {
+        content = editorEngine.compose().getComposedHtmlString();
+    }
+
     const contentContainer = document.createElement('div');
     contentContainer.dataset.simplisitiid = 'simplisiti-component-preview';
     contentContainer.innerHTML = content;
@@ -188,6 +200,16 @@ const onContentChange = async (event: any) => {
     emit('update', composedHtml);
 };
 
+const resizeIframe = () => {
+    if (iframe.value) {
+        const doc = iframe.value.contentDocument;
+        if (!doc) return;
+
+        const bodyHeight = doc.body.offsetHeight;
+        iframe.value.style.height = `${bodyHeight}px`;
+    }
+};
+
 const listenElementEvents = () => {
     if (!props.allowEdit) return;
 
@@ -212,6 +234,12 @@ onMounted(() => {
         interserctionObserver.observe(iframe.value);
     }
     listenElementEvents();
+
+    if (!props.html && props.lazy) {
+        observer.subscribe(props.component, (content) => {
+            updateIframe().then(() => resizeIframe());
+        });
+    }
 });
 
 onBeforeUnmount(() => {

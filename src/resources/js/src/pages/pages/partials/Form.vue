@@ -157,7 +157,7 @@ onMounted(() => {
                                         <div v-autosize class="page-sections-preview">
                                             <div class="page-sections-preview-content relative" v-autosize @click="enterToEditingMode(component, sectionIndex)">
                                                 <div class="absolute inset-0 cursor-pointer transition-colors hover:bg-yellow-400 active:bg-yellow-200 opacity-50 z-10"></div>
-                                                <component-preview :component="component"/>
+                                                <component-preview :component="component" :lazy="true"/>
                                             </div>
                                             <div class="page-sections-item-buttons">
                                                 <div class="pages-secttions-component-buttons">
