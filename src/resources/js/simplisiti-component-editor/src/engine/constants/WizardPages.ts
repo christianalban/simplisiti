@@ -50,6 +50,11 @@ export const WizardViews: WizardViewsTabs = {
         icon: 'link',
         component: () => import('../../components/wizard/views/url/Url.vue')
     },
+    'src': {
+        title: 'SRC',
+        icon: 'link',
+        component: () => import('../../components/wizard/views/src/Src.vue')
+    },
 }
 
 export interface AvailableWizardViews {
@@ -79,10 +84,11 @@ export const AvailableWizard: AvailableWizardViews = {
     ],
     'image': [
         'spacing',
+        'src',
     ],
 };
 
-export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url';
+export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url' | 'src';
 
 export interface StyleValue {
     [key: string]: string;

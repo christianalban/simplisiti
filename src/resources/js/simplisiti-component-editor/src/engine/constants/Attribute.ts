@@ -1,4 +1,4 @@
-export type AttributeType = 'href';
+export type AttributeType = 'href' | 'src';
 
 export interface AttributeTypeValue {
     type: AttributeType,
