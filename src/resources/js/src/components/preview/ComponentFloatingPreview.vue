@@ -19,8 +19,19 @@ const reloadPreview = ref(false);
 const calcScaleFactor = (): Promise<string> => {
     return new Promise((resolve) => {
         setTimeout(() => {
-            if (!previewContainer.value) resolve('scale(1)');
-            const scale = (previewContainer.value?.offsetWidth || 0 / 1366);
+            const offsetWidth = previewContainer.value?.offsetWidth;
+
+            if (!previewContainer.value) {
+                resolve('scale(1)');
+                return;
+            }
+
+            if (!offsetWidth) {
+                resolve('scale(1)');
+                return;
+            };
+
+            const scale = offsetWidth / 1366;
             resolve(`scale(${scale})`);
         }, 50);
     });
