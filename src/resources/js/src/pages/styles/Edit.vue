@@ -77,7 +77,7 @@ onMounted(() => {
 
 <template>
     <form @submit.prevent="update" class="overflow-hidden h-full flex flex-col">
-        <div class="flex justify-between items-end">
+        <div class="flex flex-col md:flex-row justify-between items-end">
             <div class="flex flex-col gap-4 mb-4 w-full">
                 <h1 class="title">{{ $t('styles.titles.updateStyle') }}</h1>
                 <div class="flex gap-2">
@@ -86,7 +86,7 @@ onMounted(() => {
                     <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
                 </div>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 w-full md:w-auto">
                 <div class="flex flex-col gap-2">
                     <label class="label">{{ $t('styles.labels.styleName') }}</label>
                     <input type="text" :value="name" required @input="name = value($event.target)" class="input" :placeholder="$t('styles.placeholders.styleName')"/>

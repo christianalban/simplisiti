@@ -127,7 +127,7 @@ const buttonColorMapping: { [key: string]: string } = {
 </script>
 
 <template>
-    <div v-if="plugin" class="flex w-full justify-between items-center hover:bg-gray-100 rounded-lg transition p-4">
+    <div v-if="plugin" class="flex flex-col md:flex-row w-full justify-between md:items-center hover:bg-gray-100 rounded-lg transition p-4">
         <div>
             <div class="flex items-end gap-2">
                 <h2 class="title">{{ plugin.name }}</h2> <span class="text-gray-500">{{ plugin.version }}</span>
@@ -135,7 +135,7 @@ const buttonColorMapping: { [key: string]: string } = {
             <span class="text-gray-500 text-sm">{{ plugin.author }}</span>
             <p class="text-gray-500">{{ plugin.description }}</p>
         </div>
-        <div class="flex gap-2 justify-end">
+        <div class="flex gap-2 justify-end mt-2 md:mt-0">
             <button v-if="['enabled', 'disabled'].includes(pluginStatus)" @click="toggle(plugin)" :class="['w-28 button', buttonColorToggleMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsToggleMapping[pluginStatus || 'uknown']"></button>
             <button v-if="['enabled', 'disabled', 'not-installed'].includes(pluginStatus)" @click="excecute(plugin)" :class="['w-28 button', buttonColorMapping[pluginStatus || 'uknown']]" v-text="buttonsLabelsMapping[pluginStatus || 'uknown']"></button>
         </div>

@@ -21,7 +21,7 @@ const emitUpdate = (event: Event) => {
 </script>
 
 <template>
-    <div class="flex justify-between">
+    <div class="flex flex-col justify-between md:flex-row">
         <div class="flex flex-col gap-2">
             <h1 class="title">{{ title }}</h1>
             <div class="flex gap-2">

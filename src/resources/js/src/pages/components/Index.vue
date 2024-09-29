@@ -48,7 +48,7 @@ onMounted(() => {
             v-model="filter"
         />
         <group v-if="isLoaded" class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps" :filter="filter">
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                 <router-link v-for="item in slotProps.item" :key="item.id" :to="{ name: 'components.edit', params: { component: item.id } }" class="shadow-lg rounded-lg overflow-hidden border-4 hover:border-blue-200">
                     <div class="flex items-center justify-between gap-2 bg-blue-200 px-2 py-1">
                         <div class="flex flex-col">

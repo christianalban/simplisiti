@@ -152,7 +152,7 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col gap-4 h-full py-2">
-        <div class="flex justify-between">
+        <div class="flex flex-col md:flex-row justify-between">
             <div class="flex flex-col gap-2">
                 <h1 class="title">{{ $t('resources.titles.resourcesList') }}</h1>
                 <div class="flex gap-2">

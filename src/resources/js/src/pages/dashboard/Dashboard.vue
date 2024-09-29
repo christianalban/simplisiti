@@ -143,14 +143,14 @@ const greeting = computed(() => {
 <template>
     <div class="grid md:place-items-center h-full">
         <div class="dashboard w-full bg-white">
-            <div class="grid grid-cols-1 md:grid-cols-2 rounded-lg gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 rounded-lg gap-4 md:gap-8">
                 <div>
                     <h2 class="title">{{ $t('titles.dashboard') }}</h2>
-                    <ul class="grid grid-cols-3 gap-4">
+                    <ul class="grid grid-cols-3 gap-2 md:gap-4">
                         <li v-for="{ name, title, icon } of toolLinks" :key="name">
                             <router-link class="tool-link flex flex-col gap-4 items-center justify-center" :to="{ name  }">
                                 <fa-icon class="text-5xl" :icon="icon"/>
-                                {{ $t(title) }}
+                                <span class="text-sm md:text-lg">{{ $t(title) }}</span>
                             </router-link>
                         </li>
                     </ul>

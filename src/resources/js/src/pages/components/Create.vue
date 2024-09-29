@@ -49,12 +49,14 @@ const setName = (event: Event) => {
     <form class="overflow-hidden h-full flex flex-col" @submit.prevent="save">
         <div class="flex flex-col mb-4 w-full">
             <h1 class="title">{{ $t('components.titles.createComponent') }}</h1>
-            <div class="flex gap-2 items-end">
-                <div class="flex">
-                    <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
-                </div>
-                <div>
-                    <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+            <div class="flex flex-col md:flex-row gap-2 items-end">
+                <div class="flex w-full gap-2">
+                    <div class="flex">
+                        <router-link class="button default" :to="{ name: 'components.index' }">{{ $t('buttons.back') }}</router-link>
+                    </div>
+                    <div>
+                        <button type="submit" class="button primary">{{ $t('buttons.save') }}</button>
+                    </div>
                 </div>
                 <div class="ml-auto flex flex-col gap-2 md:w-1/3">
                     <label class="label">{{ $t('components.labels.componentName') }}</label>

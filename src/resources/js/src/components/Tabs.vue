@@ -27,7 +27,7 @@ const activeTabIndex = ref(0);
                 <span class="after"></span>
             </div>
         </div>
-        <div class="overflow-y-auto flex-1">
+        <div class="overflow-y-auto flex-1 mt-2 md:mt-0">
             <div v-for="(tab, index) of tabs" :class="{ 'h-full': index === activeTabIndex }">
                 <div v-if="index === activeTabIndex" class="h-full">
                     <slot :item="tab"></slot>
@@ -86,11 +86,6 @@ const activeTabIndex = ref(0);
                 @apply right-0 rounded-bl-lg;
             }
 
-            /* .before, */
-            /* .after { */
-            /*     @apply rounded-none bg-white; */
-            /* } */
-
             .before {
                 @apply -ml-4;
             }
@@ -102,10 +97,10 @@ const activeTabIndex = ref(0);
 }
 
 .horizontal {
-    @apply flex-row;
+    @apply flex-col md:flex-row;
 
     .tabs-container {
-        @apply flex-col h-full;
+        @apply flex-col md:h-full;
     }
 
     .tab {

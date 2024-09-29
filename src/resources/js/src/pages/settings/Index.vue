@@ -47,9 +47,9 @@ onMounted(() => {
 
 <template>
     <form @submit.prevent="update" class="flex flex-col gap-4 h-full py-2">
-        <div class="flex w-full justify-between">
+        <div class="flex flex-col md:flex-row w-full justify-between">
             <h1 class="title">{{ $t('settings.titles.settingsList') }}</h1>
-            <div class="flex gap-2">
+            <div class="flex gap-2 mt-2 md:mt-4">
                 <router-link class="button default" :to="{ name: 'dashboard' }">{{ $t('buttons.back') }}</router-link>
                 <button type="submit" class="button primary ml-auto">{{ $t('buttons.save') }}</button>
             </div>
