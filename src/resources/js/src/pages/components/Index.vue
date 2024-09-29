@@ -3,23 +3,36 @@ import { computed, onMounted, ref } from 'vue';
 import { getComponents} from '../../services/ComponentService';
 import { Component } from '../../types/Component';
 import Group from '../../components/Group.vue';
-import { groupItems, labelName } from '../../utils/helpers';
+import { groupItems, labelName, loadPluginResourcesPreview, loadResourcesPreview } from '../../utils/helpers';
 import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
 import HeaderComponent from '../../components/layout/Header.vue';
 
 const components = ref<Component[]>([]);
 
 const filter = ref<string>('');
+const isLoaded = ref<boolean>(false);
+
+const loadResources = () => {
+    const resources = Promise.all([
+        loadPluginResourcesPreview(),
+        loadResourcesPreview(),
+    ])
+
+    resources.then(() => {
+        getComponents()
+        .then((response) => {
+            isLoaded.value = true;
+            components.value = response.data.data;
+        });
+    });
+}
 
 const componentsGroup = computed(() => {
     return groupItems(components.value);
 });
 
 onMounted(() => {
-    getComponents()
-    .then((response) => {
-        components.value = response.data.data;
-    });
+    loadResources();
 });
 </script>
 
@@ -34,7 +47,7 @@ onMounted(() => {
             :searchTitle="$t('placeholders.search')"
             v-model="filter"
         />
-        <group class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps" :filter="filter">
+        <group v-if="isLoaded" class="h-full overflow-y-auto" :items="componentsGroup" v-slot="slotProps" :filter="filter">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                 <router-link v-for="item in slotProps.item" :key="item.id" :to="{ name: 'components.edit', params: { component: item.id } }" class="shadow-lg rounded-lg overflow-hidden border-4 hover:border-blue-200">
                     <div class="flex items-center justify-between gap-2 bg-blue-200 px-2 py-1">

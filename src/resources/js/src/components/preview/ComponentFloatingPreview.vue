@@ -12,7 +12,9 @@ const { component } = defineProps({
 
 const componentPreviewRender = ref<string | null>(null);
 const previewContainer = ref<HTMLDivElement | null>(null);
+
 const previewComponent = ref<HTMLElement | null>(null);
+
 const scaleFactor = ref('scale(1)');
 const reloadPreview = ref(false);
 

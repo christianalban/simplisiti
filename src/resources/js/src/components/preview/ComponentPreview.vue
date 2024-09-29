@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, PropType, onUnmounted, onBeforeUnmount } from 'vue';
-import { getResourcePreviewUrl, getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
+import { getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component } from "../../types/Component.ts";
 import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
+import { loadPluginResourcesPreview, loadResourcesPreview } from '../../utils/helpers.ts';
 
 const observer = useContentObserver();
 
@@ -72,38 +73,6 @@ const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     return [styleEditor, scriptEditor, scriptVue, scriptVueApp, layoutEditor];
 };
 
-const loadResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
-    const link = document.createElement('link');
-    const script = document.createElement('script');
-
-    const styleUrl = getResourcePreviewUrl('style');
-    const scriptUrl = getResourcePreviewUrl('script');
-
-    link.rel = 'stylesheet';
-    link.href = styleUrl
-
-    script.src = scriptUrl;
-    script.async = true;
-
-    return [link, script];
-};
-
-const loadPluginResourcesPreview = (): (HTMLLinkElement|HTMLScriptElement)[] => {
-    const link = document.createElement('link');
-    const script = document.createElement('script');
-
-    const styleUrl = getPluginResourcePreviewUrl('style');
-    const scriptUrl = getPluginResourcePreviewUrl('script');
-
-    link.rel = 'stylesheet';
-    link.href = styleUrl
-
-    script.src = scriptUrl;
-    script.async = true;
-
-    return [link, script];
-};
-
 const updateIframe = async () => {
     if (!props.component.id) return;
 
@@ -127,8 +96,8 @@ const updateIframe = async () => {
 
         if (!doc) return;
 
-        const [styleLink, scriptLink] = loadResourcesPreview();
-        const [pluginStyleLink, pluginScriptLink] = loadPluginResourcesPreview();
+        const [styleLink, scriptLink] = await loadResourcesPreview();
+        const [pluginStyleLink, pluginScriptLink] = await loadPluginResourcesPreview();
 
         const metaViewport = doc.createElement('meta');
         metaViewport.name = 'viewport';

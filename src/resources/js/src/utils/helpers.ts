@@ -1,3 +1,5 @@
+import axios from "axios";
+import { getPluginResourcePreviewUrl, getResourcePreviewUrl } from "../services/PageService";
 import { Options, QueryParams } from "../types/Data";
 import { Group, GroupItem } from "../types/Group";
 
@@ -71,3 +73,92 @@ export const addQueryToUrlFromOptions = (url: string, options?: Options, query?:
 }
 
 export const isMobileScreen = (): boolean => window.innerWidth < 768;
+
+export let previewSheet: CSSStyleSheet;
+
+export const loadPreviewSheet = async (): Promise<CSSStyleSheet> => {
+    if (previewSheet) {
+        return previewSheet;
+    }
+    previewSheet = new CSSStyleSheet();
+    const styleUrl = getResourcePreviewUrl('style');
+    const response = await axios.get(styleUrl);
+    previewSheet.replaceSync(response.data);
+
+    return previewSheet;
+};
+
+export let pluginSheet: CSSStyleSheet;
+
+export const loadPluginSheet = async (): Promise<CSSStyleSheet> => {
+    if (pluginSheet) {
+        return pluginSheet;
+    }
+    pluginSheet = new CSSStyleSheet();
+    const styleUrl = getPluginResourcePreviewUrl('style');
+    const response = await axios.get(styleUrl);
+    pluginSheet.replaceSync(response.data);
+
+    return pluginSheet;
+};
+
+let previewStyles: HTMLStyleElement; 
+let previewScript: HTMLScriptElement; 
+
+export const loadResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
+    if (previewStyles && previewScript) {
+        const clonedPreviewStyles = cloneElement<HTMLStyleElement>(previewStyles);
+        const clonedPreviewScript = cloneElement<HTMLScriptElement>(previewScript);
+
+        return [clonedPreviewStyles, clonedPreviewScript];
+    }
+
+    previewStyles = document.createElement('style');
+    previewScript = document.createElement('script');
+
+    const styleUrl = getResourcePreviewUrl('style');
+    const responseStyle = await axios.get(styleUrl);
+
+    const scriptUrl = getResourcePreviewUrl('script');
+    const responseScript = await axios.get(scriptUrl);
+
+    previewStyles.textContent = responseStyle.data;
+
+    previewScript.textContent = responseScript.data;
+    previewScript.async = true;
+
+    return [previewStyles, previewScript];
+};
+
+const cloneElement = <T>(element: HTMLElement): T => {
+    return element.cloneNode(true) as T;
+}
+
+let pluginStyles: HTMLStyleElement; 
+let pluginScript: HTMLScriptElement;
+
+export const loadPluginResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
+    if (pluginStyles && pluginScript) {
+        
+        const clonedPluginStyles = cloneElement<HTMLStyleElement>(pluginStyles);
+        const clonedPluginScript = cloneElement<HTMLScriptElement>(pluginScript);
+
+        return [clonedPluginStyles, clonedPluginScript];
+    }
+
+    pluginStyles = document.createElement('style');
+    pluginScript = document.createElement('script');
+
+    const styleUrl = getPluginResourcePreviewUrl('style');
+    const responseStyle = await axios.get(styleUrl);
+
+    const scriptUrl = getPluginResourcePreviewUrl('script');
+    const responseScript = await axios.get(scriptUrl);
+
+    pluginStyles.textContent = responseStyle.data;
+
+    pluginScript.textContent = responseScript.data;
+    pluginScript.async = true;
+
+    return [pluginStyles, pluginScript];
+};
