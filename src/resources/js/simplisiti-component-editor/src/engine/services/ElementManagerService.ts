@@ -1,6 +1,6 @@
 import { ref } from "vue";
-import { createFactory } from "../factories/ElementFactory";
 import { SupportedTags } from "../constants/HtmlTagsMappings";
+import { createFactory } from "../factories/ElementFactory";
 import { dispatchContentChange, dispatchElementRemoved } from "./ElementEventDispatcherService";
 
 let placeHolderBox: HTMLDivElement | null = null;
@@ -139,4 +139,22 @@ const getClousestElementPosition = (event: MouseEvent, node: Node): number => {
     };
 
     return elements.length;
+}
+
+export const addElementListeners = (node: Node): void => {
+    node.addEventListener('click', (event: Event) => selectElement(event, node));
+
+    node.addEventListener('mouseover', (event: Event) => activateElement(event, node));
+
+    node.addEventListener('mouseout', (event: Event) => deactivateElement(event, node));
+
+    const element = node as Element;
+    if (element.tagName === 'DIV') {
+        element.addEventListener('dragover', (event: Event) => displayPlaceholder(event, node));
+        element.addEventListener('drop', (event: Event) => dropElementOnContainer(event, node));
+    }
+
+    element.setAttribute('draggable', 'true');
+
+    node.addEventListener('drag', (event: Event) => moveElement(event, node));
 }

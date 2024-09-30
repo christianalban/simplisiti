@@ -97,6 +97,7 @@ class PageController extends Controller {
     }
 
     public function pluginPreview(string $type) {
+
         $app = app(SimplisitiApp::class);
 
         $action = match ($type) {

@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { HTML_ICONS, HTML_TITLES, SupportedTags } from '../engine/constants/HtmlTagsMappings';
-import { enableElementAddingMode } from '../engine/services/ElementManagerService';
+import { ElementsTabs, ElementTab } from '../engine/services/ElementFloatingPanelService';
 
 const toolBoxVisible = ref(true);
-
-const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
-    return {
-        icon: HTML_ICONS[icon],
-        title: HTML_TITLES[icon],
-        element: icon as SupportedTags,
-    };
-});
+const selectedTab = ref<ElementTab>(ElementsTabs[0]);
 
 const toggleVisibilityToolbox = () => {
     toolBoxVisible.value = !toolBoxVisible.value;
+};
+
+const selectTab = (tab: ElementTab) => {
+    selectedTab.value = tab;
+    toolBoxVisible.value = true;
 };
 
 </script>
@@ -22,32 +19,22 @@ const toggleVisibilityToolbox = () => {
 <template>
     <div class="sp-element__floating-container">
         <div :class="['sp-element__floating-panel', { 'sp-element__floating-panel__closed': !toolBoxVisible }]">
-            <div class="sp-element__element-content">
-                <div>
-                    <h2 class="sp-element__title">Elementos</h2>
-                </div>
-                <div v-for="{icon, title, element} of elementIcons" class="sp-element__icons-container" :title="title" @dragstart="enableElementAddingMode(element)" draggable="true">
-                    <fa-icon :icon="icon" class="sp-element__icon"/>
-                    <span>{{ title }}</span>
-                </div>
+            <div class="sp-element__component-container">
+                <component :is="selectedTab.component"/>
             </div>
         </div>
         <div class="sp-element__side-buttons">
-            <button class="sp-element__close-button" @click="toggleVisibilityToolbox">
-                <fa-icon icon="times" v-if="toolBoxVisible"/>
-                <fa-icon icon="cube" v-else/>
+            <button class="sp-element__close-button" v-for="tab of ElementsTabs" v-key="tab.icon" @click="selectTab(tab)">
+                <fa-icon :icon="tab.icon"/>
+            </button>
+            <button class="sp-element__close-button" @click="toggleVisibilityToolbox" v-if="toolBoxVisible">
+                <fa-icon icon="times"/>
             </button>
         </div>
     </div>
 </template>
 
 <style scoped>
-.sp-element__title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0;
-}
-
 .sp-element__floating-container {
     position: fixed;
     top: 0;
@@ -65,43 +52,20 @@ const toggleVisibilityToolbox = () => {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: width 0.3s;
-    width: 135px;
+    width: 300px;
+}
+
+.sp-element__component-container {
+    min-width: 300px;
 }
 
 .sp-element__floating-panel.sp-element__floating-panel__closed {
     width: 0;
 }
 
-.sp-element__element-content {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px;
-}
-
-.sp-element__icons-container {
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: move;
-    transition: background-color 0.3s;
-    border: 1px solid #f0f0f0;
-    display: flex;
-    gap: 5px;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.sp-element__icons-container:hover {
-    background-color: #f0f0f0;
-}
-
-.sp-element__icon {
-    width: 14px;
-    height: 14px;
-}
-
 .sp-element__side-buttons {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }

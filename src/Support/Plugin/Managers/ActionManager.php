@@ -67,9 +67,11 @@ class ActionManager {
                 if ($data) {
                     $response = $data;
 
-                    if ($response->getSession()->has('errors')) {
-                        return $response;
-                    };
+                    return $response;
+                    // TODO: Handle errors response
+                    // if ($response->getSession()->has('errors')) {
+                    //     return $response;
+                    // };
                 }
 
                 $data = $this->runAfterEvents($request, $key);
