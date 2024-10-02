@@ -70,9 +70,6 @@ onMounted(() => {
         withData: false,
     }).then((response) => {
         const data = response.data.data;
-        // code.value = data.html;
-        // name.value = data.name;
-        // variables.value = data.variables.length ? data.variables : [{type: 'text', name: '', default: ''}];
         component.value = data;
     });
 });

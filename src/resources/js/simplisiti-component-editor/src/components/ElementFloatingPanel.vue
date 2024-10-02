@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { ElementsTabs, ElementTab } from '../engine/services/ElementFloatingPanelService';
 
-const toolBoxVisible = ref(true);
+const toolBoxVisible = ref(false);
 const selectedTab = ref<ElementTab>(ElementsTabs[0]);
 
 const toggleVisibilityToolbox = () => {

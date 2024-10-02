@@ -36,12 +36,12 @@ const compose = (html: string): string => {
 }
 
 const generateComponent = () => {
+    const preview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
     isGenerating.value = true;
     axios.post('https://gpt-tailwind.up.railway.app/api/generate', {
-        "prompt": prompt.value
+        "prompt": prompt.value, 
     })
     .then(reponse => {
-        const preview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
         if (!preview) {
             return;
         }
@@ -53,6 +53,7 @@ const generateComponent = () => {
                 dispatchContentChange('simplisiti-component-preview', cleanedResult)
                 preview.innerHTML = cleanedResult;
                 initSupportedElements()
+                prompt.value = '';
             })
             .finally(() => {
                 isGenerating.value = false;
