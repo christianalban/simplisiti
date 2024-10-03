@@ -43,7 +43,7 @@ export const getResourceEditorEngine = (type: ResourcePreview): string => {
 }
 
 export const getPluginResourcePreviewUrl = (type: ResourcePreview): string => {
-    return `${baseURL}/page/plugin/${type}/preview`
+    return `/page/plugin/${type}/preview`
 }
 
 /* TODO: Remove render component on backend */
