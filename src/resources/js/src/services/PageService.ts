@@ -35,7 +35,7 @@ export const clonePage = async (pageId: number): Promise<any> => {
 }
 
 export const getResourcePreviewUrl = (type: ResourcePreview): string => {
-    return `${baseURL}/page/${type}/preview`
+    return `/page/${type}/preview`
 }
 
 export const getResourceEditorEngine = (type: ResourcePreview): string => {
