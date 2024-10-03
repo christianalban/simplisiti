@@ -102,8 +102,8 @@ export const loadPluginSheet = async (): Promise<CSSStyleSheet> => {
     return pluginSheet;
 };
 
-let previewStyles: HTMLStyleElement; 
-let previewScript: HTMLScriptElement; 
+let previewStyles: HTMLStyleElement | null; 
+let previewScript: HTMLScriptElement | null; 
 
 export const loadResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
     if (previewStyles && previewScript) {
@@ -134,8 +134,8 @@ const cloneElement = <T>(element: HTMLElement): T => {
     return element.cloneNode(true) as T;
 }
 
-let pluginStyles: HTMLStyleElement; 
-let pluginScript: HTMLScriptElement;
+let pluginStyles: HTMLStyleElement | null; 
+let pluginScript: HTMLScriptElement | null;
 
 export const loadPluginResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
     if (pluginStyles && pluginScript) {
@@ -162,3 +162,10 @@ export const loadPluginResourcesPreview = async (): Promise<(HTMLStyleElement|HT
 
     return [pluginStyles, pluginScript];
 };
+
+export const clearLoadedResources = () => {
+    pluginScript = null;
+    pluginStyles = null;
+    previewStyles = null;
+    previewScript = null;
+}

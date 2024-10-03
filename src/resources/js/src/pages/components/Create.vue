@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import ComponentsForm from "./partials/Form.vue";
 import { showToast } from '../../services/ToastService';
 import { createComponent, mapWithoutSettingsData } from '../../services/ComponentService'
-import { value } from '../../utils/helpers';
+import { clearLoadedResources, value } from '../../utils/helpers';
 import { Component } from "../../types/Component";
 
 const { t } = useI18n();
@@ -27,6 +27,7 @@ const save = () => {
         name: component.value.name,
     })
     .then(() => {
+        clearLoadedResources();
         router.push({name: 'components.index'});
         showToast({
             title: t('toasts.success'),

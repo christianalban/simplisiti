@@ -7,6 +7,7 @@ import { useRoute, useRouter } from "vue-router";
 import { showToast } from "../../services/ToastService";
 import { useI18n } from "vue-i18n";
 import { Component } from "../../types/Component";
+import { clearLoadedResources } from "../../utils/helpers";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -27,6 +28,7 @@ const update = () => {
         name: component.value.name,
     })
     .then(() => {
+        clearLoadedResources();
         showToast({
             title: t('toasts.success'),
             message: t('components.toasts.updated'),
