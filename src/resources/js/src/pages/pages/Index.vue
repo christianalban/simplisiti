@@ -90,10 +90,10 @@ onMounted(() => {
             <group class="h-full overflow-y-auto" :filter="filter" :items="pagesGroup" v-slot="page">
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                     <a :href="`/spanel/pages/${pageItem.id}`" v-for="pageItem of page.item" class="flex flex-col border-blue-200 shadow-lg rounded-lg border-4 hover:border-blue-200 overflow-hidden">
-                        <div class="flex items-center gap-2 bg-blue-200 px-2 py-1">
-                            <div class="flex flex-col">
-                                <span class="font-semibold">{{ labelName(pageItem.name) }}</span>
-                                <span>{{ pageItem.url }}</span>
+                        <div class="flex items-center gap-2 bg-blue-200 px-2 py-1 w-full">
+                            <div class="flex flex-col overflow-hidden whitespace-nowrap">
+                                <span class="overflow-hidden text-ellipsis font-semibold" :title="labelName(pageItem.name)">{{ labelName(pageItem.name) }}</span>
+                                <span class="overflow-hidden text-ellipsis" :title="pageItem.url">{{ pageItem.url }}</span>
                             </div>
                             <div class="ml-auto">
                                 <button class="button small default" type="button" :title="$t('pages.titles.clone')" @click.prevent="showConfirmClone(pageItem)" :disabled="isCloning">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ElementsTabs, ElementTab } from '../engine/services/ElementFloatingPanelService';
+import { isElementAddingMode } from '../engine/services/ElementManagerService';
 
 const toolBoxVisible = ref(false);
 const selectedTab = ref<ElementTab>(ElementsTabs[0]);
@@ -18,7 +19,7 @@ const selectTab = (tab: ElementTab) => {
 
 <template>
     <div class="sp-element__floating-container">
-        <div :class="['sp-element__floating-panel', { 'sp-element__floating-panel__closed': !toolBoxVisible }]">
+        <div :class="['sp-element__floating-panel', { 'sp-element__floating-panel__closed': isElementAddingMode || !toolBoxVisible }]">
             <div class="sp-element__component-container">
                 <component :is="selectedTab.component"/>
             </div>

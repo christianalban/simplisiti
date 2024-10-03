@@ -215,12 +215,12 @@ onMounted(() => {
 
     if (props.allowEdit) {
         updateIframe();
-    }
-
-    if (!props.html) {
-        observer.subscribe(props.component, () => {
-            updateIframe().then(() => resizeIframe());
-        });
+    } else {
+        if (!props.html) {
+            observer.subscribe(props.component, () => {
+                updateIframe().then(() => resizeIframe());
+            });
+        }
     }
 });
 

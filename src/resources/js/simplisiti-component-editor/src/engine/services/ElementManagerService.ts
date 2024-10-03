@@ -53,15 +53,22 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
         dispatchElementRemoved(toAddElementPlaceholder.value?.dataset.simplisitiid);
     }
 
-    if (element.dataset.simplisitiid || element.id === 'simplisiti-component-preview') {
-        dispatchContentChange(element.dataset.simplisitiid, element.innerHTML.replace(/sp-element__active/, ''));
-    }
+    setTimeout(() => {
+        element.classList.remove('sp-element__active');
+        if (element.dataset.simplisitiid || element.id === 'simplisiti-component-preview') {
+            dispatchContentChange(element.dataset.simplisitiid, element.innerHTML.replace(/sp-element__active/, ''));
+        }
 
+        disableElementAddingMode();
+
+        event.preventDefault();
+        event.stopPropagation();
+    }, 10);
+}
+
+export const disableElementAddingMode = () => {
     isElementAddingMode.value = false;
     toAddElementPlaceholder.value = null;
-
-    event.preventDefault();
-    event.stopPropagation();
 }
 
 const deactivateAllElements = () => {

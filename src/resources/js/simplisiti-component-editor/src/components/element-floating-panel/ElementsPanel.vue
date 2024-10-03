@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { HTML_ICONS, HTML_TITLES, SupportedTags } from '../../engine/constants/HtmlTagsMappings';
-import { enableElementAddingMode } from '../../engine/services/ElementManagerService';
+import { disableElementAddingMode, enableElementAddingMode } from '../../engine/services/ElementManagerService';
 
 
 const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
@@ -17,7 +17,7 @@ const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
         <div>
             <h2 class="sp-element__title">Elementos</h2>
         </div>
-        <div v-for="{icon, title, element} of elementIcons" class="sp-element__icons-container" :title="title" @dragstart="enableElementAddingMode(element)" draggable="true">
+        <div v-for="{icon, title, element} of elementIcons" class="sp-element__icons-container" :title="title" @dragstart="enableElementAddingMode(element)" @dragend="disableElementAddingMode" draggable="true">
             <fa-icon :icon="icon" class="sp-element__icon"/>
             <span>{{ title }}</span>
         </div>

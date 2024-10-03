@@ -125,7 +125,6 @@ export const loadResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScri
     previewStyles.textContent = responseStyle.data;
 
     previewScript.textContent = responseScript.data;
-    previewScript.async = true;
 
     return [previewStyles, previewScript];
 };
@@ -158,7 +157,6 @@ export const loadPluginResourcesPreview = async (): Promise<(HTMLStyleElement|HT
     pluginStyles.textContent = responseStyle.data;
 
     pluginScript.textContent = responseScript.data;
-    pluginScript.async = true;
 
     return [pluginStyles, pluginScript];
 };
