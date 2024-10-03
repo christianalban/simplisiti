@@ -20,6 +20,7 @@ Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function
         Route::get('page/{page}', 'show');
         Route::post('page', 'store');
         Route::put('page/{page}', 'update');
+        Route::post('page/{page}/clone', 'clone');
         Route::delete('page/{page}', 'destroy');
         Route::group(['excluded_middleware' => 'throttle:api'], function () {
             Route::get('page/editor/font/{font}', 'fontEngine')->where('type', 'style|script');

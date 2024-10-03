@@ -12,14 +12,14 @@ class CloneComponentAction
 
     public function execute(Component $component): Component
     {
-        $component = $component->replicate();
+        $clonedComponent = $component->replicate();
 
-        $component->name = $component->name . '_clone';
+        $clonedComponent->name = $component->name . '_clone';
 
-        $component->save();
+        $clonedComponent->save();
 
-        ComponentCreated::dispatch($component);
+        ComponentCreated::dispatch($clonedComponent);
 
-        return $component;
+        return $clonedComponent;
     }
 }

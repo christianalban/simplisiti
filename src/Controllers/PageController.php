@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Page\ClonePageAction;
 use Alban\Simplisiti\Actions\Page\ComponentPreviewAction;
 use Alban\Simplisiti\Actions\Page\DeletePageAction;
 use Alban\Simplisiti\Actions\Page\MinifyAction;
@@ -71,6 +72,14 @@ class PageController extends Controller {
 
         return response()->json([
             'message' => 'Page deleted successfully',
+        ]);
+    }
+
+    public function clone(Page $page, ClonePageAction $action) {
+        $action->execute($page);
+
+        return response()->json([
+            'message' => 'Page cloned successfully',
         ]);
     }
 
