@@ -1,5 +1,7 @@
-import { HTML_ALIAS } from "../constants/HtmlTagsMappings";
+import axios from "axios";
+import { HTML_ALIAS, SupportedTagsList } from "../constants/HtmlTagsMappings";
 import { AvailableWizard, WizardComponent, WizardViews } from "../constants/WizardPages";
+import { addElementListeners } from "../services/ElementManagerService";
 
 export const aliasFromTagName = (tagName: string): WizardComponent[] => {
     const alias = HTML_ALIAS[tagName];
@@ -35,4 +37,35 @@ export const rgbaToHex = (rgba: string): string => {
     const g = parseInt(rgbaValues[1]);
     const b = parseInt(rgbaValues[2]);
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+export const addEventListener = (selector: string) => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach((node: Node) => addElementListeners(node));
+
+    const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
+    if (componentPreview) addElementListeners(componentPreview);
+};
+
+export const initSupportedElements = () => {
+    SupportedTagsList.forEach((tag) => {
+        addEventListener(`[data-simplisitiid="simplisiti-component-preview"] ${tag}`);
+    })
+}
+
+export const renderStyleSupportedElements = (html: string): Promise<void> => {
+    return new Promise<void>((resolve) => {
+        axios.post('http://localhost/compile_styles', { html })
+            .then(({ data }) => {
+                let style = document.getElementById('simplisiti-preview-style');
+                if (!style) {
+                    style = document.createElement('style');
+                    style.id = 'simplisiti-preview-style';
+                }
+                style.textContent = data;
+                document.head.appendChild(style);
+
+                resolve()
+            })
+    })
 }

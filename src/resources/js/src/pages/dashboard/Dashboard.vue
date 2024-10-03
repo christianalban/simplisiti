@@ -8,6 +8,7 @@ import { getScripts } from '../../services/ScriptService';
 import { getResources } from '../../services/ResourceService';
 import { clearAll } from '../../services/CacheService';
 import { showToast } from '../../services/ToastService';
+import { clearLoadedResources } from '../../utils/helpers';
 
 const { t } = useI18n();
 const componentsCount = ref(0);
@@ -83,6 +84,7 @@ const toolStatus = computed(() => [
 
 const clearCache = () => {
     clearingCache.value = true;
+    clearLoadedResources();
     clearAll()
     .then(() => {
         showToast({

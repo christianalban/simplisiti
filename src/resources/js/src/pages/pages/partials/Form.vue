@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PropType, onMounted, reactive, ref, computed } from 'vue';
 import Draggable from 'vuedraggable'
+import DialogComponent from "../../../components/Dialog.vue";
 import { Component } from '../../../types/Component';
 import { Section } from '../../../types/Section';
 import AvailableComponents from './AvailableComponents.vue';
@@ -23,6 +24,7 @@ const { loadSources } = useSources();
 const { loadActions } = useActions();
 const { loadPages } = usePages();
 
+const showDialog = ref(false);
 const observer = useContentObserver();
 
 const props = defineProps({
@@ -42,6 +44,9 @@ const props = defineProps({
 const isInvisible = ref(true);
 
 const emit = defineEmits(['update:sections']);
+
+const toDeleteComponentIndex = ref<number|null>(null);
+const toDeleteComponentSection = ref<Section|null>(null);
 
 const selectedComponent = ref<Component|null>(null);
 const selectedSection = ref<number|null>(null);
@@ -64,8 +69,12 @@ const removeSection = (sectionIndex: number) => {
     emit('update:sections', sections);
 };
 
-const removeComponent = (components: Component[], sectionIndex: number) => {
-    components.splice(sectionIndex, 1);
+const removeComponent = () => {
+    toDeleteComponentSection.value?.components.splice(toDeleteComponentIndex.value || 0, 1);
+
+    toDeleteComponentIndex.value = null;
+    toDeleteComponentSection.value = null;
+    selectedComponent.value = null;
 };
 
 const enterToEditingMode = (component: Component, sectionIndex: number) => {
@@ -102,6 +111,13 @@ const togglePosition = () => {
 const title = computed(() => {
     return pageEditionMode.value === 'adding-component' ? 'availableComponents' : 'componentConfigurationForm';
 });
+
+const selectToBeDeletedComponent = (component: Component, componentIndex: number, section: Section) => {
+    selectedComponent.value = component;
+    toDeleteComponentIndex.value = componentIndex;
+    toDeleteComponentSection.value = section;
+    showDialog.value = true;
+};
 
 onMounted(() => {
     loadResources();
@@ -161,9 +177,12 @@ onMounted(() => {
                                             </div>
                                             <div class="page-sections-item-buttons">
                                                 <div class="pages-secttions-component-buttons">
-                                                    <button type="button" @click="removeComponent(section.components, componentIndex)">
+                                                    <button type="button" @click="selectToBeDeletedComponent(component, componentIndex, section)">
                                                         <fa-icon icon="trash" />
                                                     </button>
+                                                    <router-link :to="{ name: 'components.edit', params: { component: component.id }}" target="_blank">
+                                                        <fa-icon icon="edit" />
+                                                    </router-link>
                                                     <span class="page-sections-label">
                                                         {{ component.name }}
                                                     </span>
@@ -198,6 +217,12 @@ onMounted(() => {
             <page-sections-button-add @click="appendSection" />
         </div>
     </div>
+    <dialog-component
+        v-model:showDialog="showDialog"
+        :title="$t('components.dialogs.delete.title')"
+        :message="$t('components.dialogs.delete.message', { name: selectedComponent?.name })"
+        @confirm="removeComponent"
+    />
 </template>
 
 <style scoped lang="scss">
@@ -281,7 +306,7 @@ onMounted(() => {
                             }
                             
                             .pages-secttions-component-buttons {
-                                @apply flex gap-1;
+                                @apply flex gap-2;
                             }
                         }
                     }

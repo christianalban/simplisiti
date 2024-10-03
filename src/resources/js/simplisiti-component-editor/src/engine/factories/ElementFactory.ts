@@ -1,5 +1,5 @@
-import { SupportedTags } from "../constants/HtmlTagsMappings";
 import { ElementInterface } from "./ElementInterface";
+import { SupportedTags } from "../constants/HtmlTagsMappings";
 import { AncordFactory } from "./AncordFactory";
 import { ContainerFactory } from "./ContainerFactory";
 import { ParagraphFactory } from "./ParagaphFactory";

@@ -30,12 +30,16 @@ export const deletePage = async (pageId: number): Promise<any> => {
     return await axios.delete(`page/${pageId}`)
 }
 
+export const clonePage = async (pageId: number): Promise<any> => {
+    return await axios.post(`page/${pageId}/clone`)
+}
+
 export const getResourcePreviewUrl = (type: ResourcePreview): string => {
     return `${baseURL}/page/${type}/preview`
 }
 
 export const getResourceEditorEngine = (type: ResourcePreview): string => {
-    return `${baseURL}/page/editor/${type}/engine`
+    return `${baseURL}/page/editor/${type}/engine/`
 }
 
 export const getPluginResourcePreviewUrl = (type: ResourcePreview): string => {

@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Page\ClonePageAction;
 use Alban\Simplisiti\Actions\Page\ComponentPreviewAction;
 use Alban\Simplisiti\Actions\Page\DeletePageAction;
 use Alban\Simplisiti\Actions\Page\MinifyAction;
@@ -74,6 +75,14 @@ class PageController extends Controller {
         ]);
     }
 
+    public function clone(Page $page, ClonePageAction $action) {
+        $action->execute($page);
+
+        return response()->json([
+            'message' => 'Page cloned successfully',
+        ]);
+    }
+
     public function preview(Request $request, string $type) {
         $action = match ($type) {
             'style' => new MinifyAction($type),
@@ -97,6 +106,7 @@ class PageController extends Controller {
     }
 
     public function pluginPreview(string $type) {
+
         $app = app(SimplisitiApp::class);
 
         $action = match ($type) {

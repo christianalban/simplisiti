@@ -27,6 +27,10 @@ export const deleteComponent = async (componentId: number): Promise<any> => {
     return await axios.delete(`component/${componentId}`)
 }
 
+export const cloneComponent = async (componentId: number): Promise<any> => {
+    return await axios.post(`component/${componentId}/clone`)
+}
+
 export const mapWithoutSettingsData = (variables: Variable[]): Variable[] => {
     const tempVariables = JSON.parse(JSON.stringify(variables)) as Variable[];
     return tempVariables.filter(variable => variable.name !== '').map(variable => {

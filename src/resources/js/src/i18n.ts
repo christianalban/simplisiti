@@ -60,6 +60,7 @@ const messages = {
                 fillData: "Fill data",
                 editContent: "Edit content",
                 graphical: "Graphical",
+                clone: "Clone",
             },
             buttons: {
                 create: "New component",
@@ -74,14 +75,20 @@ const messages = {
                 created: "Component created successfully.",
                 updated: "Component updated successfully.",
                 deleted: "Component deleted successfully.",
+                cloned: "Component cloned successfully.",
                 errorCreated: "Component couldn't be created.",
                 errorUpdated: "Component couldn't be updated.",
                 errorDeleted: "Component couldn't be deleted.",
+                errorCloned: "Component couldn't be cloned.",
             },
             dialogs: {
                 delete: {
                     title: "Delete component",
                     message: "Are you sure you want to delete the component '{name}'?",
+                },
+                clone: {
+                    title: "Clone component",
+                    message: "Are you sure you want to clone the component '{name}'?",
                 }
             }
         },
@@ -110,6 +117,7 @@ const messages = {
                 availableComponents: "Available components",
                 sections: "Sections",
                 componentConfigurationForm: "Component configuration",
+                clone: "Clone",
             },
             buttons: {
                 create: "New page",
@@ -123,14 +131,20 @@ const messages = {
                 created: "Page created successfully.",
                 updated: "Page updated successfully.",
                 deleted: "Page deleted successfully.",
+                cloned: "Page cloned successfully.",
                 errorCreated: "Page couldn't be created.",
                 errorUpdated: "Page couldn't be updated.",
                 errorDeleted: "Page couldn't be deleted.",
+                errorCloned: "Page couldn't be cloned.",
             },
             dialogs: {
                 delete: {
                     title: "Delete page",
                     message: "Are you sure you want to delete the page '{name}'?",
+                },
+                clone: {
+                    title: "Clone page",
+                    message: "Are you sure you want to clone the page '{name}'?",
                 }
             }
         },
@@ -391,6 +405,7 @@ const messages = {
                 fillData: "Completar datos",
                 editContent: "Editar contenido",
                 graphical: "Gráfico",
+                clone: "Clonar",
             },
             buttons: {
                 create: "Nuevo componente",
@@ -405,14 +420,20 @@ const messages = {
                 created: "Componente creado correctamente.",
                 updated: "Componente actualizado correctamente.",
                 deleted: "Componente eliminado correctamente.",
+                cloned: "Componente clonado correctamente.",
                 errorCreated: "El componente no pudo ser creado.",
                 errorUpdated: "El componente no pudo ser actualizado.",
                 errorDeleted: "El componente no pudo ser eliminado.",
+                errorCloned: "El componente no pudo ser clonado.",
             },
             dialogs: {
                 delete: {
                     title: "Eliminar componente",
                     message: "¿Está seguro que desea eliminar el componente '{name}'?",
+                },
+                clone: {
+                    title: "Clonar componente",
+                    message: "¿Está seguro que desea clonar el componente '{name}'?",
                 }
             }
         },
@@ -441,6 +462,7 @@ const messages = {
                 availableComponents: "Componentes disponibles",
                 sections: "Secciones",
                 componentConfigurationForm: "Configuración del componente",
+                clone: "Clonar",
             },
             buttons: {
                 create: "Nueva página",
@@ -454,14 +476,20 @@ const messages = {
                 created: "Página creada correctamente.",
                 updated: "Página actualizada correctamente.",
                 deleted: "Página eliminada correctamente.",
+                cloned: "Página clonada correctamente.",
                 errorCreated: "La página no pudo ser creada.",
                 errorUpdated: "La página no pudo ser actualizada.",
                 errorDeleted: "La página no pudo ser eliminada.",
+                errorCloned: "La página no pudo ser clonada.",
             },
             dialogs: {
                 delete: {
                     title: "Eliminar página",
                     message: "¿Está seguro que desea eliminar la página '{name}'?",
+                },
+                clone: {
+                    title: "Clonar página",
+                    message: "¿Está seguro que desea clonar la página '{name}'?",
                 }
             }
         },

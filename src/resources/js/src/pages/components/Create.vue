@@ -5,24 +5,29 @@ import { useI18n } from "vue-i18n";
 import ComponentsForm from "./partials/Form.vue";
 import { showToast } from '../../services/ToastService';
 import { createComponent, mapWithoutSettingsData } from '../../services/ComponentService'
-import { Variable } from "../../types/Variable";
-import { value } from '../../utils/helpers';
+import { clearLoadedResources, value } from '../../utils/helpers';
+import { Component } from "../../types/Component";
 
 const { t } = useI18n();
 const router = useRouter();
-const code = ref('<div>Create your new component</div>');
-const variables = ref<Variable[]>([
-    {type: 'text', name: '', default: ''},
-]);
-const name = ref('');
+
+const component = ref<Component>({
+    id: 1,
+    name: '',
+    html: '<div><p>Create your new component</p></div>',
+    variables: [
+        {type: 'text', name: '', default: ''}
+    ],
+});
 
 const save = () => {
     createComponent({
-        html: code.value,
-        variables: mapWithoutSettingsData(variables.value),
-        name: name.value,
+        html: component.value.html,
+        variables: mapWithoutSettingsData(component.value.variables),
+        name: component.value.name,
     })
     .then(() => {
+        clearLoadedResources();
         router.push({name: 'components.index'});
         showToast({
             title: t('toasts.success'),
@@ -40,7 +45,7 @@ const save = () => {
 }
 
 const setName = (event: Event) => {
-    name.value = value(event.target)
+    component.value.name = value(event.target)
 }
 
 </script>
@@ -60,13 +65,14 @@ const setName = (event: Event) => {
                 </div>
                 <div class="ml-auto flex flex-col gap-2 md:w-1/3">
                     <label class="label">{{ $t('components.labels.componentName') }}</label>
-                    <input type="text" :value="name" @input="setName" required class="input" :placeholder="$t('components.placeholders.componentName')"/>
+                    <input type="text" :value="component.name" @input="setName" required class="input" :placeholder="$t('components.placeholders.componentName')"/>
                 </div>
             </div>
         </div>
         <components-form
-            v-model:code="code"
-            v-model:variables="variables"
+            v-model:code="component.html"
+            v-model:variables="component.variables"
+            :component="component"
         />
     </form>
 </template>

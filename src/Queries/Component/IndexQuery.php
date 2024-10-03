@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class IndexQuery {
     public function query(): Builder {
-        return Component::query();
+        return Component::query()->latest();
     }
 }

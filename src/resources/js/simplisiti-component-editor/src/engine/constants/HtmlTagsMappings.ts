@@ -39,3 +39,7 @@ export type SupportedAlias = 'container' | 'ancord' | 'paragraph' | 'header1' | 
 export type SupportedIcons = 'square' | 'link' | 'paragraph' | 'heading' | 'image';
 
 export type SupportedTags = 'div' | 'a' | 'p' | 'h1' | 'img';
+
+export const SupportedTagsList: SupportedTags[] = [
+    'div', 'a', 'p', 'h1', 'img'
+]

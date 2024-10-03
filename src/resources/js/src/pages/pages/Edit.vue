@@ -8,6 +8,7 @@ import { deletePage, getPage, updatePage } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { clearLoadedResources } from "../../utils/helpers";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -28,6 +29,7 @@ const update = () => {
         sections: sections.value,
     })
     .then(() => {
+        clearLoadedResources();
         showToast({
             title: t('toasts.success'),
             message: t('pages.toasts.updated'),

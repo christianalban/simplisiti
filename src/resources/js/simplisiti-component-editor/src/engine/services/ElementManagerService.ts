@@ -1,6 +1,6 @@
 import { ref } from "vue";
-import { createFactory } from "../factories/ElementFactory";
 import { SupportedTags } from "../constants/HtmlTagsMappings";
+import { createFactory } from "../factories/ElementFactory";
 import { dispatchContentChange, dispatchElementRemoved } from "./ElementEventDispatcherService";
 
 let placeHolderBox: HTMLDivElement | null = null;
@@ -53,15 +53,22 @@ export const dropElementOnContainer = (event: Event, node: Node) => {
         dispatchElementRemoved(toAddElementPlaceholder.value?.dataset.simplisitiid);
     }
 
-    if (element.dataset.simplisitiid || element.id === 'simplisiti-component-preview') {
-        dispatchContentChange(element.dataset.simplisitiid, element.innerHTML.replace(/sp-element__active/, ''));
-    }
+    setTimeout(() => {
+        element.classList.remove('sp-element__active');
+        if (element.dataset.simplisitiid || element.id === 'simplisiti-component-preview') {
+            dispatchContentChange(element.dataset.simplisitiid, element.innerHTML.replace(/sp-element__active/, ''));
+        }
 
+        disableElementAddingMode();
+
+        event.preventDefault();
+        event.stopPropagation();
+    }, 10);
+}
+
+export const disableElementAddingMode = () => {
     isElementAddingMode.value = false;
     toAddElementPlaceholder.value = null;
-
-    event.preventDefault();
-    event.stopPropagation();
 }
 
 const deactivateAllElements = () => {
@@ -139,4 +146,22 @@ const getClousestElementPosition = (event: MouseEvent, node: Node): number => {
     };
 
     return elements.length;
+}
+
+export const addElementListeners = (node: Node): void => {
+    node.addEventListener('click', (event: Event) => selectElement(event, node));
+
+    node.addEventListener('mouseover', (event: Event) => activateElement(event, node));
+
+    node.addEventListener('mouseout', (event: Event) => deactivateElement(event, node));
+
+    const element = node as Element;
+    if (element.tagName === 'DIV') {
+        element.addEventListener('dragover', (event: Event) => displayPlaceholder(event, node));
+        element.addEventListener('drop', (event: Event) => dropElementOnContainer(event, node));
+    }
+
+    element.setAttribute('draggable', 'true');
+
+    node.addEventListener('drag', (event: Event) => moveElement(event, node));
 }

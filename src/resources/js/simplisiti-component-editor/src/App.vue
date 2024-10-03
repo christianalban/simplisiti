@@ -3,15 +3,8 @@ import { onMounted, watch } from 'vue';
 import ConfigurationPopUp from './components/ConfigurationPopUp.vue';
 import ElementFloatingPanel from './components/ElementFloatingPanel.vue';
 import { element, isElementAddingMode, isPopUpOpened } from './engine/services/ElementManagerService';
-import { ElementInterface } from './engine/factories/ElementInterface';
+import { initSupportedElements, renderStyleSupportedElements } from './engine/helpers/HtmlAlias';
 
-
-const addEventListener = (elements: NodeList) => {
-    elements.forEach((node: Node) => ElementInterface.addElementListeners(node));
-
-    const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
-    if (componentPreview) ElementInterface.addElementListeners(componentPreview);
-};
 
 watch(isElementAddingMode, (value) => {
     const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
@@ -32,16 +25,12 @@ const closePopUp = () => {
 };
 
 onMounted(() => {
-    const divs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] div');
-    const ancords = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] a');
-    const paragraphs = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] p');
-    const header1 = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] h1');
-    const image = document.querySelectorAll('[data-simplisitiid="simplisiti-component-preview"] img');
-    addEventListener(divs);
-    addEventListener(ancords);
-    addEventListener(paragraphs);
-    addEventListener(header1);
-    addEventListener(image);
+    const html = document.body.innerHTML;
+
+    renderStyleSupportedElements(html)
+        .then(() => {
+            initSupportedElements()
+        })
 });
 </script>
 

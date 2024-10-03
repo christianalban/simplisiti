@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Controllers;
 
+use Alban\Simplisiti\Actions\Component\CloneComponentAction;
 use Alban\Simplisiti\Actions\Component\DeleteComponentAction;
 use Alban\Simplisiti\Actions\Component\LoadVariableSettingsAction;
 use Alban\Simplisiti\Actions\Component\StoreComponentAction;
@@ -71,5 +72,13 @@ class ComponentController extends Controller {
         $settings = $action->execute($component, $name, $type, $request->default);
 
         return VariableSettingsResource::collection($settings);
+    }
+
+    public function clone(Component $component, CloneComponentAction $action) {
+        $action->execute($component);
+
+        return response()->json([
+            'message' => 'Component cloned successfully',
+        ]);
     }
 }

@@ -7,6 +7,7 @@ import PagesForm from "./partials/Form.vue";
 import { showToast } from '../../services/ToastService';
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { clearLoadedResources } from '../../utils/helpers';
 
 const name = ref('');
 const url = ref('');
@@ -23,6 +24,7 @@ const save = () => {
         title: title.value,
     })
     .then(() => {
+        clearLoadedResources();
         router.push({name: 'pages.index'});
         showToast({
             title: t('toasts.success'),
