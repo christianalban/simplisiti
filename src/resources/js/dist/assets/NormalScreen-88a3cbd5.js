@@ -1,0 +1,1 @@
+import{_ as o,r,o as c,c as n,a as t}from"./index-0d1f3313.js";const s={},a={class:"p-4 md:p-8 overflow-y-hidden h-screen"};function _(d,i){const e=r("router-view");return c(),n("div",a,[t(e)])}const m=o(s,[["render",_]]);export{m as default};
