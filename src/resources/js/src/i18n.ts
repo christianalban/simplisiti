@@ -60,6 +60,7 @@ const messages = {
                 fillData: "Fill data",
                 editContent: "Edit content",
                 graphical: "Graphical",
+                clone: "Clone",
             },
             buttons: {
                 create: "New component",
@@ -74,14 +75,20 @@ const messages = {
                 created: "Component created successfully.",
                 updated: "Component updated successfully.",
                 deleted: "Component deleted successfully.",
+                cloned: "Component cloned successfully.",
                 errorCreated: "Component couldn't be created.",
                 errorUpdated: "Component couldn't be updated.",
                 errorDeleted: "Component couldn't be deleted.",
+                errorCloned: "Component couldn't be cloned.",
             },
             dialogs: {
                 delete: {
                     title: "Delete component",
                     message: "Are you sure you want to delete the component '{name}'?",
+                },
+                clone: {
+                    title: "Clone component",
+                    message: "Are you sure you want to clone the component '{name}'?",
                 }
             }
         },
@@ -391,6 +398,7 @@ const messages = {
                 fillData: "Completar datos",
                 editContent: "Editar contenido",
                 graphical: "Gráfico",
+                clone: "Clonar",
             },
             buttons: {
                 create: "Nuevo componente",
@@ -405,14 +413,20 @@ const messages = {
                 created: "Componente creado correctamente.",
                 updated: "Componente actualizado correctamente.",
                 deleted: "Componente eliminado correctamente.",
+                cloned: "Componente clonado correctamente.",
                 errorCreated: "El componente no pudo ser creado.",
                 errorUpdated: "El componente no pudo ser actualizado.",
                 errorDeleted: "El componente no pudo ser eliminado.",
+                errorCloned: "El componente no pudo ser clonado.",
             },
             dialogs: {
                 delete: {
                     title: "Eliminar componente",
                     message: "¿Está seguro que desea eliminar el componente '{name}'?",
+                },
+                clone: {
+                    title: "Clonar componente",
+                    message: "¿Está seguro que desea clonar el componente '{name}'?",
                 }
             }
         },
