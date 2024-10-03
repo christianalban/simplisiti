@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, PropType, onUnmounted, onBeforeUnmount } from 'vue';
-import { getComponentPreview, getPluginResourcePreviewUrl, getResourceEditorEngine } from "../../services/PageService.ts";
+import { getComponentPreview, getResourceEditorEngine } from "../../services/PageService.ts";
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component } from "../../types/Component.ts";
 import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
