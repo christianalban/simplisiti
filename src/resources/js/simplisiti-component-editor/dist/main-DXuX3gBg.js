@@ -1729,32 +1729,32 @@ const eo = {
   layout: {
     title: "Layout",
     icon: "object-group",
-    component: () => import("./Layout-DESiXSAZ.js")
+    component: () => import("./Layout-BykpuCh-.js")
   },
   spacing: {
     title: "Espaciado",
     icon: "expand",
-    component: () => import("./Spacing-BJx5z4iD.js")
+    component: () => import("./Spacing-D03oxWwg.js")
   },
   font: {
     title: "Fuente",
     icon: "font",
-    component: () => import("./Font-QVuHh5yK.js")
+    component: () => import("./Font-C-_Pfb7m.js")
   },
   content: {
     title: "Contenido",
     icon: "paragraph",
-    component: () => import("./Content-B3el0_IK.js")
+    component: () => import("./Content-CwRkkRio.js")
   },
   url: {
     title: "URL",
     icon: "link",
-    component: () => import("./Url-C_1QcXyC.js")
+    component: () => import("./Url-BRRgap8I.js")
   },
   src: {
     title: "SRC",
     icon: "link",
-    component: () => import("./Src-iJ_wLUgF.js")
+    component: () => import("./Src-tMcduCsP.js")
   }
 }, to = {
   container: [
@@ -1924,7 +1924,7 @@ const oe = V(!1), Ae = V(!1), xe = V(null), ae = V(null), mo = (e, t) => {
     So(`[data-simplisitiid="simplisiti-component-preview"] ${e}`);
   });
 }, _o = (e) => new Promise((t) => {
-  T.post("http://localhost/compile_styles", { html: e }).then(({ data: n }) => {
+  T.post("/compile_styles", { html: e }).then(({ data: n }) => {
     let r = document.getElementById("simplisiti-preview-style");
     r || (r = document.createElement("style"), r.id = "simplisiti-preview-style"), r.textContent = n, document.head.appendChild(r), t();
   });
@@ -2136,11 +2136,11 @@ const oe = V(!1), Ae = V(!1), xe = V(null), ae = V(null), mo = (e, t) => {
 }), zo = /* @__PURE__ */ sn(Io, [["__scopeId", "data-v-9896d74d"]]), Rn = [
   {
     icon: "cube",
-    component: _t(() => import("./ElementsPanel-DJxfXfGE.js"))
+    component: _t(() => import("./ElementsPanel-JL6fLgg9.js"))
   },
   {
     icon: "comment-dots",
-    component: _t(() => import("./CodeGeneratorPanel-BStzOkZ3.js"))
+    component: _t(() => import("./CodeGeneratorPanel-DqsBTwGH.js"))
   }
 ], Do = { class: "sp-element__floating-container" }, jo = { class: "sp-element__component-container" }, Bo = { class: "sp-element__side-buttons" }, Uo = ["onClick"], Ho = /* @__PURE__ */ ve({
   __name: "ElementFloatingPanel",

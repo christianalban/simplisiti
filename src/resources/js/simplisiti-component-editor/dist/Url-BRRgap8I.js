@@ -1,5 +1,5 @@
 import { defineComponent as u, openBlock as i, createElementBlock as d, createElementVNode as _, pushScopeId as f, popScopeId as v, ref as C, onMounted as h, createVNode as x } from "vue";
-import { _ as g } from "./main-dZkenMGG.js";
+import { _ as g } from "./main-DXuX3gBg.js";
 const y = (t) => (f("data-v-63c32d24"), t = t(), v(), t), I = { class: "sp-font__select-item" }, b = /* @__PURE__ */ y(() => /* @__PURE__ */ _("label", null, "Url", -1)), L = ["value"], S = /* @__PURE__ */ u({
   __name: "TextContent",
   props: {
