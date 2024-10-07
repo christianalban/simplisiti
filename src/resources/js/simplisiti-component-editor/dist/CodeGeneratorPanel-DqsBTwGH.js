@@ -1,5 +1,5 @@
 import { defineComponent as f, ref as c, resolveComponent as h, openBlock as l, createElementBlock as g, createElementVNode as o, withDirectives as S, vModelText as y, createBlock as d, toDisplayString as C, pushScopeId as w, popScopeId as x } from "vue";
-import { b as E, c as b, f as G, i as k, _ as M } from "./main-dZkenMGG.js";
+import { b as E, c as b, f as G, i as k, _ as M } from "./main-DXuX3gBg.js";
 const T = (r) => (w("data-v-1a39ce30"), r = r(), x(), r), I = { class: "sp-element__element-content" }, B = /* @__PURE__ */ T(() => /* @__PURE__ */ o("div", null, [
   /* @__PURE__ */ o("h2", { class: "sp-element__title" }, "Generador de Componentes")
 ], -1)), D = { class: "sp-element__content" }, H = ["disabled"], L = /* @__PURE__ */ f({

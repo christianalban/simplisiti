@@ -55,7 +55,7 @@ export const initSupportedElements = () => {
 
 export const renderStyleSupportedElements = (html: string): Promise<void> => {
     return new Promise<void>((resolve) => {
-        axios.post('http://localhost/compile_styles', { html })
+        axios.post('/compile_styles', { html })
             .then(({ data }) => {
                 let style = document.getElementById('simplisiti-preview-style');
                 if (!style) {
