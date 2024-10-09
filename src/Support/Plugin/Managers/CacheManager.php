@@ -4,7 +4,7 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Illuminate\Support\Facades\Cache;
 
-class CacheManager {
+class CacheManager extends Manager {
     public function addToCache(string $key, $value): void {
         Cache::put($key, $value);
     }

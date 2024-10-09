@@ -4,7 +4,7 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Illuminate\Support\Collection;
 
-class HeadManager {
+class HeadManager extends Manager {
     private Collection $heads;
 
     public function __construct(

@@ -19,11 +19,11 @@ use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Facades\Http;
 
-class PluginManager {
+class PluginManager extends Manager {
     private array $history = [];
 
     public function __construct(
-        private SimplisitiApp $app
+        // private SimplisitiApp $app
     ) {}
 
     public function add(Models\Plugin $plugin) {
@@ -182,37 +182,37 @@ class PluginManager {
         }
     }
 
-    public function execute(): void {
-        foreach ($this->history as $plugin) {
-            if ($plugin instanceof ManipulateHeader) {
-                $plugin->withHeaders($this->app->getHeadManager());
-            }
-
-            if ($plugin instanceof ManipulateSetting) {
-                $plugin->withSettings($this->app->getSettingManager());
-            }
-
-            if ($plugin instanceof ManipulateBody) {
-                $plugin->withBody($this->app->getBodyManager());
-            }
-
-            if ($plugin instanceof ManipulateDataSource) {
-                $plugin->withDataSources($this->app->getDataSourceManager());
-            }
-
-            if ($plugin instanceof ManipulateAction) {
-                $plugin->withActions($this->app->getActionManager());
-            }
-
-            if ($plugin instanceof ManipulateStyle) {
-                $plugin->withStyles($this->app->getStyleManager());
-            }
-
-            if ($plugin instanceof ManipulateScript) {
-                $plugin->withScripts($this->app->getScriptManager());
-            }
-        }
-    }
+    // public function execute(): void {
+    //     foreach ($this->history as $plugin) {
+    //         if ($plugin instanceof ManipulateHeader) {
+    //             $plugin->withHeaders($this->app->getHeadManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateSetting) {
+    //             $plugin->withSettings($this->app->getSettingManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateBody) {
+    //             $plugin->withBody($this->app->getBodyManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateDataSource) {
+    //             $plugin->withDataSources($this->app->getDataSourceManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateAction) {
+    //             $plugin->withActions($this->app->getActionManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateStyle) {
+    //             $plugin->withStyles($this->app->getStyleManager());
+    //         }
+    //
+    //         if ($plugin instanceof ManipulateScript) {
+    //             $plugin->withScripts($this->app->getScriptManager());
+    //         }
+    //     }
+    // }
     
     protected function loadPlugin(Models\Plugin $plugin): Plugin {
         $namespace = $this->getNamespace($plugin);

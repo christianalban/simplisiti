@@ -2,7 +2,7 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
-class ParameterManager {
+class ParameterManager extends Manager {
     private array $parameters = [];
 
     public function addParameter(string $key, mixed $value): self

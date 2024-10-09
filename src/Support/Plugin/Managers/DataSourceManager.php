@@ -6,7 +6,7 @@ use Alban\Simplisiti\Support\Plugin\Containers\DataContainer;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
 use Illuminate\Support\Str;
 
-class DataSourceManager {
+class DataSourceManager extends Manager {
     private array $datasources = [];
     private string $selectedKey;
 

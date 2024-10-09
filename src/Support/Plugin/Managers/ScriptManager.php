@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-class ScriptManager implements AssetManager {
+class ScriptManager extends Manager implements AssetManager {
     private Collection $scripts;
     private array $pluginScripts;
 

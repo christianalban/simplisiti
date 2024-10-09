@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-class ActionManager {
+class ActionManager extends Manager {
     private array $actions = [];
     private array $events = [];
     private array $after = [];

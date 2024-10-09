@@ -4,7 +4,7 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Illuminate\Support\Collection;
 
-class BodyManager {
+class BodyManager extends Manager {
     private Collection $body;
     private Collection $attributes;
 

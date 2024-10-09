@@ -6,7 +6,7 @@ use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
-class SettingManager {
+class SettingManager extends Manager {
     private Collection $settings;
     private Collection $settingEntries;
 

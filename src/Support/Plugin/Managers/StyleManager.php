@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-class StyleManager implements AssetManager {
+class StyleManager extends Manager implements AssetManager {
     private Collection $styles;
     private array $pluginStyles;
 
