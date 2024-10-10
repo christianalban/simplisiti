@@ -38,7 +38,9 @@ class PagesLoader
     
     public static function loadPages(): void
     {
-        (new static(App::make(SimplisitiApp::class)))->loadPagesList();
+        $app = App::make(SimplisitiApp::class);
+
+        (new static($app))->loadPagesList();
     }
 
     protected function loadPagesList(): void

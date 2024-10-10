@@ -8,8 +8,8 @@ return [
     'resources_disk' => 'public',
 
     'managers' => [
-        Managers\StyleManager::class,
         Managers\HeadManager::class,
+        Managers\StyleManager::class,
         Managers\ScriptManager::class,
         Managers\SettingManager::class,
         Managers\BodyManager::class,

@@ -3,11 +3,13 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine;
 
 use Alban\Simplisiti\Models\Plugin;
 use Alban\Simplisiti\Services\SimplisitiEngine\Managers\ManagerContainer;
+use Alban\Simplisiti\Services\SimplisitiEngine\Renderer\ElementContainer;
 use Alban\Simplisiti\Support\Plugin\Managers\ActionManager;
 use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
+use Alban\Simplisiti\Support\Plugin\Managers\Manager;
 use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
@@ -19,10 +21,14 @@ use Illuminate\Support\Facades\Schema;
 class SimplisitiApp // extends BasePlugin
 {
     private ManagerContainer $managerContainer;
+    private ElementContainer $headContainer;
+    private ElementContainer $bodyContainer;
 
     public function __construct()
     {
-        $this->managerContainer = new ManagerContainer;
+        $this->headContainer = new ElementContainer();
+        $this->bodyContainer = new ElementContainer();
+        $this->managerContainer = new ManagerContainer($this);
     }
 
     public function getManagerContainer(): ManagerContainer
@@ -30,13 +36,28 @@ class SimplisitiApp // extends BasePlugin
         return $this->managerContainer;
     }
 
+    public function onManager(string $key): Manager
+    {
+        return $this->getManagerContainer()->onManager($key);
+    }
+
+    public function onHead(): ElementContainer
+    {
+        return $this->headContainer;
+    }
+
+    public function onBody(): ElementContainer
+    {
+        return $this->bodyContainer;
+    }
+
     /*
      * @deprecated
      * */
-    public function getStyleManager(): StyleManager
-    {
-        return $this->getManagerContainer()->onManager(StyleManager::class);
-    }
+    // public function getStyleManager(): StyleManager
+    // {
+    //     return $this->getManagerContainer()->onManager(StyleManager::class);
+    // }
 
     /*
      * @deprecated

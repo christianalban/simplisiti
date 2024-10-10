@@ -1,13 +1,17 @@
 <?php
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Managers;
 
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBeforeInit;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnInit;
 use Alban\Simplisiti\Support\Plugin\Managers\Manager;
 
 class ManagerContainer {
     private array $managers = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        private SimplisitiApp $app,
+    ) {
         $managersConfig = config('simplisiti.managers');
 
         $this->loadFromConfig($managersConfig);
@@ -20,7 +24,17 @@ class ManagerContainer {
         }
 
         foreach ($config as $manager) {
-            $this->addManager(new $manager);
+            $manager = new $manager($this->app);
+
+            if ($manager instanceof OnBeforeInit) {
+                $manager->onBeforeInit();
+            }
+
+            $this->addManager($manager);
+
+            if ($manager instanceof OnInit) {
+                $manager->onInit();
+            }
         }
 
         return $this;
@@ -35,10 +49,5 @@ class ManagerContainer {
     public function onManager(string $key): Manager
     {
         return $this->managers[$key];
-    }
-
-    public function execute(string $key, string $method, ...$args)
-    {
-        return $this->onManager($key)->execute($method, ...$args);
     }
 }
