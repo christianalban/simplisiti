@@ -42,6 +42,7 @@ import {
     faGears,
     faToolbox,
     faClone,
+    faListCheck,
 } from '@fortawesome/free-solid-svg-icons'
 import { faCss3, faJs } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -91,6 +92,7 @@ library.add(
     faGears,
     faToolbox,
     faClone,
+    faListCheck 
 );
 
 export default FontAwesomeIcon;

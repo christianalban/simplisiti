@@ -5,19 +5,8 @@ import './custom.css'
 </script>
 
 <template>
-    <div class="container">
+    <div class="w-full relative">
         <router-view />
     </div>
     <toast position="bottom-right"/>
 </template>
-
-<style scoped>
-.container {
-    max-width: 1366px;
-    margin: 0 auto;
-    position: relative;
-}
-</style>
-<style lang="scss">
-
-</style>

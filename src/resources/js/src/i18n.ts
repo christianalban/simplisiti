@@ -7,6 +7,7 @@ const messages = {
             components: "Components",
             pages: "Pages",
             status: "Status",
+            projectStatus: "Current project status",
             styles: "Styles",
             scripts: "Scripts",
             resources: "Resources",
@@ -27,6 +28,14 @@ const messages = {
             resources: "There isn't any resource created yet. | {count} resource loaded successfully. | {count} resources loaded successfully.",
             cacheClear: "Click to clear cache",
             cacheClearing: "Clearing cache...",
+            helps: {
+                components: "Components are content blocks that can be reused in pages.",
+                pages: "Pages are the urls that the user will visit, and in which components can be added.",
+                styles: "Styles sheets allow you to customize the appearance of the components, through css code.",
+                scripts: "Scripts add functionalities to your components, through javascript code.",
+                resources: "Resources are images, videos or any type of file that can be used in the components.",
+                startHere: "Start here",
+            }
         },
         components: {
             name: "Name",
@@ -352,6 +361,7 @@ const messages = {
             components: "Componentes",
             pages: "Páginas",
             status: "Estado",
+            projectStatus: "Estado actual del proyecto",
             styles: "Estilos",
             scripts: "Scripts",
             resources: "Recursos",
@@ -372,6 +382,14 @@ const messages = {
             resources: "No hay recursos creados aún. | {count} recurso cargado correctamente. | {count} recursos cargados correctamente.",
             cacheClear: "Click para limpiar caché",
             cacheClearing: "Limpiando caché...",
+            helps: {
+                components: "Los componentes son bloques de contenido que se pueden reutilizar en las páginas.",
+                pages: "Las páginas son las urls que el usuario visitará, y en las que se pueden añadir componentes.",
+                styles: "Las hojas de estilos permiten personalizar la apariencia de los componentes, por medio de código css.",
+                scripts: "Los scripts añaden funcionalidades a tus componentes, por medio de código javascript.",
+                resources: "Los recursos son imágenes, videos o cualquier tipo de archivo que se pueda utilizar en los componentes.",
+                startHere: "Comienza aquí",
+            }
         },
         components: {
             name: "Nombre",
