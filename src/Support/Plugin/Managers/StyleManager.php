@@ -28,7 +28,7 @@ class StyleManager extends Manager implements /* AssetManager, */ OnInit, OnBefo
 
     public function onInit(): void
     {
-        $this->styles->each(function ($style) {
+        $this->styles->each(function (Style $style) {
             $this->app
                 ->onHead()
                 ->createAtEnd('style')
