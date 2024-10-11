@@ -17,70 +17,36 @@ const stylesCount = ref(0);
 const scriptsCount = ref(0);
 const resourcesCount = ref(0);
 const clearingCache = ref(false);
-const toolLinks = [
-    {
-        name: 'components.index',
-        title: 'titles.components',
-        icon: 'cubes',
-    },
-    {
-        name: 'pages.index',
-        title: 'titles.pages',
-        icon: 'pager',
-    },
-    // {
-    //     name: 'flows.index',
-    //     title: 'titles.flows',
-    // },
-    {
-        name: 'styles.index',
-        title: 'titles.styles',
-        icon: ['fab', 'css3'],
-    },
-    {
-        name: 'scripts.index',
-        title: 'titles.scripts',
-        icon: ['fab', 'js'],
-    },
-    {
-        name: 'resources.index',
-        title: 'titles.resources',
-        icon: 'photo-film',
-    },
-    {
-        name: 'settings.index',
-        title: 'titles.settings',
-        icon: 'gears',
-    },
-    {
-        name: 'plugins.index',
-        title: 'titles.plugins',
-        icon: 'toolbox',
-    },
-];
 
 const toolStatus = computed(() => [
     {
         counter: componentsCount.value,
-        message: t('status.components', componentsCount.value),
+        label: 'components',
+        icon: 'cubes',
     },
     {
         counter: pagesCount.value,
-        message: t('status.pages', pagesCount.value),
+        label: 'pages',
+        icon: 'pager',
     },
     {
         counter: stylesCount.value,
-        message: t('status.styles', stylesCount.value),
+        label: 'styles',
+        icon: ['fab', 'css3'],
     },
     {
         counter: scriptsCount.value,
-        message: t('status.scripts', scriptsCount.value),
+        label: 'scripts',
+        icon: ['fab', 'js'],
     },
     {
         counter: resourcesCount.value,
-        message: t('status.resources', resourcesCount.value),
+        label: 'resources',
+        icon: 'photo-film',
     },
 ]);
+
+const pendingTools = computed(() => toolStatus.value.filter((status) => status.counter));
 
 const clearCache = () => {
     clearingCache.value = true;
@@ -143,70 +109,54 @@ const greeting = computed(() => {
 </script>
 
 <template>
-    <div class="grid md:place-items-center h-full">
-        <div class="dashboard w-full bg-white">
-            <div class="grid grid-cols-1 lg:grid-cols-2 rounded-lg gap-4 md:gap-8">
-                <div>
-                    <h2 class="title">{{ $t('titles.dashboard') }}</h2>
-                    <ul class="grid grid-cols-3 gap-2 md:gap-4">
-                        <li v-for="{ name, title, icon } of toolLinks" :key="name">
-                            <router-link class="tool-link flex flex-col gap-4 items-center justify-center" :to="{ name  }">
-                                <fa-icon class="text-5xl" :icon="icon"/>
-                                <span class="text-sm md:text-lg">{{ $t(title) }}</span>
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="mb-4 font-bold text-4xl">{{ $t(greeting) }}</h2>
-                    <h3 class="title">{{ $t('titles.status') }}</h3>
-                    <ul class="">
-                        <li class="tool-status" v-for="status of toolStatus">
-                            <fa-icon v-if="!status.counter" class="text-yellow-500" icon="triangle-exclamation"/>
-                            <fa-icon v-if="status.counter" class="text-green-500" icon="check"/>
-                            {{ status.message }}
-                        </li>
-                    </ul>
-                    <hr class="my-4"/>
-                    <ul class="">
-                        <li class="tool-status hover:underline">
-                            <button @click="clearCache" v-if="!clearingCache">
-                                <fa-icon class="text-blue-500 mr-2" icon="brush"/>
-                                {{ $t('status.cacheClear') }}
-                            </button>
-                            <p v-else>
-                                <fa-icon class="text-blue-500 mr-2 animate-spin" icon="arrows-rotate"/>
-                                {{ $t('status.cacheClearing') }}
-                            </p>
-                        </li>
-                    </ul>
-                </div>
+    <h1 class="text-2xl font-black text-gray-800">
+        {{ $t(greeting) }}
+    </h1>
+    <p class="mb-6 text-gray-600">
+        {{ $t('titles.projectStatus') }}
+    </p>
+    <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-x-4 gap-y-8">
+        <div class="rounded-xl bg-white p-10 shadow-md col-span-1 2xl:col-span-2">
+            <h3 class="title mb-2">
+                <fa-icon class="text-2xl mr-2" icon="list-check"/>
+                {{ $t('titles.status') }}
+            </h3>
+            <ul>
+                <li class="tool-status" v-for="status of toolStatus">
+                    <fa-icon v-if="!status.counter" class="text-yellow-500" icon="triangle-exclamation"/>
+                    <fa-icon v-if="status.counter" class="text-green-500" icon="check"/>
+                    {{ t(`status.${status.label}`, status.counter) }}
+                </li>
+            </ul>
+            <hr class="my-4"/>
+            <ul>
+                <li class="tool-status hover:underline">
+                    <button @click="clearCache" v-if="!clearingCache">
+                        <fa-icon class="text-blue-500 mr-2" icon="brush"/>
+                        {{ $t('status.cacheClear') }}
+                    </button>
+                    <p v-else>
+                        <fa-icon class="text-blue-500 mr-2 animate-spin" icon="arrows-rotate"/>
+                        {{ $t('status.cacheClearing') }}
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-span-1 hidden lg:block"></div>
+        <div class="rounded-xl bg-white p-10 shadow-md" v-for="status of pendingTools">
+            <h3 class="title">
+                <fa-icon class="text-2xl mr-2" :icon="status.icon"/>
+                {{ $t(`titles.${status.label}`) }}
+            </h3>
+            <p class="text-gray-600">{{ $t(`status.helps.${status.label}`) }}</p>
+            <div>
+                <router-link class="underline text-blue-600" :to="{ name: `${status.label}.index` }">
+                    {{ $t('status.helps.startHere') }}
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.dashboard {
-    max-width: 1000px;
-}
-
-li {
-    @apply flex;
-    .tool-link {
-        @apply px-4 py-2 w-full transition border border-gray-100 rounded-2xl aspect-square shadow-lg;
-        &:hover {
-            @apply bg-gray-100;
-            text-decoration: underline;
-        }
-    }
-
-    &.tool-status {
-        @apply flex items-center gap-2;
-    }
-}
-
-.title {
-    @apply text-lg font-bold mb-4;
-}
 </style>
