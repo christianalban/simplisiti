@@ -23,8 +23,6 @@ class ComponentController extends Controller {
     {
         $app->loadSettings();
 
-        $app->loadHeaders();
-
         $app->loadDataSources();
 
         $app->loadActions();

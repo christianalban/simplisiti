@@ -13,8 +13,6 @@ class DataSourceController extends Controller {
     {
         $this->app->loadSettings();
 
-        $this->app->loadHeaders();
-
         $this->app->loadDataSources();
 
         $this->app->loadPlugins();

@@ -13,8 +13,6 @@ class ActionController extends Controller {
     {
         $this->app->loadSettings();
 
-        $this->app->loadHeaders();
-
         $this->app->loadActions();
 
         $this->app->loadPlugins();
