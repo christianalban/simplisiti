@@ -17,12 +17,6 @@ class PagesLoader
     public function __construct(
         private SimplisitiApp $app
     ) {
-        $this->app->loadStyles();
-
-        $this->app->loadHeaders();
-
-        $this->app->loadBody();
-
         $this->app->loadScripts(); 
 
         $this->app->loadSettings(); 

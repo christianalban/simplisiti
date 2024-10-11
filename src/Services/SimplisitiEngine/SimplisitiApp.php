@@ -5,16 +5,13 @@ use Alban\Simplisiti\Models\Plugin;
 use Alban\Simplisiti\Services\SimplisitiEngine\Managers\ManagerContainer;
 use Alban\Simplisiti\Services\SimplisitiEngine\Renderer\ElementContainer;
 use Alban\Simplisiti\Support\Plugin\Managers\ActionManager;
-use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
-use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
 use Alban\Simplisiti\Support\Plugin\Managers\Manager;
 use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
-use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
 use Alban\Simplisiti\Support\Plugin\Plugin as BasePlugin;
 use Illuminate\Support\Facades\Schema;
 
@@ -54,21 +51,6 @@ class SimplisitiApp // extends BasePlugin
     /*
      * @deprecated
      * */
-    // public function getStyleManager(): StyleManager
-    // {
-    //     return $this->getManagerContainer()->onManager(StyleManager::class);
-    // }
-
-    /*
-     * @deprecated
-     * */
-    public function getHeadManager(): HeadManager
-    {
-        return $this->getManagerContainer()->onManager(HeadManager::class);
-    }
-    /*
-     * @deprecated
-     * */
     public function getScriptManager(): ScriptManager
     {
         return $this->getManagerContainer()->onManager(ScriptManager::class);
@@ -77,11 +59,6 @@ class SimplisitiApp // extends BasePlugin
     public function getSettingManager(): SettingManager
     {
         return $this->getManagerContainer()->onManager(SettingManager::class);
-    }
-
-    public function getBodyManager(): BodyManager
-    {
-        return $this->getManagerContainer()->onManager(BodyManager::class);
     }
 
     /*
@@ -116,26 +93,8 @@ class SimplisitiApp // extends BasePlugin
         $this->initPlugins();
     }
 
-    /*
-     * @deprecated
-     * */
-    public function loadStyles(): void {
-        if (!Schema::hasTable('styles')) {
-            return;
-        }
-
-        // $this->styleManager = new StyleManager;
-    }
-
     public function loadParameters(): void {
         // $this->parameterManager = new ParameterManager;
-    }
-
-    /*
-     * @deprecated
-     * */
-    public function loadHeaders(): void {
-        // $this->headManager = new HeadManager;
     }
 
     /*
@@ -155,10 +114,6 @@ class SimplisitiApp // extends BasePlugin
 
     public function loadCache(): void {
         // $this->cacheManager = new CacheManager;
-    }
-
-    public function loadBody(): void {
-        // $this->bodyManager = new BodyManager;
     }
 
     public function loadDataSources(): void {

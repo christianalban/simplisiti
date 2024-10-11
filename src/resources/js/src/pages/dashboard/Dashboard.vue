@@ -46,7 +46,7 @@ const toolStatus = computed(() => [
     },
 ]);
 
-const pendingTools = computed(() => toolStatus.value.filter((status) => status.counter));
+const pendingTools = computed(() => toolStatus.value.filter((status) => !status.counter));
 
 const clearCache = () => {
     clearingCache.value = true;

@@ -1,5 +1,9 @@
 @foreach($renderer->getElements() as $element)
-    <{{ $element->getTag() }}{!! $element->getAttributesAsString() !!}>
-        {!! $element->getContent() !!}
-    </{{ $element->getTag() }}>
+    @if($element->onlyForCurrentPage() && $element->exceptForCurrentPage())
+        <{{ $element->getTag() }}{!! $element->getAttributesAsString() !!}>
+            {!! $element->getContent() !!}
+        @if(!$element->getNoClose())
+        </{{ $element->getTag() }}>
+        @endif
+    @endif
 @endforeach

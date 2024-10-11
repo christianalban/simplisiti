@@ -7,6 +7,9 @@ class Element {
         private string $tag,
         private array $attributes = [],
         private string $content = '',
+        private bool $noCloseTag = false,
+        private array $onlyOnPage = [],
+        private array $exceptOnPage = [],
     ) {}
 
     public function addAttribute(string $key, string $value): self
@@ -19,6 +22,45 @@ class Element {
     {
         $this->content = $content;
         return $this;
+    }
+
+    public function noClose(): self
+    {
+        $this->noCloseTag = true;
+        return $this;
+    }
+
+    public function onlyOnPage(string|array $pages): self
+    {
+        if (is_string($pages)) {
+            $pages = [$pages];
+        }
+        $this->onlyOnPage = $pages;
+        return $this;
+    }
+
+    public function exceptOnPage(string|array $pages): self
+    {
+        if (is_string($pages)) {
+            $pages = [$pages];
+        }
+        $this->exceptOnPage = $pages;
+        return $this;
+    }
+
+    public function getOnlyOnPage(): array
+    {
+        return $this->onlyOnPage;
+    }
+
+    public function getExceptOnPage(): array
+    {
+        return $this->exceptOnPage;
+    }
+
+    public function getNoClose(): bool
+    {
+        return $this->noCloseTag;
     }
 
     public function getTag(): string
@@ -45,5 +87,27 @@ class Element {
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function onlyForCurrentPage(): bool
+    {
+        if (empty($this->onlyOnPage)) {
+            return true;
+        }
+
+        $page = request()->route()->getName();
+
+        return in_array($page, $this->onlyOnPage);
+    }
+
+    public function exceptForCurrentPage(): bool
+    {
+        if (empty($this->exceptOnPage)) {
+            return true;
+        }
+
+        $page = request()->route()->getName();
+
+        return !in_array($page, $this->exceptOnPage);
     }
 }

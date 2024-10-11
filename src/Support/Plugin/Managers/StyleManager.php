@@ -31,8 +31,11 @@ class StyleManager extends Manager implements /* AssetManager, */ OnInit, OnBefo
         $this->styles->each(function (Style $style) {
             $this->app
                 ->onHead()
-                ->createAtEnd('style')
-                ->setContent($style->styles);
+                ->createAtEnd('link')
+                ->noClose()
+                ->addAttribute('type', 'text/css')
+                ->addAttribute('rel', 'stylesheet')
+                ->addAttribute('href', asset(config('simplisiti.styles_path') . '/' . $style->name . '.css'));
         });
     }
 

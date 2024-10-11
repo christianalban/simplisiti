@@ -34,7 +34,8 @@ class ScriptManager extends Manager implements /* AssetManager, */ OnInit, OnBef
             $this->app
                 ->onBody()
                 ->createAtEnd('script')
-                ->setContent($script->scripts);
+                ->addAttribute('type', 'text/javascript')
+                ->addAttribute('src', asset(config('simplisiti.scripts_path') . '/' . $script->name . '.js'));
         });
     }
 
