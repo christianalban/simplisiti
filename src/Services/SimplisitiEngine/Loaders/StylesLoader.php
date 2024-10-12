@@ -42,19 +42,19 @@ class StylesLoader
         if (Cache::has('pluginStyles')) {
             $pluginStyles = Cache::get('pluginStyles');
         } else {
-            $pluginStyles = $app->getStyleManager()->getPluginStyles();
-            Cache::put('pluginStyles', $pluginStyles);
+            // $pluginStyles = $app->getStyleManager()->getPluginStyles();
+            // Cache::put('pluginStyles', $pluginStyles);
         }
 
-        $pluginStyles->each(function ($styles, $plugin) {
-            collect($styles)->each(function ($style, $name) use ($plugin) {
-                $path = config('simplisiti.styles_path') . '/' . $plugin . '/' . $name . '.css';
-                Route::get($path, function () use ($style) {
-                    return response($style, 200, [
-                        'Content-Type' => 'text/css',
-                    ]);
-                });
-            });
-        });
+        // $pluginStyles->each(function ($styles, $plugin) {
+        //     collect($styles)->each(function ($style, $name) use ($plugin) {
+        //         $path = config('simplisiti.styles_path') . '/' . $plugin . '/' . $name . '.css';
+        //         Route::get($path, function () use ($style) {
+        //             return response($style, 200, [
+        //                 'Content-Type' => 'text/css',
+        //             ]);
+        //         });
+        //     });
+        // });
     }
 }

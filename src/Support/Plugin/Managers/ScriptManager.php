@@ -3,25 +3,12 @@
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Models\Script;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
-use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBeforeInit;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnInit;
-use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
-class ScriptManager extends Manager implements /* AssetManager, */ OnInit, OnBeforeInit {
+class ScriptManager extends Manager implements OnInit, OnBeforeInit {
     private Collection $scripts;
-    // private array $pluginScripts;
-    //
-    // public function __construct(
-    // ) {
-    //     $this->scripts = $this->renderScript();
-    //     $this->pluginScripts = [];
-    // }
 
     public function onBeforeInit(): void
     {
@@ -31,11 +18,9 @@ class ScriptManager extends Manager implements /* AssetManager, */ OnInit, OnBef
     public function onInit(): void
     {
         $this->scripts->each(function (Script $script) {
-            $this->app
-                ->onBody()
-                ->createAtEnd('script')
-                ->addAttribute('type', 'text/javascript')
-                ->addAttribute('src', asset(config('simplisiti.scripts_path') . '/' . $script->name . '.js'));
+            $this->addScriptAtEnd(
+                asset(config('simplisiti.scripts_path') . '/' . $script->name . '.js')
+            );
         });
     }
 
@@ -44,7 +29,29 @@ class ScriptManager extends Manager implements /* AssetManager, */ OnInit, OnBef
         return Script::active()->get();
     }
 
-    public function setScripts(Collection | array $scripts): void
+    public function addScript(string $src, bool $atEnd = false, bool $noClose = false): void
+    {
+        $body = $this->app->onBody();
+
+        $element = match ($atEnd) {
+            true => $body->createAtEnd('script'),
+            default => $body->createAtStart('script'),
+        };
+
+        if ($noClose) {
+            $element->noClose();
+        }
+
+        $element->addAttribute('type', 'text/javascript')
+            ->addAttribute('src', $src);
+    }
+
+    public function addScriptAtEnd(string $name, bool $noClose = false): void
+    {
+        $this->addScript($name, atEnd: true, noClose: $noClose);
+    }
+
+    protected function setScripts(Collection | array $scripts): void
     {
         if (is_array($scripts)) {
             $scripts = collect($scripts);
@@ -53,11 +60,6 @@ class ScriptManager extends Manager implements /* AssetManager, */ OnInit, OnBef
         $this->scripts = $scripts;
     }
 
-    // public function getScripts(): Collection
-    // {
-    //     return $this->scripts;
-    // }
-    //
     // public function addPluginScript(Plugin $plugin, string $name, string $script): void
     // {
     //     $pluginPath = explode('\\', $plugin::class);

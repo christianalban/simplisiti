@@ -3,23 +3,12 @@
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Models\Style;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
-use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBeforeInit;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnInit;
-use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
-class StyleManager extends Manager implements /* AssetManager, */ OnInit, OnBeforeInit {
+class StyleManager extends Manager implements OnInit, OnBeforeInit {
     private Collection $styles;
-    // private array $pluginStyles;
-    //
-    // public function __construct(
-    // ) {
-    //     $this->pluginStyles = [];
-    // }
 
     public function onBeforeInit(): void
     {
@@ -29,14 +18,34 @@ class StyleManager extends Manager implements /* AssetManager, */ OnInit, OnBefo
     public function onInit(): void
     {
         $this->styles->each(function (Style $style) {
-            $this->app
-                ->onHead()
-                ->createAtEnd('link')
-                ->noClose()
-                ->addAttribute('type', 'text/css')
-                ->addAttribute('rel', 'stylesheet')
-                ->addAttribute('href', asset(config('simplisiti.styles_path') . '/' . $style->name . '.css'));
+            $this->addLinkAtEnd(
+                asset(config('simplisiti.styles_path') . '/' . $style->name . '.css'),
+                noClose: true
+            );
         });
+    }
+
+    public function addLink(string $href, bool $atEnd = false, bool $noClose = false): void
+    {
+        $head = $this->app->onHead();
+
+        $element = match ($atEnd) {
+            true => $head->createAtEnd('link'),
+            default => $head->createAtStart('link'),
+        };
+
+        if ($noClose) {
+            $element->noClose();
+        }
+
+        $element->addAttribute('type', 'text/css')
+            ->addAttribute('rel', 'stylesheet')
+            ->addAttribute('href', $href);
+    }
+
+    public function addLinkAtEnd(string $name, bool $noClose = false): void
+    {
+        $this->addLink($name, atEnd: true, noClose: $noClose);
     }
 
     protected function renderStyle(): Collection
@@ -44,12 +53,7 @@ class StyleManager extends Manager implements /* AssetManager, */ OnInit, OnBefo
         return Style::active()->get();
     }
 
-    // public function getStyles(): Collection
-    // {
-    //     return $this->styles;
-    // }
-
-    public function setStyles(Collection | array $styles): void
+    protected function setStyles(Collection | array $styles): void
     {
         if (is_array($styles)) {
             $styles = collect($styles);
