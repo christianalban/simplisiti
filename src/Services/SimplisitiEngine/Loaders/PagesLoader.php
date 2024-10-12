@@ -17,17 +17,15 @@ class PagesLoader
     public function __construct(
         private SimplisitiApp $app
     ) {
-        $this->app->loadScripts(); 
-
-        $this->app->loadSettings(); 
-
-        $this->app->loadDataSources(); 
-
-        $this->app->loadActions(); 
-
-        $this->app->loadPlugins();
-
-        $this->app->loadParameters();
+        // $this->app->loadSettings(); 
+        //
+        // $this->app->loadDataSources(); 
+        //
+        // $this->app->loadActions(); 
+        //
+        // $this->app->loadPlugins();
+        //
+        // $this->app->loadParameters();
     }
     
     public static function loadPages(): void

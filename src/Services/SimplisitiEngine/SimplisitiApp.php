@@ -10,7 +10,6 @@ use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\Manager;
 use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
-use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
 use Alban\Simplisiti\Support\Plugin\Plugin as BasePlugin;
 use Illuminate\Support\Facades\Schema;
@@ -48,17 +47,8 @@ class SimplisitiApp // extends BasePlugin
         return $this->bodyContainer;
     }
 
-    /*
-     * @deprecated
-     * */
-    public function getScriptManager(): ScriptManager
-    {
-        return $this->getManagerContainer()->onManager(ScriptManager::class);
-    }
-
-    public function getSettingManager(): SettingManager
-    {
-        return $this->getManagerContainer()->onManager(SettingManager::class);
+    public function init(): void {
+        $this->initPlugins();
     }
 
     /*
@@ -67,6 +57,11 @@ class SimplisitiApp // extends BasePlugin
     public function getPluginManager(): PluginManager
     {
         return $this->getManagerContainer()->onManager(PluginManager::class);
+    }
+
+    public function getSettingManager(): SettingManager
+    {
+        return $this->getManagerContainer()->onManager(SettingManager::class);
     }
 
     public function getCacheManager(): CacheManager
@@ -89,23 +84,8 @@ class SimplisitiApp // extends BasePlugin
         return $this->getManagerContainer()->onManager(ParameterManager::class);
     }
 
-    public function init(): void {
-        $this->initPlugins();
-    }
-
     public function loadParameters(): void {
         // $this->parameterManager = new ParameterManager;
-    }
-
-    /*
-     * @deprecated
-     * */
-    public function loadScripts(): void {
-        if (!Schema::hasTable('scripts')) {
-            return;
-        }
-
-        // $this->scriptManager = new ScriptManager;
     }
 
     public function loadSettings(): void {
