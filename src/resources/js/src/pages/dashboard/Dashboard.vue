@@ -46,8 +46,6 @@ const toolStatus = computed(() => [
     },
 ]);
 
-const pendingTools = computed(() => toolStatus.value.filter((status) => status.counter));
-
 const clearCache = () => {
     clearingCache.value = true;
     clearLoadedResources();
@@ -143,7 +141,7 @@ const greeting = computed(() => {
             </ul>
         </div>
         <div class="col-span-1 hidden lg:block"></div>
-        <div class="rounded-xl bg-white p-10 shadow-md" v-for="status of pendingTools">
+        <div class="rounded-xl bg-white p-10 shadow-md" v-for="status of toolStatus">
             <h3 class="title">
                 <fa-icon class="text-2xl mr-2" :icon="status.icon"/>
                 {{ $t(`titles.${status.label}`) }}
