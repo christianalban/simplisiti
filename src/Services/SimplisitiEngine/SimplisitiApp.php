@@ -53,96 +53,98 @@ class SimplisitiApp // extends BasePlugin
 
     public function init(): void {
         // $this->initPlugins();
+        $this->managerContainer->load();
+
         $this->managerContainer->boot();
     }
 
     /*
      * @deprecated
      * */
-    public function getPluginManager(): PluginManager
-    {
-        return $this->getManagerContainer()->onManager(PluginManager::class);
-    }
-
-    public function getSettingManager(): SettingManager
-    {
-        return $this->getManagerContainer()->onManager(SettingManager::class);
-    }
-
-    public function getCacheManager(): CacheManager
-    {
-        return $this->getManagerContainer()->onManager(CacheManager::class);
-    }
-
-    public function getDataSourceManager(): DataSourceManager
-    {
-        return $this->getManagerContainer()->onManager(DataSourceManager::class);
-    }
-
-    public function getActionManager(): ActionManager
-    {
-        return $this->getManagerContainer()->onManager(ActionManager::class);
-    }
-
-    public function getRouterManager(): RouterManager
-    {
-        return $this->getManagerContainer()->onManager(RouterManager::class);
-    }
-
-    public function loadParameters(): void {
-        // $this->parameterManager = new ParameterManager;
-    }
-
-    public function loadSettings(): void {
-        // $this->settingManager = new SettingManager;
-    }
-
-    public function loadCache(): void {
-        // $this->cacheManager = new CacheManager;
-    }
-
-    public function loadDataSources(): void {
-        // $this->dataSourceManager = new DataSourceManager;
-    }
-
-    public function loadActions(): void {
-        // $this->actionManager = new ActionManager;
-    }
-
-    public function loadPlugins(): void {
-        if (!Schema::hasTable('plugins')) {
-            return;
-        }
-
-        // try {
-        //     $this->pluginManager = new PluginManager($this);
-        //     foreach (Plugin::enabled()->get() as $plugin) {
-        //         $this->pluginManager->add($plugin);
-        //     }
-        // } catch (\Exception $e) {
-        //     return;
-        // }
-    }
-
-    protected function initPlugins(): void {
-        if (!Schema::hasTable('plugins')) {
-            return;
-        }
-
-        // try {
-        //     $this->pluginManager->execute();
-        // } catch (\Exception $e) {
-        //     return;
-        // }
-    }
-
-    public function registerActions(): void {
-        // $this->actionManager->registerActions();
-    }
-
-    public function setRequestParameters(string $url, array $parameters): void {
-        // $this->parameterManager->addParameters($url, $parameters);
-    }
+    // public function getPluginManager(): PluginManager
+    // {
+    //     return $this->getManagerContainer()->onManager(PluginManager::class);
+    // }
+    //
+    // public function getSettingManager(): SettingManager
+    // {
+    //     return $this->getManagerContainer()->onManager(SettingManager::class);
+    // }
+    //
+    // public function getCacheManager(): CacheManager
+    // {
+    //     return $this->getManagerContainer()->onManager(CacheManager::class);
+    // }
+    //
+    // public function getDataSourceManager(): DataSourceManager
+    // {
+    //     return $this->getManagerContainer()->onManager(DataSourceManager::class);
+    // }
+    //
+    // public function getActionManager(): ActionManager
+    // {
+    //     return $this->getManagerContainer()->onManager(ActionManager::class);
+    // }
+    //
+    // public function getRouterManager(): RouterManager
+    // {
+    //     return $this->getManagerContainer()->onManager(RouterManager::class);
+    // }
+    //
+    // public function loadParameters(): void {
+    //     $this->parameterManager = new ParameterManager;
+    // }
+    //
+    // public function loadSettings(): void {
+    //     $this->settingManager = new SettingManager;
+    // }
+    //
+    // public function loadCache(): void {
+    //     $this->cacheManager = new CacheManager;
+    // }
+    //
+    // public function loadDataSources(): void {
+    //     $this->dataSourceManager = new DataSourceManager;
+    // }
+    //
+    // public function loadActions(): void {
+    //     // $this->actionManager = new ActionManager;
+    // }
+    //
+    // public function loadPlugins(): void {
+    //     if (!Schema::hasTable('plugins')) {
+    //         return;
+    //     }
+    //
+    //     try {
+    //         $this->pluginManager = new PluginManager($this);
+    //         foreach (Plugin::enabled()->get() as $plugin) {
+    //             $this->pluginManager->add($plugin);
+    //         }
+    //     } catch (\Exception $e) {
+    //         return;
+    //     }
+    // }
+    //
+    // protected function initPlugins(): void {
+    //     if (!Schema::hasTable('plugins')) {
+    //         return;
+    //     }
+    //
+    //     try {
+    //         $this->pluginManager->execute();
+    //     } catch (\Exception $e) {
+    //         return;
+    //     }
+    // }
+    //
+    // public function registerActions(): void {
+    //     $this->actionManager->registerActions();
+    // }
+    //
+    // public function setRequestParameters(string $url, array $parameters): void {
+    //     $this->parameterManager->addParameters($url, $parameters);
+    // }
 
     public static function boot(): void {
         $app = App::make(SimplisitiApp::class);

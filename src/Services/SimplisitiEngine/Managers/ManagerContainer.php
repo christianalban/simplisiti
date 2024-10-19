@@ -12,7 +12,9 @@ class ManagerContainer {
 
     public function __construct(
         private SimplisitiApp $app,
-    ) {
+    ) {}
+
+    public function load() {
         $managersConfig = config('simplisiti.managers');
 
         $this->loadFromConfig($managersConfig);

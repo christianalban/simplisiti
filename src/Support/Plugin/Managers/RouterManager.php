@@ -32,16 +32,17 @@ class RouterManager extends Manager implements OnInit, OnBoot {
             return;
         }
 
-        // if (Cache::has('pages')) {
-        //     $pages = Cache::get('pages');
-        // } else {
+        $cacheManager = $this->app->onManager(CacheManager::class);
+
+        if ($cacheManager->hasOnCache('pages')) {
+            $pages = $cacheManager->getFromCache('pages');
+        } else {
             $pages = Page::withOrderedSectionsAndComponents()->get();
-        //     Cache::put('pages', $pages);
-        // }
+            $cacheManager->addToCache('pages', $pages);
+        }
 
         $pages->each(function (Page $page) {
             Route::get($page->url, function (...$params) use ($page) {
-                $this->app->setRequestParameters($page->url, $params);
                 return View::make('simplisiti::boot', [
                     'content' => $this->renderContent($page),
                     'title' => $page->title,
@@ -56,7 +57,7 @@ class RouterManager extends Manager implements OnInit, OnBoot {
         foreach ($this->routes as $key => $route) {
             $method = $route->getMethod();
             $path = $route->getPath();
-            Route::$method($path, function(Request $request, ...$params) use ($key, $callable) {
+            Route::$method($path, function(Request $request, ...$params) use ($key) {
                 $response = response()->noContent();
 
                 $data = $route->execute($request, $params);
