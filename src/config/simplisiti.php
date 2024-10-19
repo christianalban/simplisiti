@@ -10,11 +10,12 @@ return [
     'managers' => [
         Managers\StyleManager::class,
         Managers\ScriptManager::class,
+        Managers\ActionManager::class,
+
         Managers\SettingManager::class,
         Managers\PluginManager::class,
         Managers\CacheManager::class,
         Managers\DataSourceManager::class,
-        Managers\ActionManager::class,
         Managers\ParameterManager::class,
     ]
 ];

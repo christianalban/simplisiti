@@ -41,7 +41,7 @@ class PagesLoader
             return;
         }
 
-        $this->app->init();
+        // $this->app->init();
 
         if (Cache::has('pages')) {
             $pages = Cache::get('pages');
@@ -61,7 +61,7 @@ class PagesLoader
             })->name($page->name);
         });
 
-        $this->app->registerActions();
+        // $this->app->registerActions();
     }
 
     protected function renderContent(Page $page): string

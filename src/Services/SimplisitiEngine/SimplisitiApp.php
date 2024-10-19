@@ -13,6 +13,9 @@ use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
 use Alban\Simplisiti\Support\Plugin\Plugin as BasePlugin;
 use Illuminate\Support\Facades\Schema;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\PagesLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
 
 class SimplisitiApp // extends BasePlugin
 {
@@ -48,7 +51,7 @@ class SimplisitiApp // extends BasePlugin
     }
 
     public function init(): void {
-        $this->initPlugins();
+        // $this->initPlugins();
     }
 
     /*
@@ -137,5 +140,12 @@ class SimplisitiApp // extends BasePlugin
 
     public function setRequestParameters(string $url, array $parameters): void {
         // $this->parameterManager->addParameters($url, $parameters);
+    }
+
+
+    public static function boot(): void {
+        PagesLoader::loadPages();
+        StylesLoader::loadStyles();
+        ScriptsLoader::loadScripts();
     }
 }
