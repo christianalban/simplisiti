@@ -17,6 +17,8 @@ use Alban\Simplisiti\Requests\Page\UpdatePageRequest;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Exceptions\InvalidPagePreviewActionException;
+use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
+use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -108,20 +110,20 @@ class PageController extends Controller {
         $app = app(SimplisitiApp::class);
 
         $action = match ($type) {
-            'script' => $app->getScriptManager(),
-            'style' => $app->getStyleManager(),
+            'script' => $app->onManager(ScriptManager::class),
+            'style' => $app->onManager(StyleManager::class),
         };
 
-        if (!$action instanceof AssetManager) {
-            throw new InvalidPagePreviewActionException($action::class);
-        }
+        // if (!$action instanceof AssetManager) {
+        //     throw new InvalidPagePreviewActionException($action::class);
+        // }
 
         $contentType = match ($type) {
             'style' => 'text/css',
             'script' => 'text/javascript',
         };
 
-        return response($action->toString(), 200, [
+        return response('' /* $action->toString() */, 200, [
             'Content-Type' => $contentType
         ]);
     }

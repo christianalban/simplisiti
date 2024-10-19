@@ -11,11 +11,11 @@ return [
         Managers\StyleManager::class,
         Managers\ScriptManager::class,
         Managers\ActionManager::class,
-
         Managers\SettingManager::class,
-        Managers\PluginManager::class,
+        Managers\RouterManager::class,
+
         Managers\CacheManager::class,
         Managers\DataSourceManager::class,
-        Managers\ParameterManager::class,
+        Managers\PluginManager::class,
     ]
 ];

@@ -3,6 +3,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Managers;
 
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBeforeInit;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnInit;
 use Alban\Simplisiti\Support\Plugin\Managers\Manager;
 
@@ -49,5 +50,14 @@ class ManagerContainer {
     public function onManager(string $key): Manager
     {
         return $this->managers[$key];
+    }
+
+    public function boot(): void
+    {
+        foreach ($this->managers as $manager) {
+            if ($manager instanceof OnBoot) {
+                $manager->onBoot();
+            }
+        }
     }
 }

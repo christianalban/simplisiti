@@ -8,7 +8,7 @@ use Alban\Simplisiti\Support\Plugin\Managers\ActionManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\Manager;
-use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
+use Alban\Simplisiti\Support\Plugin\Managers\RouterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
 use Alban\Simplisiti\Support\Plugin\Plugin as BasePlugin;
@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\PagesLoader;
 use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
 use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
+use Illuminate\Support\Facades\App;
 
 class SimplisitiApp // extends BasePlugin
 {
@@ -30,7 +31,7 @@ class SimplisitiApp // extends BasePlugin
         $this->managerContainer = new ManagerContainer($this);
     }
 
-    public function getManagerContainer(): ManagerContainer
+    protected function getManagerContainer(): ManagerContainer
     {
         return $this->managerContainer;
     }
@@ -52,6 +53,7 @@ class SimplisitiApp // extends BasePlugin
 
     public function init(): void {
         // $this->initPlugins();
+        $this->managerContainer->boot();
     }
 
     /*
@@ -82,9 +84,9 @@ class SimplisitiApp // extends BasePlugin
         return $this->getManagerContainer()->onManager(ActionManager::class);
     }
 
-    public function getParameterManager(): ParameterManager
+    public function getRouterManager(): RouterManager
     {
-        return $this->getManagerContainer()->onManager(ParameterManager::class);
+        return $this->getManagerContainer()->onManager(RouterManager::class);
     }
 
     public function loadParameters(): void {
@@ -142,9 +144,11 @@ class SimplisitiApp // extends BasePlugin
         // $this->parameterManager->addParameters($url, $parameters);
     }
 
-
     public static function boot(): void {
-        PagesLoader::loadPages();
+        $app = App::make(SimplisitiApp::class);
+
+        $app->init();
+
         StylesLoader::loadStyles();
         ScriptsLoader::loadScripts();
     }
