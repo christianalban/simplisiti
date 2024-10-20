@@ -24,18 +24,9 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller {
 
-    public function __construct(SimplisitiApp $app)
-    {
-        $app->loadSettings();
-
-        $app->loadDataSources();
-
-        $app->loadActions();
-
-        $app->loadPlugins();
-
-        $app->init();
-    }
+    public function __construct(
+        private SimplisitiApp $app
+    ) {}
 
     public function index(IndexQuery $query) {
         $pages = $query->query()
@@ -106,12 +97,9 @@ class PageController extends Controller {
     }
 
     public function pluginPreview(string $type) {
-
-        $app = app(SimplisitiApp::class);
-
         $action = match ($type) {
-            'script' => $app->onManager(ScriptManager::class),
-            'style' => $app->onManager(StyleManager::class),
+            'script' => $this->app->onManager(ScriptManager::class),
+            'style' => $this->app->onManager(StyleManager::class),
         };
 
         // if (!$action instanceof AssetManager) {

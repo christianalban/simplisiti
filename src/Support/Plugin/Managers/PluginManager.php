@@ -4,11 +4,11 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Support\Exceptions\PluginNotFoundException;
 use Alban\Simplisiti\Models;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Exceptions\InvalidPluginException;
 use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterInstall;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterLoad;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
@@ -19,12 +19,15 @@ use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Facades\Http;
 
-class PluginManager extends Manager {
+class PluginManager extends Manager implements OnBoot {
     private array $history = [];
+    private CacheManager $cacheManager;
+    private SettingManager $settingManager;
 
-    public function __construct(
-        // private SimplisitiApp $app
-    ) {}
+    public function onBoot(): void {
+        $this->cacheManager = $this->app->onManager(CacheManager::class);
+        $this->settingManager = $this->app->onManager(SettingManager::class);
+    }
 
     public function add(Models\Plugin $plugin) {
         $this->history[$plugin->name] = $this->loadPlugin($plugin);
@@ -33,22 +36,20 @@ class PluginManager extends Manager {
     public function getRepositoryList(): array {
         return array_map(function ($plugin) {
             return (object) $plugin;
-        }, $this->app->getSettingValue('repositories') ?? []);
+        }, $this->settingManager->getSettingValue('repositories') ?? []);
     }
 
     public function updateRepositoryList(array $repositories): void {
-        $this->app->setSettingValue('repositories', $repositories);
+        $this->settingManager->setSettingValue('repositories', $repositories);
     }
 
     public function syncPackagesList(): array {
         $repositories = $this->getRepositoryList();
 
-        $cacheManager = $this->app->getCacheManager();
-
         $packageCache = [];
         $urlLogs = [];
 
-        $cacheManager->removeFromCache('repositories:packages');
+        $this->cacheManager->removeFromCache('repositories:packages');
 
         foreach ($repositories as $repository) {
             try {
@@ -83,25 +84,21 @@ class PluginManager extends Manager {
             }
         }
 
-        $cacheManager->addToCache('repositories:packages', $packageCache);
+        $this->cacheManager->addToCache('repositories:packages', $packageCache);
 
         return $urlLogs;
     }
 
     public function getPackageList(): array {
-        $cacheManager = $this->app->getCacheManager();
-
         $installedPlugins = Models\Plugin::all();
         return array_map(function ($package) use ($installedPlugins) {
             $package['status'] = $installedPlugins->where('name', $package['name'])->first()?->status ?? 'not-installed';
             return (object) $package;
-        }, $cacheManager->getFromCache('repositories:packages'));
+        }, $this->cacheManager->getFromCache('repositories:packages'));
     }
 
     public function installPackage(string $name): Models\Plugin {
-        $cacheManager = $this->app->getCacheManager();
-
-        $packageList = array_column($cacheManager->getFromCache('repositories:packages'), null, 'name');
+        $packageList = array_column($this->cacheManager->getFromCache('repositories:packages'), null, 'name');
         $package = $packageList[$name];
 
         // Download the package and unpack the tar file

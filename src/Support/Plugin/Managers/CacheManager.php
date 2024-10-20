@@ -19,11 +19,17 @@ class CacheManager extends Manager {
         Cache::forget($this->cacheKeyNamsepaced($key));
     }
 
-    public function getFromCache(string $key): mixed {
+    public function getFromCache(string $key, $default = null): mixed {
+
+        if (!$this->hasOnCache($key) && $default !== null) {
+            $this->addToCache($key, $default);
+            return $default;
+        }
+
         return Cache::get($this->cacheKeyNamsepaced($key));
     }
 
-    public function hasOnCache(string $key): mixed {
+    public function hasOnCache(string $key): bool {
         return Cache::has($this->cacheKeyNamsepaced($key));
     }
 }

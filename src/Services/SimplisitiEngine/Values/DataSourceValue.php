@@ -3,6 +3,7 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Values;
 
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Illuminate\Support\Facades\Request;
 
 class DataSourceValue extends Value
@@ -20,7 +21,7 @@ class DataSourceValue extends Value
 
         $app = app(SimplisitiApp::class);
 
-        $container = $app->getDataSourceManager()->getDataContainer($this->default);
+        $container = $app->onManager(DataSourceManager::class)->getDataContainer($this->default);
 
         $appliedSettings = $this->parseAppliedSettings();
 

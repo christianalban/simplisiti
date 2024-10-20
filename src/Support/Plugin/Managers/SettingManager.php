@@ -2,18 +2,31 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
+use Alban\Simplisiti\Models\Setting;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
-class SettingManager extends Manager {
+class SettingManager extends Manager implements OnBoot {
     private Collection $settings;
+    private Collection $settingsValues;
     private Collection $settingEntries;
+    private CacheManager $cacheManager;
 
-    public function __construct(
-    ) {
+    public function onBoot(): void
+    {
         $this->settings = new Collection;
         $this->settingEntries = new Collection;
+
+        $this->cacheManager = $this->app->onManager(CacheManager::class);
+
+        $this->loadSettingsValues();
+    }
+
+    protected function loadSettingsValues(): void
+    {
+        $this->settingsValues = $this->cacheManager->getFromCache('settings-values', Setting::all());
     }
 
     public function settingEntry(string|ManipulateSetting $plugin, string $label, string $description = null): void
@@ -78,5 +91,25 @@ class SettingManager extends Manager {
         }
 
         return array_values($settingMenu);
+    }
+
+    public function getSettingValue(string $settingName): string | array | null
+    {
+        return $this->settingsValues->where('name', $settingName)->first()->value['value'] ?? null;
+    }
+
+    public function setSettingValue(string $name, array $value): void
+    {
+        Setting::updateOrCreate(
+            [
+                // 'plugin' => $this::class,
+                'name' => $name,
+            ],
+            [
+                'value' => [
+                    'value' => $value,
+                ],
+            ]
+        );
     }
 }
