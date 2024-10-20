@@ -3,20 +3,25 @@
 namespace Alban\Simplisiti\Actions\Plugin;
 
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Illuminate\Support\Facades\DB;
 
 class InstallPackageAction
 {
+    private PluginManager $pluginManager;
+
+    public function __construct(
+        private SimplisitiApp $app
+    ) {
+        $this->pluginManager = $this->app->onManager(PluginManager::class);
+    }
+
     public function execute(array $data): void
     {
         DB::transaction(function () use ($data) {
-            $app = app(SimplisitiApp::class);
+            $installedPlugin = $this->pluginManager->installPackage($data['name']);
 
-            $pluginManager = $app->getPluginManager();
-
-            $installedPlugin = $pluginManager->installPackage($data['name']);
-
-            $pluginManager->postInstall($installedPlugin);
+            $this->pluginManager->postInstall($installedPlugin);
         });
     }
 }

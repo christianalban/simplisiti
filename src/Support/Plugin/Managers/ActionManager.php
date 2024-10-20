@@ -33,10 +33,10 @@ class ActionManager extends Manager {
     // private array $before = [];
     // private string $selectedKey;
     //
-    // public function getActionList(): array
-    // {
-    //     return array_keys($this->actions);
-    // }
+    public function getActionList(): array
+    {
+        return array_keys($this->events);
+    }
     //
     // public function addAction(ManipulateAction $manipulateAction, string $key, string $method, string $path, Closure $action): self
     // {
