@@ -42,19 +42,19 @@ class ScriptsLoader
         if (Cache::has('pluginScripts')) {
             $pluginScripts = Cache::get('pluginScripts');
         } else {
-            $pluginScripts = $app->getScriptManager()->getPluginScripts();
-            Cache::put('pluginScripts', $pluginScripts);
+            // $pluginScripts = $app->getScriptManager()->getPluginScripts();
+            // Cache::put('pluginScripts', $pluginScripts);
         }
 
-        $pluginScripts->each(function ($scripts, $plugin) {
-            collect($scripts)->each(function ($script, $name) use ($plugin) {
-                $path = config('simplisiti.scripts_path') . '/' . $plugin . '/' . $name . '.js';
-                Route::get($path, function () use ($script) {
-                    return response($script, 200, [
-                        'Content-Type' => 'text/javascript',
-                    ]);
-                });
-            });
-        });
+        // $pluginScripts->each(function ($scripts, $plugin) {
+        //     collect($scripts)->each(function ($script, $name) use ($plugin) {
+        //         $path = config('simplisiti.scripts_path') . '/' . $plugin . '/' . $name . '.js';
+        //         Route::get($path, function () use ($script) {
+        //             return response($script, 200, [
+        //                 'Content-Type' => 'text/javascript',
+        //             ]);
+        //         });
+        //     });
+        // });
     }
 }
