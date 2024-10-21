@@ -8,6 +8,7 @@ use Alban\Simplisiti\Support\Exceptions\InvalidPluginException;
 use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterInstall;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterLoad;
+use Alban\Simplisiti\Support\Plugin\Managers\Helpers\SettingHelpers;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 
 class PluginManager extends Manager implements OnBoot {
+    use SettingHelpers;
+
     private array $history = [];
     private CacheManager $cacheManager;
     private SettingManager $settingManager;
@@ -44,6 +47,8 @@ class PluginManager extends Manager implements OnBoot {
 
             $this->execute();
         } catch (\Exception $e) {
+            //TODO: Log the exceptions
+            dd($e->getMessage());
             return;
         }
     }
@@ -59,7 +64,7 @@ class PluginManager extends Manager implements OnBoot {
     }
 
     public function updateRepositoryList(array $repositories): void {
-        $this->settingManager->setSettingValue('repositories', $repositories);
+        $this->settingManager->setSettingValue($this::class, 'repositories', $repositories);
     }
 
     public function syncPackagesList(): array {
@@ -200,32 +205,29 @@ class PluginManager extends Manager implements OnBoot {
 
     protected function execute(): void {
         foreach ($this->history as $plugin) {
-            if ($plugin instanceof ManipulateSetting) {
-                $plugin->withSettings($this->app->onManager(SettingManager::class));
-            }
-
-            if ($plugin instanceof ManipulateDataSource) {
-                $plugin->withDataSources($this->app->onManager(DataSourceManager::class));
-            }
-
-            if ($plugin instanceof ManipulateAction) {
-                $plugin->withActions($this->app->onManager(ActionManager::class));
-            }
-
-            if ($plugin instanceof ManipulateStyle) {
-                $plugin->withStyles($this->app->onManager(StyleManager::class));
-            }
-
-            if ($plugin instanceof ManipulateScript) {
-                $plugin->withScripts($this->app->onManager(ScriptManager::class));
-            }
+            $plugin->boot();
+            // if ($plugin instanceof ManipulateDataSource) {
+            //     $plugin->withDataSources($this->app->onManager(DataSourceManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateAction) {
+            //     $plugin->withActions($this->app->onManager(ActionManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateStyle) {
+            //     $plugin->withStyles($this->app->onManager(StyleManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateScript) {
+            //     $plugin->withScripts($this->app->onManager(ScriptManager::class));
+            // }
         }
     }
     
     protected function loadPlugin(Models\Plugin $plugin): Plugin {
         $namespace = $this->getNamespace($plugin);
 
-        $pluginObject = new $namespace($this->app);
+        $pluginObject = new $namespace($this);
 
         if (!($pluginObject instanceof Plugin)) {
             throw new InvalidPluginException($plugin->name, Plugin::class);
@@ -244,8 +246,6 @@ class PluginManager extends Manager implements OnBoot {
         if (!file_exists($pluginEntry)) {
             throw new PluginNotFoundException($plugin->name);
         }
-
-        require_once $pluginEntry;
 
         return $plugin->namespace . '\Plugin';
     }

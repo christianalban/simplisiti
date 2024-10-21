@@ -5,6 +5,7 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 use Alban\Simplisiti\Models\Setting;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
+use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
@@ -29,9 +30,9 @@ class SettingManager extends Manager implements OnBoot {
         $this->settingsValues = $this->cacheManager->getFromCache('settings-values', Setting::all());
     }
 
-    public function settingEntry(string|ManipulateSetting $plugin, string $label, string $description = null): void
+    public function settingEntry(string|Plugin $plugin, string $label, string $description = null): void
     {
-        $pluginKey = $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
+        $pluginKey = $plugin instanceof Plugin ? $plugin::class : $plugin;
 
         $this->settingEntries[$pluginKey] = [
             'plugin' => $pluginKey,
@@ -40,10 +41,10 @@ class SettingManager extends Manager implements OnBoot {
         ];
     }
 
-    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
+    public function addSetting(string|Plugin $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
     {
         $this->settings[] = [
-            'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
+            'plugin' => $plugin instanceof Plugin ? $plugin::class : $plugin,
             'name' => $name,
             'type' => $type,
             'label' => $label,
@@ -98,11 +99,11 @@ class SettingManager extends Manager implements OnBoot {
         return $this->settingsValues->where('name', $settingName)->first()->value['value'] ?? null;
     }
 
-    public function setSettingValue(string $name, array $value): void
+    public function setSettingValue(string $plugin, string $name, array $value): void
     {
         Setting::updateOrCreate(
             [
-                // 'plugin' => $this::class,
+                'plugin' => $plugin,
                 'name' => $name,
             ],
             [
