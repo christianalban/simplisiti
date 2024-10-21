@@ -28,7 +28,7 @@ abstract class Plugin {
 
     public function getSettingValue(string $name): array | string | null
     {
-        return $this->pluginManager->getSettingValue($name);
+        return $this->pluginManager->getSettingValue($this::class, $name);
     }
 
     public function setSettingValue(string $name, array $value): void

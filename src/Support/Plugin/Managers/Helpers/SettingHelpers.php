@@ -16,9 +16,9 @@ trait SettingHelpers {
         $this->app->onManager(SettingManager::class)->addSetting($plugin, $name, $type, $label, $description, $required, $data);
     }
 
-    public function getSettingValue(string $settingName): string | array | null
+    public function getSettingValue(string $plugin, string $settingName): string | array | null
     {
-        return $this->app->onManager(SettingManager::class)->getSettingValue($settingName);
+        return $this->app->onManager(SettingManager::class)->getSettingValue($plugin, $settingName);
     }
 
     public function setSettingValue(string $plugin, string $name, array $value): void

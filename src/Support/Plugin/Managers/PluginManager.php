@@ -60,7 +60,7 @@ class PluginManager extends Manager implements OnBoot {
     public function getRepositoryList(): array {
         return array_map(function ($plugin) {
             return (object) $plugin;
-        }, $this->settingManager->getSettingValue('repositories') ?? []);
+        }, $this->settingManager->getSettingValue($this::class, 'repositories') ?? []);
     }
 
     public function updateRepositoryList(array $repositories): void {

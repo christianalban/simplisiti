@@ -94,9 +94,9 @@ class SettingManager extends Manager implements OnBoot {
         return array_values($settingMenu);
     }
 
-    public function getSettingValue(string $settingName): string | array | null
+    public function getSettingValue(string $plugin, string $settingName): string | array | null
     {
-        return $this->settingsValues->where('name', $settingName)->first()->value['value'] ?? null;
+        return $this->settingsValues->where('plugin', $plugin)->where('name', $settingName)->first()->value['value'] ?? null;
     }
 
     public function setSettingValue(string $plugin, string $name, array $value): void
