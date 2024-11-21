@@ -2,171 +2,156 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine;
 
 use Alban\Simplisiti\Models\Plugin;
+use Alban\Simplisiti\Services\SimplisitiEngine\Managers\ManagerContainer;
+use Alban\Simplisiti\Services\SimplisitiEngine\Renderer\ElementContainer;
 use Alban\Simplisiti\Support\Plugin\Managers\ActionManager;
-use Alban\Simplisiti\Support\Plugin\Managers\BodyManager;
 use Alban\Simplisiti\Support\Plugin\Managers\CacheManager;
 use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
-use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
-use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
+use Alban\Simplisiti\Support\Plugin\Managers\Manager;
+use Alban\Simplisiti\Support\Plugin\Managers\RouterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
-use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
-use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
 use Alban\Simplisiti\Support\Plugin\Plugin as BasePlugin;
 use Illuminate\Support\Facades\Schema;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\PagesLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
+use Illuminate\Support\Facades\App;
 
-class SimplisitiApp extends BasePlugin
+class SimplisitiApp // extends BasePlugin
 {
-    private StyleManager $styleManager;
+    private ManagerContainer $managerContainer;
+    private ElementContainer $headContainer;
+    private ElementContainer $bodyContainer;
 
-    private HeadManager $headManager;
-
-    private ScriptManager $scriptManager;
-
-    private PluginManager $pluginManager;
-
-    private SettingManager $settingManager;
-
-    private BodyManager $bodyManager;
-
-    private CacheManager $cacheManager;
-
-    private DataSourceManager $dataSourceManager;
-
-    private ActionManager $actionManager;
-
-    private ParameterManager $parameterManager;
-
-    public function getStyleManager(): StyleManager
+    public function __construct()
     {
-        return $this->styleManager;
+        $this->headContainer = new ElementContainer();
+        $this->bodyContainer = new ElementContainer();
+        $this->managerContainer = new ManagerContainer($this);
     }
 
-    public function getHeadManager(): HeadManager
+    protected function getManagerContainer(): ManagerContainer
     {
-        return $this->headManager;
+        return $this->managerContainer;
     }
 
-    public function getScriptManager(): ScriptManager
+    public function onManager(string $key): Manager
     {
-        return $this->scriptManager;
+        return $this->getManagerContainer()->onManager($key);
     }
 
-    public function getSettingManager(): SettingManager
+    public function onHead(): ElementContainer
     {
-        return $this->settingManager;
+        return $this->headContainer;
     }
 
-    public function getBodyManager(): BodyManager
+    public function onBody(): ElementContainer
     {
-        return $this->bodyManager;
-    }
-
-    public function getPluginManager(): PluginManager
-    {
-        return $this->pluginManager;
-    }
-
-    public function getCacheManager(): CacheManager
-    {
-        return $this->cacheManager;
-    }
-
-    public function getDataSourceManager(): DataSourceManager
-    {
-        return $this->dataSourceManager;
-    }
-
-    public function getActionManager(): ActionManager
-    {
-        return $this->actionManager;
-    }
-
-    public function getParameterManager(): ParameterManager
-    {
-        return $this->parameterManager;
+        return $this->bodyContainer;
     }
 
     public function init(): void {
-        $this->initPlugins();
+        // $this->initPlugins();
+        $this->managerContainer->load();
+
+        $this->managerContainer->boot();
     }
 
-    public function loadStyles(): void {
-        if (!Schema::hasTable('styles')) {
-            return;
-        }
+    /*
+     * @deprecated
+     * */
+    // public function getPluginManager(): PluginManager
+    // {
+    //     return $this->getManagerContainer()->onManager(PluginManager::class);
+    // }
+    //
+    // public function getSettingManager(): SettingManager
+    // {
+    //     return $this->getManagerContainer()->onManager(SettingManager::class);
+    // }
+    //
+    // public function getCacheManager(): CacheManager
+    // {
+    //     return $this->getManagerContainer()->onManager(CacheManager::class);
+    // }
+    //
+    // public function getDataSourceManager(): DataSourceManager
+    // {
+    //     return $this->getManagerContainer()->onManager(DataSourceManager::class);
+    // }
+    //
+    // public function getActionManager(): ActionManager
+    // {
+    //     return $this->getManagerContainer()->onManager(ActionManager::class);
+    // }
+    //
+    // public function getRouterManager(): RouterManager
+    // {
+    //     return $this->getManagerContainer()->onManager(RouterManager::class);
+    // }
+    //
+    // public function loadParameters(): void {
+    //     $this->parameterManager = new ParameterManager;
+    // }
+    //
+    // public function loadSettings(): void {
+    //     $this->settingManager = new SettingManager;
+    // }
+    //
+    // public function loadCache(): void {
+    //     $this->cacheManager = new CacheManager;
+    // }
+    //
+    // public function loadDataSources(): void {
+    //     $this->dataSourceManager = new DataSourceManager;
+    // }
+    //
+    // public function loadActions(): void {
+    //     // $this->actionManager = new ActionManager;
+    // }
+    //
+    // public function loadPlugins(): void {
+    //     if (!Schema::hasTable('plugins')) {
+    //         return;
+    //     }
+    //
+    //     try {
+    //         $this->pluginManager = new PluginManager($this);
+    //         foreach (Plugin::enabled()->get() as $plugin) {
+    //             $this->pluginManager->add($plugin);
+    //         }
+    //     } catch (\Exception $e) {
+    //         return;
+    //     }
+    // }
+    //
+    // protected function initPlugins(): void {
+    //     if (!Schema::hasTable('plugins')) {
+    //         return;
+    //     }
+    //
+    //     try {
+    //         $this->pluginManager->execute();
+    //     } catch (\Exception $e) {
+    //         return;
+    //     }
+    // }
+    //
+    // public function registerActions(): void {
+    //     $this->actionManager->registerActions();
+    // }
+    //
+    // public function setRequestParameters(string $url, array $parameters): void {
+    //     $this->parameterManager->addParameters($url, $parameters);
+    // }
 
-        $this->styleManager = new StyleManager;
-    }
+    public static function boot(): void {
+        $app = App::make(SimplisitiApp::class);
 
-    public function loadParameters(): void {
-        $this->parameterManager = new ParameterManager;
-    }
+        $app->init();
 
-    public function loadHeaders(): void {
-        $this->headManager = new HeadManager;
-    }
-
-    public function loadScripts(): void {
-        if (!Schema::hasTable('scripts')) {
-            return;
-        }
-
-        $this->scriptManager = new ScriptManager;
-    }
-
-    public function loadSettings(): void {
-        $this->settingManager = new SettingManager;
-    }
-
-    public function loadCache(): void {
-        $this->cacheManager = new CacheManager;
-    }
-
-    public function loadBody(): void {
-        $this->bodyManager = new BodyManager;
-    }
-
-    public function loadDataSources(): void {
-        $this->dataSourceManager = new DataSourceManager;
-    }
-
-    public function loadActions(): void {
-        $this->actionManager = new ActionManager;
-    }
-
-    public function loadPlugins(): void {
-        if (!Schema::hasTable('plugins')) {
-            return;
-        }
-
-        try {
-            $this->pluginManager = new PluginManager($this);
-            foreach (Plugin::enabled()->get() as $plugin) {
-                $this->pluginManager->add($plugin);
-            }
-        } catch (\Exception $e) {
-            return;
-        }
-    }
-
-    protected function initPlugins(): void {
-        if (!Schema::hasTable('plugins')) {
-            return;
-        }
-
-        try {
-            $this->pluginManager->execute();
-        } catch (\Exception $e) {
-            return;
-        }
-    }
-
-    public function registerActions(): void {
-        $this->actionManager->registerActions();
-    }
-
-    public function setRequestParameters(string $url, array $parameters): void {
-        $this->parameterManager->addParameters($url, $parameters);
+        StylesLoader::loadStyles();
+        ScriptsLoader::loadScripts();
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\PagesLoader;
-use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
-use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/spanel/{any?}', 'simplisiti::index')
@@ -10,6 +8,4 @@ Route::view('/spanel/{any?}', 'simplisiti::index')
     ->middleware(['web' ,'auth'])
     ->name('spanel.dashboard');
 
-PagesLoader::loadPages();
-StylesLoader::loadStyles();
-ScriptsLoader::loadScripts();
+SimplisitiApp::boot();

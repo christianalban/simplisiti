@@ -2,23 +2,37 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
+use Alban\Simplisiti\Models\Setting;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
+use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
-class SettingManager {
+class SettingManager extends Manager implements OnBoot {
     private Collection $settings;
+    private Collection $settingsValues;
     private Collection $settingEntries;
+    private CacheManager $cacheManager;
 
-    public function __construct(
-    ) {
+    public function onBoot(): void
+    {
         $this->settings = new Collection;
         $this->settingEntries = new Collection;
+
+        $this->cacheManager = $this->app->onManager(CacheManager::class);
+
+        $this->loadSettingsValues();
     }
 
-    public function settingEntry(string|ManipulateSetting $plugin, string $label, string $description = null): void
+    protected function loadSettingsValues(): void
     {
-        $pluginKey = $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
+        $this->settingsValues = $this->cacheManager->getFromCache('settings-values', Setting::all());
+    }
+
+    public function settingEntry(string|Plugin $plugin, string $label, string $description = null): void
+    {
+        $pluginKey = $plugin instanceof Plugin ? $plugin::class : $plugin;
 
         $this->settingEntries[$pluginKey] = [
             'plugin' => $pluginKey,
@@ -27,10 +41,10 @@ class SettingManager {
         ];
     }
 
-    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
+    public function addSetting(string|Plugin $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
     {
         $this->settings[] = [
-            'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
+            'plugin' => $plugin instanceof Plugin ? $plugin::class : $plugin,
             'name' => $name,
             'type' => $type,
             'label' => $label,
@@ -78,5 +92,25 @@ class SettingManager {
         }
 
         return array_values($settingMenu);
+    }
+
+    public function getSettingValue(string $plugin, string $settingName): string | array | null
+    {
+        return $this->settingsValues->where('plugin', $plugin)->where('name', $settingName)->first()->value['value'] ?? null;
+    }
+
+    public function setSettingValue(string $plugin, string $name, array $value): void
+    {
+        Setting::updateOrCreate(
+            [
+                'plugin' => $plugin,
+                'name' => $name,
+            ],
+            [
+                'value' => [
+                    'value' => $value,
+                ],
+            ]
+        );
     }
 }

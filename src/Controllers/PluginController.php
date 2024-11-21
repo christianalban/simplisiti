@@ -13,21 +13,20 @@ use Alban\Simplisiti\Http\Resources\RepositoryResource;
 use Alban\Simplisiti\Requests\Plugin\InstallPackageRequest;
 use Alban\Simplisiti\Requests\Plugin\UpdateRepositoriesRequest;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
+use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use App\Http\Controllers\Controller;
 
 class PluginController extends Controller {
+    private PluginManager $pluginManager;
+
     public function __construct(
         private SimplisitiApp $app
     ) {
-        $this->app->loadSettings();
-
-        $this->app->loadCache();
-
-        $this->app->loadPlugins();
+        $this->pluginManager = $this->app->onManager(PluginManager::class);
     }
 
     public function packagesList() {
-        $packages = $this->app->getPluginManager()->getPackageList();
+        $packages = $this->pluginManager->getPackageList();
 
         return PackageResource::collection($packages);
     }
@@ -63,7 +62,7 @@ class PluginController extends Controller {
     }
 
     public function repositoriesList() {
-        $repositories = $this->app->getPluginManager()->getRepositoryList();
+        $repositories = $this->pluginManager->getRepositoryList();
 
         return RepositoryResource::collection($repositories);
     }

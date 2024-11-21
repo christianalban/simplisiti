@@ -4,11 +4,12 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Support\Exceptions\PluginNotFoundException;
 use Alban\Simplisiti\Models;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Exceptions\InvalidPluginException;
 use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterInstall;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterLoad;
+use Alban\Simplisiti\Support\Plugin\Managers\Helpers\SettingHelpers;
+use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
@@ -18,13 +19,39 @@ use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 
-class PluginManager {
+class PluginManager extends Manager implements OnBoot {
+    use SettingHelpers;
+
     private array $history = [];
+    private CacheManager $cacheManager;
+    private SettingManager $settingManager;
 
-    public function __construct(
-        private SimplisitiApp $app
-    ) {}
+    public function onBoot(): void {
+        $this->cacheManager = $this->app->onManager(CacheManager::class);
+        $this->settingManager = $this->app->onManager(SettingManager::class);
+
+        $this->loadPlugins();
+    }
+
+    protected function loadPlugins(): void {
+        if (!Schema::hasTable('plugins')) {
+            return;
+        }
+
+        try {
+            foreach (Models\Plugin::enabled()->get() as $plugin) {
+                $this->add($plugin);
+            }
+
+            $this->execute();
+        } catch (\Exception $e) {
+            //TODO: Log the exceptions
+            dd($e->getMessage());
+            return;
+        }
+    }
 
     public function add(Models\Plugin $plugin) {
         $this->history[$plugin->name] = $this->loadPlugin($plugin);
@@ -33,22 +60,20 @@ class PluginManager {
     public function getRepositoryList(): array {
         return array_map(function ($plugin) {
             return (object) $plugin;
-        }, $this->app->getSettingValue('repositories') ?? []);
+        }, $this->settingManager->getSettingValue($this::class, 'repositories') ?? []);
     }
 
     public function updateRepositoryList(array $repositories): void {
-        $this->app->setSettingValue('repositories', $repositories);
+        $this->settingManager->setSettingValue($this::class, 'repositories', $repositories);
     }
 
     public function syncPackagesList(): array {
         $repositories = $this->getRepositoryList();
 
-        $cacheManager = $this->app->getCacheManager();
-
         $packageCache = [];
         $urlLogs = [];
 
-        $cacheManager->removeFromCache('repositories:packages');
+        $this->cacheManager->removeFromCache('repositories:packages');
 
         foreach ($repositories as $repository) {
             try {
@@ -83,25 +108,21 @@ class PluginManager {
             }
         }
 
-        $cacheManager->addToCache('repositories:packages', $packageCache);
+        $this->cacheManager->addToCache('repositories:packages', $packageCache);
 
         return $urlLogs;
     }
 
     public function getPackageList(): array {
-        $cacheManager = $this->app->getCacheManager();
-
         $installedPlugins = Models\Plugin::all();
         return array_map(function ($package) use ($installedPlugins) {
             $package['status'] = $installedPlugins->where('name', $package['name'])->first()?->status ?? 'not-installed';
             return (object) $package;
-        }, $cacheManager->getFromCache('repositories:packages'));
+        }, $this->cacheManager->getFromCache('repositories:packages'));
     }
 
     public function installPackage(string $name): Models\Plugin {
-        $cacheManager = $this->app->getCacheManager();
-
-        $packageList = array_column($cacheManager->getFromCache('repositories:packages'), null, 'name');
+        $packageList = array_column($this->cacheManager->getFromCache('repositories:packages'), null, 'name');
         $package = $packageList[$name];
 
         // Download the package and unpack the tar file
@@ -182,42 +203,31 @@ class PluginManager {
         }
     }
 
-    public function execute(): void {
+    protected function execute(): void {
         foreach ($this->history as $plugin) {
-            if ($plugin instanceof ManipulateHeader) {
-                $plugin->withHeaders($this->app->getHeadManager());
-            }
-
-            if ($plugin instanceof ManipulateSetting) {
-                $plugin->withSettings($this->app->getSettingManager());
-            }
-
-            if ($plugin instanceof ManipulateBody) {
-                $plugin->withBody($this->app->getBodyManager());
-            }
-
-            if ($plugin instanceof ManipulateDataSource) {
-                $plugin->withDataSources($this->app->getDataSourceManager());
-            }
-
-            if ($plugin instanceof ManipulateAction) {
-                $plugin->withActions($this->app->getActionManager());
-            }
-
-            if ($plugin instanceof ManipulateStyle) {
-                $plugin->withStyles($this->app->getStyleManager());
-            }
-
-            if ($plugin instanceof ManipulateScript) {
-                $plugin->withScripts($this->app->getScriptManager());
-            }
+            $plugin->boot();
+            // if ($plugin instanceof ManipulateDataSource) {
+            //     $plugin->withDataSources($this->app->onManager(DataSourceManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateAction) {
+            //     $plugin->withActions($this->app->onManager(ActionManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateStyle) {
+            //     $plugin->withStyles($this->app->onManager(StyleManager::class));
+            // }
+            //
+            // if ($plugin instanceof ManipulateScript) {
+            //     $plugin->withScripts($this->app->onManager(ScriptManager::class));
+            // }
         }
     }
     
     protected function loadPlugin(Models\Plugin $plugin): Plugin {
         $namespace = $this->getNamespace($plugin);
 
-        $pluginObject = new $namespace($this->app);
+        $pluginObject = new $namespace($this);
 
         if (!($pluginObject instanceof Plugin)) {
             throw new InvalidPluginException($plugin->name, Plugin::class);
@@ -236,8 +246,6 @@ class PluginManager {
         if (!file_exists($pluginEntry)) {
             throw new PluginNotFoundException($plugin->name);
         }
-
-        require_once $pluginEntry;
 
         return $plugin->namespace . '\Plugin';
     }
