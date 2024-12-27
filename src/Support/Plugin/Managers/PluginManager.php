@@ -9,20 +9,15 @@ use Alban\Simplisiti\Support\Exceptions\PluginMd5Exception;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterInstall;
 use Alban\Simplisiti\Support\Plugin\LifeCycle\AfterLoad;
 use Alban\Simplisiti\Support\Plugin\Managers\Helpers\SettingHelpers;
+use Alban\Simplisiti\Support\Plugin\Managers\Helpers\StyleHelpers;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateHeader;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateScript;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
 use Alban\Simplisiti\Support\Plugin\Plugin;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 
 class PluginManager extends Manager implements OnBoot {
-    use SettingHelpers;
+    use SettingHelpers, StyleHelpers;
 
     private array $history = [];
     private CacheManager $cacheManager;
@@ -45,7 +40,7 @@ class PluginManager extends Manager implements OnBoot {
                 $this->add($plugin);
             }
 
-            $this->execute();
+            $this->boot();
         } catch (\Exception $e) {
             //TODO: Log the exceptions
             dd($e->getMessage());
@@ -203,24 +198,9 @@ class PluginManager extends Manager implements OnBoot {
         }
     }
 
-    protected function execute(): void {
+    protected function boot(): void {
         foreach ($this->history as $plugin) {
             $plugin->boot();
-            // if ($plugin instanceof ManipulateDataSource) {
-            //     $plugin->withDataSources($this->app->onManager(DataSourceManager::class));
-            // }
-            //
-            // if ($plugin instanceof ManipulateAction) {
-            //     $plugin->withActions($this->app->onManager(ActionManager::class));
-            // }
-            //
-            // if ($plugin instanceof ManipulateStyle) {
-            //     $plugin->withStyles($this->app->onManager(StyleManager::class));
-            // }
-            //
-            // if ($plugin instanceof ManipulateScript) {
-            //     $plugin->withScripts($this->app->onManager(ScriptManager::class));
-            // }
         }
     }
     

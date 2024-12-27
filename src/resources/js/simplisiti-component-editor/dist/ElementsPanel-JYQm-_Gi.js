@@ -1,5 +1,5 @@
 import { defineComponent as f, resolveComponent as g, openBlock as o, createElementBlock as s, Fragment as E, renderList as v, unref as n, createVNode as I, createElementVNode as a, toDisplayString as b, pushScopeId as S, popScopeId as h } from "vue";
-import { H as _, a as D, e as L, d, _ as M } from "./main-DXuX3gBg.js";
+import { H as _, a as D, e as L, d, _ as M } from "./main-CL4rb7T6.js";
 const T = (e) => (S("data-v-c7b69432"), e = e(), h(), e), k = { class: "sp-element__element-content" }, x = /* @__PURE__ */ T(() => /* @__PURE__ */ a("div", null, [
   /* @__PURE__ */ a("h2", { class: "sp-element__title" }, "Elementos")
 ], -1)), C = ["title", "onDragstart"], H = /* @__PURE__ */ f({

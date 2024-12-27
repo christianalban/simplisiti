@@ -73,7 +73,19 @@ const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
     return [styleEditor, scriptEditor, scriptVue, scriptVueApp, layoutEditor];
 };
 
+const loadAfterVue = async (callback: () => void) => {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            callback()
+            resolve();
+        }, 1000);
+    });
+}
+
 const updateIframe = async () => {
+    await loadResourcesPreview();
+    await loadPluginResourcesPreview();
+
     if (!props.component.id) return;
 
     editorEngine.setHtmlString(props.html || props.component.html);
@@ -114,11 +126,14 @@ const updateIframe = async () => {
         if (props.allowEdit) {
             const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink, layoutEditor] = loadResourcesEditor();
 
-            doc.head.appendChild(styleEditorLink);
-            doc.head.appendChild(layoutEditor);
             doc.body.appendChild(scriptVueLink);
-            doc.body.appendChild(scriptEditorLink);
-            doc.body.appendChild(scriptVueAppLink);
+            await loadAfterVue(() => {
+                doc.head.appendChild(styleEditorLink);
+                doc.head.appendChild(layoutEditor);
+                doc.body.appendChild(scriptEditorLink);
+                doc.body.appendChild(scriptVueAppLink);
+            });
+
         }
 
         doc.close();

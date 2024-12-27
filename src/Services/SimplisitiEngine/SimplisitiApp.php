@@ -51,7 +51,7 @@ class SimplisitiApp // extends BasePlugin
         return $this->bodyContainer;
     }
 
-    public function init(): void {
+    public function boot(): void {
         // $this->initPlugins();
         $this->managerContainer->load();
 
@@ -146,10 +146,10 @@ class SimplisitiApp // extends BasePlugin
     //     $this->parameterManager->addParameters($url, $parameters);
     // }
 
-    public static function boot(): void {
+    public static function create(): void {
         $app = App::make(SimplisitiApp::class);
 
-        $app->init();
+        $app->boot();
 
         StylesLoader::loadStyles();
         ScriptsLoader::loadScripts();

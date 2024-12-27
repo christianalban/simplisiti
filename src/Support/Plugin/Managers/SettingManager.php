@@ -4,7 +4,6 @@ namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Models\Setting;
 use Alban\Simplisiti\Support\Plugin\Managers\Lifecycle\OnBoot;
-use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;

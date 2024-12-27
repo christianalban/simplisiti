@@ -1,5 +1,5 @@
 import { defineComponent as u, openBlock as i, createElementBlock as d, createElementVNode as _, pushScopeId as f, popScopeId as v, ref as C, onMounted as x, createVNode as g } from "vue";
-import { _ as b } from "./main-DXuX3gBg.js";
+import { _ as b } from "./main-CL4rb7T6.js";
 const h = (t) => (f("data-v-fbcf1321"), t = t(), v(), t), S = { class: "sp-font__select-item" }, y = /* @__PURE__ */ h(() => /* @__PURE__ */ _("label", null, "Src", -1)), I = ["value"], L = /* @__PURE__ */ u({
   __name: "TextContent",
   props: {

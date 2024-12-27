@@ -8,4 +8,4 @@ Route::view('/spanel/{any?}', 'simplisiti::index')
     ->middleware(['web' ,'auth'])
     ->name('spanel.dashboard');
 
-SimplisitiApp::boot();
+SimplisitiApp::create();

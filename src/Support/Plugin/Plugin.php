@@ -2,15 +2,18 @@
 
 namespace Alban\Simplisiti\Support\Plugin;
 
+use Alban\Simplisiti\Support\Plugin\Configurable\WithSettings;
+use Alban\Simplisiti\Support\Plugin\Configurable\WithStyles;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 
 abstract class Plugin {
     private $settingsPlugin = null;
+    private $stylesPlugin = null;
 
     public function __construct(
         private PluginManager $pluginManager
     ) {
-        $this->loadSettingsPlugin();
+        $this->loadConfigurablePlugin();
     }
 
     private function getClassNamespace(): string {
@@ -20,10 +23,18 @@ abstract class Plugin {
         return implode('\\', $namespace);
     }
 
-    protected function loadSettingsPlugin(): void {
-        $namespace = $this->getClassNamespace().'\Setting\SettingsPlugin';
+    private function loadClassPlugin(string $class): object {
+        $namespace = $this->getClassNamespace().$class;
 
-        $this->settingsPlugin = new $namespace($this->pluginManager, $this);
+        return new $namespace($this->pluginManager, $this);
+    }
+
+    protected function loadSettingsPlugin(): void {
+        $this->settingsPlugin = $this->loadClassPlugin('\Setting\SettingsPlugin');
+    }
+
+    protected function loadStylesPlugin(): void {
+        $this->stylesPlugin = $this->loadClassPlugin('\Style\StylesPlugin');
     }
 
     public function getSettingValue(string $name): array | string | null
@@ -36,8 +47,23 @@ abstract class Plugin {
         $this->pluginManager->setSettingValue($this::class, $name, $value);
     }
 
+    private function loadConfigurablePlugin(): void {
+        if ($this instanceof WithSettings) {
+            $this->loadSettingsPlugin();
+        }
+
+        if ($this instanceof WithStyles) {
+            $this->loadStylesPlugin();
+        }
+    }
+
     public function boot(): void
     {
-        $this->settingsPlugin->withSettings();
+        if ($this->settingsPlugin) {
+            $this->settingsPlugin->withSettings();
+        }
+        if ($this->stylesPlugin) {
+            $this->stylesPlugin->withStyles();
+        }
     }
 }

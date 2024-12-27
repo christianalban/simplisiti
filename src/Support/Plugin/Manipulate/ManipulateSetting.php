@@ -2,15 +2,7 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Manipulate;
 
-use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
-use Alban\Simplisiti\Support\Plugin\Plugin;
-
-abstract class ManipulateSetting {
-    public function __construct(
-        private PluginManager $pluginManager,
-        private Plugin $plugin
-    ) {}
-
+abstract class ManipulateSetting extends Manipulate {
     public abstract function withSettings(): void;
 
     protected function settingEntry(string $label, string $description = null): void

@@ -15,8 +15,9 @@ use Alban\Simplisiti\Queries\Page\IndexQuery;
 use Alban\Simplisiti\Requests\Page\StorePageRequest;
 use Alban\Simplisiti\Requests\Page\UpdatePageRequest;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
-use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Exceptions\InvalidPagePreviewActionException;
+use Alban\Simplisiti\Support\Plugin\Managers\Cast\AssetCast;
+use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
 use App\Http\Controllers\Controller;
@@ -98,20 +99,21 @@ class PageController extends Controller {
 
     public function pluginPreview(string $type) {
         $action = match ($type) {
-            'script' => $this->app->onManager(ScriptManager::class),
-            'style' => $this->app->onManager(StyleManager::class),
+            'script' => $this->app->onBody(),
+            'style' => $this->app->onHead(),
         };
 
-        // if (!$action instanceof AssetManager) {
-        //     throw new InvalidPagePreviewActionException($action::class);
-        // }
+        $preview = collect($action->atStart()->getElements())
+            ->push(...$action->atEnd()->getElements())
+            ->map(fn($element) => $element->getContent())
+            ->join("\n");
 
         $contentType = match ($type) {
             'style' => 'text/css',
             'script' => 'text/javascript',
         };
 
-        return response('' /* $action->toString() */, 200, [
+        return response($preview, 200, [
             'Content-Type' => $contentType
         ]);
     }

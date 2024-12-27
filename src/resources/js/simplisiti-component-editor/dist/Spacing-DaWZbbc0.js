@@ -1,6 +1,6 @@
 import { defineComponent as O, computed as v, openBlock as p, createElementBlock as c, createElementVNode as n, toDisplayString as _, withDirectives as m, Fragment as f, renderList as h, vModelSelect as C, pushScopeId as U, popScopeId as V, ref as L, onMounted as q, createVNode as $ } from "vue";
 import { s as w } from "./Spacing-6yBgarMA.js";
-import { _ as x, p as A } from "./main-DXuX3gBg.js";
+import { _ as x, p as A } from "./main-CL4rb7T6.js";
 const g = (e) => (U("data-v-96c95280"), e = e(), V(), e), D = { class: "sp-spacing__container" }, M = { class: "sp-spacing__select-container" }, j = { class: "sp-spacing__select-item" }, B = /* @__PURE__ */ g(() => /* @__PURE__ */ n("label", null, "Arriba", -1)), E = /* @__PURE__ */ g(() => /* @__PURE__ */ n("option", { value: "" }, null, -1)), G = ["value"], N = { class: "sp-spacing__select-item" }, z = /* @__PURE__ */ g(() => /* @__PURE__ */ n("label", null, "Abajo", -1)), F = /* @__PURE__ */ g(() => /* @__PURE__ */ n("option", { value: "" }, null, -1)), P = ["value"], H = { class: "sp-spacing__select-item" }, J = /* @__PURE__ */ g(() => /* @__PURE__ */ n("label", null, "Izquierda", -1)), K = /* @__PURE__ */ g(() => /* @__PURE__ */ n("option", { value: "" }, null, -1)), Q = ["value"], R = { class: "sp-spacing__select-item" }, T = /* @__PURE__ */ g(() => /* @__PURE__ */ n("label", null, "Derecha", -1)), W = /* @__PURE__ */ g(() => /* @__PURE__ */ n("option", { value: "" }, null, -1)), X = ["value"], Y = /* @__PURE__ */ O({
   __name: "SpacingSelect",
   props: {

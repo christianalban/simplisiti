@@ -27,10 +27,11 @@ const closePopUp = () => {
 onMounted(() => {
     const html = document.body.innerHTML;
 
-    renderStyleSupportedElements(html)
-        .then(() => {
-            initSupportedElements()
-        })
+    initSupportedElements()
+    // renderStyleSupportedElements(html)
+    //     .then(() => {
+    //         initSupportedElements()
+    //     })
 });
 </script>
 
