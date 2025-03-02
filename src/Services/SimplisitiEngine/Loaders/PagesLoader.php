@@ -64,7 +64,7 @@ class PagesLoader
                     'title' => $page->title,
                     'app' => $this->app,
                 ]);
-            })->name($page->name);
+            })->middleware(['web'])->name($page->name);
         });
 
         $this->app->registerActions();
