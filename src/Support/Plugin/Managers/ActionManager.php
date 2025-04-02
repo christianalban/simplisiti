@@ -64,7 +64,7 @@ class ActionManager {
                 }
                 
                 $data = $callable($request, ...$params);
-                if ($data) {
+                if ($data && !$this->hasAfterEvents($key)) {
                     $response = $data;
 
                     return $response;
@@ -133,6 +133,11 @@ class ActionManager {
         }
     }
 
+    protected function hasBeforeEvents(string $key)
+    {
+        return isset($this->events[$key]) && count($this->events[$key]['before']) > 0;
+    }
+
     protected function runBeforeEvents(Request $request, string $key)
     {
         $response = null;
@@ -150,6 +155,11 @@ class ActionManager {
         }
 
         return $response;
+    }
+
+    protected function hasAfterEvents(string $key)
+    {
+        return isset($this->events[$key]) && count($this->events[$key]['after']) > 0;
     }
 
     protected function runAfterEvents(Request $request, string $key)
