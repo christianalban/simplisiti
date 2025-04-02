@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/spanel/{any?}', 'simplisiti::index')
     ->where('any', '.*')
-    ->middleware(['web' ,'auth', new CheckAllowedEmails])
+    ->middleware(['web' ,'auth', CheckAllowedEmails::class])
     ->name('spanel.dashboard');
 
 PagesLoader::loadPages();
