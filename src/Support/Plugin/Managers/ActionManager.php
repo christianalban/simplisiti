@@ -63,9 +63,8 @@ class ActionManager {
                     };
                 }
                 
-                $data = $callable($request, ...$params);
-                if ($data && !$this->hasAfterEvents($key)) {
-                    $response = $data;
+                $response = $callable($request, ...$params);
+                if (!$this->hasAfterEvents($key)) {
 
                     return $response;
                     // TODO: Handle errors response
