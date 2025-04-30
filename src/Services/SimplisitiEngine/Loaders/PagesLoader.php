@@ -5,6 +5,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Content\ContentRender;
+use Alban\Simplisiti\Support\Content\TitlePageRender;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
@@ -61,7 +62,7 @@ class PagesLoader
                 $this->app->setRequestParameters($page->url, $params);
                 return View::make('simplisiti::boot', [
                     'content' => $this->renderContent($page),
-                    'title' => $page->title,
+                    'title' => $this->renderTitlePage($page),
                     'app' => $this->app,
                 ]);
             })->middleware(['web'])->name($page->name);
@@ -75,5 +76,12 @@ class PagesLoader
         $contentRender = new ContentRender();
 
         return $contentRender->renderPageContent($page);
+    }
+
+    protected function renderTitlePage(Page $page): string
+    {
+        $contentRender = new TitlePageRender();
+
+        return $contentRender->renderPageTitle($page, $this->app->getParameterManager());
     }
 }

@@ -12,9 +12,9 @@ class ParameterManager {
         return $this;
     }
 
-    private function extractParametersFromUrl(string $url): array
+    public function extractParameters(string $url): array
     {
-        $pattern = '/{[a-z]+}/';
+        $pattern = '/{[a-z]+([-_][a-z]+)?}/';
 
         preg_match_all($pattern, $url, $matches);
 
@@ -27,7 +27,7 @@ class ParameterManager {
 
     public function addParameters(string $url, array $parameters): self
     {
-        $parameterNames = $this->extractParametersFromUrl($url);
+        $parameterNames = $this->extractParameters($url);
 
         foreach ($parameterNames as $index => $parameterName) {
             $this->addParameter($parameterName, $parameters[$index]);
