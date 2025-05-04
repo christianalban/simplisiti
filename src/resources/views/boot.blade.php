@@ -24,6 +24,7 @@
             }
         </style>
         @include('simplisiti::partials.styles')
+        @include('simplisiti::partials.head-end')
   </head>
     <body {!! $app->getBodyManager()->getBodyAttributes()->implode(' ') !!}>
     @include('simplisiti::partials.body')
