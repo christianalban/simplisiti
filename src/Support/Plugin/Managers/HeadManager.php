@@ -58,4 +58,10 @@ class HeadManager {
     {
         return $this->headsEnd;
     }
+
+    public function clear(): void
+    {
+        $this->heads = new Collection;
+        $this->headsEnd = new Collection;
+    }
 }
