@@ -80,7 +80,7 @@ class ActionManager {
 
                 return $response;
             
-            })->name($key);
+            })->middleware(['web'])->name($key);
         }
     }
 
