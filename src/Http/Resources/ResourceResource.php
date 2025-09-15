@@ -4,6 +4,7 @@ namespace Alban\Simplisiti\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ResourceResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class ResourceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'path' => $this->path,
-            'url' => asset('storage/' . $this->path),
+            'url' => Storage::url($this->path),
         ];
     }
 }

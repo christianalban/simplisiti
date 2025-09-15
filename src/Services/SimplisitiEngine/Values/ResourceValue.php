@@ -3,6 +3,7 @@
 namespace Alban\Simplisiti\Services\SimplisitiEngine\Values;
 
 use Alban\Simplisiti\Models\Resource;
+use Illuminate\Support\Facades\Storage;
 
 class ResourceValue extends Value
 {
@@ -13,7 +14,7 @@ class ResourceValue extends Value
             return '';
         }
 
-        $url = asset('storage/' . $path);
+        $url = Storage::url($path);
 
         return $url;
     }
