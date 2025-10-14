@@ -3,6 +3,7 @@
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
 use Alban\Simplisiti\Support\Action\ActionData;
+use Alban\Simplisiti\Support\Exceptions\RedirectErrorException;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Closure;
 use Illuminate\Support\Facades\Route;
@@ -54,31 +55,38 @@ class ActionManager {
             Route::$method($path, function(Request $request, ...$params) use ($key, $callable) {
                 $response = null;
 
-                $data = $this->runBeforeEvents($request, $key);
-                if ($data) {
-                    $response = $data;
-                    if ($response->getSession()->has('errors')) {
-                        return $response;
+                try {
+
+                    $data = $this->runBeforeEvents($request, $key);
+                    if ($data) {
+                        $response = $data;
+                        if ($response->getSession()->has('errors')) {
+                            return $response;
+                        
+                        };
+                    }
                     
-                    };
-                }
-                
-                $response = $callable($request, ...$params);
-                if (!$this->hasAfterEvents($key)) {
+                    $response = $callable($request, ...$params);
+                    if (!$this->hasAfterEvents($key)) {
+
+                        return $response;
+                        // TODO: Handle errors response
+                        // if ($response->getSession()->has('errors')) {
+                        //     return $response;
+                        // };
+                    }
+
+                    $data = $this->runAfterEvents($request, $key);
+                    if ($data) {
+                        $response = $data;
+                    }
 
                     return $response;
-                    // TODO: Handle errors response
-                    // if ($response->getSession()->has('errors')) {
-                    //     return $response;
-                    // };
+                } catch (RedirectErrorException $e) {
+                    return redirect()->route($e->getRoute(), $e->getData());
+                } catch (\Exception $e) {
+                    throw $e;
                 }
-
-                $data = $this->runAfterEvents($request, $key);
-                if ($data) {
-                    $response = $data;
-                }
-
-                return $response;
             
             })->middleware(['web'])->name($key);
         }
