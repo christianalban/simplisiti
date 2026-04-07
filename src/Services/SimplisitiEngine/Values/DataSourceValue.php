@@ -31,7 +31,7 @@ class DataSourceValue extends Value
         }
 
         if ($withSettings) {
-            $parsed['settings'] = $container->getSettingMenu();
+            $parsed['settings'] = $container->getSettingMenu($appliedSettings);
         }
 
         return $parsed;

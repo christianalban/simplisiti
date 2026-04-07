@@ -4,7 +4,6 @@ namespace Alban\Simplisiti\Support\Plugin\Containers;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 class DataContainer
@@ -17,7 +16,7 @@ class DataContainer
         private $data
     ) {
         $app = app(SimplisitiApp::class);
-        $this->settingManager = $app->getSettingManager();
+        $this->settingManager = new SettingManager();
         $this->parameterManager = $app->getParameterManager();
     }
 
@@ -26,9 +25,9 @@ class DataContainer
         return $this->settingManager;
     }
 
-    public function getSettingMenu(): array
+    public function getSettingMenu(Collection $appliedSettings): array
     {
-        return $this->settingManager->getSettingMenu($this->appliedSettings, $this);
+        return $this->settingManager->getSettingMenu($appliedSettings, $this);
     }
 
     public function getData(): mixed
