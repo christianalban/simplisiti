@@ -48,27 +48,35 @@ class PagesLoader
             return;
         }
 
-        $this->app->init();
+        try {
+            $this->app->init();
 
-        if (Cache::has('pages')) {
-            $pages = Cache::get('pages');
-        } else {
-            $pages = Page::withOrderedSectionsAndComponents()->get();
-            Cache::put('pages', $pages);
+            if (Cache::has('pages')) {
+                $pages = Cache::get('pages');
+            } else {
+                $pages = Page::withOrderedSectionsAndComponents()->get();
+                Cache::put('pages', $pages);
+            }
+
+            $pages->each(function (Page $page) {
+                Route::get($page->url, function (...$params) use ($page) {
+                    $this->app->setRequestParameters($page->url, $params);
+                    return View::make('simplisiti::boot', [
+                        'content' => $this->renderContent($page),
+                        'title' => $this->renderTitlePage($page),
+                        'app' => $this->app,
+                    ]);
+                })->middleware(['web'])->name($page->name);
+            });
+
+            $this->app->registerActions();
+        } catch (\Illuminate\Database\QueryException $e) {
+            return;
+        } catch (\Exception $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            throw $e;
         }
-
-        $pages->each(function (Page $page) {
-            Route::get($page->url, function (...$params) use ($page) {
-                $this->app->setRequestParameters($page->url, $params);
-                return View::make('simplisiti::boot', [
-                    'content' => $this->renderContent($page),
-                    'title' => $this->renderTitlePage($page),
-                    'app' => $this->app,
-                ]);
-            })->middleware(['web'])->name($page->name);
-        });
-
-        $this->app->registerActions();
     }
 
     protected function renderContent(Page $page): string
