@@ -4,6 +4,7 @@ namespace Alban\Simplisiti\Actions\Resource;
 
 use Alban\Simplisiti\Events\ResourceUpdated;
 use Alban\Simplisiti\Models\Resource;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateResourceAction
 {
@@ -11,7 +12,7 @@ class UpdateResourceAction
     {
         if (array_key_exists('file', $data)) {
             $resource->deleteFile();
-            $data['path'] = $data['file']->store('resources', config('simplisiti.resources_disk'));
+            $data['path'] = Storage::disk(config('simplisiti.resources_disk'))->putFile('resources', $data['file'], 'public');
             $data['mime_type'] = $data['file']->getMimeType();
             $data['extension'] = $data['file']->getClientOriginalExtension();
             $data['size'] = $data['file']->getSize();

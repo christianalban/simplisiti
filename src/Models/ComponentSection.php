@@ -9,9 +9,11 @@ class ComponentSection extends Pivot
     protected $fillable = [
         'order',
         'content',
+        'applied_settings',
     ];
 
     protected $casts = [
         'content' => 'array',
+        'applied_settings' => 'array',
     ];
 }

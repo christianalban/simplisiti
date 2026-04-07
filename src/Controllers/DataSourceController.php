@@ -15,8 +15,6 @@ class DataSourceController extends Controller {
 
         $this->app->loadHeaders();
 
-        $this->app->loadDataSources();
-
         $this->app->loadPlugins();
 
         $this->app->init();

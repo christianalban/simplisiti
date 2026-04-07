@@ -44,7 +44,7 @@ const save = () => {
 </script>
 
 <template>
-    <form @submit.prevent="save">
+    <form @submit.prevent="save" class="flex justify-center">
         <page-toolbar
             :title="$t('pages.titles.createPage')"
             v-model:name="name"

@@ -12,7 +12,7 @@ Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function
         Route::post('component', 'store');
         Route::put('component/{component}', 'update');
         Route::delete('component/{component}', 'destroy');
-        Route::get('component/{component}/variable/{name}/{type}/settings', 'variableSettings');
+        Route::get('component/{component}/variable/{name}/{type}/settings/{section?}', 'variableSettings');
     });
 
     Route::controller(Controllers\PageController::class)->group(function () {

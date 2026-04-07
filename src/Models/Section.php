@@ -20,7 +20,7 @@ class Section extends Model
     {
         return $this->belongsToMany(Component::class)
             ->using(ComponentSection::class)
-            ->withPivot('id', 'order', 'content')
+            ->withPivot('id', 'order', 'content', 'applied_settings')
             ->withTimestamps();
     }
 

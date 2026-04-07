@@ -50,6 +50,7 @@ const toDeleteComponentSection = ref<Section|null>(null);
 
 const selectedComponent = ref<Component|null>(null);
 const selectedSection = ref<number|null>(null);
+const selectedSectionId = ref<number|null>(null);
 
 const pageEditionMode = ref<PageEditionMode>('adding-component');
 
@@ -77,11 +78,12 @@ const removeComponent = () => {
     selectedComponent.value = null;
 };
 
-const enterToEditingMode = (component: Component, sectionIndex: number) => {
+const enterToEditingMode = (component: Component, sectionIndex: number, sectionId: number) => {
     isInvisible.value = false;
     pageEditionMode.value = 'editing-component';
     selectedComponent.value = component;
     selectedSection.value = sectionIndex;
+    selectedSectionId.value = sectionId;
     observer.attach(component);
 };
 
@@ -91,6 +93,7 @@ const exitFromEditMode = (): void => {
     observer.detach();
     selectedComponent.value = null;
     selectedSection.value = null;
+    selectedSectionId.value = null;
 };
 
 const isCurrentComponentSelected = (component: Component, sectionIndex: number): boolean => {
@@ -145,7 +148,7 @@ onMounted(() => {
                 </div>
             </div>
             <available-components v-if="pageEditionMode === 'adding-component'"/>
-            <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'"/>
+            <component-configuration-form v-model:position="position" :component="selectedComponent" v-if="pageEditionMode === 'editing-component'" :sectionId="selectedSectionId"/>
         </div>
     </float-toolbar>
     <div class="page-sections-container">
@@ -171,7 +174,7 @@ onMounted(() => {
                                 <template #item="{element: component, index: componentIndex}">
                                     <div :class="['page-sections-item', { 'page-sections-item-selected': isCurrentComponentSelected(component, sectionIndex) }]">
                                         <div v-autosize class="page-sections-preview">
-                                            <div class="page-sections-preview-content relative" v-autosize @click="enterToEditingMode(component, sectionIndex)">
+                                            <div class="page-sections-preview-content relative" v-autosize @click="enterToEditingMode(component, sectionIndex, section.id)">
                                                 <div class="absolute inset-0 cursor-pointer transition-colors hover:bg-yellow-400 active:bg-yellow-200 opacity-50 z-10"></div>
                                                 <component-preview :component="component" :lazy="true"/>
                                             </div>

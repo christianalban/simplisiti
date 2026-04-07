@@ -25,8 +25,6 @@ class ComponentController extends Controller {
 
         $app->loadHeaders();
 
-        $app->loadDataSources();
-
         $app->loadActions();
 
         $app->loadPlugins();
@@ -68,8 +66,8 @@ class ComponentController extends Controller {
         ]);
     }
 
-    public function variableSettings(Component $component, string $name, string $type, Request $request, LoadVariableSettingsAction $action) {
-        $settings = $action->execute($component, $name, $type, $request->default);
+    public function variableSettings(Request $request, LoadVariableSettingsAction $action, Component $component, string $name, string $type, ?string $section = null) {
+        $settings = $action->execute($component, $name, $type, $request->default, $section);
 
         return VariableSettingsResource::collection($settings);
     }

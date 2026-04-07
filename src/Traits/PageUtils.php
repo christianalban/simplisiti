@@ -5,8 +5,11 @@ namespace Alban\Simplisiti\Traits;
 use Alban\Simplisiti\Models\ComponentSection;
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Models\Section;
+use Alban\Simplisiti\Support\Action\HandleSettings;
 
 trait PageUtils {
+
+    use HandleSettings;
 
     public function getPage(?Page $page = null): Page {
         return $page ?? $this->page;
@@ -58,7 +61,23 @@ trait PageUtils {
                 }
 
                 return $content;
-            }, [])
+            }, []),
+            'applied_settings' => collect($component['variables'])->reduce(function($settings, $variable) use ($component) {
+                $settings[$variable['name']] = [];
+
+                if (array_key_exists('settings', $variable)) {
+                    foreach ($variable['settings'] as $setting) {
+                        $collectSetting = collect($setting['items']);
+                        if ($variable['type'] === 'datasource') {
+                            $settings[$variable['name']] = $this->collectDatasourceSettings($variable, $collectSetting);
+                        } else if ($variable['type'] === 'resource') {
+                            $settings[$variable['name']][] = $this->collectResourceSettings($collectSetting);
+                        }
+                    }
+                }
+
+                return $settings;
+            }, []),
         ];
     }
 
@@ -66,6 +85,7 @@ trait PageUtils {
         return [
             'order' => $component['order'],
             'content' => $component['content'],
+            'applied_settings' => $component['applied_settings'] ?? null,
         ];
     }
 

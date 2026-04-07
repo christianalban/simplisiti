@@ -83,7 +83,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <form @submit.prevent="update">
+    <form @submit.prevent="update" class="flex justify-center">
         <page-toolbar
             :title="$t('pages.titles.editPage')"
             :showDelete="true"

@@ -3,6 +3,9 @@ import Modal from "../Modal.vue";
 import { ref, computed } from "vue";
 import { useResources } from "../../services/ResourceService";
 import ResourcePreview from '../../components/preview/ResourcePreview.vue';
+import { ResourceUploadType } from '../../types/Resource';
+import CreateResource from '../../pages/resources/Create.vue';
+import { getResources } from '../../services/ResourceService';
 
 const props = defineProps({
     modelValue: {
@@ -31,7 +34,7 @@ const selectedResource = computed(() => {
     return resourceFromId(+props.modelValue);
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'displaySettings']);
 
 const handleShowModal = () => {
     showModal.value = true;
@@ -49,6 +52,21 @@ const refreshResources = () => {
     });
 };
 
+const uploadType = ref<ResourceUploadType>('single');
+const showCreateModal = ref(false);
+
+const handleShowCreateModal = () => {
+    uploadType.value = 'single';
+    showCreateModal.value = true;
+}
+
+const fetchResources = () => {
+    getResources()
+    .then((response) => {
+        resources.value = response.data.data;
+    });
+}
+
 </script>
 
 <template>
@@ -59,31 +77,40 @@ const refreshResources = () => {
             </div>
         </div>
         <button type="button" @click.stop="handleShowModal" class="absolute bg-teal-500 hover:bg-teal-600 transition-colors rounded-lg text-white text-xs p-1 bg-opacity-50">{{ selectedResource ? $t('components.buttons.changeResource') : $t('components.buttons.selectResource') }}</button>
-    </div>
-    <modal
-        :title="$t('components.titles.selectResource')"
-        v-model:showModal="showModal"
-        :showCancel="false"
-        :confirmLabel="$t('buttons.close')"
-    >
-        <div class="max-w-[1366px]">
-            <div class="flex flex-col md:flex-row gap-2 justify-between mb-4">
-                <button type="button" @click="refreshResources" class="button secondary">
-                    <fa-icon icon="sync" :class="{'animate-spin': isLoading}"/>
-                    {{ $t('resources.buttons.refresh') }}
-                </button>
-                <input type="search" v-model="search" class="input" :placeholder="$t('placeholders.search')" />
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 overflow-y-auto max-h-[70vh]">
-                <div v-for="resource of filteredResources" class="button primary aspect-square flex flex-col gap-2 justify-center items-center">
-                    <resource-preview :url="resource.url" />
-                    <div class="flex w-full group items-baseline" @click.stop="handleSelectResource(resource.id as number)">
-                        <p class="group-hover:underline w-full cursor-pointer overflow-hidden overflow-ellipsis">{{ resource.name }}</p> <span class="group-hover:underline cursor-pointer text-sm italic">({{ $t('resources.buttons.select') }})</span>
+        <modal
+            :title="$t('components.titles.selectResource')"
+            v-model:showModal="showModal"
+            :showCancel="false"
+            :confirmLabel="$t('buttons.close')"
+        >
+            <div class="max-w-[1366px]">
+                <div class="flex flex-col md:flex-row gap-2 justify-start mb-4">
+                    <button type="button" @click="refreshResources" class="button secondary">
+                        <fa-icon icon="sync" :class="{'animate-spin': isLoading}"/>
+                        {{ $t('resources.buttons.refresh') }}
+                    </button>
+                    <button type="button" class="button primary" @click="handleShowCreateModal">
+                        {{ $t('resources.buttons.create') }}
+                    </button>
+
+                    <input type="search" v-model="search" class="input ml-auto" :placeholder="$t('placeholders.search')" />
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 overflow-y-auto max-h-[70vh]">
+                    <div v-for="resource of filteredResources" class="button primary aspect-square flex flex-col gap-2 justify-center items-center">
+                        <resource-preview :url="resource.url" />
+                        <div class="flex w-full group items-baseline" @click.stop="handleSelectResource(resource.id as number)">
+                            <p class="group-hover:underline w-full cursor-pointer overflow-hidden overflow-ellipsis text-nowrap">{{ resource.name }}</p> <span class="group-hover:underline cursor-pointer text-sm italic">({{ $t('resources.buttons.select') }})</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </modal>
+        </modal>
+        <create-resource
+            v-model:showModal="showCreateModal"
+            @created="fetchResources"
+            :uploadType="uploadType"
+        />
+    </div>
 </template>
 
 <style scoped>

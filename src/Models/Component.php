@@ -39,6 +39,8 @@ class Component extends Model
         $content = collect(json_decode($this->attributes['variables'], true))
         ->map(function ($variable) {
             $override = $this->pivot->content[$variable['name']] ?? null;
+            $appliedSettings = $this->pivot->applied_settings[$variable['name']] ?? null;
+            $variable['applied_settings'] = $appliedSettings ?? $variable['applied_settings'] ?? null;
 
             if ($variable['type'] === 'datasource') {
                 return Value::parseValue([
@@ -71,6 +73,6 @@ class Component extends Model
     {
         return $this->belongsToMany(Section::class)
             ->using(ComponentSection::class)
-            ->withPivot('order', 'content');
+            ->withPivot('order', 'content', 'applied_settings');
     }
 }
