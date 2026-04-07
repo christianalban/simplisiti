@@ -24,7 +24,7 @@ class DataSourceValue extends Value
 
         $appliedSettings = $this->parseAppliedSettings();
 
-        $container->setSettings($appliedSettings);
+        $container?->setSettings($appliedSettings);
 
         if ($withData) {
             $parsed['value'] = $container?->getData($appliedSettings->toArray());

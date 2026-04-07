@@ -28,8 +28,6 @@ class PageController extends Controller {
 
         $app->loadHeaders();
 
-        $app->loadDataSources();
-
         $app->loadActions();
 
         $app->loadPlugins();
