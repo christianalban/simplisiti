@@ -24,12 +24,14 @@ class DataSourceValue extends Value
 
         $appliedSettings = $this->parseAppliedSettings();
 
-        if ($withSettings) {
-            $parsed['settings'] = $container->getSettingMenu($appliedSettings);
-        }
+        $container->setSettings($appliedSettings);
 
         if ($withData) {
             $parsed['value'] = $container?->getData($appliedSettings->toArray());
+        }
+
+        if ($withSettings) {
+            $parsed['settings'] = $container->getSettingMenu();
         }
 
         return $parsed;
@@ -38,9 +40,11 @@ class DataSourceValue extends Value
     public function merge(array|string|int|null $merge) {
         $app = app(SimplisitiApp::class);
 
-        $appliedSettings = $this->parseAppliedSettings()->toArray();
+        $appliedSettings = $this->parseAppliedSettings();
 
-        $value = $app->getDataSourceManager()->getDataContainer($merge ?? $this->default)->getData($appliedSettings);
+        $container = $app->getDataSourceManager()->getDataContainer($merge ?? $this->default);
+        $container->setSettings($appliedSettings);
+        $value = $container->getData();
 
         return $value;
     }

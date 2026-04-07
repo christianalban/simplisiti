@@ -17,7 +17,7 @@ class DataContainer
         private $data
     ) {
         $app = app(SimplisitiApp::class);
-        $this->settingManager = new SettingManager;
+        $this->settingManager = $app->getSettingManager();
         $this->parameterManager = $app->getParameterManager();
     }
 
@@ -26,20 +26,24 @@ class DataContainer
         return $this->settingManager;
     }
 
-    public function getSettingMenu(Collection|EloquentCollection $settingValues): array
+    public function getSettingMenu(): array
     {
-        return $this->settingManager->getSettingMenu($settingValues);
+        return $this->settingManager->getSettingMenu($this->appliedSettings, $this);
     }
 
-    public function getData(array $settings): mixed
+    public function getData(): mixed
     {
-        $this->appliedSettings = collect($settings);
         try {
             return call_user_func($this->data, $this);
         } catch (\Exception $e) {
             // TODO: Log error
             return '';
         }
+    }
+
+    public function setSettings(Collection $settings): void
+    {
+        $this->appliedSettings = $settings;
     }
 
     public function getSettings(): Collection

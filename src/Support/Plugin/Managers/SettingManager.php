@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
+use Alban\Simplisiti\Support\Plugin\Containers\DataContainer;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ class SettingManager {
         $this->settingEntries = new Collection;
     }
 
-    public function settingEntry(string|ManipulateSetting $plugin, string $label, string $description = null): void
+    public function settingEntry(string|ManipulateSetting $plugin, string $label, ?string $description = null): void
     {
         $pluginKey = $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
 
@@ -27,7 +28,7 @@ class SettingManager {
         ];
     }
 
-    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, string $description = null, bool $required = false, mixed $data = null): void
+    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, ?string $description = null, bool $required = false, mixed $data = null): void
     {
         $this->settings[] = [
             'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
@@ -50,14 +51,14 @@ class SettingManager {
         return $this->settingEntries;
     }
 
-    public function getSettingMenu(Collection|EloquentCollection $settingValues): array
+    public function getSettingMenu(Collection|EloquentCollection $settingValues, ?DataContainer $dataContainer = null): array
     {
         $settingMenu = [];
 
         foreach ($this->settings as $setting) {
             $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
             if(is_callable($setting['data'])) {
-                $setting['data'] = $setting['data']();
+                $setting['data'] = $setting['data']($dataContainer);
             }
             if (array_key_exists($setting['plugin'], $settingMenu)) {
                 $settingMenu[$setting['plugin']]['items'][] = $setting;
