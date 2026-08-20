@@ -26,7 +26,7 @@ class PluginManager {
         private SimplisitiApp $app
     ) {}
 
-    public function add(Plugin $plugin) {
+    public function add(Models\Plugin $plugin) {
         $this->history[$plugin->name] = $this->loadPlugin($plugin);
     }
 
