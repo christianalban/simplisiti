@@ -49,8 +49,6 @@ class PagesLoader
         }
 
         try {
-            $this->app->init();
-
             if (Cache::has('pages')) {
                 $pages = Cache::get('pages');
             } else {
@@ -60,6 +58,9 @@ class PagesLoader
 
             $pages->each(function (Page $page) {
                 Route::get($page->url, function (...$params) use ($page) {
+                    
+                    $this->app->init();
+
                     $this->app->setRequestParameters($page->url, $params);
                     return View::make('simplisiti::boot', [
                         'content' => $this->renderContent($page),

@@ -14,26 +14,11 @@ use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Queries\Page\IndexQuery;
 use Alban\Simplisiti\Requests\Page\StorePageRequest;
 use Alban\Simplisiti\Requests\Page\UpdatePageRequest;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Exceptions\InvalidPagePreviewActionException;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PageController extends Controller {
-
-    public function __construct(SimplisitiApp $app)
-    {
-        $app->loadSettings();
-
-        $app->loadHeaders();
-
-        $app->loadActions();
-
-        $app->loadPlugins();
-
-        $app->init();
-    }
+class PageController extends SimplisitiAppController {
 
     public function index(IndexQuery $query) {
         $pages = $query->query()
@@ -105,7 +90,7 @@ class PageController extends Controller {
 
     public function pluginPreview(string $type) {
 
-        $app = app(SimplisitiApp::class);
+        $app = $this->app;
 
         $action = match ($type) {
             'script' => $app->getScriptManager(),

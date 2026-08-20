@@ -6,23 +6,8 @@ use Alban\Simplisiti\Actions\Setting\UpdateSettingAction;
 use Alban\Simplisiti\Http\Resources\SettingResource;
 use Alban\Simplisiti\Queries\Setting\IndexQuery;
 use Alban\Simplisiti\Requests\Setting\UpdateSettingRequest;
-use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
-use App\Http\Controllers\Controller;
 
-class SettingController extends Controller {
-    public function __construct(
-        private SimplisitiApp $app
-    ) {
-        $this->app->loadSettings();
-
-        $this->app->loadHeaders();
-
-        $this->app->loadDataSources();
-
-        $this->app->loadPlugins();
-
-        $this->app->init();
-    }
+class SettingController extends SimplisitiAppController {
 
     public function index(IndexQuery $query) {
         $settings = $this->app->getSettingManager()->getSettingMenu($query->query()->get());

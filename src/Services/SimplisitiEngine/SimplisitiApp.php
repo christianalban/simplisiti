@@ -17,25 +17,25 @@ use Illuminate\Support\Facades\Schema;
 
 class SimplisitiApp extends BasePlugin
 {
-    private ?StyleManager $styleManager = null;
+    private StyleManager $styleManager;
 
-    private ?HeadManager $headManager = null;
+    private HeadManager $headManager;
 
-    private ?ScriptManager $scriptManager = null;
+    private ScriptManager $scriptManager;
 
-    private ?PluginManager $pluginManager = null;
+    private PluginManager $pluginManager;
 
-    private ?SettingManager $settingManager = null;
+    private SettingManager $settingManager;
 
-    private ?BodyManager $bodyManager = null;
+    private BodyManager $bodyManager;
 
-    private ?CacheManager $cacheManager = null;
+    private CacheManager $cacheManager;
 
-    private ?DataSourceManager $dataSourceManager = null;
+    private DataSourceManager $dataSourceManager;
 
-    private ?ActionManager $actionManager = null;
+    private ActionManager $actionManager;
 
-    private ?ParameterManager $parameterManager = null;
+    private ParameterManager $parameterManager;
 
     public function getStyleManager(): StyleManager
     {
@@ -96,26 +96,14 @@ class SimplisitiApp extends BasePlugin
             return;
         }
 
-        if ($this->styleManager) {
-            return;
-        }
-
         $this->styleManager = new StyleManager;
     }
 
     public function loadParameters(): void {
-        if ($this->parameterManager) {
-            return;
-        }
-
         $this->parameterManager = new ParameterManager;
     }
 
     public function loadHeaders(): void {
-        if ($this->headManager) {
-            return;
-        }
-
         $this->headManager = new HeadManager;
     }
 
@@ -124,59 +112,31 @@ class SimplisitiApp extends BasePlugin
             return;
         }
 
-        if ($this->scriptManager) {
-            return;
-        }
-
         $this->scriptManager = new ScriptManager;
     }
 
     public function loadSettings(): void {
-        if ($this->settingManager) {
-            return;
-        }
-
         $this->settingManager = new SettingManager;
     }
 
     public function loadCache(): void {
-        if ($this->cacheManager) {
-            return;
-        }
-
         $this->cacheManager = new CacheManager;
     }
 
     public function loadBody(): void {
-        if ($this->bodyManager) {
-            return;
-        }
-
         $this->bodyManager = new BodyManager;
     }
 
     public function loadDataSources(): void {
-        if ($this->dataSourceManager) {
-            return;
-        }
-
         $this->dataSourceManager = new DataSourceManager;
     }
 
     public function loadActions(): void {
-        if ($this->actionManager) {
-            return;
-        }
-
         $this->actionManager = new ActionManager;
     }
 
     public function loadPlugins(): void {
         if (!Schema::hasTable('plugins')) {
-            return;
-        }
-
-        if ($this->pluginManager) {
             return;
         }
 
