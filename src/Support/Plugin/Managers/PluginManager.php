@@ -26,8 +26,12 @@ class PluginManager {
         private SimplisitiApp $app
     ) {}
 
-    public function add(Models\Plugin $plugin) {
+    public function add(Plugin $plugin) {
         $this->history[$plugin->name] = $this->loadPlugin($plugin);
+    }
+
+    public function addPlugin(Plugin $plugin) {
+        $this->history[$plugin::class] = $this->loadPlugin($plugin);
     }
 
     public function getRepositoryList(): array {
@@ -214,13 +218,17 @@ class PluginManager {
         }
     }
     
-    protected function loadPlugin(Models\Plugin $plugin): Plugin {
-        $namespace = $this->getNamespace($plugin);
+    protected function loadPlugin(Models\Plugin|Plugin $plugin): Plugin {
+        if ($plugin instanceof Plugin) {
+            $pluginObject = $plugin;
+        } else {
+            $namespace = $this->getNamespace($plugin);
 
-        $pluginObject = new $namespace($this->app);
+            $pluginObject = new $namespace($this->app);
 
-        if (!($pluginObject instanceof Plugin)) {
-            throw new InvalidPluginException($plugin->name, Plugin::class);
+            if (!($pluginObject instanceof Plugin)) {
+                throw new InvalidPluginException($plugin->name, Plugin::class);
+            }
         }
 
         if ($pluginObject instanceof AfterLoad) {
