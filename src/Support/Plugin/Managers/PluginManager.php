@@ -157,13 +157,15 @@ class PluginManager {
 
         $pluginPath = storage_path('plugins/' . $plugin->name);
 
-        $files = array_diff(scandir($pluginPath), ['.', '..']);
+        if (file_exists($pluginPath)) {
+            $files = array_diff(scandir($pluginPath), ['.', '..']);
 
-        foreach ($files as $file) {
-            unlink($pluginPath . '/' . $file);
+            foreach ($files as $file) {
+                unlink($pluginPath . '/' . $file);
+            }
+
+            rmdir($pluginPath);
         }
-
-        rmdir($pluginPath);
 
         $plugin->delete();
     }

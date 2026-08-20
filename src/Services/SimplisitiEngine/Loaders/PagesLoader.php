@@ -7,7 +7,6 @@ use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Content\ContentRender;
 use Alban\Simplisiti\Support\Content\TitlePageRender;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -35,6 +34,10 @@ class PagesLoader
         $this->app->loadPlugins();
 
         $this->app->loadParameters();
+
+        $this->app->loadCache();
+
+        $this->app->init();
     }
     
     public static function loadPages(): void
