@@ -36,8 +36,6 @@ class PagesLoader
         $this->app->loadParameters();
 
         $this->app->loadCache();
-
-        $this->app->init();
     }
     
     public static function loadPages(): void
@@ -62,8 +60,6 @@ class PagesLoader
             $pages->each(function (Page $page) {
                 Route::get($page->url, function (...$params) use ($page) {
                     
-                    $this->app->init();
-
                     $this->app->setRequestParameters($page->url, $params);
                     return View::make('simplisiti::boot', [
                         'content' => $this->renderContent($page),
@@ -73,7 +69,6 @@ class PagesLoader
                 })->middleware(['web'])->name($page->name);
             });
 
-            $this->app->registerActions();
         } catch (\Illuminate\Database\QueryException $e) {
             return;
         } catch (\Exception $e) {

@@ -3,6 +3,9 @@ namespace Alban\Simplisiti;
 
 use Alban\Simplisiti\Events;
 use Alban\Simplisiti\Listeners;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\PagesLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\ScriptsLoader;
+use Alban\Simplisiti\Services\SimplisitiEngine\Loaders\StylesLoader;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Illuminate\Support;
 use Illuminate\Support\Facades\Blade;
@@ -36,6 +39,17 @@ class ServiceProvider extends Support\ServiceProvider
         Blade::componentNamespace('Alban\\Simplisiti\\Components', 'simplisiti');
 
         $this->registerEvents();
+
+        PagesLoader::loadPages();
+        StylesLoader::loadStyles();
+        ScriptsLoader::loadScripts();
+
+        $simplisitiApp = $this->app->make(SimplisitiApp::class);
+
+        $this->app->booted(function () use ($simplisitiApp) {
+            $simplisitiApp->init();
+            $simplisitiApp->registerActions();
+        });
     }
 
     private function registerEvents()
