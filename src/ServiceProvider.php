@@ -49,6 +49,8 @@ class ServiceProvider extends Support\ServiceProvider
         $this->app->booted(function () use ($simplisitiApp) {
             $simplisitiApp->init();
             $simplisitiApp->registerActions();
+            $simplisitiApp->registerPluginStyles();
+            $simplisitiApp->registerPluginStyles();
         });
     }
 

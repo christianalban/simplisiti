@@ -8,6 +8,7 @@ use Alban\Simplisiti\Support\Asset\AssetManager;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class StyleManager implements AssetManager {
@@ -66,5 +67,28 @@ class StyleManager implements AssetManager {
 
             return $carrier;
         }, '');
+    }
+
+    public function registerPluginStyles(): void
+    {
+        $app = app(SimplisitiApp::class);
+
+        if (Cache::has('pluginStyles')) {
+            $pluginStyles = Cache::get('pluginStyles');
+        } else {
+            $pluginStyles = $app->getStyleManager()->getPluginStyles();
+            Cache::put('pluginStyles', $pluginStyles);
+        }
+
+        $pluginStyles->each(function ($styles, $plugin) {
+            collect($styles)->each(function ($style, $name) use ($plugin) {
+                $path = config('simplisiti.styles_path') . '/' . $plugin . '/' . $name . '.css';
+                Route::get($path, function () use ($style) {
+                    return response($style, 200, [
+                        'Content-Type' => 'text/css',
+                    ]);
+                });
+            });
+        });
     }
 }
