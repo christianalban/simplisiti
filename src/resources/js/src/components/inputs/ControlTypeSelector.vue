@@ -31,12 +31,21 @@ const props = defineProps({
     editStructure: {
         type: Boolean as PropType<boolean>,
         default: true,
-    }
+    },
+    data: {
+        type: [Array, Object],
+        default: () => [],
+    },
+    required: {
+        type: Boolean as PropType<boolean>,
+        default: false,
+    },
 });
 
 const emit = defineEmits(['update:model-value']);
 
 const emitInputValue = (value: Event) => {
+console.log('emitInputValue', (value.target as HTMLInputElement).value);
     emit('update:model-value', (value.target as HTMLInputElement).value);
 };
 
@@ -76,13 +85,17 @@ watch(type, (value) => {
 </script>
 
 <template>
-    <input v-if="type === 'text'" type="text" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" />
+    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input w-full" :value="value" @input="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required"/>
     <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
     <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
     <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
     <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
+    <select v-else-if="type === 'select'" class="input w-full" :name="name" :value="value" @change="emitInputValue($event)" :required="required">
+        <option :value="null">{{ $t('placeholders.select') }}</option>
+        <option v-for="option of data" :value="option.value">{{ option.label }}</option>
+    </select>
 </template>
 
 <style scoped>

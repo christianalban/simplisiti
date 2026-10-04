@@ -50,7 +50,7 @@ class ServiceProvider extends Support\ServiceProvider
             $simplisitiApp->init();
             $simplisitiApp->registerActions();
             $simplisitiApp->registerPluginStyles();
-            $simplisitiApp->registerPluginStyles();
+            $simplisitiApp->registerPluginScripts();
         });
     }
 

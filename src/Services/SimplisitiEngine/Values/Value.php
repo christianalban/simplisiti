@@ -13,7 +13,7 @@ abstract class Value
     public function __construct(array $variable, array $options = []) {
         $this->type = $variable['type'];
         $this->name = $variable['name'] ?? '';
-        $this->default = $variable['default'];
+        $this->default = $variable['default'] ?? null;
         $this->applied_settings = $variable['applied_settings'] ?? [];
         $this->options = $options;
     }
@@ -26,21 +26,21 @@ abstract class Value
         return self::makeValue($variable, $options)->parse();
     }
 
-    public static function mergeContent(array $variable, array|string|int|null $content)
+    public static function mergeContent(array $variable, array|string|int|null $content, array $options = [])
     {
-        return self::makeValue($variable)->merge($content);
+        return self::makeValue($variable, $options)->merge($content);
     }
 
     private static function makeValue(array $variable, array $options = [])
     {
         $valueType = match ($variable['type']) {
-            'text' => TextValue::class,
             'resource' => ResourceValue::class,
             'datatable' => DataTableValue::class,
             'textarea' => TextAreaValue::class,
             'datasource' => DataSourceValue::class,
             'action' => ActionValue::class,
             'page' => PageValue::class,
+            default => TextValue::class,
         };
 
         return new $valueType($variable, $options);

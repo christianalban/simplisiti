@@ -21,4 +21,5 @@ export interface Setting {
     value?: string
     required: boolean
     data?: any
+    options?: any
 }

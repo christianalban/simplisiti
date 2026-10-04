@@ -3,7 +3,7 @@ import { DataSourceValue } from "./DataSource";
 import { SettingMenu } from "./Setting";
 // import { ResourcePreset } from "./Resource";
 
-export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action' | 'page';
+export type VariableType = 'text' | 'resource' | 'datatable' | 'textarea' | 'datasource' | 'action' | 'page' | 'number' | 'tel' | 'email' | 'url' | 'password' | 'select' | 'checkbox' | 'radio' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color';
 
 export interface Variable {
     type: VariableType
@@ -14,4 +14,5 @@ export interface Variable {
     applied_settings?: SettingMenu[]
     // settings?: SettingMenu[]|ResourcePreset[]
     settings?: SettingMenu[]
+    options?: any
 }

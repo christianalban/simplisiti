@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
+use Alban\Simplisiti\Services\SimplisitiEngine\Settings\Settings;
 use Alban\Simplisiti\Support\Plugin\Containers\DataContainer;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -28,7 +29,7 @@ class SettingManager {
         ];
     }
 
-    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, ?string $description = null, bool $required = false, mixed $data = null): void
+    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, ?string $description = null, bool $required = false, mixed $data = null, ?array $options = []): void
     {
         $this->settings[] = [
             'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
@@ -38,6 +39,7 @@ class SettingManager {
             'description' => $description,
             'required' => $required,
             'data' => $data,
+            'options' => $options,
         ];
     }
 
@@ -56,7 +58,8 @@ class SettingManager {
         $settingMenu = [];
 
         foreach ($this->settings as $setting) {
-            $setting['value'] = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
+            $settingValue = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
+            $setting['value'] = Settings::mergeSettings($setting, $settingValue, $setting['options'] ?? null);
             if(is_callable($setting['data'])) {
                 $setting['data'] = $setting['data']($dataContainer);
             }

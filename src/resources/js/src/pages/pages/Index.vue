@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
-import { clonePage, getPages } from '../../services/PageService';
+import { clonePage, usePages } from '../../services/PageService';
 import { Page } from '../../types/Page';
 import { Component } from '../../types/Component';
 import { groupItems, labelName } from '../../utils/helpers';
@@ -11,7 +11,7 @@ import DialogComponent from "../../components/Dialog.vue";
 import { useI18n } from 'vue-i18n';
 import { showToast } from '../../services/ToastService';
 
-const pages = ref<Page[]>([]);
+const { pages, loadPages } = usePages();
 const toClonePage = ref<Page | null>(null);
 
 const { t } = useI18n();
@@ -34,13 +34,6 @@ const componentsOfPage = (page: Page): Component[] => {
     return page.sections.reduce((acc, section) => {
         return acc.concat(section.components);
     }, [] as Component[]);
-}
-
-const loadPages = () => {
-    getPages()
-    .then((response) => {
-        pages.value = response.data.data;
-    });
 }
 
 const confirmClonePage = () => {

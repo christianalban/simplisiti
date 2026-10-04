@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { getSettings, updateSettings } from '../../services/SettingService';
+import { usePages } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { SettingMenu } from '../../types/Setting';
 import SettingForm from './partials/Form.vue';
 import { useI18n } from 'vue-i18n';
 import Tabs from '../../components/Tabs.vue';
 import { Tab } from '../../types/Tab';
+
+const { loadPages } = usePages();
 
 const settings = ref<SettingMenu[]>([]);
 const { t } = useI18n();
@@ -42,6 +45,8 @@ onMounted(() => {
     .then((response) => {
         settings.value = response.data.data;
     });
+
+    loadPages();
 });
 </script>
 

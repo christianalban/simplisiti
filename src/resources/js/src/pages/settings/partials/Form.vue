@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { SettingMenu } from '../../../types/Setting';
+import ControlTypeSelector from "../../../components/inputs/ControlTypeSelector.vue";
 
 defineProps({
     settingMenu: {
         type: Object as PropType<SettingMenu[]>,
         required: true,
-    },
-    expanded: {
-        type: Boolean,
-        default: false,
-    },
+    }
 });
 
 </script>
@@ -21,15 +18,10 @@ defineProps({
             <h2 class="title" v-if="setting.label">{{ setting.label }}</h2>
             <p class="text-sm italic" v-if="setting.description">{{ setting.description }}</p>
             <div class="flex gap-4 w-full items-end flex-wrap">
-                <div v-for="item of setting.items" :class="`flex flex-col gap-2 ${expanded ? 'w-full' : 'w-full md:w-1/2'}`">
+                <div v-for="item of setting.items" class="flex flex-col gap-2 w-full">
                     <label class="font-bold">{{ item.label }} {{ item.required ? '*' : '' }}</label>
                     <p class="text-sm italic" v-if="item.description">{{ item.description }}</p>
-                    <input v-if="item.type === 'text' || item.type === 'number' " :type="item.type" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
-                    <textarea v-else-if="item.type === 'textarea'" class="input" v-model="item.value" :placeholder="item.label" :required="item.required"/>
-                    <select v-else-if="item.type === 'select'" class="input" v-model="item.value" :required="item.required">
-                        <option :value="null">{{ $t('placeholders.select') }}</option>
-                        <option v-for="option of item.data" :value="option.value">{{ option.label }}</option>
-                    </select>
+                    <control-type-selector class="flex-1" v-model="item.value" :name="item.label" :type="item.type" :data="item.options" :edit-structure="false"/>
                 </div>
             </div>
         </div>

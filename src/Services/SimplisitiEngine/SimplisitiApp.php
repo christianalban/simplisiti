@@ -202,15 +202,15 @@ class SimplisitiApp extends BasePlugin
     }
 
     public function registerActions(): void {
-        $this->actionManager->registerActions();
+        $this->actionManager?->registerActions();
     }
 
     public function registerPluginStyles(): void {
-        $this->styleManager->registerPluginStyles();
+        $this->styleManager?->registerPluginStyles();
     }
 
     public function registerPluginScripts(): void {
-        $this->scriptManager->registerPluginScripts();
+        $this->scriptManager?->registerPluginScripts();
     }
 
     public function setRequestParameters(string $url, array $parameters): void {
