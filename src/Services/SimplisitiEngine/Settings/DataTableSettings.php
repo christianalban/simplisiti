@@ -4,7 +4,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Settings;
 
 class DataTableSettings extends Settings
 {
-    public function merge(array|string|int|null $merge) {
+    public function merge(array|string|int|float|null $merge) {
         if (($this->options['columns'] ?? null) ==! null) {
             $this->default['columns'] = $this->options['columns'] ?: [];
         }
@@ -24,22 +24,22 @@ class DataTableSettings extends Settings
     private function mergeRecursive(array $dataSet, array $columns) {
         $data = [];
 
-        foreach($dataSet as $dataSetRows) {
-            $data[] = collect($dataSetRows)->map(function($row) use ($columns) {
-                // if (!collect($columns)->contains('name', $row['name'])) {
-                //     return null;
-                // }
-                if ($row['type'] === 'datatable') {
-                    $row['default'] = [
-                        'columns' => $row['default']['columns'],
-                        'rows' => $this->mergeRecursive($row['default']['rows'], $row['default']['columns']),
+        foreach($dataSet as $dataSetRow) {
+            $data[] = collect($columns)->reduce(function($carrier, $column) use ($dataSetRow) {
+                $values = collect($dataSetRow)->pluck('default', 'name')->toArray();
+                if ($column['type'] === 'datatable') {
+                    $column['default'] = [
+                        'columns' => $values[$column['name']]['default']['columns'],
+                        'rows' => $this->mergeRecursive($values[$column['name']]['default']['rows'], $values[$column['name']]['default']['columns']),
                     ];
                 } else {
-                    $row['default'] = $row['default'];
+                    $value = $values[$column['name']] ?? $column['default'] ?? null;
+                    $column['default'] = Settings::mergeSettings($column, $value);
                 }
 
-                return $row;
-            })->filter()->toArray();
+                $carrier[] = $column;
+                return $carrier;
+            }, []);
         }
 
         return $data;

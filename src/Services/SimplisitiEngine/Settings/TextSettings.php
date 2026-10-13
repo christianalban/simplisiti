@@ -4,11 +4,7 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Settings;
 
 class TextSettings extends Settings
 {
-    public function parse() {
-        return $this->default;
-    }
-
-    public function merge(array|string|int | null $merge) {
+    public function merge(array|string|int|float | null $merge) {
         return $merge ?? $this->default;
     }
 }
