@@ -4,7 +4,7 @@ import { SettingMenu } from "./Setting";
 // import { ResourcePreset } from "./Resource";
 
 export type VariableInputType = 'text' | 'number' | 'tel' | 'email' | 'url' | 'password' | 'checkbox' | 'radio' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color';
-export type VariableType = VariableInputType | 'resource' | 'datatable' | 'textarea' | 'select' | 'datasource' | 'action' | 'page';
+export type VariableType = VariableInputType | 'resource' | 'datatable' | 'textarea' | 'select' | 'datasource' | 'action' | 'page' | 'link';
 
 export interface Variable {
     type: VariableType

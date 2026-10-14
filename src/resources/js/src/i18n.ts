@@ -68,6 +68,7 @@ const messages = {
                 datasource: "Datasource",
                 action: "Action",
                 page: "Page",
+                link: "Link",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -367,6 +368,7 @@ const messages = {
         placeholders: {
             search: "Search",
             select: "Select",
+            download: "Download",
         },
     },
     es: {
@@ -436,6 +438,7 @@ const messages = {
                 datasource: "Fuente de datos",
                 action: "Acción",
                 page: "Página",
+                link: "Enlace",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -738,6 +741,7 @@ const messages = {
         placeholders: {
             search: "Buscar",
             select: "Seleccionar",
+            download: "Descargar",
         },
         dialogs: {
             delete: {

@@ -192,7 +192,7 @@ const canEditRows = computed(() => {
 })
 
 const canEdit = computed(() => {
-    return props.editStructure && props.data?.editable;
+    return props.editStructure && (props.data?.editable ?? true);
 })
 
 onMounted(() => {
