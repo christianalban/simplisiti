@@ -7,7 +7,7 @@ import { createRequire } from 'module';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    // base: '/vendor/simplisiti/', // Comment for development
+    base: '/vendor/simplisiti/', // Comment for development
     plugins: [
         vue(),
         ckeditor5( { theme: require.resolve( '@ckeditor/ckeditor5-theme-lark' ) } )

@@ -22,10 +22,10 @@ export class InsertVideoUrl extends Plugin {
                 const videoUrl = prompt( 'Enter the video URL' );
 
                 editor.model.change( writer => {
-                    const videoElement = writer.createElement( 'video', {
-                        src: videoUrl,
-                        controls: true
-                    } );
+                    // const videoElement = writer.createElement( 'video', {
+                    //     src: videoUrl,
+                    //     controls: true
+                    // } );
 
                     // Insert the image in the current selection location.
                     editor.model.insertContent(

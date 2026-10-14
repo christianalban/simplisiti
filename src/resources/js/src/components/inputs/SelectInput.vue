@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
-import { usePages } from '../../services/PageService.ts';
-
-const { pages } = usePages();
+import { SelectOption } from '../../types/SelectInput.ts';
 
 defineProps({
     modelValue: {
@@ -21,8 +19,7 @@ defineProps({
         default: false,
     },
     data: {
-        type: [Array, Object],
-        default: () => [],
+        type: Array as PropType<SelectOption[]>,
     },
 });
 
@@ -36,7 +33,7 @@ const emitChange = (event: Event) => {
 </script>
 
 <template>
-    <select class="input w-full" :name="name" :value="value" @change="emitChange($event)" :required="required" :disabled="!editable">
+    <select class="input w-full" :name="name" :value="modelValue" @change="emitChange($event)" :required="required" :disabled="!editable">
         <option :value="null">{{ $t('placeholders.select') }}</option>
         <option v-for="option of data" :value="option.value">{{ option.label }}</option>
     </select>

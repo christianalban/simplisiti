@@ -1,8 +1,9 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { PropType, toRefs, watch, computed } from 'vue';
 import { VariableType } from '../../types/Variable';
-import { DataTableValue } from '../../types/DataTable';
+import { Column, DataTableValue } from '../../types/DataTable';
 import { DataSourceValue } from '../../types/DataSource';
+import { SelectOption } from '../../types/SelectInput';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
 import TextAreaComponent from './TextArea.vue';
@@ -38,8 +39,7 @@ const props = defineProps({
         default: true,
     },
     data: {
-        type: [Array, Object],
-        default: () => [],
+        type: [Array, Object] as PropType<T | T[]>,
     },
     required: {
         type: Boolean as PropType<boolean>,
@@ -88,6 +88,16 @@ const value = computed({
     },
 });
 
+const checkedInput = computed(() => {
+    return ['checkbox', 'radio'].includes(props.type) && value.value ? true : false;
+});
+
+const valueInput = computed(() => {
+    return ['checkbox', 'radio'].includes(props.type) ? '1' : value.value
+});
+
+const inputTypes = ['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'];
+
 watch(type, (value) => {
     emit('update:model-value', value === 'datatable'
         ? { columns: [{name: '', type: 'text'}], rows: [[{}]] }
@@ -98,14 +108,14 @@ watch(type, (value) => {
 </script>
 
 <template>
-    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input" :value="['checkbox', 'radio'].includes(type) ? '1' : value" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="['checkbox', 'radio'].includes(type) && value"/>
+    <input v-if="inputTypes.includes(type)" :type="type" class="input" :value="valueInput" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="checkedInput"/>
     <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)" :editable="editable"/>
-    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data"/>
+    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data as Column"/>
     <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)" :editable="editable"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
-    <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data" :required="required" :editable="editable"/>
+    <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data as SelectOption[]" :required="required" :editable="editable"/>
 </template>
 
 <style scoped>

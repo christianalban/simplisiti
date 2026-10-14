@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, PropType } from 'vue';
+import { PropType } from 'vue';
 import { useSources } from '../../services/DataSourceService.ts';
 
 const { sources } = useSources();
 
-const props = defineProps({
+defineProps({
     modelValue: {
         required: true,
     },
@@ -28,10 +28,6 @@ const emitChange = (event: Event) => {
     const target = event.target as HTMLSelectElement;
     emit('update:model-value', target.value);
 }
-
-const canEdit = computed(() => {
-    return props.editStructure && props.editable;
-});
 
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Modal from "../Modal.vue";
-import { ref, computed } from "vue";
+import { PropType, ref, computed } from "vue";
 import { useResources } from "../../services/ResourceService";
 import ResourcePreview from '../../components/preview/ResourcePreview.vue';
 import { ResourceUploadType } from '../../types/Resource';

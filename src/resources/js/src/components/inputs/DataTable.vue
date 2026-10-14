@@ -21,8 +21,7 @@ const props = defineProps({
         default: true,
     },
     data: {
-        type: [Array, Object],
-        default: () => [],
+        type: Object as PropType<Column>,
     },
 });
 
@@ -177,11 +176,11 @@ const confirmDeleteComponent = () => {
 }
 
 const canEditRows = computed(() => {
-    return props.data.add_rows ?? true
+    return props.data?.add_rows ?? true
 })
 
 const canEdit = computed(() => {
-    return props.editStructure && props.data.editable;
+    return props.editStructure && props.data?.editable;
 })
 
 onMounted(() => {

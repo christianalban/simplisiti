@@ -135,7 +135,7 @@ const handleCancel = () => {
     showModal.value = false;
 };
 
-const onEditorReady = (editor) => {
+const onEditorReady = (editor: any) => {
   const stickyPanel = editor.ui.view.stickyPanel;
   
   if (stickyPanel) {
