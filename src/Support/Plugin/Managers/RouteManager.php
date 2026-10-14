@@ -13,7 +13,7 @@ class RouteManager {
 
     public function __construct(
     ) {
-        $this->pluginStyles = [];
+        $this->pluginRoutes = [];
     }
 
     protected function renderRoutes(): void
