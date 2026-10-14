@@ -12,17 +12,23 @@ use Illuminate\Support\Collection;
 class SettingManager {
     private Collection $settings;
     private Collection $settingEntries;
-    private bool $useSettingContainer = false;
+    private Collection $useSettingContainer;
 
     public function __construct(
     ) {
         $this->settings = new Collection;
         $this->settingEntries = new Collection;
+        $this->useSettingContainer = new Collection;
+    }
+
+    private function getPluginKey(string|ManipulateSetting $plugin): string
+    {
+        return $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
     }
 
     public function settingEntry(string|ManipulateSetting $plugin, string $label, ?string $description = null): void
     {
-        $pluginKey = $plugin instanceof ManipulateSetting ? $plugin::class : $plugin;
+        $pluginKey = $this->getPluginKey($plugin);
 
         $this->settingEntries[$pluginKey] = [
             'plugin' => $pluginKey,
@@ -91,14 +97,14 @@ class SettingManager {
         return array_values($settingMenu);
     }
 
-    public function useSettingContainer(bool $useSettingContainer): void
+    public function useSettingContainer(string|ManipulateSetting $plugin, bool $use = true): void
     {
-        $this->useSettingContainer = $useSettingContainer;
+        $this->useSettingContainer->put($this->getPluginKey($plugin), $use);
     }
 
-    public function shouldUseSettingContainer(): bool
+    public function shouldUseSettingContainer(string|ManipulateSetting $plugin): bool
     {
-        return $this->useSettingContainer;
+        return $this->useSettingContainer->get($this->getPluginKey($plugin), false);
     }
 
     public function getSettingEntry(string $plugin, string $name): ?array
