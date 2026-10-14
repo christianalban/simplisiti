@@ -11,6 +11,7 @@ import DataSource from './DataSource.vue';
 import Action from './Action.vue';
 import Page from './Page.vue';
 import SelectInput from './SelectInput.vue';
+import DownloadLink from './DownloadLink.vue';
 
 const props = defineProps({
     type: {
@@ -116,6 +117,7 @@ watch(type, (value) => {
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data as SelectOption[]" :required="required" :editable="editable"/>
+    <download-link v-else-if="type === 'link'" :modelValue="value as string"/>
 </template>
 
 <style scoped>
