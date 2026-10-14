@@ -15,6 +15,10 @@ defineProps({
     editStructure: {
         type: Boolean as PropType<boolean>,
         default: true,
+    },
+    editable: {
+        type: Boolean as PropType<boolean>,
+        default: true,
     }
 });
 
