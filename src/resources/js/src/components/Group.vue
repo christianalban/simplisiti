@@ -15,6 +15,10 @@ const props = defineProps({
         default: '',
     },
     filterBy: {
+        type: [String, Array] as PropType<string | string[]>,
+        default: 'name',
+    },
+    groupBy: {
         type: String,
         default: 'name',
     },
@@ -25,7 +29,7 @@ const groupedItems = computed<Group<T>>((): Group<T> => {
 
     const filtered = filterBy(props.items, props.filter, props.filterBy);
 
-    const group = groupBy<T>(filtered, props.filterBy);
+    const group = groupBy<T>(filtered, props.groupBy);
 
     return group;
 });

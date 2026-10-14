@@ -50,8 +50,11 @@ export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
     return data;
 }
 
-export const filterBy = <T>(items: GroupItem<T>[], value: string, key: string): GroupItem<T>[] => {
+export const filterBy = <T>(items: GroupItem<T>[], value: string, key: string | string[]): GroupItem<T>[] => {
     return items.filter((item) => {
+        if (Array.isArray(key)) {
+            return key.some((k) => ((item.data as any)[k] as any).toLowerCase().includes(value.toLowerCase()));
+        }
         return ((item.data as any)[key] as any).toLowerCase().includes(value.toLowerCase());
     });
 }
