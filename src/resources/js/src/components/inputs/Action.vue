@@ -12,6 +12,10 @@ defineProps({
         type: String as PropType<string>,
         required: false,
     },
+    editable: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    }
 });
 
 const emit = defineEmits(['update:model-value']);
@@ -24,7 +28,7 @@ const emitChange = (event: Event) => {
 </script>
 
 <template>
-    <select class="input w-full" @change="emitChange" :value="modelValue">
+    <select class="input w-full" @change="emitChange" :value="modelValue" :disabled="!editable">
         <option value="">{{ $t('placeholders.select') }}</option>
         <option :value="action.name" v-for="action of actions">
             {{ action.name }}

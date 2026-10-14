@@ -51,7 +51,7 @@ const confirm = () => {
 </script>
 
 <template>
-    <div :class="['fixed z-10 top-0 left-0 right-0', { 'hidden': !showModal }]">
+    <div :class="['fixed z-50 top-0 left-0 right-0', { 'hidden': !showModal }]">
         <div class="grid w-full h-screen place-center overflow-auto">
             <div class="m-4 p-4 bg-white rounded-lg">
                 <div class="flex flex-col gap-4 h-full">

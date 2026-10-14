@@ -6,7 +6,7 @@ abstract class Settings
 {
     protected string $type;
     protected string $name;
-    protected string|array|null $default;
+    protected string|array|int|float|null $default;
     protected array $applied_settings = [];
     protected array $options = [];
 
@@ -18,9 +18,9 @@ abstract class Settings
         $this->options = $options;
     }
 
-    abstract public function merge(array|string|int|null $merge);
+    abstract public function merge(array|string|int|float|null $merge);
 
-    public static function mergeSettings(array $variable, array|string|int|null $settings, array $options = [])
+    public static function mergeSettings(array $variable, array|string|int|float|null $settings, array $options = [])
     {
         return self::makeValue($variable, $options)->merge($settings);
     }
@@ -34,9 +34,10 @@ abstract class Settings
             // 'datasource' => DataSourceValue::class,
             // 'action' => ActionValue::class,
             // 'page' => PageValue::class,
+            'checkbox' => CheckboxSettings::class,
             default => TextSettings::class,
         };
-
+ 
         return new $valueType($variable, $options);
     }
 }

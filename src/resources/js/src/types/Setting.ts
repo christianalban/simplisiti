@@ -1,3 +1,5 @@
+import { Column } from "./DataTable";
+
 export type SettingType = 'text' | 'textarea' | 'number' | 'select';
 
 export interface SettingRequest {
@@ -21,5 +23,5 @@ export interface Setting {
     value?: string
     required: boolean
     data?: any
-    options?: any
+    options?: Column
 }

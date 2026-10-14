@@ -36,6 +36,8 @@ class PagesLoader
         $this->app->loadParameters();
 
         $this->app->loadCache();
+
+        $this->app->loadRoutes();
     }
     
     public static function loadPages(): void
