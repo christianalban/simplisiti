@@ -19,8 +19,14 @@ const props = defineProps({
     editStructure: {
         type: Boolean as PropType<boolean>,
         default: true,
-    }
+    },
+    data: {
+        type: [Array, Object],
+        default: () => [],
+    },
 });
+
+const search = ref('');
 
 interface EmptyVariableDefaults {
     type: VariableType;
@@ -55,6 +61,20 @@ const emptyColumn = (type: VariableType = 'text') => {
 
 const columns = ref<Column[]>([emptyColumn()]);
 const rows = ref<Variable[][]>([[emptyVariable()]]);
+const rowsFiltered = computed<Variable[][]>(() => {
+    if (!search.value) {
+        return rows.value;
+    }
+
+    return rows.value.filter((row) => {
+        return row.some((variable) => {
+            if (variable.default instanceof String || typeof variable.default === 'string') {
+                return variable.default.toLowerCase().includes(search.value.toLowerCase());
+            }
+            return false;
+        });
+    });
+});
 const showDialog = ref(false);
 const selectedColumnIndex = ref(0);
 
@@ -156,6 +176,14 @@ const confirmDeleteComponent = () => {
     showDialog.value = false;
 }
 
+const canEditRows = computed(() => {
+    return props.data.add_rows ?? true
+})
+
+const canEdit = computed(() => {
+    return props.editStructure && props.data.editable;
+})
+
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
         const value = props.modelValue as DataTableValue;
@@ -221,23 +249,26 @@ watch(columns, (value) => {
         @confirm="handleConfirm"
     >
         <div class="overflow-auto h-[75vh] max-w-[95vw] rounded">
+            <div class="flex flex-col md:flex-row gap-2 justify-start mb-4">
+                <input type="search" v-model="search" class="input ml-auto" :placeholder="$t('placeholders.search')" />
+            </div>
             <table class="w-full relative">
                 <thead>
                     <tr>
                         <th :class="`min-w-[200px] p-2 bg-gray-100 sticky top-0 z-10 ${column.type}`" v-for="(column, index) of columns">
                             <div class="flex">
                                 <div class="w-full form-group">
-                                    <input class="input w-full" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')" :readonly="!editStructure"/>
-                                    <variable-type-selector v-if="editStructure" class="!pl-0 w-3" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
-                                    <button v-if="columns.length > 1 && editStructure" type="button" class="button danger" @click="showDeleteDialog(index)">
+                                    <input class="input w-full" type="text" :value="column.name" @input="updateColumnName(index, column, ($event.target) as EventTarget)" :placeholder="$t('components.placeholders.dataName')" :readonly="!canEdit"/>
+                                    <variable-type-selector v-if="canEdit" class="!pl-0 w-3" :modelValue="column.type" @update:modelValue="updateColumnType(index, column, $event)"/>
+                                    <button v-if="columns.length > 1 && canEdit" type="button" class="button danger" @click="showDeleteDialog(index)">
                                         <fa-icon icon="minus" />
                                     </button>
                                 </div>
                             </div>
                         </th>
-                        <th class="sticky right-0 p-2 bg-gray-100 top-0 z-10">
+                        <th class="sticky right-0 p-2 bg-gray-100 top-0 z-10" v-if="canEditRows">
                             <div class="flex justify-center">
-                                <button v-if="columns.length >= 1 && editStructure" type="button" class="button primary" @click="addColumn">
+                                <button v-if="columns.length >= 1 && canEdit" type="button" class="button primary" @click="addColumn">
                                     <fa-icon icon="plus" />
                                 </button>
                             </div>
@@ -245,13 +276,13 @@ watch(columns, (value) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="group" v-for="(variables, index) of rows" :key="`${index}:${name}`">
+                    <tr class="group" v-for="(variables, index) of rowsFiltered" :key="`${index}:${name}`">
                         <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
                             <div class="h-10 flex items-center justify-center">
-                                <control-type-selector v-model="variable.default" :edit-structure="editStructure" :name="variable.name" :type="variable.type" :data="variable.options"/>
+                                <control-type-selector v-model="variable.default" :edit-structure="canEdit" :name="variable.name" :type="variable.type" :data="variable.options" :editable="columns[variableIndex]?.editable"/>
                             </div>
                         </td>
-                        <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
+                        <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-if="canEditRows">
                             <div class="flex flex-col gap-1">
                                 <button type="button" class="button danger" @click="removeRow(index)">
                                     <fa-icon icon="minus" />
@@ -259,7 +290,7 @@ watch(columns, (value) => {
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="canEditRows">
                         <td :colspan="columns.length" class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200"></td>
                         <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
                             <div class="flex flex-col gap-1 w-min ml-auto">

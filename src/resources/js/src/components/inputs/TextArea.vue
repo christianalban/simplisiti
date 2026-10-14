@@ -31,6 +31,10 @@ const props = defineProps({
         type: String as PropType<string>,
         required: false,
     },
+    editable: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    },
 });
 
 const editor = ClassicEditor;
@@ -126,6 +130,27 @@ const handleConfirm = () => {
     showModal.value = false;
 };
 
+const handleCancel = () => {
+    editorData.value = props.modelValue;
+    showModal.value = false;
+};
+
+const onEditorReady = (editor) => {
+  const stickyPanel = editor.ui.view.stickyPanel;
+  
+  if (stickyPanel) {
+    // 1. Apagamos el estado activo para que no intente calcular
+    stickyPanel.isActive = false;
+    
+    // 2. Desvinculamos la variable observable que dispara los cambios visuales
+    stickyPanel.unbind('isSticky');
+    stickyPanel.isSticky = false;
+    
+    // 3. Quitamos su elemento de referencia
+    stickyPanel.limiterElement = null;
+  }
+}
+
 </script>
 
 <template>
@@ -138,9 +163,16 @@ const handleConfirm = () => {
         :confirmLabel="$t('buttons.confirm')"
         :resetOnClose="false"
         @confirm="handleConfirm"
+        @cancel="handleCancel"
     >
-        <div>
-            <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+        <div class="h-[82vh] w-[85vw] md:w-full flex editor-container">
+            <ckeditor
+                :editor="editor"
+                v-model="editorData"
+                :config="editorConfig"
+                :disabled="!editable"
+                @ready="onEditorReady"
+            />
         </div>
     </floating-window>
 </template>
@@ -153,19 +185,20 @@ const handleConfirm = () => {
 .datatable {
     @apply w-44;
 }
+
 </style>
 
 <style>
-.ck-content * {
-    all: revert;
-}
+.editor-container {
+    .ck.ck-content {
+        @apply min-h-full h-full;
+    }
+    .ck.ck-editor {
+        @apply w-full h-full flex-1 flex flex-col;
+    }
 
-.ck-editor__editable {
-    @apply max-h-[75vh];
-}
-
-:root {
-    --ck-z-default: 100;
-    --ck-z-panel: calc( var(--ck-z-default) + 999 );
+    .ck.ck-editor__main {
+        @apply flex-1 overflow-y-auto;
+    }
 }
 </style>

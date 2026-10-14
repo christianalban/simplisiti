@@ -21,7 +21,7 @@ defineProps({
                 <div v-for="item of setting.items" class="flex flex-col gap-2 w-full">
                     <label class="font-bold">{{ item.label }} {{ item.required ? '*' : '' }}</label>
                     <p class="text-sm italic" v-if="item.description">{{ item.description }}</p>
-                    <control-type-selector class="flex-1" v-model="item.value" :name="item.label" :type="item.type" :data="item.options" :edit-structure="false"/>
+                    <control-type-selector class="flex-1" v-model="item.value" :name="item.label" :type="item.type" :data="item.options"/>
                 </div>
             </div>
         </div>

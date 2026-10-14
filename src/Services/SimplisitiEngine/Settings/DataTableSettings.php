@@ -28,10 +28,23 @@ class DataTableSettings extends Settings
             $data[] = collect($columns)->reduce(function($carrier, $column) use ($dataSetRow) {
                 $values = collect($dataSetRow)->pluck('default', 'name')->toArray();
                 if ($column['type'] === 'datatable') {
-                    $column['default'] = [
-                        'columns' => $values[$column['name']]['default']['columns'],
-                        'rows' => $this->mergeRecursive($values[$column['name']]['default']['rows'], $values[$column['name']]['default']['columns']),
-                    ];
+                    if (!is_array($values[$column['name']])) {
+                        $column['default'] = [
+                            'columns' => [
+                                [
+                                    'name' => '',
+                                    'type' => 'text',
+                                    'label' => '',
+                                ],
+                            ],
+                            'rows' => [],
+                        ];
+                    } else {
+                        $column['default'] = [
+                            'columns' => $values[$column['name']]['default']['columns'],
+                            'rows' => $this->mergeRecursive($values[$column['name']]['default']['rows'], $values[$column['name']]['default']['columns']),
+                        ];
+                    }
                 } else {
                     $value = $values[$column['name']] ?? $column['default'] ?? null;
                     $column['default'] = Settings::mergeSettings($column, $value);

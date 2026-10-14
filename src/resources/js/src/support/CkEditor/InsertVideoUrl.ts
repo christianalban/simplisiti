@@ -27,8 +27,6 @@ export class InsertVideoUrl extends Plugin {
                         controls: true
                     } );
 
-                    console.log(videoElement);
-
                     // Insert the image in the current selection location.
                     editor.model.insertContent(
                         writer.createText( ' ', { videoUrl } ),

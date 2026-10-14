@@ -9,6 +9,7 @@ import TextAreaComponent from './TextArea.vue';
 import DataSource from './DataSource.vue';
 import Action from './Action.vue';
 import Page from './Page.vue';
+import SelectInput from './SelectInput.vue';
 
 const props = defineProps({
     type: {
@@ -32,6 +33,10 @@ const props = defineProps({
         type: Boolean as PropType<boolean>,
         default: true,
     },
+    editable: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    },
     data: {
         type: [Array, Object],
         default: () => [],
@@ -45,7 +50,6 @@ const props = defineProps({
 const emit = defineEmits(['update:model-value']);
 
 const emitInputValue = (value: Event) => {
-console.log('emitInputValue', (value.target as HTMLInputElement).value);
     emit('update:model-value', (value.target as HTMLInputElement).value);
 };
 
@@ -71,8 +75,13 @@ const emitActionValue = (value: string) => {
 
 const { type } = toRefs(props);
 
-const value = computed(() => {
-    return props.modelValue || props.defaultValue;
+const value = computed({
+    get: () => {
+        return props.modelValue || props.defaultValue;
+    },
+    set: (value) => {
+        emit('update:model-value', value);
+    },
 });
 
 watch(type, (value) => {
@@ -85,17 +94,14 @@ watch(type, (value) => {
 </script>
 
 <template>
-    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input" v-model="value" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01'/>
-    <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)"/>
-    <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)"/>
-    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)"/>
-    <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)"/>
-    <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
-    <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)"/>
-    <select v-else-if="type === 'select'" class="input w-full" :name="name" :value="value" @change="emitInputValue($event)" :required="required">
-        <option :value="null">{{ $t('placeholders.select') }}</option>
-        <option v-for="option of data" :value="option.value">{{ option.label }}</option>
-    </select>
+    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input" :value="value" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="['checkbox', 'radio'].includes(type) && value"/>
+    <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
+    <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)" :editable="editable"/>
+    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data"/>
+    <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)" :editable="editable"/>
+    <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
+    <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
+    <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data" :required="required" :editable="editable"/>
 </template>
 
 <style scoped>
