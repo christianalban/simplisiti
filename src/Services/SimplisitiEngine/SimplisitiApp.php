@@ -9,6 +9,7 @@ use Alban\Simplisiti\Support\Plugin\Managers\DataSourceManager;
 use Alban\Simplisiti\Support\Plugin\Managers\HeadManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ParameterManager;
 use Alban\Simplisiti\Support\Plugin\Managers\PluginManager;
+use Alban\Simplisiti\Support\Plugin\Managers\RouteManager;
 use Alban\Simplisiti\Support\Plugin\Managers\ScriptManager;
 use Alban\Simplisiti\Support\Plugin\Managers\SettingManager;
 use Alban\Simplisiti\Support\Plugin\Managers\StyleManager;
@@ -36,6 +37,8 @@ class SimplisitiApp extends BasePlugin
     private ?ActionManager $actionManager = null;
 
     private ?ParameterManager $parameterManager = null;
+
+    private ?RouteManager $routeManager = null;
 
     public function getStyleManager(): StyleManager
     {
@@ -85,6 +88,11 @@ class SimplisitiApp extends BasePlugin
     public function getParameterManager(): ParameterManager
     {
         return $this->parameterManager;
+    }
+
+    public function getRouteManager(): RouteManager
+    {
+        return $this->routeManager;
     }
 
     public function init(): void {
@@ -189,6 +197,14 @@ class SimplisitiApp extends BasePlugin
         }
     }
 
+    public function loadRoutes(): void {
+        if($this->routeManager) {
+            return;
+        }
+
+        $this->routeManager = new RouteManager;
+    }
+
     protected function initPlugins(): void {
         if (!Schema::hasTable('plugins')) {
             return;
@@ -213,7 +229,15 @@ class SimplisitiApp extends BasePlugin
         $this->scriptManager?->registerPluginScripts();
     }
 
+    public function registerPluginRoutes(): void {
+        $this->routeManager?->registerPluginRoutes();
+    }
+
     public function setRequestParameters(string $url, array $parameters): void {
         $this->parameterManager->addParameters($url, $parameters);
+    }
+
+    public function useSettingContainer(bool $useSettingContainer = false): void {
+        $this->settingManager?->useSettingContainer($useSettingContainer);
     }
 }

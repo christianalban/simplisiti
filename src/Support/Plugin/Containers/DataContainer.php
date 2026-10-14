@@ -52,6 +52,11 @@ class DataContainer
 
     public function getSettingValue(string $name): mixed
     {
+        $settings = $this->appliedSettings->where('name', $name)->first() ?? null;
+        if ($this->settingManager->shouldUseSettingContainer()) {
+            return new SettingContainer($settings);
+        }
+
         return $this->appliedSettings->where('name', $name)->first()->value['value'] ?? null;
     }
 

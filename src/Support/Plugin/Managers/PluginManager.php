@@ -13,6 +13,7 @@ use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateAction;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateBody;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateDataSource;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateHeader;
+use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateRoutes;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateScript;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateSetting;
 use Alban\Simplisiti\Support\Plugin\Manipulate\ManipulateStyle;
@@ -216,6 +217,10 @@ class PluginManager {
 
             if ($plugin instanceof ManipulateScript) {
                 $plugin->withScripts($this->app->getScriptManager());
+            }
+
+            if ($plugin instanceof ManipulateRoutes) {
+                $plugin->withRoutes($this->app->getRouteManager());
             }
         }
     }

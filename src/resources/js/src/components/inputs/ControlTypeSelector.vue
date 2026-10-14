@@ -50,6 +50,10 @@ const props = defineProps({
 const emit = defineEmits(['update:model-value']);
 
 const emitInputValue = (value: Event) => {
+    if (['checkbox', 'radio'].includes(props.type)) {
+        emit('update:model-value', (value.target as HTMLInputElement).checked ? 1 : 0);
+        return;
+    }
     emit('update:model-value', (value.target as HTMLInputElement).value);
 };
 
@@ -94,7 +98,7 @@ watch(type, (value) => {
 </script>
 
 <template>
-    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input" :value="value" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="['checkbox', 'radio'].includes(type) && value"/>
+    <input v-if="['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(type)" :type="type" class="input" :value="['checkbox', 'radio'].includes(type) ? '1' : value" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="['checkbox', 'radio'].includes(type) && value"/>
     <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)" :editable="editable"/>
     <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data"/>

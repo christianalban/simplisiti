@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 class SettingManager {
     private Collection $settings;
     private Collection $settingEntries;
+    private bool $useSettingContainer = false;
 
     public function __construct(
     ) {
@@ -88,5 +89,20 @@ class SettingManager {
         }
 
         return array_values($settingMenu);
+    }
+
+    public function useSettingContainer(bool $useSettingContainer): void
+    {
+        $this->useSettingContainer = $useSettingContainer;
+    }
+
+    public function shouldUseSettingContainer(): bool
+    {
+        return $this->useSettingContainer;
+    }
+
+    public function getSettingEntry(string $plugin, string $name): ?array
+    {
+        return $this->settings->where('plugin', $plugin)->where('name', $name)->first();
     }
 }
