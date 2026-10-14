@@ -236,8 +236,4 @@ class SimplisitiApp extends BasePlugin
     public function setRequestParameters(string $url, array $parameters): void {
         $this->parameterManager->addParameters($url, $parameters);
     }
-
-    public function useSettingContainer(bool $useSettingContainer = false): void {
-        $this->settingManager?->useSettingContainer($useSettingContainer);
-    }
 }

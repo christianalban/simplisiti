@@ -11,11 +11,13 @@ use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 abstract class Plugin {
     public function getSettingValue(string $name, ?string $class = null): array | string | SettingContainer | null
     {
-        $settings = Setting::where('plugin', $class ?? $this::class)->where('name', $name)->first();
+        $class = $class ?? $this::class;
+
+        $settings = Setting::where('plugin', $class)->where('name', $name)->first();
 
         $settingManager = app(SimplisitiApp::class)->getSettingManager();
 
-        if ($settingManager->shouldUseSettingContainer()) {
+        if ($settingManager->shouldUseSettingContainer($class)) {
             return new SettingContainer($settings, $settingManager);
         }
 
