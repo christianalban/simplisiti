@@ -7,6 +7,9 @@ import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';
 import VariableTypeSelector from "./VariableTypeSelector.vue";
 import DialogComponent from "../Dialog.vue";
+import { usePages } from "../../services/PageService";
+
+const { pages } = usePages();
 
 const props = defineProps({
     modelValue: {
@@ -67,6 +70,15 @@ const rowsFiltered = computed<Variable[][]>(() => {
 
     return rows.value.filter((row) => {
         return row.some((variable) => {
+            if (variable.type === 'page') {
+                const foundPageByUrl = pages.value.find((page) => {
+                    return page.url?.toLowerCase().includes(search.value.toLowerCase()) && page.name === variable.default;
+                });
+
+                if (foundPageByUrl) {
+                    return true;
+                }
+            }
             if (variable.default instanceof String || typeof variable.default === 'string') {
                 return variable.default.toLowerCase().includes(search.value.toLowerCase());
             }

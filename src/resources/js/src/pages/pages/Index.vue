@@ -80,7 +80,7 @@ onMounted(() => {
             v-model="filter"
         />
         <div class="overflow-y-auto">
-            <group class="h-full overflow-y-auto" :filter="filter" :items="pagesGroup" v-slot="page">
+            <group class="h-full overflow-y-auto" :filter="filter" :items="pagesGroup" v-slot="page" :filterBy="['url', 'name']">
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                     <a :href="`/spanel/pages/${pageItem.id}`" v-for="pageItem of page.item" class="flex flex-col border-blue-200 shadow-lg rounded-lg border-4 hover:border-blue-200 overflow-hidden">
                         <div class="flex items-center gap-2 bg-blue-200 px-2 py-1 w-full">
