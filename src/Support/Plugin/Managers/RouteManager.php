@@ -18,11 +18,16 @@ class RouteManager {
 
     protected function renderRoutes(): void
     {
-        foreach($this->pluginRoutes as $routes) {
+        foreach($this->pluginRoutes as $plugin => $routes) {
             foreach($routes as $route) {
-                Route::get($route['path'], $route['callback'])->name($route['name']);
+                Route::{$route['method']}('/api/spanel/'.$plugin.$this->sanitizePath($route['path']), $route['callback'])->name($route['name']);
             }
         }
+    }
+
+    private function sanitizePath(string $path): string
+    {
+        return '/' . ltrim($path, '/');
     }
 
     public function addRoute(Plugin $plugin, string $method, string $path, string $name, Closure $callback): void

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { getSettings, updateSettings } from '../../services/SettingService';
+import { computed, onMounted } from 'vue';
+import { useSettings, updateSettings } from '../../services/SettingService';
 import { usePages } from '../../services/PageService';
 import { showToast } from '../../services/ToastService';
 import { SettingMenu } from '../../types/Setting';
@@ -10,8 +10,8 @@ import Tabs from '../../components/Tabs.vue';
 import { Tab } from '../../types/Tab';
 
 const { loadPages } = usePages();
+const { settings, loadSettings } = useSettings();
 
-const settings = ref<SettingMenu[]>([]);
 const { t } = useI18n();
 
 const update = () => {
@@ -41,11 +41,7 @@ const tabs = computed<Tab<SettingMenu[]>[]>(():Tab<SettingMenu[]>[] => {
 });
 
 onMounted(() => {
-    getSettings()
-    .then((response) => {
-        settings.value = response.data.data;
-    });
-
+    loadSettings();
     loadPages();
 });
 </script>

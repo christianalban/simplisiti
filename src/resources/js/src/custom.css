@@ -1,5 +1,5 @@
 .button {
-    @apply px-4 py-2 rounded-lg transition min-h-10 min-w-max;
+    @apply px-4 py-2 rounded-lg transition min-w-max;
 
     &.primary {
         @apply bg-blue-100 text-blue-900;
