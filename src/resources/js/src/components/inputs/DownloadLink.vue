@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue';
+import { DownloadFileOptions } from '../../types/Plugin';
+import { sanitizeUrl, getPathFromPluginName } from '../../utils/helpers';
+import { baseURL } from '../../axios';
 
 const props = defineProps({
-    modelValue: {
-        type: [String, null] as PropType<string|null>,
-        required: true,
+    data: {
+        type: Object as PropType<DownloadFileOptions>,
+    },
+    plugin: {
+        type: String,
     },
 });
 
 const linkUrl = computed(() => {
-    return props.modelValue ?? '#';
+return `${baseURL}/${getPathFromPluginName(props.plugin as string)}${sanitizeUrl(props.data?.url ?? '#')}`;
 });
 
 </script>

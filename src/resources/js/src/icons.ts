@@ -44,6 +44,9 @@ import {
     faClone,
     faListCheck,
     faDownload,
+    faUpload,
+    faFile,
+    faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons'
 import { faCss3, faJs } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -94,7 +97,10 @@ library.add(
     faToolbox,
     faClone,
     faListCheck,
-    faDownload
+    faDownload,
+    faUpload,
+    faFile,
+    faCircleNotch
 );
 
 export default FontAwesomeIcon;

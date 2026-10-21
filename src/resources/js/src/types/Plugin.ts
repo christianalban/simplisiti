@@ -16,3 +16,17 @@ export interface Plugin {
 export interface Repository {
     url: string;
 }
+
+export interface UploadFileOptions {
+    accept?: string
+    url?: string
+}
+
+export interface UploadFilePayload {
+    url: string
+    file: File
+}
+
+export interface DownloadFileOptions {
+    url?: string
+}

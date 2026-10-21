@@ -12,6 +12,8 @@ import Action from './Action.vue';
 import Page from './Page.vue';
 import SelectInput from './SelectInput.vue';
 import DownloadLink from './DownloadLink.vue';
+import UploadFile from './UploadFile.vue';
+import { DownloadFileOptions, UploadFileOptions } from '../../types/Plugin';
 
 const props = defineProps({
     type: {
@@ -45,6 +47,9 @@ const props = defineProps({
     required: {
         type: Boolean as PropType<boolean>,
         default: false,
+    },
+    plugin: {
+        type: String as PropType<string>,
     },
 });
 
@@ -117,7 +122,8 @@ watch(type, (value) => {
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data as SelectOption[]" :required="required" :editable="editable"/>
-    <download-link v-else-if="type === 'link'" :modelValue="value as string"/>
+    <download-link v-else-if="type === 'link'" :data="data as DownloadFileOptions" :plugin="plugin"/>
+    <upload-file v-else-if="type === 'upload_file'" :name="name" :data="data as UploadFileOptions" :plugin="plugin"/>
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Repository } from "../types/Plugin";
+import { Repository, UploadFilePayload } from "../types/Plugin";
+import { getPathFromPluginName, sanitizeUrl } from "../utils/helpers";
 
 export const getRepositories = async (): Promise<any> => {
     return await axios.get('plugin/repositories')
@@ -31,4 +32,12 @@ export const disablePlugin = async (name: string): Promise<any> => {
 
 export const enablePlugin = async (name: string): Promise<any> => {
     return await axios.post(`plugin/packages/enable`, { name })
+}
+
+export const uploadFile = async (payload: UploadFilePayload, plugin: string): Promise<any> => {
+    const pluginNamespacePath = getPathFromPluginName(plugin)
+    const formData = new FormData();
+    formData.append('file', payload.file);
+
+    return await axios.post(`${pluginNamespacePath}${sanitizeUrl(payload.url)}`, formData);
 }

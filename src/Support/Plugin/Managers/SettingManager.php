@@ -111,4 +111,9 @@ class SettingManager {
     {
         return $this->settings->where('plugin', $plugin)->where('name', $name)->first();
     }
+
+    public function saveSettingEntry(string $plugin, string $name): ?array
+    {
+        return $this->settings->where('plugin', $plugin)->where('name', $name)->first();
+    }
 }

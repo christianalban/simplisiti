@@ -170,3 +170,25 @@ export const clearLoadedResources = () => {
     previewStyles = null;
     previewScript = null;
 }
+
+export const toKebabCase= (str: string): string => {
+    return str
+        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+        .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+        .toLowerCase();
+}
+
+export const getPathFromPluginName = (name: string): string => {
+    const parts = name.match(/(?<=\\)[^\\]+(?=\\[^\\]+$)/) || [];
+    if (parts.length === 0) {
+        return '';
+    }
+    return toKebabCase(parts[0] as string);
+}
+
+export const sanitizeUrl = (url: string): string => {
+    if (!url.startsWith('/')) {
+        url = `/${url}`;
+    }
+    return url;
+}

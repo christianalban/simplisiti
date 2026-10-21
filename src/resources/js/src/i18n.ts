@@ -369,6 +369,8 @@ const messages = {
             search: "Search",
             select: "Select",
             download: "Download",
+            upload: "Upload",
+            selectFile: "Select file",
         },
     },
     es: {
@@ -741,7 +743,9 @@ const messages = {
         placeholders: {
             search: "Buscar",
             select: "Seleccionar",
+            upload: "Subir",
             download: "Descargar",
+            selectFile: "Seleccionar archivo",
         },
         dialogs: {
             delete: {

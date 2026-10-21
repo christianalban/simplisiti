@@ -17,11 +17,18 @@ defineProps({
         <div v-if="settingMenu.length" v-for="setting of settingMenu" class="flex flex-col gap-4">
             <h2 class="title" v-if="setting.label">{{ setting.label }}</h2>
             <p class="text-sm italic" v-if="setting.description">{{ setting.description }}</p>
-            <div class="flex gap-4 w-full items-end flex-wrap">
+            <div class="flex gap-4 w-full items-end flex-wrap settings">
                 <div v-for="item of setting.items" class="flex flex-col gap-2 w-full">
                     <label class="font-bold">{{ item.label }} {{ item.required ? '*' : '' }}</label>
                     <p class="text-sm italic" v-if="item.description">{{ item.description }}</p>
-                    <control-type-selector class="flex-1" v-model="item.value" :name="item.label" :type="item.type" :data="item.options"/>
+                    <control-type-selector
+                        class="flex-1"
+                        v-model="item.value"
+                        :name="item.label"
+                        :type="item.type"
+                        :data="item.options"
+                        :plugin="item.plugin"
+                    />
                 </div>
             </div>
         </div>
@@ -32,5 +39,11 @@ defineProps({
 </template>
 
 <style scoped>
+
+::v-deep(.settings) {
+    .button {
+        @apply min-h-10;
+    }
+}
 
 </style>
