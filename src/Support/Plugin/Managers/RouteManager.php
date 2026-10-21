@@ -20,7 +20,8 @@ class RouteManager {
     {
         foreach($this->pluginRoutes as $plugin => $routes) {
             foreach($routes as $route) {
-                Route::{$route['method']}('/api/spanel/'.$plugin.$this->sanitizePath($route['path']), $route['callback'])->name($route['name']);
+                $prefix = $route['root'] ? '' : '/api/spanel/'.$plugin;
+                Route::{$route['method']}($prefix.$this->sanitizePath($route['path']), $route['callback'])->name($route['name']);
             }
         }
     }
@@ -30,7 +31,7 @@ class RouteManager {
         return '/' . ltrim($path, '/');
     }
 
-    public function addRoute(Plugin $plugin, string $method, string $path, string $name, Closure $callback): void
+    public function addRoute(Plugin $plugin, string $method, string $path, string $name, Closure $callback, bool $root = false): void
     {
         $pluginPath = explode('\\', $plugin::class);
         $pluginName = Str::of($pluginPath[1])->kebab()->value();
@@ -40,6 +41,7 @@ class RouteManager {
             'path' => $path,
             'name' => $name,
             'callback' => $callback,
+            'root' => $root,
         ];
     }
 
