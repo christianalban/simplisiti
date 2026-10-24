@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 
 const currentRoute = useRoute();
 
 const isRouteActive = (name: string) => {
     return currentRoute.name === name;
 };
+
+const isExpanded = ref(false);
 
 const toolLinks = [
     {
@@ -53,19 +56,24 @@ const toolLinks = [
 <template>
     <div class="bg-slate-200 flex h-screen">
         <aside class="fixed z-50 md:relative">
-            <input type="checkbox" class="peer hidden" id="sidebar-open" />
-            <label class="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-6 peer-checked:bg-gray-600 peer-checked:text-white absolute top-8 z-20 mx-4 cursor-pointer md:hidden" for="sidebar-open">
+            <label :class="[
+                'absolute top-8 z-20 mx-4 cursor-pointer md:hidden',
+                { 'rounded-full p-2 right-6 bg-gray-600 text-white': isExpanded }
+            ]" @click="isExpanded = !isExpanded">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </label>
-            <nav aria-label="Sidebar Navigation" class="peer-checked:w-64 left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-gray-700 text-white transition-all md:h-screen md:w-64 lg:w-72">
-                <router-link :to="{ name: 'dashboard' }" class="mt-5 py-4 pl-10 md:mt-10">
+            <nav aria-label="Sidebar Navigation" :class="[
+                'left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-gray-700 text-white transition-all md:h-screen md:w-64 lg:w-72',
+                { 'w-64': isExpanded }
+            ]">
+                <router-link :to="{ name: 'dashboard' }" class="mt-5 py-4 pl-10 md:mt-10" @click="isExpanded = false">
                     <img class="w-32" src="../../assets/simplisiti-logo.svg">
                 </router-link>
                 <ul class="">
                     <li class="relative" v-for="{ name, title, icon } of toolLinks" :key="name">
-                        <router-link :to="{ name }" class="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-gray-300 focus:outline-none">
+                        <router-link :to="{ name }" class="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-gray-300 focus:outline-none" @click="isExpanded = false">
                             <span>
                                 <fa-icon class="text-5xl h-6 w-6" :icon="icon"/>
                             </span>

@@ -74,7 +74,7 @@ const fetchResources = () => {
 </script>
 
 <template>
-    <div class="button secondary flex gap-2 w-full flex-col justify-center !p-1 relative items-center">
+    <div class="button secondary flex gap-2 w-full h-full flex-col justify-center !p-1 relative items-center">
         <div class="w-full flex items-center justify-center max-h-full">
             <div class="h-full w-full flex">
                 <resource-preview :url="selectedResource?.url" />

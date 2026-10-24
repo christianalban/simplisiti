@@ -31,8 +31,6 @@ const getSelectedValue = (event: Event): string => {
         <option value="date">{{ $t('components.types.date') }}</option>
         <option value="time">{{ $t('components.types.time') }}</option>
         <option value="datetime-local">{{ $t('components.types.datetime-local') }}</option>
-        <option value="month">{{ $t('components.types.month') }}</option>
-        <option value="week">{{ $t('components.types.week') }}</option>
         <option value="color">{{ $t('components.types.color') }}</option>
         <option value="select">{{ $t('components.types.select') }}</option>
         <option value="textarea">{{ $t('components.types.textarea') }}</option>
@@ -41,7 +39,6 @@ const getSelectedValue = (event: Event): string => {
         <option value="datasource">{{ $t('components.types.datasource') }}</option>
         <option value="action">{{ $t('components.types.action') }}</option>
         <option value="page">{{ $t('components.types.page') }}</option>
-        <option value="link">{{ $t('components.types.link') }}</option>
     </select>
 </template>
 

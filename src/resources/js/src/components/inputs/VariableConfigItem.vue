@@ -12,6 +12,7 @@ import { DataTableValue } from "../../types/DataTable.ts";
 import { DataSourceValue } from "../../types/DataSource.ts";
 import { SettingMenu } from '../../types/Setting.ts';
 import { ResourcePreset } from '../../types/Resource.ts';
+import { SelectOption } from '../../types/SelectInput.ts';
 
 const props = defineProps({
     type: {
@@ -28,6 +29,10 @@ const props = defineProps({
     },
     settings: {
         type: Array as PropType<SettingMenu[]|ResourcePreset[]>,
+        default: [],
+    },
+    options: {
+        type: Array as PropType<SelectOption[]>,
         default: [],
     },
     showRemove: {
@@ -54,6 +59,10 @@ const displaySettings = () => {
         emit('displaySettings', props.settings);
     }
 
+    if (props.type === 'select') {
+        emit('displaySettings', props.settings);
+    }
+
     if (props.type === 'datasource') {
         getComponentVariableSettings(route.params.component as string, {type: props.type, name: props.name, default: props.default})
             .then((settings) => {
@@ -71,10 +80,10 @@ const handleInput = (event: Event) => variableName.value = value(event.target);
         <div class="variable-grip-lines button primary flex cursor-move !px-1 items-center justify-center">
             <fa-icon icon="grip-lines" class="text-gray-500" />
         </div>
-        <variable-type-selector class="w-20" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
-        <input type="text" class="input w-32" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
+        <variable-type-selector class="!w-20" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
+        <input type="text" class="input !w-32" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
         <!-- inputs defaults accord selected type -->
-        <control-type-selector class="flex-1" :modelValue="default" @update:modelValue="$emit('update:default', $event)" :name="name" :type="type"/>
+        <control-type-selector class="flex-1" :modelValue="default" @update:modelValue="$emit('update:default', $event)" :name="name" :type="type" :data="options"/>
         <!-- inputs defaults accord selected type -->
         <!-- buttons add and remove -->
         <div class="flex flex-col text-xs w-14">

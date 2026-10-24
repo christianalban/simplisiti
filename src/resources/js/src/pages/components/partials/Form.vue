@@ -12,6 +12,7 @@ import VariableConfigItem from '../../../components/inputs/VariableConfigItem.vu
 import { SettingMenu } from '../../../types/Setting';
 import { getStorage, putStorage } from '../../../services/LocalStorageService';
 import VariableSettings from '../../../components/inputs/VariableSettings.vue';
+import SelectSettings from '../../../components/inputs/SelectSettings.vue';
 // import { ResourcePreset } from "../../../types/Resource.ts";
 import Draggable from 'vuedraggable';
 import Tabs from '../../../components/Tabs.vue';
@@ -77,10 +78,12 @@ const displaySettings = (variable: Variable, settingsMenu?: SettingMenu[]) => {
         selectedVariable.value = variable;
         if (variable.type === 'resource') {
             settings.value = variable.applied_settings || [];
+        } else if (variable.type === 'select') {
+            // console.log('displaySettings select', variable, settingsMenu);
         } else {
             settings.value = settingsMenu || variable.settings || [];
+            variable.settings = settingsMenu;
         }
-        variable.settings = settingsMenu;
         showSettings.value = true;
     }
 };
@@ -140,6 +143,7 @@ onMounted(() => {
                                         v-model:name="variable.name"
                                         v-model:default="variable.default"
                                         :settings="variable.settings"
+                                        :options="variable.options"
                                         :showRemove="variables.length > 1"
                                         @removeVariable="removeVariable(variableIndex)"
                                         @displaySettings="displaySettings(variable, $event)"
@@ -159,7 +163,8 @@ onMounted(() => {
         </template>
     </tabs>
     <modal :title="$t('titles.settings')" v-model:showModal="showSettings" @close="selectedVariable = null">
-        <variable-settings :variable="selectedVariable" v-model:settings="settings"/>
+        <select-settings v-if="selectedVariable?.type === 'select'" :variable="selectedVariable" v-model:settings="selectedVariable.options"/>
+        <variable-settings v-else :variable="selectedVariable" v-model:settings="settings"/>
     </modal>
 </template>
 
