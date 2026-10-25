@@ -238,11 +238,15 @@ class PluginManager {
             }
         }
 
-        if ($pluginObject instanceof AfterLoad) {
-            $pluginObject->runAfterLoad();
-        }
-
         return $pluginObject;
+    }
+
+    public function runAfterLoadPlugins(): void {
+        foreach ($this->history as $plugin) {
+            if ($plugin instanceof AfterLoad) {
+                $plugin->runAfterLoad();
+            }
+        }
     }
 
     protected function getNamespace(Models\Plugin $plugin): string {

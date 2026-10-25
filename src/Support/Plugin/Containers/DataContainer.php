@@ -53,6 +53,11 @@ class DataContainer
     public function getSettingValue(string $name): mixed
     {
         $settings = $this->appliedSettings->where('name', $name)->first() ?? null;
+
+        if (is_object($settings)) {
+            $settings = (array) $settings;
+        }
+
         if ($this->settingManager->shouldUseSettingContainer($settings['plugin'])) {
             return new SettingContainer($settings, $this->settingManager);
         }
