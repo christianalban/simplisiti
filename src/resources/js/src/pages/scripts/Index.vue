@@ -4,7 +4,7 @@ import { getScripts, updateOrder } from '../../services/ScriptService';
 import { Script } from '../../types/Script';
 import { ListItem } from '../../types/List';
 import DraggableList from '../../components/DraggableList.vue';
-import { compareStrings } from '../../utils/helpers';
+import { compareStrings, mergeReorderedItems } from '../../utils/helpers';
 import HeaderComponent from '../../components/layout/Header.vue';
 
 const scripts = ref<ListItem[]>([]);
@@ -17,7 +17,9 @@ const filteredScripts = computed(() => {
 });
 
 const saveOrder = (list: ListItem[]) => {
-    const orderedList = list.map(({ id }, index) => ({
+    scripts.value = mergeReorderedItems(scripts.value, filteredScripts.value, list);
+
+    const orderedList = scripts.value.map(({ id }, index) => ({
         id,
         order: index + 1,
     }));

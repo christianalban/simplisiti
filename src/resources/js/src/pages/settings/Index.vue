@@ -56,7 +56,12 @@ onMounted(() => {
             </div>
         </div>
         <div class="overflow-hidden flex-1">
-            <tabs class="h-full" :tabs="tabs">
+            <tabs
+                class="h-full"
+                :tabs="tabs"
+                collapsible
+                collapse-storage-key="settings-sidebar-collapsed"
+            >
                 <template #default="props">
                     <div class="px-4">
                         <setting-form :settingMenu="props.item.item" />

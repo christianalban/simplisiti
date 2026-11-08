@@ -59,10 +59,13 @@ class PluginManager {
             try {
                 $response = Http::get($repository->url . '/packages');
 
+                $repositoryPackages = $response->json('packages');
+                $repositoryPackages = is_array($repositoryPackages) ? $repositoryPackages : [];
+
                 $packages = array_map(function ($package) use ($repository) {
                     $package['repository'] = $repository->url;
                     return $package;
-                }, $response->json('packages'));
+                }, $repositoryPackages);
 
                 // This is a dummy package
                 // $packages[] = [
@@ -96,18 +99,37 @@ class PluginManager {
     public function getPackageList(): array {
         $cacheManager = $this->app->getCacheManager();
 
+        $packages = $cacheManager->getFromCache('repositories:packages');
+
+        if ($packages === null) {
+            $this->syncPackagesList();
+            $packages = $cacheManager->getFromCache('repositories:packages');
+        }
+
+        $packages = is_array($packages) ? $packages : [];
         $installedPlugins = Models\Plugin::all();
         return array_map(function ($package) use ($installedPlugins) {
             $package['status'] = $installedPlugins->where('name', $package['name'])->first()?->status ?? 'not-installed';
             return (object) $package;
-        }, $cacheManager->getFromCache('repositories:packages'));
+        }, $packages);
     }
 
     public function installPackage(string $name): Models\Plugin {
         $cacheManager = $this->app->getCacheManager();
 
-        $packageList = array_column($cacheManager->getFromCache('repositories:packages'), null, 'name');
-        $package = $packageList[$name];
+        $packages = $cacheManager->getFromCache('repositories:packages');
+
+        if ($packages === null) {
+            $this->syncPackagesList();
+            $packages = $cacheManager->getFromCache('repositories:packages');
+        }
+
+        $packageList = array_column(is_array($packages) ? $packages : [], null, 'name');
+        $package = $packageList[$name] ?? null;
+
+        if ($package === null) {
+            throw new PluginNotFoundException($name);
+        }
 
         // Download the package and unpack the tar file
 

@@ -31,11 +31,25 @@ const tabsView: Tab<null>[] = [
         id: 'graphical',
         title: t('components.titles.graphical'),
         item: null,
+        icon: 'brush',
     },
     {
         id: 'code',
         title: t('components.titles.code'),
         item: null,
+        icon: 'code',
+    },
+    {
+        id: 'styles',
+        title: t('components.titles.styles'),
+        item: null,
+        icon: ['fab', 'css3'],
+    },
+    {
+        id: 'scripts',
+        title: t('components.titles.scripts'),
+        item: null,
+        icon: ['fab', 'js'],
     },
 ];
 const componentPreviewRender = ref<string | null>(null);
@@ -44,6 +58,14 @@ const props = defineProps({
     code: {
         type: String,
         default: '<div>Hello World</div>',
+    },
+    styles: {
+        type: String,
+        default: '',
+    },
+    scripts: {
+        type: String,
+        default: '',
     },
     variables: {
         type: Array as PropType<Variable[]>,
@@ -61,7 +83,7 @@ const showSettings = ref(false);
 const settings = ref<SettingMenu[]>([]);
 const selectedVariable = ref<Variable | null>(null);
 
-const emit = defineEmits(['update:code', 'update:variables', 'update:name']);
+const emit = defineEmits(['update:code', 'update:styles', 'update:scripts', 'update:variables', 'update:name']);
 
 const addVariable = () => {
     emit('update:variables', [...props.variables, {type: 'text', name: '', default: ''}]);
@@ -118,7 +140,7 @@ onMounted(() => {
                         <h2 class="title mb-4">{{ $t('components.titles.code') }}</h2>
                         <code-editor :code="code" @update:code="$emit('update:code', $event)" language="html"/>
                     </div>
-                    <div :class="['flex flex-col gap-2', { 'md:w-4/12': variablesExpanded, 'w-auto': !variablesExpanded }]">
+                    <div :class="['flex flex-col gap-2 min-w-0', { 'md:w-5/12': variablesExpanded, 'w-auto': !variablesExpanded }]">
                         <div class="flex gap-2">
                             <button class="button primary w-8 !p-0 aspect-square text-xs" type="button" @click="toggleVariablesExpanded">
                                 <fa-icon v-if="variablesExpanded" icon="minimize" />
@@ -155,6 +177,18 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
+            </div>
+        </template>
+        <template #styles>
+            <div class="flex flex-col gap-4 h-full flex-1 overflow-hidden">
+                <h2 class="title">{{ $t('components.titles.styles') }}</h2>
+                <code-editor :code="styles" @update:code="$emit('update:styles', $event)" language="css"/>
+            </div>
+        </template>
+        <template #scripts>
+            <div class="flex flex-col gap-4 h-full flex-1 overflow-hidden">
+                <h2 class="title">{{ $t('components.titles.scripts') }}</h2>
+                <code-editor :code="scripts" @update:code="$emit('update:scripts', $event)" language="javascript"/>
             </div>
         </template>
     </tabs>

@@ -47,6 +47,7 @@ import {
     faUpload,
     faFile,
     faCircleNotch,
+    faCode,
 } from '@fortawesome/free-solid-svg-icons'
 import { faCss3, faJs } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -100,8 +101,8 @@ library.add(
     faDownload,
     faUpload,
     faFile,
-    faCircleNotch
+    faCircleNotch,
+    faCode
 );
 
 export default FontAwesomeIcon;
-

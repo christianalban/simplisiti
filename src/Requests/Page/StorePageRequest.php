@@ -22,7 +22,10 @@ class StorePageRequest extends FormRequest
             'sections.*.components' => 'required|array',
             'sections.*.components.*.id' => 'required|integer|exists:components,id',
             'sections.*.components.*.order' => 'nullable|integer|min:0',
-            'sections.*.components.*.variables' => 'nullable|array',
+            'sections.*.components.*.variables' => 'required|array',
+            'sections.*.components.*.variables.*.type' => 'required|in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file',
+            'sections.*.components.*.variables.*.name' => 'required|string|max:255',
+            'sections.*.components.*.variables.*.default' => 'nullable',
             'sections.*.components.*.content' => 'nullable|array',
             'sections.*.components.*.content_id' => 'sometimes|required|integer|exists:component_section,id',
         ];

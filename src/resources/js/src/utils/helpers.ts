@@ -32,6 +32,19 @@ export const compareStrings = (value: string, filter: string): boolean => {
     return value.toLowerCase().includes(filter.toLowerCase());
 }
 
+export const mergeReorderedItems = <T>(source: T[], visible: T[], reordered: T[]): T[] => {
+    const visibleItems = new Set(visible);
+    let reorderedIndex = 0;
+
+    return source.map((item) => {
+        if (!visibleItems.has(item)) {
+            return item;
+        }
+
+        return reordered[reorderedIndex++];
+    });
+}
+
 export const groupBy = <T>(items: GroupItem<T>[], key: string): Group<T> => {
     const group: Group<T> = {};
     

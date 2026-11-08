@@ -13,11 +13,13 @@ use Illuminate\Support\Str;
 
 class StyleManager implements AssetManager {
     private Collection $styles;
+    private Collection $componentStyles;
     private array $pluginStyles;
 
     public function __construct(
     ) {
         $this->styles = $this->renderStyle();
+        $this->componentStyles = collect();
         $this->pluginStyles = [];
     }
 
@@ -34,6 +36,23 @@ class StyleManager implements AssetManager {
     public function setStyles(array $styles): void
     {
         $this->styles = collect($styles);
+    }
+
+    public function addStyles(string $style): void
+    {
+        if (trim($style) !== '') {
+            $this->componentStyles->push($style);
+        }
+    }
+
+    public function getComponentStyles(): Collection
+    {
+        return $this->componentStyles;
+    }
+
+    public function resetComponentStyles(): void
+    {
+        $this->componentStyles = collect();
     }
 
     public function addPluginStyle(Plugin $plugin, string $name, string $style): void

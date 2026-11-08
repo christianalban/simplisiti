@@ -68,7 +68,11 @@ class SettingManager {
         $settingMenu = [];
 
         foreach ($this->settings as $setting) {
-            $settingValue = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
+            $storedSetting = $settingValues
+                ->where('plugin', $setting['plugin'])
+                ->where('name', $setting['name'])
+                ->first();
+            $settingValue = $storedSetting?->value['value'] ?? null;
             if (is_callable($setting['manipulateSettings'])) {
                 $settingValue = $setting['manipulateSettings']($settingValue, $dataContainer);
             }

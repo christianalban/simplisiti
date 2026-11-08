@@ -1,3 +1,3 @@
-<div class="component-{{ $name }} sp-component-container">
+<div class="{{ $className }} sp-component-container">
     {!! $content !!}
 </div>

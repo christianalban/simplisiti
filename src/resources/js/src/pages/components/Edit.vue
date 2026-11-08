@@ -17,6 +17,8 @@ const componentId = +route.params.component;
 const component = ref<Component>({
     name: '',
     html: '',
+    styles: '',
+    scripts: '',
     variables: []
 });
 
@@ -24,6 +26,8 @@ const update = () => {
     updateComponent({
         id: componentId,
         html: component.value.html,
+        styles: component.value.styles || '',
+        scripts: component.value.scripts || '',
         variables: mapWithoutSettingsData(component.value.variables),
         name: component.value.name,
     })
@@ -72,7 +76,11 @@ onMounted(() => {
         withData: false,
     }).then((response) => {
         const data = response.data.data;
-        component.value = data;
+        component.value = {
+            ...data,
+            styles: data.styles || '',
+            scripts: data.scripts || '',
+        };
     });
 });
 
@@ -102,6 +110,8 @@ onMounted(() => {
         </div>
         <components-form
             v-model:code="component.html"
+            v-model:styles="component.styles"
+            v-model:scripts="component.scripts"
             v-model:variables="component.variables"
             :component="component"
         />
