@@ -15,9 +15,11 @@ class SimplisitiServer extends Server
     protected array $tools = [
         Tools\CreateComponentTool::class,
         Tools\UpdateComponentTool::class,
+        Tools\DeleteComponentTool::class,
         Tools\ComponentDocsTool::class,
         Tools\CreateComponenteDocsTool::class,
         Tools\UpdateComponentDocsTool::class,
+        Tools\DeleteComponentDocsTool::class,
         Tools\AvailableComponentsTool::class,
     ];
 
