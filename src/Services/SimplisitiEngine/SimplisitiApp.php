@@ -247,6 +247,10 @@ class SimplisitiApp extends BasePlugin
         $this->routeManager?->registerPluginRoutes();
     }
 
+    public function runAfterLoadPlugins(): void {
+        $this->pluginManager?->runAfterLoadPlugins();
+    }
+
     public function setRequestParameters(string $url, array $parameters): void {
         $this->parameterManager->addParameters($url, $parameters);
     }

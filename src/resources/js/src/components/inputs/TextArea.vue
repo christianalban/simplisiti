@@ -20,6 +20,7 @@ import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import { FullPage } from '@ckeditor/ckeditor5-html-support';
 import { Table, TableToolbar, TableCellProperties, TableProperties, TableColumnResize } from "@ckeditor/ckeditor5-table";
 import { Alignment } from '@ckeditor/ckeditor5-alignment';
+import { TextAreaOptions } from '../../types/TextAreaInput';
 // import { InsertVideoUrl } from '../../support/CkEditor/InsertVideoUrl';
 
 const props = defineProps({
@@ -34,6 +35,9 @@ const props = defineProps({
     editable: {
         type: Boolean as PropType<boolean>,
         default: true,
+    },
+    data: {
+        type: Object as PropType<TextAreaOptions>,
     },
 });
 
@@ -130,6 +134,10 @@ const handleConfirm = () => {
     showModal.value = false;
 };
 
+const handlePlainText = () => {
+    emit('update:model-value', editorData.value);
+};
+
 const handleCancel = () => {
     editorData.value = props.modelValue;
     showModal.value = false;
@@ -154,10 +162,11 @@ const onEditorReady = (editor: any) => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
+    <button v-if="!data?.plain_content" @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
         <span>{{ $t('components.buttons.editContent') }}</span>
     </button>
     <floating-window
+        v-if="!data?.plain_content"
         :title="$t('components.titles.editContent')"
         v-model:showModal="showModal"
         :confirmLabel="$t('buttons.confirm')"
@@ -175,6 +184,7 @@ const onEditorReady = (editor: any) => {
             />
         </div>
     </floating-window>
+    <textarea v-if="data?.plain_content" class="input w-full" v-model="editorData" @change="handlePlainText" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue }}</textarea>
 </template>
 
 <style scoped>

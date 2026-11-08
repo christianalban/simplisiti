@@ -7,6 +7,7 @@ import { SelectOption } from '../../types/SelectInput';
 import ResourcePicker from './ResourcePicker.vue';
 import DataTable from './DataTable.vue';
 import TextAreaComponent from './TextArea.vue';
+import InputComponent from './Input.vue';
 import DataSource from './DataSource.vue';
 import Action from './Action.vue';
 import Page from './Page.vue';
@@ -14,6 +15,7 @@ import SelectInput from './SelectInput.vue';
 import DownloadLink from './DownloadLink.vue';
 import UploadFile from './UploadFile.vue';
 import { DownloadFileOptions, UploadFileOptions } from '../../types/Plugin';
+import { TextAreaOptions } from '../../types/TextAreaInput';
 
 const props = defineProps({
     type: {
@@ -55,12 +57,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:model-value']);
 
-const emitInputValue = (value: Event) => {
-    if (['checkbox', 'radio'].includes(props.type)) {
-        emit('update:model-value', (value.target as HTMLInputElement).checked ? 1 : 0);
-        return;
-    }
-    emit('update:model-value', (value.target as HTMLInputElement).value);
+const emitInputValue = (value: string | number) => {
+    emit('update:model-value', value);
 };
 
 const emitTextAreaValue = (value: string) => {
@@ -94,15 +92,7 @@ const value = computed({
     },
 });
 
-const checkedInput = computed(() => {
-    return ['checkbox', 'radio'].includes(props.type) && value.value ? true : false;
-});
-
-const valueInput = computed(() => {
-    return ['checkbox', 'radio'].includes(props.type) ? '1' : value.value
-});
-
-const inputTypes = ['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color'];
+const inputTypes = ['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'color'];
 
 watch(type, (value) => {
     emit('update:model-value', value === 'datatable'
@@ -114,8 +104,8 @@ watch(type, (value) => {
 </script>
 
 <template>
-    <input v-if="inputTypes.includes(type)" :type="type" class="input" :value="valueInput" @change="emitInputValue($event)" :placeholder="$t('components.placeholders.defaultValue')" :required="required" step='0.01' :disabled="!editable" :checked="checkedInput"/>
-    <text-area-component v-else-if="type === 'textarea'" :name="name" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
+    <input-component v-if="inputTypes.includes(type)" :type="type" :modelValue="value" @update:modelValue="emitInputValue($event)" :required="required" :editable="editable"/>
+    <text-area-component v-else-if="type === 'textarea'" :name="name" :data="data as TextAreaOptions" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)" :editable="editable"/>
     <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data as Column"/>
     <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)" :editable="editable"/>

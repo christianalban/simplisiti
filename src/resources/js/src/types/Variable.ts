@@ -3,7 +3,7 @@ import { DataSourceValue } from "./DataSource";
 import { SettingMenu } from "./Setting";
 // import { ResourcePreset } from "./Resource";
 
-export type VariableInputType = 'text' | 'number' | 'tel' | 'email' | 'url' | 'password' | 'checkbox' | 'radio' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color';
+export type VariableInputType = 'text' | 'number' | 'tel' | 'email' | 'url' | 'password' | 'checkbox' | 'radio' | 'date' | 'time' | 'datetime-local' | 'color';
 export type VariableType = VariableInputType | 'resource' | 'datatable' | 'textarea' | 'select' | 'datasource' | 'action' | 'page' | 'link' | 'upload_file';
 
 export interface Variable {

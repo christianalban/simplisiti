@@ -12,6 +12,7 @@ import { DataTableValue } from "../../types/DataTable.ts";
 import { DataSourceValue } from "../../types/DataSource.ts";
 import { SettingMenu } from '../../types/Setting.ts';
 import { ResourcePreset } from '../../types/Resource.ts';
+import { SelectOption } from '../../types/SelectInput.ts';
 
 const props = defineProps({
     type: {
@@ -28,6 +29,10 @@ const props = defineProps({
     },
     settings: {
         type: Array as PropType<SettingMenu[]|ResourcePreset[]>,
+        default: [],
+    },
+    options: {
+        type: Array as PropType<SelectOption[]>,
         default: [],
     },
     showRemove: {
@@ -51,6 +56,10 @@ const removeVariable = () => {
 
 const displaySettings = () => {
     if (props.type === 'resource') {
+        emit('displaySettings', props.settings);
+    }
+
+    if (props.type === 'select') {
         emit('displaySettings', props.settings);
     }
 

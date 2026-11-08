@@ -218,9 +218,16 @@ const messages = {
                 settingsList: "Settings list",
                 createSetting: "Create new setting",
                 updateSetting: "Edit setting",
+                selectOption: "Label",
+                selectValue: "Value",
             },
             placeholders: {
                 noSettings: "No settings available",
+                selectOption: "Option label",
+                selectValue: "Option value",
+            },
+            buttons: {
+                addSelectOption: "Add option",
             },
             toasts: {
                 successUpdated: "Setting updated successfully.",
@@ -596,6 +603,11 @@ const messages = {
                 settingsList: "Listado de configuraciones",
                 createSetting: "Crear nueva configuración",
                 updateSetting: "Editar configuración",
+                selectOption: "Etiqueta",
+                selectValue: "Valor",
+            },
+            buttons: {
+                addSelectOption: "Agregar opción",
             },
             toasts: {
                 successUpdated: "Configuración actualizada correctamente.",
@@ -603,6 +615,8 @@ const messages = {
             },
             placeholders: {
                 noSettings: "No hay configuraciones disponibles",
+                selectOption: "Etiqueta de la opción",
+                selectValue: "Valor de la opción",
             },
         },
         scripts: {

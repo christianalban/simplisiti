@@ -23,6 +23,7 @@ class UpdateComponentRequest extends FormRequest
             'variables.*.type' => 'required|in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file',
             'variables.*.name' => 'required|string|max:255',
             'variables.*.default' => 'nullable',
+            'variables.*.options' => 'nullable',
             'variables.*.settings' => 'nullable',
             'variables.*.settings.*.items' => 'nullable',
             'variables.*.settings.*.items.*.name' => 'required',

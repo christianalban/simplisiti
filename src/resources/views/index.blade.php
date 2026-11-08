@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/vendor/simplisiti/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>Simplisiti Panel</title>
-    <script type="module" crossorigin src="/assets/index-cb6ced2d.js"></script>
-    <link rel="stylesheet" href="/assets/index-f7949d11.css">
+    <script type="module" crossorigin src="/vendor/simplisiti/assets/index-3fb3a5bc.js"></script>
+    <link rel="stylesheet" href="/vendor/simplisiti/assets/index-88c3d809.css">
   </head>
   <body>
     <div id="app"></div>

@@ -19,7 +19,7 @@ defineProps({
     },
 });
 
-const emit = defineEmits(['update:settings']);
+// const emit = defineEmits(['update:settings']);
 
 // const emitResourceSettings = (settings: SettingMenu[]|ResourcePreset[]) => {
 // const emitResourceSettings = (settings: SettingMenu[]) => {

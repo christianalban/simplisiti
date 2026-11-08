@@ -14,7 +14,11 @@ const props = defineProps({
 });
 
 const linkUrl = computed(() => {
-return `${baseURL}/${getPathFromPluginName(props.plugin as string)}${sanitizeUrl(props.data?.url ?? '#')}`;
+    let prefix = '';
+    if (props.plugin) {
+        prefix = `${baseURL}/${getPathFromPluginName(props.plugin as string)}`;
+    }
+    return `${baseURL}/${prefix}${sanitizeUrl(props.data?.url ?? '#')}`;
 });
 
 </script>
