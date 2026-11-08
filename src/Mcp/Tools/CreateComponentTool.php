@@ -34,7 +34,7 @@ The input and validation rules match `StoreComponentRequest` used by the compone
 - `default` and `options` are optional and nullable; their values are stored as supplied.
 - `settings` must be sent as an array of menus. Each menu contains an `items` array, and each item requires `name`, `plugin`, and `value`.
 
-Allowed variable types are: `text`, `number`, `tel`, `email`, `url`, `password`, `checkbox`, `radio`, `date`, `time`, `datetime-local`, `color`, `resource`, `datatable`, `textarea`, `datasource`, `action`, `page`, and `select`.
+Allowed variable types are the `VariableType` values: `text`, `number`, `tel`, `email`, `url`, `password`, `checkbox`, `radio`, `date`, `time`, `datetime-local`, `month`, `week`, `color`, `resource`, `datatable`, `textarea`, `select`, `datasource`, `action`, `page`, `link`, and `upload_file`.
 
 Validation failures are returned with the invalid field in the message, including nested paths such as `variables.0.type` or `variables.0.settings.0.items.1.value`. Fix those fields and call the tool again. A successful call persists the component through `StoreComponentAction` and returns `Component created successfully`.
 MARKDOWN;
@@ -95,7 +95,7 @@ MARKDOWN;
                 ->items(
                     $schema->object([
                         'type' => $schema->string()
-                            ->enum(['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'color', 'resource', 'datatable', 'textarea', 'datasource', 'action', 'page', 'select'])
+                            ->enum(['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color', 'resource', 'datatable', 'textarea', 'select', 'datasource', 'action', 'page', 'link', 'upload_file'])
                             ->description('Required variable type.')
                             ->required(),
                         'name' => $schema->string()

@@ -21,6 +21,14 @@ class SimplisitiServer extends Server
         Tools\UpdateComponentDocsTool::class,
         Tools\DeleteComponentDocsTool::class,
         Tools\AvailableComponentsTool::class,
+        Tools\AvailablePagesTool::class,
+        Tools\CreatePageTool::class,
+        Tools\UpdatePageTool::class,
+        Tools\DeletePageTool::class,
+        Tools\PageDocsTool::class,
+        Tools\CreatePageDocsTool::class,
+        Tools\UpdatePageDocsTool::class,
+        Tools\DeletePageDocsTool::class,
     ];
 
     /**

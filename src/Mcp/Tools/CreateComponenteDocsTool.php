@@ -24,6 +24,8 @@ A component is a reusable content block placed inside sections of a page. Its va
 
 Use `CreateComponentTool` to create a component. Do not use this documentation tool to update, list, clone, or delete an existing component.
 
+The creation request allows `variables` to be omitted or set to `null`; when supplied, it must be an array of complete variable definitions. Use `UpdateComponentDocsTool` for the stricter update contract, where `variables` is required and must be an array.
+
 ### Searching
 
 - Omit `query` to receive a compact index of all documented concepts.
@@ -68,6 +70,45 @@ MARKDOWN;
     private function documents(): array
     {
         return [
+            [
+                'id' => 'create-component-contract',
+                'title' => 'Create component payload contract',
+                'category' => 'create',
+                'type' => 'schema',
+                'summary' => 'Creation accepts component metadata and an optional nullable variable definition array.',
+                'keywords' => ['create', 'payload', 'name', 'html', 'variables', 'optional', 'nullable', 'validation'],
+                'fields' => [
+                    [
+                        'name' => 'name',
+                        'type' => 'string',
+                        'required' => true,
+                        'constraints' => ['max' => 255, 'unique' => true],
+                    ],
+                    [
+                        'name' => 'html',
+                        'type' => 'string',
+                        'required' => true,
+                        'description' => 'Complete reusable HTML structure.',
+                    ],
+                    [
+                        'name' => 'variables',
+                        'type' => 'array|null',
+                        'required' => false,
+                        'nullable' => true,
+                        'description' => 'Optional variable definition array. Omit it or send null when the component has no variable definitions.',
+                    ],
+                ],
+                'rules' => [
+                    'variables' => ['nullable', 'array'],
+                    'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file'],
+                    'variables.*.name' => ['required', 'string', 'max:255'],
+                ],
+                'notes' => [
+                    'This nullable creation contract differs from component updates, where variables is required because the update action processes the array directly.',
+                    'Use [] when you prefer to make the absence of variable definitions explicit.',
+                ],
+                'related' => ['component-overview', 'variable-contract', 'variable-basic-inputs'],
+            ],
             [
                 'id' => 'variable-basic-inputs',
                 'title' => 'Basic HTML input variable types',
@@ -539,7 +580,7 @@ MARKDOWN;
                 'title' => 'Variable type compatibility',
                 'category' => 'compatibility',
                 'type' => 'compatibility',
-                'summary' => 'Distinguishes variable types visible in the frontend from types accepted by the current component creation request.',
+                'summary' => 'Documents the complete VariableType list accepted by the current component creation request.',
                 'keywords' => ['compatibility', 'supported', 'store request', 'link', 'upload_file', 'ui'],
                 'supported_by_creation' => [
                     'text',
@@ -553,28 +594,22 @@ MARKDOWN;
                     'date',
                     'time',
                     'datetime-local',
+                    'month',
+                    'week',
                     'color',
                     'resource',
                     'datatable',
                     'textarea',
+                    'select',
                     'datasource',
                     'action',
                     'page',
-                    'select',
-                ],
-                'frontend_only_or_not_currently_accepted' => [
-                    [
-                        'type' => 'link',
-                        'reason' => 'The frontend control supports it, but StoreComponentRequest does not include it in its allowed type list.',
-                    ],
-                    [
-                        'type' => 'upload_file',
-                        'reason' => 'The frontend type definitions support it, but StoreComponentRequest does not include it in its allowed type list.',
-                    ],
+                    'link',
+                    'upload_file',
                 ],
                 'notes' => [
-                    'Use only supported_by_creation types when constructing a payload for CreateComponentTool.',
-                    'This compatibility note documents current behavior; it does not expand the creation contract.',
+                    'Use any supported_by_creation type when constructing a payload for CreateComponentTool.',
+                    'The list is synchronized with VariableType in the frontend type definitions.',
                 ],
                 'related' => ['variable-contract', 'component-overview'],
             ],

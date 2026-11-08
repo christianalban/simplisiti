@@ -31,10 +31,10 @@ The input and validation rules match `UpdateComponentRequest`:
 - `component_id` is required, must be an integer, and must identify an existing component.
 - `name` is required, must be a string with at most 255 characters, and must be unique among other components. The current component is ignored by the uniqueness rule.
 - `html` is required and must be a string containing the complete component HTML.
-- `variables` may be null or an array. Each supplied variable requires a `type` from `text`, `resource`, `datatable`, `textarea`, `datasource`, `action`, or `page`, plus a string `name` with at most 255 characters.
+- `variables` is required and must be an array. Send `variables: []` when the component has no variables. Each supplied variable requires a `type` from the `VariableType` values, plus a string `name` with at most 255 characters.
 - `default` is nullable. When settings are supplied, each setting item requires `name`, `plugin`, and `value`.
 
-Update validation intentionally accepts fewer variable types than creation. Do not send `number`, `email`, `select`, or other creation-only types unless the update request is changed to allow them.
+Update validation accepts the same complete `VariableType` list as creation, including `month`, `week`, `link`, and `upload_file`.
 
 For `datasource` and `resource` variables, `UpdateComponentAction` processes settings through `HandleSettings`, preserves existing `applied_settings` when no new settings are supplied, and removes the temporary `settings` field before persistence. Validation failures retain field paths such as `component_id`, `variables.0.type`, or `variables.0.settings.0.items.1.value`. A successful call persists the component through `UpdateComponentAction` and returns `Component updated successfully`.
 MARKDOWN;
@@ -113,12 +113,11 @@ MARKDOWN;
                 ->description('Required complete HTML structure for the updated component.')
                 ->required(),
             'variables' => $schema->array()
-                ->nullable()
-                ->description('Complete variable definition array for the updated component; use an empty array when it has no variables.')
+                ->description('Required complete variable definition array for the updated component; use an empty array when it has no variables.')
                 ->items(
                     $schema->object([
                         'type' => $schema->string()
-                            ->enum(['text', 'resource', 'datatable', 'textarea', 'datasource', 'action', 'page'])
+                            ->enum(['text', 'number', 'tel', 'email', 'url', 'password', 'checkbox', 'radio', 'date', 'time', 'datetime-local', 'month', 'week', 'color', 'resource', 'datatable', 'textarea', 'select', 'datasource', 'action', 'page', 'link', 'upload_file'])
                             ->description('Required variable type accepted by UpdateComponentRequest.')
                             ->required(),
                         'name' => $schema->string()
