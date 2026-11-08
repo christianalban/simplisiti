@@ -24,6 +24,8 @@ Updates an existing Simplisiti component using the same full-payload flow as `Co
 
 A component is a reusable content block placed inside page sections. Its variables define content that can be customized independently for each page or section where the component is used, while the component HTML remains reusable.
 
+`styles` contains optional component-scoped CSS and `scripts` contains optional component JavaScript. When the component is rendered on a page, its CSS is wrapped under a generated CSS-safe component class and its JavaScript is emitted inline once for that component definition.
+
 Use this destructive tool only when an existing component must be replaced with a complete updated definition. Send `component_id`, `name`, `html`, and the complete current `variables` payload; this is not a partial PATCH operation. Use `CreateComponentTool` for a new component, `ComponentDocsTool` for shared concepts, `UpdateComponentDocsTool` for update guidance, `AvailableComponentsTool` to discover identifiers, and the relevant clone or delete operation for those actions.
 
 The input and validation rules match `UpdateComponentRequest`:
@@ -31,6 +33,7 @@ The input and validation rules match `UpdateComponentRequest`:
 - `component_id` is required, must be an integer, and must identify an existing component.
 - `name` is required, must be a string with at most 255 characters, and must be unique among other components. The current component is ignored by the uniqueness rule.
 - `html` is required and must be a string containing the complete component HTML.
+- `styles` and `scripts` are optional nullable strings. Include them to replace the component assets, or omit them to preserve the stored values.
 - `variables` is required and must be an array. Send `variables: []` when the component has no variables. Each supplied variable requires a `type` from the `VariableType` values, plus a string `name` with at most 255 characters.
 - `default` is nullable. When settings are supplied, each setting item requires `name`, `plugin`, and `value`.
 
@@ -112,6 +115,12 @@ MARKDOWN;
             'html' => $schema->string()
                 ->description('Required complete HTML structure for the updated component.')
                 ->required(),
+            'styles' => $schema->string()
+                ->nullable()
+                ->description('Optional component-scoped CSS source. Include it to replace the stored CSS; omit it to preserve the current value.'),
+            'scripts' => $schema->string()
+                ->nullable()
+                ->description('Optional component JavaScript source. Include it to replace the stored JavaScript; omit it to preserve the current value.'),
             'variables' => $schema->array()
                 ->description('Required complete variable definition array for the updated component; use an empty array when it has no variables.')
                 ->items(

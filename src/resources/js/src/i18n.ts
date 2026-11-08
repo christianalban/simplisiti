@@ -79,6 +79,8 @@ const messages = {
                 createComponent: "Create new component",
                 editComponent: "Edit component",
                 code: "Code",
+                styles: "Styles",
+                scripts: "Scripts",
                 variables: "Variables",
                 selectResource: "Select resource",
                 fillData: "Fill data",
@@ -94,6 +96,7 @@ const messages = {
                 editContent: "Edit content",
                 refresh: "Refresh components list",
                 addVariable: "Add variable",
+                reorderRow: "Reorder row",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -451,6 +454,8 @@ const messages = {
                 createComponent: "Crear nuevo componente",
                 editComponent: "Editar componente",
                 code: "Código",
+                styles: "Estilos",
+                scripts: "Scripts",
                 variables: "Variables",
                 selectResource: "Seleccionar recurso",
                 fillData: "Completar datos",
@@ -466,6 +471,7 @@ const messages = {
                 editContent: "Editar contenido",
                 refresh: "Actualizar listado de componentes",
                 addVariable: "Agregar variable",
+                reorderRow: "Reordenar fila",
             },
             toasts: {
                 created: "Componente creado correctamente.",

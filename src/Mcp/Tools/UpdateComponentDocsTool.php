@@ -20,7 +20,7 @@ class UpdateComponentDocsTool extends Tool
     protected string $description = <<<'MARKDOWN'
 Provides read-only documentation for updating existing Simplisiti components.
 
-Use this tool before `UpdateComponentTool` when an agent needs update-specific rules, the required `component_id`, the complete payload shape, settings behavior, or the differences from creation. Use `ComponentDocsTool` for shared component concepts and the common variable contract; this tool links to those concepts instead of duplicating them.
+Use this tool before `UpdateComponentTool` when an agent needs update-specific rules, the required `component_id`, the complete payload shape, component asset behavior, settings behavior, or the differences from creation. Use `ComponentDocsTool` for shared component concepts, assets, and the common variable contract; this tool links to those concepts instead of duplicating them.
 
 ### Searching
 
@@ -57,11 +57,11 @@ MARKDOWN;
                 'title' => 'Update component overview',
                 'category' => 'update',
                 'type' => 'workflow',
-                'summary' => 'Updates an existing component by replacing its definition with a complete validated payload.',
-                'keywords' => ['update', 'component', 'existing', 'full payload', 'complete', 'controller'],
+                'summary' => 'Updates an existing component by replacing its definition with a complete validated payload, including optional component assets.',
+                'keywords' => ['update', 'component', 'existing', 'full payload', 'complete', 'styles', 'scripts', 'css', 'javascript', 'controller'],
                 'workflow' => [
                     'identify' => 'Use AvailableComponentsTool or another read-only source to obtain the component_id.',
-                    'submit' => 'Send component_id, name, html, and the complete variables array to UpdateComponentTool.',
+                    'submit' => 'Send component_id, name, html, the optional styles and scripts strings, and the complete variables array to UpdateComponentTool.',
                     'persist' => 'UpdateComponentAction applies settings, persists the component, and dispatches ComponentUpdated.',
                 ],
                 'not_for' => [
@@ -69,7 +69,7 @@ MARKDOWN;
                     'shared concepts' => 'Use ComponentDocsTool.',
                     'partial patch' => 'The update tool is not a PATCH operation.',
                 ],
-                'related' => ['component-overview', 'component-placement', 'update-payload'],
+                'related' => ['component-overview', 'component-assets', 'component-placement', 'update-payload'],
             ],
             [
                 'id' => 'update-payload',
@@ -77,7 +77,7 @@ MARKDOWN;
                 'category' => 'update',
                 'type' => 'schema',
                 'summary' => 'The fields required by the MCP update tool and their roles.',
-                'keywords' => ['payload', 'component_id', 'name', 'html', 'variables', 'full update', 'complete'],
+                'keywords' => ['payload', 'component_id', 'name', 'html', 'styles', 'scripts', 'variables', 'full update', 'complete'],
                 'fields' => [
                     [
                         'name' => 'component_id',
@@ -98,6 +98,20 @@ MARKDOWN;
                         'description' => 'Complete reusable HTML structure.',
                     ],
                     [
+                        'name' => 'styles',
+                        'type' => 'string|null',
+                        'required' => false,
+                        'nullable' => true,
+                        'description' => 'Optional raw CSS source. Include it to replace stored CSS or omit it to preserve the current value.',
+                    ],
+                    [
+                        'name' => 'scripts',
+                        'type' => 'string|null',
+                        'required' => false,
+                        'nullable' => true,
+                        'description' => 'Optional raw JavaScript source. Include it to replace stored JavaScript or omit it to preserve the current value.',
+                    ],
+                    [
                         'name' => 'variables',
                         'type' => 'array',
                         'required' => true,
@@ -116,7 +130,7 @@ MARKDOWN;
                         ],
                     ],
                 ],
-                'related' => ['component-overview', 'variable-contract', 'update-validation'],
+                'related' => ['component-overview', 'component-assets', 'variable-contract', 'update-validation'],
             ],
             [
                 'id' => 'update-validation',
@@ -129,6 +143,8 @@ MARKDOWN;
                     'component_id' => ['required', 'integer', 'exists:components,id'],
                     'name' => ['required', 'string', 'max:255', 'unique except current component'],
                     'html' => ['required', 'string'],
+                    'styles' => ['nullable', 'string'],
+                    'scripts' => ['nullable', 'string'],
                     'variables' => ['required', 'array'],
                     'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file'],
                     'variables.*.name' => ['required', 'string', 'max:255'],
@@ -224,11 +240,11 @@ MARKDOWN;
                 'keywords' => ['creation', 'update', 'difference', 'CreateComponentTool', 'UpdateComponentTool', 'types', 'identifier'],
                 'differences' => [
                     'identifier' => 'Creation has no component_id and requires a unique new name; update requires an existing component_id and ignores that component when checking name uniqueness.',
-                    'payload' => 'Creation sends a new definition; update replaces an existing definition with the complete current payload.',
+                    'payload' => 'Creation sends a new definition; update replaces an existing definition with the complete current payload. Styles and scripts can be replaced when supplied and preserved when omitted.',
                     'types' => 'Creation and update accept the same complete VariableType list.',
                     'action' => 'Creation uses StoreComponentAction; update uses UpdateComponentAction and preserves or transforms applied settings.',
                 ],
-                'related' => ['component-overview', 'update-component-overview', 'update-variable-types'],
+                'related' => ['component-overview', 'component-assets', 'update-component-overview', 'update-variable-types'],
             ],
         ];
     }
@@ -239,6 +255,7 @@ MARKDOWN;
             'query_examples' => [
                 'component_id',
                 'full payload',
+                'styles scripts',
                 'unique name',
                 'allowed types',
                 'settings preservation',

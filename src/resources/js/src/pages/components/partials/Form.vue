@@ -37,6 +37,16 @@ const tabsView: Tab<null>[] = [
         title: t('components.titles.code'),
         item: null,
     },
+    {
+        id: 'styles',
+        title: t('components.titles.styles'),
+        item: null,
+    },
+    {
+        id: 'scripts',
+        title: t('components.titles.scripts'),
+        item: null,
+    },
 ];
 const componentPreviewRender = ref<string | null>(null);
 
@@ -44,6 +54,14 @@ const props = defineProps({
     code: {
         type: String,
         default: '<div>Hello World</div>',
+    },
+    styles: {
+        type: String,
+        default: '',
+    },
+    scripts: {
+        type: String,
+        default: '',
     },
     variables: {
         type: Array as PropType<Variable[]>,
@@ -61,7 +79,7 @@ const showSettings = ref(false);
 const settings = ref<SettingMenu[]>([]);
 const selectedVariable = ref<Variable | null>(null);
 
-const emit = defineEmits(['update:code', 'update:variables', 'update:name']);
+const emit = defineEmits(['update:code', 'update:styles', 'update:scripts', 'update:variables', 'update:name']);
 
 const addVariable = () => {
     emit('update:variables', [...props.variables, {type: 'text', name: '', default: ''}]);
@@ -155,6 +173,18 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
+            </div>
+        </template>
+        <template #styles>
+            <div class="flex flex-col gap-4 h-full flex-1 overflow-hidden">
+                <h2 class="title">{{ $t('components.titles.styles') }}</h2>
+                <code-editor :code="styles" @update:code="$emit('update:styles', $event)" language="css"/>
+            </div>
+        </template>
+        <template #scripts>
+            <div class="flex flex-col gap-4 h-full flex-1 overflow-hidden">
+                <h2 class="title">{{ $t('components.titles.scripts') }}</h2>
+                <code-editor :code="scripts" @update:code="$emit('update:scripts', $event)" language="javascript"/>
             </div>
         </template>
     </tabs>

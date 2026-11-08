@@ -21,6 +21,8 @@ Creates a new reusable component in the Simplisiti CMS.
 
 A component is a reusable content block placed inside sections of a page. Its variables define the parts of the content that can be customized independently for each page or section where the component is used, while the component HTML remains reusable.
 
+Use `styles` for CSS that belongs only to this component and `scripts` for JavaScript that belongs only to this component. The runtime loads these assets on pages that contain the component, wraps the CSS under the component's generated CSS-safe class, and adds each component definition only once per page.
+
 Use this tool only when a new component must be created. Do not use it to list, update, clone, or delete an existing component.
 
 Use `ComponentDocsTool` for the shared component model and variable contract, and `CreateComponenteDocsTool` for searchable creation documentation before constructing a complex payload.
@@ -29,6 +31,7 @@ The input and validation rules match `StoreComponentRequest` used by the compone
 
 - `name` is required, must be a string with at most 255 characters, and must be unique.
 - `html` is required and must be a string containing the component HTML.
+- `styles` and `scripts` are optional nullable strings. Send raw CSS and JavaScript source; send an empty string or null when the component has no own asset.
 - `variables` is optional and nullable, but when provided must be an array.
 - Every variable requires a `type` from the allowed list and a string `name` with at most 255 characters.
 - `default` and `options` are optional and nullable; their values are stored as supplied.
@@ -89,6 +92,12 @@ MARKDOWN;
             'html' => $schema->string()
                 ->description('Required HTML structure for the component.')
                 ->required(),
+            'styles' => $schema->string()
+                ->nullable()
+                ->description('Optional component-scoped CSS source. It is wrapped under the generated component CSS class when rendered on a page.'),
+            'scripts' => $schema->string()
+                ->nullable()
+                ->description('Optional component JavaScript source. It is emitted inline when the component is present on a page.'),
             'variables' => $schema->array()
                 ->nullable()
                 ->description('Optional array of dynamic variables.')

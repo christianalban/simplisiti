@@ -20,7 +20,7 @@ class DeleteComponentDocsTool extends Tool
     protected string $description = <<<'MARKDOWN'
 Provides read-only documentation for permanently deleting Simplisiti components.
 
-Use this tool before `DeleteComponentTool` when an agent needs to understand the deletion contract, validation, side effects, response, or when deletion is appropriate. A component is a reusable content block placed inside page sections; deleting it removes the component definition and its section relationships. Use `ComponentDocsTool` for the shared component model instead of this tool for general variable documentation.
+Use this tool before `DeleteComponentTool` when an agent needs to understand the deletion contract, validation, side effects, response, or when deletion is appropriate. A component is a reusable content block placed inside page sections; deleting it removes the component definition, its component-scoped styles/scripts, and its section relationships. Use `ComponentDocsTool` for the shared component model instead of this tool for general variable documentation.
 
 ### Searching
 
@@ -57,8 +57,8 @@ MARKDOWN;
                 'title' => 'Delete component overview',
                 'category' => 'delete',
                 'type' => 'workflow',
-                'summary' => 'Permanently removes an existing component definition and its component-section relationships.',
-                'keywords' => ['delete', 'component', 'destroy', 'remove', 'permanent', 'irreversible'],
+                'summary' => 'Permanently removes an existing component definition, its assets, and its component-section relationships.',
+                'keywords' => ['delete', 'component', 'styles', 'scripts', 'assets', 'destroy', 'remove', 'permanent', 'irreversible'],
                 'workflow' => [
                     'identify' => 'Use AvailableComponentsTool or another read-only source to obtain the component_id.',
                     'submit' => 'Send only the component_id to DeleteComponentTool.',
@@ -129,6 +129,7 @@ MARKDOWN;
                 'database' => [
                     'component' => 'The component row is deleted.',
                     'component_section' => 'Rows referencing the component are removed by cascadeOnDelete on component_section.component_id.',
+                    'component_assets' => 'The component styles and scripts columns are deleted with the component definition.',
                     'page' => 'Pages and sections are not deleted by this component operation.',
                 ],
                 'notes' => [
@@ -159,7 +160,7 @@ MARKDOWN;
                 'keywords' => ['delete', 'update', 'create', 'clone', 'list', 'documentation', 'comparison'],
                 'differences' => [
                     'create' => 'Use CreateComponentTool when the component does not exist yet.',
-                    'update' => 'Use UpdateComponentTool when the definition should remain but its name, HTML, variables, or settings should change.',
+                    'update' => 'Use UpdateComponentTool when the definition should remain but its name, HTML, styles, scripts, variables, or settings should change.',
                     'list' => 'Use AvailableComponentsTool to inspect existing identifiers without modifying data.',
                     'clone' => 'Use the component clone operation when a new copy should be created from an existing definition.',
                     'documentation' => 'Use ComponentDocsTool or the specialized creation/update documentation tools for guidance only.',

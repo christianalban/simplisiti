@@ -6,3 +6,6 @@
         <script src="{{ asset(config('simplisiti.scripts_path') . '/' . $plugin . '/' . $name . '.js') }}"></script>
     @endforeach
 @endforeach
+@foreach($app->getScriptManager()->getComponentScripts() as $script)
+    <script>{!! $script !!}</script>
+@endforeach

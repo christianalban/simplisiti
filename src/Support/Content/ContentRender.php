@@ -30,7 +30,7 @@ class ContentRender
         $content = $override ?? $component->content;
 
         $container = View::make('simplisiti::container', [
-            'name' => $component->name,
+            'className' => ComponentClassName::forName($component->name),
             'content' => Blade::render($html, $content),
         ]);
 

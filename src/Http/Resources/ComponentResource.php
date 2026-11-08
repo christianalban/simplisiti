@@ -20,6 +20,8 @@ class ComponentResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'html' => $this->html,
+            'styles' => $this->styles,
+            'scripts' => $this->scripts,
             'variables' => $this->variables,
             'content' => $this->when($withData && $this->pivot?->content, fn () => $this->pivot?->content),
             'content_id' => $this->when($withData && $this->pivot?->id, fn () => $this->pivot?->id),

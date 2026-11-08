@@ -17,6 +17,8 @@ class UpdateComponentRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('components')->ignore($this->component)],
             'html' => 'required|string',
+            'styles' => 'nullable|string',
+            'scripts' => 'nullable|string',
             'variables' => 'required|array',
             'variables.*.type' => 'required|in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file',
             'variables.*.name' => 'required|string|max:255',

@@ -20,7 +20,7 @@ class CreateComponenteDocsTool extends Tool
     protected string $description = <<<'MARKDOWN'
 Provides read-only documentation for creating and configuring Simplisiti components.
 
-A component is a reusable content block placed inside sections of a page. Its variables allow the same component to expose different content on each page or section where it is used. Use `ComponentDocsTool` for the shared component model and variable contract; use this tool for creation-specific variable types, defaults, options, settings, and nested data structures.
+A component is a reusable content block placed inside sections of a page. Its variables allow the same component to expose different content on each page or section where it is used. It can also store component-scoped CSS in `styles` and JavaScript in `scripts`. Use `ComponentDocsTool` for the shared component model and asset behavior; use this tool for creation-specific variable types, defaults, options, settings, and nested data structures.
 
 Use `CreateComponentTool` to create a component. Do not use this documentation tool to update, list, clone, or delete an existing component.
 
@@ -29,7 +29,7 @@ The creation request allows `variables` to be omitted or set to `null`; when sup
 ### Searching
 
 - Omit `query` to receive a compact index of all documented concepts.
-- Provide one or more terms in `query` to receive detailed matching concepts. Search terms may be a component concept, variable type, field name, structure name, or related phrase such as `datatable`, `datasource settings`, `resource default`, or `variable options`.
+- Provide one or more terms in `query` to receive detailed matching concepts. Search terms may be a component concept, asset field, variable type, structure name, or related phrase such as `styles scripts`, `datatable`, `datasource settings`, `resource default`, or `variable options`.
 - Searches are case-insensitive and support partial terms. Use focused queries to reduce the amount of documentation returned.
 
 ### Response structure
@@ -75,8 +75,8 @@ MARKDOWN;
                 'title' => 'Create component payload contract',
                 'category' => 'create',
                 'type' => 'schema',
-                'summary' => 'Creation accepts component metadata and an optional nullable variable definition array.',
-                'keywords' => ['create', 'payload', 'name', 'html', 'variables', 'optional', 'nullable', 'validation'],
+                'summary' => 'Creation accepts component metadata, optional component assets, and an optional nullable variable definition array.',
+                'keywords' => ['create', 'payload', 'name', 'html', 'styles', 'scripts', 'css', 'javascript', 'variables', 'optional', 'nullable', 'validation'],
                 'fields' => [
                     [
                         'name' => 'name',
@@ -91,6 +91,20 @@ MARKDOWN;
                         'description' => 'Complete reusable HTML structure.',
                     ],
                     [
+                        'name' => 'styles',
+                        'type' => 'string|null',
+                        'required' => false,
+                        'nullable' => true,
+                        'description' => 'Optional raw CSS source stored with the component and scoped at page render time.',
+                    ],
+                    [
+                        'name' => 'scripts',
+                        'type' => 'string|null',
+                        'required' => false,
+                        'nullable' => true,
+                        'description' => 'Optional raw JavaScript source emitted inline when the component is used on a page.',
+                    ],
+                    [
                         'name' => 'variables',
                         'type' => 'array|null',
                         'required' => false,
@@ -100,14 +114,17 @@ MARKDOWN;
                 ],
                 'rules' => [
                     'variables' => ['nullable', 'array'],
+                    'styles' => ['nullable', 'string'],
+                    'scripts' => ['nullable', 'string'],
                     'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file'],
                     'variables.*.name' => ['required', 'string', 'max:255'],
                 ],
                 'notes' => [
                     'This nullable creation contract differs from component updates, where variables is required because the update action processes the array directly.',
                     'Use [] when you prefer to make the absence of variable definitions explicit.',
+                    'CSS and JavaScript are stored on the reusable definition, not on a page placement. Empty or null assets do not emit inline tags.',
                 ],
-                'related' => ['component-overview', 'variable-contract', 'variable-basic-inputs'],
+                'related' => ['component-overview', 'component-assets', 'variable-contract', 'variable-basic-inputs'],
             ],
             [
                 'id' => 'variable-basic-inputs',
@@ -314,7 +331,8 @@ MARKDOWN;
                 'category' => 'variable-type',
                 'type' => 'complex',
                 'summary' => 'A recursive table value with named columns and rows containing variables.',
-                'keywords' => ['datatable', 'table', 'columns', 'rows', 'recursive', 'nested'],
+                'keywords' => [                'styles scripts',
+                'datatable', 'table', 'columns', 'rows', 'recursive', 'nested'],
                 'structure' => [
                     'default' => [
                         'columns' => [

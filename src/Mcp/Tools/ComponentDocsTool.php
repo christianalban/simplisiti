@@ -20,9 +20,9 @@ class ComponentDocsTool extends Tool
     protected string $description = <<<'MARKDOWN'
 Provides the shared, read-only documentation for Simplisiti components.
 
-A component is a reusable content block placed inside one or more sections of a page. Its HTML is the reusable template, while its named variables allow each page or section to customize content without changing that template. Use this tool for concepts shared by creation, update, and other component workflows.
+A component is a reusable content block placed inside one or more sections of a page. Its HTML is the reusable template, while its named variables allow each page or section to customize content without changing that template. It may also contain CSS and JavaScript that belong only to that component. Use this tool for concepts shared by creation, update, and other component workflows.
 
-Use `CreateComponenteDocsTool` for creation-specific payloads and variable types, and `UpdateComponentDocsTool` for update-specific validation and behavior. Use `ComponentDocsTool` first when you need the component model, the component-to-section-to-page relationship, or the common variable contract.
+Use `CreateComponenteDocsTool` for creation-specific payloads and variable types, and `UpdateComponentDocsTool` for update-specific validation and behavior. Use `ComponentDocsTool` first when you need the component model, component assets, the component-to-section-to-page relationship, or the common variable contract.
 
 ### Searching
 
@@ -60,8 +60,8 @@ MARKDOWN;
                 'category' => 'component',
                 'type' => 'concept',
                 'summary' => 'A reusable content block placed in page sections and customized through variables.',
-                'keywords' => ['component', 'reusable', 'content block', 'html', 'variable', 'section', 'page'],
-                'definition' => 'A component combines an HTML template with named variables. The same component can be placed in multiple sections, while each page or section can provide different values for those variables.',
+                'keywords' => ['component', 'reusable', 'content block', 'html', 'styles', 'scripts', 'css', 'javascript', 'variable', 'section', 'page'],
+                'definition' => 'A component combines an HTML template with named variables and optional component-scoped CSS and JavaScript. The same component can be placed in multiple sections, while each page or section can provide different values for those variables.',
                 'fields' => [
                     [
                         'name' => 'name',
@@ -72,6 +72,16 @@ MARKDOWN;
                         'name' => 'html',
                         'type' => 'string',
                         'description' => 'The reusable HTML template where variable names are referenced.',
+                    ],
+                    [
+                        'name' => 'styles',
+                        'type' => 'string|null',
+                        'description' => 'Optional raw CSS source loaded only on pages that contain the component and wrapped under its generated CSS-safe class.',
+                    ],
+                    [
+                        'name' => 'scripts',
+                        'type' => 'string|null',
+                        'description' => 'Optional raw JavaScript source emitted inline only on pages that contain the component.',
                     ],
                     [
                         'name' => 'variables',
@@ -86,10 +96,42 @@ MARKDOWN;
                 ],
                 'workflow' => [
                     'definition' => 'Create or update the reusable component definition.',
+                    'assets' => 'Store optional styles and scripts with the component; they are deduplicated per component definition when a page is rendered.',
                     'placement' => 'Attach the component to one or more page sections.',
                     'customization' => 'Set variable content and applied settings per placement without changing the component definition.',
                 ],
-                'related' => ['component-placement', 'variable-contract'],
+                'related' => ['component-assets', 'component-placement', 'variable-contract'],
+            ],
+            [
+                'id' => 'component-assets',
+                'title' => 'Component styles and scripts',
+                'category' => 'component',
+                'type' => 'assets',
+                'summary' => 'Optional CSS and JavaScript stored with a component and loaded only when that component is present on a page.',
+                'keywords' => ['styles', 'scripts', 'css', 'javascript', 'assets', 'inline', 'scoped', 'deduplicate', 'component class'],
+                'fields' => [
+                    [
+                        'name' => 'styles',
+                        'type' => 'string|null',
+                        'description' => 'Raw CSS source. At render time it is enclosed in a CSS-safe .component-* class matching the component wrapper.',
+                    ],
+                    [
+                        'name' => 'scripts',
+                        'type' => 'string|null',
+                        'description' => 'Raw JavaScript source emitted as an inline script on pages containing the component.',
+                    ],
+                ],
+                'behavior' => [
+                    'scope' => 'Assets are page-specific: global styles and scripts are not loaded unless their own global resources are active.',
+                    'deduplication' => 'When a component appears more than once on one page, its styles and scripts are added once per component definition.',
+                    'css' => 'The renderer wraps the supplied CSS under a sanitized class derived from the component name, and the HTML wrapper uses the same class.',
+                    'javascript' => 'The supplied source is emitted inline after global and plugin script references.',
+                ],
+                'notes' => [
+                    'Use raw CSS declarations or nested CSS rules appropriate for the generated component wrapper.',
+                    'Component asset source is not a page placement override; updating it changes every page that uses the component.',
+                ],
+                'related' => ['component-overview', 'component-placement'],
             ],
             [
                 'id' => 'component-placement',
@@ -173,6 +215,8 @@ MARKDOWN;
         return [
             'query_examples' => [
                 'component',
+                'component assets',
+                'styles scripts',
                 'section page',
                 'variable contract',
                 'applied settings',

@@ -22,6 +22,8 @@ Permanently deletes an existing Simplisiti component.
 
 A component is a reusable content block placed inside page sections. Deleting its definition is destructive and also removes its `component_section` relationships through the database foreign key cascade. This operation does not require a separate confirmation flag; the supplied `component_id` is the explicit request to delete that component.
 
+Any component-scoped `styles` and `scripts` stored on the definition are deleted with it and will no longer be loaded by pages.
+
 Use this tool only when the component and its placements should no longer exist. Use `AvailableComponentsTool` to find the identifier, `ComponentDocsTool` for the shared component model, `CreateComponentTool` to create a new component, `UpdateComponentTool` to replace an existing definition, and the relevant clone or documentation tool for those actions. Do not use this tool to remove a component from only one section.
 
 The MCP validates `component_id` as a required integer that must exist in the `components` table, resolves the component, and executes the same `DeleteComponentAction` used by `ComponentController::destroy`. Validation failures are returned against `component_id`. A successful call returns `Component deleted successfully`.
