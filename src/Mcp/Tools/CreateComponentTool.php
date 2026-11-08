@@ -23,6 +23,8 @@ A component is a reusable content block placed inside sections of a page. Its va
 
 Use this tool only when a new component must be created. Do not use it to list, update, clone, or delete an existing component.
 
+Use `ComponentDocsTool` for the shared component model and variable contract, and `CreateComponenteDocsTool` for searchable creation documentation before constructing a complex payload.
+
 The input and validation rules match `StoreComponentRequest` used by the component controller:
 
 - `name` is required, must be a string with at most 255 characters, and must be unique.

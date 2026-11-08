@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Mcp\Tools;
 
+use Alban\Simplisiti\Mcp\Tools\Concerns\SearchableDocumentation;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -11,13 +12,17 @@ use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 #[IsReadOnly]
 class CreateComponenteDocsTool extends Tool
 {
+    use SearchableDocumentation;
+
     /**
      * The tool's description.
      */
     protected string $description = <<<'MARKDOWN'
 Provides read-only documentation for creating and configuring Simplisiti components.
 
-A component is a reusable content block. Components are placed inside sections of a page, and their variables allow the same component to expose different content on each page or section where it is used. Use `CreateComponentTool` to create a component; use this tool first when you need to understand the component model, variable types, default values, options, settings, or nested data structures.
+A component is a reusable content block placed inside sections of a page. Its variables allow the same component to expose different content on each page or section where it is used. Use `ComponentDocsTool` for the shared component model and variable contract; use this tool for creation-specific variable types, defaults, options, settings, and nested data structures.
+
+Use `CreateComponentTool` to create a component. Do not use this documentation tool to update, list, clone, or delete an existing component.
 
 ### Searching
 
@@ -44,47 +49,7 @@ MARKDOWN;
      */
     public function handle(Request $request): Response
     {
-        $validated = $request->validate([
-            'query' => 'nullable|string',
-        ]);
-
-        $query = $this->normalize(trim($validated['query'] ?? ''));
-        $documents = $this->documents();
-
-        if ($query === '') {
-            return Response::json([
-                'mode' => 'index',
-                'query' => null,
-                'total' => count($documents),
-                'results' => array_map(
-                    fn (array $document): array => $this->indexEntry($document),
-                    $documents,
-                ),
-                'suggestions' => [],
-                'search' => $this->searchInstructions(),
-            ]);
-        }
-
-        $matches = $this->search($query, $documents);
-        $results = [];
-
-        foreach ($matches as $match) {
-            $document = $match['document'];
-            $document['relevance'] = $match['score'];
-            $document['matched_terms'] = $match['matched_terms'];
-            $results[] = $document;
-        }
-
-        return Response::json([
-            'mode' => 'search',
-            'query' => $query,
-            'total' => count($results),
-            'results' => $results,
-            'suggestions' => count($results) === 0
-                ? $this->suggestions($query, $documents)
-                : [],
-            'search' => $this->searchInstructions(),
-        ]);
+        return $this->handleDocumentation($request, $this->documents());
     }
 
     /**
@@ -94,11 +59,7 @@ MARKDOWN;
      */
     public function schema(JsonSchema $schema): array
     {
-        return [
-            'query' => $schema->string()
-                ->description('Optional case-insensitive concept search. Omit it for the compact documentation index.')
-                ->nullable(),
-        ];
+        return $this->documentationSchema($schema);
     }
 
     /**
@@ -107,119 +68,6 @@ MARKDOWN;
     private function documents(): array
     {
         return [
-            [
-                'id' => 'component-overview',
-                'title' => 'Component overview',
-                'category' => 'component',
-                'type' => 'concept',
-                'summary' => 'A reusable content block inserted into page sections and customized through variables.',
-                'keywords' => ['component', 'reusable', 'content block', 'section', 'page', 'html', 'variables'],
-                'definition' => 'A component combines an HTML template with named variables. The same component can be reused in multiple sections, while each page or section can provide different variable content.',
-                'fields' => [
-                    [
-                        'name' => 'name',
-                        'type' => 'string',
-                        'required' => true,
-                        'description' => 'Unique component name. The creation request limits it to 255 characters.',
-                    ],
-                    [
-                        'name' => 'html',
-                        'type' => 'string',
-                        'required' => true,
-                        'description' => 'The reusable HTML structure. Variable names are used by the component content to make parts configurable.',
-                    ],
-                    [
-                        'name' => 'variables',
-                        'type' => 'array|null',
-                        'required' => false,
-                        'description' => 'Optional variable definitions used to customize component content.',
-                    ],
-                ],
-                'workflow' => [
-                    'creation' => 'Create the component once with CreateComponentTool.',
-                    'placement' => 'Add the component to one or more sections of a page.',
-                    'customization' => 'Provide variable content per page or section without changing the reusable HTML template.',
-                ],
-                'example' => [
-                    'name' => 'hero/banner',
-                    'html' => '<section><h1>{{title}}</h1><p>{{subtitle}}</p></section>',
-                    'variables' => [
-                        [
-                            'type' => 'text',
-                            'name' => 'title',
-                            'default' => 'Welcome',
-                        ],
-                        [
-                            'type' => 'textarea',
-                            'name' => 'subtitle',
-                            'default' => 'Reusable page content',
-                        ],
-                    ],
-                ],
-                'related' => ['variable-contract', 'variable-basic-inputs', 'variable-textarea'],
-            ],
-            [
-                'id' => 'variable-contract',
-                'title' => 'Variable contract',
-                'category' => 'variable',
-                'type' => 'concept',
-                'summary' => 'Common fields that define how a component variable is named, configured, stored, and resolved.',
-                'keywords' => ['variable', 'type', 'name', 'default', 'options', 'value', 'settings', 'applied_settings'],
-                'fields' => [
-                    [
-                        'name' => 'type',
-                        'type' => 'string',
-                        'required' => true,
-                        'description' => 'Controls the input and value parser used for the variable.',
-                    ],
-                    [
-                        'name' => 'name',
-                        'type' => 'string',
-                        'required' => true,
-                        'description' => 'Unique key used by the HTML template and by page or section content overrides.',
-                    ],
-                    [
-                        'name' => 'default',
-                        'type' => 'mixed|null',
-                        'required' => false,
-                        'description' => 'Initial value stored with the variable. Complex types use an object or array shape.',
-                    ],
-                    [
-                        'name' => 'options',
-                        'type' => 'mixed|null',
-                        'required' => false,
-                        'description' => 'Additional configuration for controls such as select, textarea, datasource, or datatable.',
-                    ],
-                    [
-                        'name' => 'settings',
-                        'type' => 'array|null',
-                        'required' => false,
-                        'description' => 'Available settings menus, especially for datasource variables.',
-                    ],
-                    [
-                        'name' => 'applied_settings',
-                        'type' => 'array|null',
-                        'required' => false,
-                        'description' => 'Selected setting values applied when the variable is rendered in a section.',
-                    ],
-                    [
-                        'name' => 'value',
-                        'type' => 'mixed',
-                        'required' => false,
-                        'description' => 'Resolved or displayed value. It is derived from default, overrides, and the variable type parser.',
-                    ],
-                ],
-                'lifecycle' => [
-                    'default' => 'The base value saved in the component definition.',
-                    'override' => 'A page or section can provide content that replaces or merges with the default.',
-                    'value' => 'The value returned to the renderer after type-specific parsing.',
-                ],
-                'notes' => [
-                    'Variable names should be stable because the HTML template and page content refer to them by name.',
-                    'The creation API validates type and name, but default and options are intentionally flexible JSON values.',
-                ],
-                'related' => ['component-overview', 'variable-datasource', 'variable-datatable'],
-            ],
             [
                 'id' => 'variable-basic-inputs',
                 'title' => 'Basic HTML input variable types',
@@ -733,169 +581,4 @@ MARKDOWN;
         ];
     }
 
-    /**
-     * @param  array<string, mixed>  $document
-     * @return array<string, mixed>
-     */
-    private function indexEntry(array $document): array
-    {
-        return [
-            'id' => $document['id'],
-            'title' => $document['title'],
-            'category' => $document['category'],
-            'type' => $document['type'],
-            'summary' => $document['summary'],
-            'keywords' => $document['keywords'],
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function searchInstructions(): array
-    {
-        return [
-            'query_examples' => [
-                'component',
-                'variable options',
-                'datatable structure',
-                'datasource settings',
-                'resource default',
-            ],
-            'matching_fields' => ['id', 'title', 'category', 'type', 'keywords', 'documentation content'],
-            'tip' => 'Use a specific type or structure name when you need a small, focused response.',
-        ];
-    }
-
-    /**
-     * @param  array<int, array<string, mixed>>  $documents
-     * @return array<int, array{document: array<string, mixed>, score: int, matched_terms: array<int, string>, index: int}>
-     */
-    private function search(string $query, array $documents): array
-    {
-        $normalizedQuery = $this->normalize($query);
-        $terms = array_values(array_filter(
-            preg_split('/[\s,.;:\/]+/', $normalizedQuery) ?: [],
-            fn (string $term): bool => $term !== '',
-        ));
-        $matches = [];
-
-        foreach ($documents as $index => $document) {
-            $encodedDocument = json_encode($document, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '';
-            $haystack = $this->normalize($encodedDocument);
-            $id = $this->normalize((string) $document['id']);
-            $title = $this->normalize((string) $document['title']);
-            $keywords = array_map(fn (string $keyword): string => $this->normalize($keyword), $document['keywords']);
-            $score = 0;
-            $matchedTerms = [];
-
-            foreach ($terms as $term) {
-                if (str_contains($haystack, $term)) {
-                    $score++;
-                    $matchedTerms[] = $term;
-                }
-
-                if (str_contains($id, $term)) {
-                    $score += 5;
-                }
-
-                if (str_contains($title, $term)) {
-                    $score += 4;
-                }
-
-                if (in_array($term, $keywords, true)) {
-                    $score += 3;
-                }
-
-                if (($document['type'] ?? null) === $term) {
-                    $score += 3;
-                }
-            }
-
-            if ($normalizedQuery !== '' && str_contains($title, $normalizedQuery)) {
-                $score += 4;
-            }
-
-            if ($score > 0) {
-                $matches[] = [
-                    'document' => $document,
-                    'score' => $score,
-                    'matched_terms' => array_values(array_unique($matchedTerms)),
-                    'index' => $index,
-                ];
-            }
-        }
-
-        usort(
-            $matches,
-            fn (array $left, array $right): int => $right['score'] <=> $left['score']
-                ?: $left['index'] <=> $right['index'],
-        );
-
-        return $matches;
-    }
-
-    /**
-     * @param  array<int, array<string, mixed>>  $documents
-     * @return array<int, array{id: string, title: string, category: string, summary: string}>
-     */
-    private function suggestions(string $query, array $documents): array
-    {
-        $terms = array_values(array_filter(
-            preg_split('/[\s,.;:\/]+/', $this->normalize($query)) ?: [],
-            fn (string $term): bool => $term !== '',
-        ));
-        $suggestions = [];
-
-        foreach ($documents as $document) {
-            $haystack = $this->normalize(implode(' ', [
-                $document['id'],
-                $document['title'],
-                $document['category'],
-                ...$document['keywords'],
-            ]));
-            $score = 0;
-
-            foreach ($terms as $term) {
-                if (str_contains($haystack, $term)) {
-                    $score++;
-                }
-            }
-
-            if ($score > 0) {
-                $suggestions[] = [
-                    'score' => $score,
-                    'id' => $document['id'],
-                    'title' => $document['title'],
-                    'category' => $document['category'],
-                    'summary' => $document['summary'],
-                ];
-            }
-        }
-
-        usort(
-            $suggestions,
-            fn (array $left, array $right): int => $right['score'] <=> $left['score']
-                ?: strcmp($left['id'], $right['id']),
-        );
-
-        return array_map(
-            fn (array $suggestion): array => [
-                'id' => $suggestion['id'],
-                'title' => $suggestion['title'],
-                'category' => $suggestion['category'],
-                'summary' => $suggestion['summary'],
-            ],
-            array_slice($suggestions, 0, 5),
-        );
-    }
-
-    private function normalize(string $value): string
-    {
-        $value = function_exists('mb_strtolower')
-            ? mb_strtolower($value, 'UTF-8')
-            : strtolower($value);
-
-        return preg_replace('/\s+/', ' ', trim($value)) ?: '';
-    }
 }
