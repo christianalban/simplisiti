@@ -18,6 +18,10 @@ const props = defineProps({
     plugin: {
         type: String,
     },
+    editable: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const { t } = useI18n();
@@ -76,12 +80,12 @@ const processUploadFile = async () => {
 
 <template>
     <div class="form-group">
-        <label class="button secondary cursor-pointer flex gap-2 w-full justify-center !p-1 relative items-center" :for="name">
+        <label class="button secondary cursor-pointer flex gap-2 w-full justify-center !p-1 relative items-center" :for="editable ? name : undefined">
             <fa-icon :icon="['fas', 'file']" class="text-xl"/>
             <span>{{ $t('placeholders.selectFile') }}</span>
         </label>
-        <input type="file" class="hidden" :id="name" :accept="data?.accept" ref="fileRef" @change="changeFileSelectedStatus"/>
-        <button type="button" :class="['button primary flex gap-2 justify-center px-1 relative items-center', {'!bg-teal-200': isFileSelected}]" @click="processUploadFile" :disabled="isUploading">
+        <input type="file" class="hidden" :id="name" :accept="data?.accept" ref="fileRef" @change="changeFileSelectedStatus" :disabled="!editable || isUploading"/>
+        <button type="button" :class="['button primary flex gap-2 justify-center px-1 relative items-center', {'!bg-teal-200': isFileSelected}]" @click="processUploadFile" :disabled="!editable || isUploading">
             <fa-icon :icon="['fas', 'circle-notch']" class="text-xl animate-spin" v-if="isUploading"/>
             <fa-icon :icon="['fas', 'upload']" class="text-xl" v-else/>
             <span>{{ $t('placeholders.upload') }}</span>

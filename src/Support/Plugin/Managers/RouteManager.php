@@ -2,6 +2,7 @@
 
 namespace Alban\Simplisiti\Support\Plugin\Managers;
 
+use Alban\Simplisiti\Http\Middleware\AuthenticateUnlessLocal;
 use Alban\Simplisiti\Support\Plugin\Plugin;
 use Closure;
 use Illuminate\Support\Collection;
@@ -18,12 +19,14 @@ class RouteManager {
 
     protected function renderRoutes(): void
     {
-        foreach($this->pluginRoutes as $plugin => $routes) {
-            foreach($routes as $route) {
-                $prefix = $route['root'] ? '' : '/api/spanel/'.$plugin;
-                Route::{$route['method']}($prefix.$this->sanitizePath($route['path']), $route['callback'])->name($route['name']);
+        Route::group(['middleware' => ['api', AuthenticateUnlessLocal::class]], function () {
+            foreach($this->pluginRoutes as $plugin => $routes) {
+                foreach($routes as $route) {
+                    $prefix = $route['root'] ? '' : '/api/spanel/'.$plugin;
+                    Route::{$route['method']}($prefix.$this->sanitizePath($route['path']), $route['callback'])->name($route['name']);
+                }
             }
-        }
+        });
     }
 
     private function sanitizePath(string $path): string

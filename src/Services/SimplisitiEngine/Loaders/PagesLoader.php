@@ -62,18 +62,20 @@ class PagesLoader
             }
 
             $pages->each(function (Page $page) {
-                Route::get($page->url, function (...$params) use ($page) {
-                    
-                    $this->app->setRequestParameters($page->url, $params);
-                    $this->renderStyles($page);
-                    $this->renderScripts($page);
+                Route::group(['middleware' => ['web']], function () use ($page) {
+                    Route::get($page->url, function (...$params) use ($page) {
+                        
+                        $this->app->setRequestParameters($page->url, $params);
+                        $this->renderStyles($page);
+                        $this->renderScripts($page);
 
-                    return View::make('simplisiti::boot', [
-                        'content' => $this->renderContent($page),
-                        'title' => $this->renderTitlePage($page),
-                        'app' => $this->app,
-                    ]);
-                })->middleware(['web'])->name($page->name);
+                        return View::make('simplisiti::boot', [
+                            'content' => $this->renderContent($page),
+                            'title' => $this->renderTitlePage($page),
+                            'app' => $this->app,
+                        ]);
+                    })->name($page->name);
+                });
             });
 
         } catch (\Illuminate\Database\QueryException $e) {

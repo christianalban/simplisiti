@@ -69,6 +69,7 @@ const messages = {
                 action: "Action",
                 page: "Page",
                 link: "Link",
+                action_button: "Action button",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -451,6 +452,7 @@ const messages = {
                 action: "Acción",
                 page: "Página",
                 link: "Enlace",
+                action_button: "Botón de acción",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",

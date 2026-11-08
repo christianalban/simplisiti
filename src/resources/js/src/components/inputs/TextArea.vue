@@ -162,7 +162,7 @@ const onEditorReady = (editor: any) => {
 </script>
 
 <template>
-    <button v-if="!data?.plain_content" @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
+    <button v-if="!data?.plain_content" @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full" :disabled="!editable">
         <span>{{ $t('components.buttons.editContent') }}</span>
     </button>
     <floating-window
@@ -184,7 +184,7 @@ const onEditorReady = (editor: any) => {
             />
         </div>
     </floating-window>
-    <textarea v-if="data?.plain_content" class="input w-full" v-model="editorData" @change="handlePlainText" :placeholder="$t('components.placeholders.defaultValue')" >{{ modelValue }}</textarea>
+    <textarea v-if="data?.plain_content" class="input w-full" v-model="editorData" @change="handlePlainText" :placeholder="$t('components.placeholders.defaultValue')" :readonly="!editable">{{ modelValue }}</textarea>
 </template>
 
 <style scoped>

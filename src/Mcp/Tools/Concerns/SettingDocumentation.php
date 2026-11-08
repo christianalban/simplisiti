@@ -71,7 +71,7 @@ trait SettingDocumentation
                 'category' => 'types',
                 'type' => 'schema',
                 'summary' => 'Settings support HTML-like basic controls and richer Simplisiti controls.',
-                'keywords' => ['types', 'text', 'number', 'checkbox', 'textarea', 'select', 'resource', 'datatable', 'datasource', 'action', 'page', 'link', 'upload_file'],
+                'keywords' => ['types', 'text', 'number', 'checkbox', 'textarea', 'select', 'resource', 'datatable', 'datasource', 'action', 'page', 'link', 'upload_file', 'action_button'],
                 'types' => [
                     'text' => 'Short text value.',
                     'number' => 'Numeric value.',
@@ -96,6 +96,7 @@ trait SettingDocumentation
                     'page' => 'A page-related value selected by the page control.',
                     'link' => 'Read-only download link metadata; it is not normally edited as a scalar setting.',
                     'upload_file' => 'Multipart file upload handled by the plugin endpoint; use UploadSettingFileTool.',
+                    'action_button' => 'A button that invokes the plugin endpoint configured by its URL.',
                 ],
                 'related' => ['setting-overview', 'datatable-setting-value', 'upload-file-setting-type'],
             ],

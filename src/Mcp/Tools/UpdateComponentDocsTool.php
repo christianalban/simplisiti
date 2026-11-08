@@ -146,7 +146,7 @@ MARKDOWN;
                     'styles' => ['nullable', 'string'],
                     'scripts' => ['nullable', 'string'],
                     'variables' => ['required', 'array'],
-                    'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file'],
+                    'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file,action_button'],
                     'variables.*.name' => ['required', 'string', 'max:255'],
                     'variables.*.default' => ['nullable'],
                     'variables.*.settings' => ['nullable'],
@@ -164,7 +164,7 @@ MARKDOWN;
                 'category' => 'compatibility',
                 'type' => 'compatibility',
                 'summary' => 'The update request accepts the complete VariableType list used by the component model.',
-                'keywords' => ['types', 'allowed', 'compatibility', 'creation', 'update', 'month', 'week', 'link', 'upload_file'],
+                'keywords' => ['types', 'allowed', 'compatibility', 'creation', 'update', 'month', 'week', 'link', 'upload_file', 'action_button'],
                 'accepted_by_update' => [
                     'text',
                     'number',
@@ -189,6 +189,7 @@ MARKDOWN;
                     'page',
                     'link',
                     'upload_file',
+                    'action_button',
                 ],
                 'notes' => [
                     'Creation and update use the same VariableType values.',

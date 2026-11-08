@@ -25,6 +25,10 @@ const props = defineProps({
         type: Boolean as PropType<boolean>,
         default: true,
     },
+    editable: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    },
     data: {
         type: Object as PropType<Column>,
     },
@@ -223,16 +227,20 @@ const confirmDeleteComponent = () => {
 }
 
 const canEditRows = computed(() => {
-    return props.data?.add_rows ?? true
+    return props.editable && (props.data?.add_rows ?? true);
 })
 
 const canEdit = computed(() => {
-    return props.editStructure && (props.data?.editable ?? true);
+    return props.editable && props.editStructure && (props.data?.editable ?? true);
 })
 
 const canReorderRows = computed(() => {
-    return props.data?.editable ?? true;
+    return props.editable && (props.data?.editable ?? true);
 })
+
+const canEditCell = (index: number) => {
+    return props.editable && (columns.value[index]?.editable ?? true);
+};
 
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
@@ -287,7 +295,7 @@ watch(columns, (value) => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
+    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full" :disabled="!editable">
         <span>{{ $t('components.buttons.fillData') }}</span>
     </button>
     <modal
@@ -344,7 +352,7 @@ watch(columns, (value) => {
                         </td>
                         <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
                             <div class="h-10 flex items-center justify-center">
-                                <control-type-selector v-model="variable.default" :edit-structure="canEdit" :name="variable.name" :type="variable.type" :data="variable.options" :editable="columns[variableIndex]?.editable"/>
+                                <control-type-selector v-model="variable.default" :edit-structure="canEdit" :name="variable.name" :type="variable.type" :data="variable.options" :editable="canEditCell(variableIndex)"/>
                             </div>
                         </td>
                         <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-if="canEditRows">

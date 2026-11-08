@@ -116,7 +116,7 @@ MARKDOWN;
                     'variables' => ['nullable', 'array'],
                     'styles' => ['nullable', 'string'],
                     'scripts' => ['nullable', 'string'],
-                    'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file'],
+                    'variables.*.type' => ['required', 'in:text,number,tel,email,url,password,checkbox,radio,date,time,datetime-local,month,week,color,resource,datatable,textarea,select,datasource,action,page,link,upload_file,action_button'],
                     'variables.*.name' => ['required', 'string', 'max:255'],
                 ],
                 'notes' => [
@@ -599,7 +599,7 @@ MARKDOWN;
                 'category' => 'compatibility',
                 'type' => 'compatibility',
                 'summary' => 'Documents the complete VariableType list accepted by the current component creation request.',
-                'keywords' => ['compatibility', 'supported', 'store request', 'link', 'upload_file', 'ui'],
+                'keywords' => ['compatibility', 'supported', 'store request', 'link', 'upload_file', 'action_button', 'ui'],
                 'supported_by_creation' => [
                     'text',
                     'number',
@@ -624,6 +624,7 @@ MARKDOWN;
                     'page',
                     'link',
                     'upload_file',
+                    'action_button',
                 ],
                 'notes' => [
                     'Use any supported_by_creation type when constructing a payload for CreateComponentTool.',

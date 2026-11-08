@@ -1,10 +1,10 @@
 <?php
 
 use Alban\Simplisiti\Controllers;
+use Alban\Simplisiti\Http\Middleware\AuthenticateUnlessLocal;
 use Illuminate\Support\Facades\Route;
 
-// For Develop remove the 'auth:sanctum' middleware
-Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function () {
+Route::prefix('api/spanel')->middleware(['api', AuthenticateUnlessLocal::class])->group(function () {
     Route::controller(Controllers\ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');

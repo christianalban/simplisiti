@@ -39,6 +39,7 @@ const getSelectedValue = (event: Event): string => {
         <option value="datasource">{{ $t('components.types.datasource') }}</option>
         <option value="action">{{ $t('components.types.action') }}</option>
         <option value="page">{{ $t('components.types.page') }}</option>
+        <option value="action_button">{{ $t('components.types.action_button') }}</option>
     </select>
 </template>
 

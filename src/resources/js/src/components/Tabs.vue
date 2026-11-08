@@ -78,7 +78,7 @@ const toggleCollapsed = () => {
 }
 
 .tabs-sidebar {
-    @apply relative !h-full;
+    @apply relative;
 }
 
 .collapse-toggle {
@@ -190,7 +190,7 @@ const toggleCollapsed = () => {
 
 .horizontal.collapsible {
     .tabs-sidebar {
-        @apply transition-[height] duration-300 md:transition-[width] md:duration-300;
+        @apply transition-[height] duration-300 md:transition-[width] md:duration-300 !h-full;
     }
 
     .tabs-container {

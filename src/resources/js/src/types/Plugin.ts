@@ -22,6 +22,16 @@ export interface UploadFileOptions {
     url?: string
 }
 
+export interface ActionButtonOptions {
+    button_text?: string
+    url?: string
+    with_confirmation?: boolean
+    confirmation_title?: string
+    confirmation_text?: string
+    confirmation_accept_button_text?: string
+    confirmation_cancel_button_text?: string
+}
+
 export interface UploadFilePayload {
     url: string
     file: File

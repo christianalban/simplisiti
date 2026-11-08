@@ -11,6 +11,10 @@ const props = defineProps({
     plugin: {
         type: String,
     },
+    editable: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const linkUrl = computed(() => {
@@ -21,10 +25,16 @@ const linkUrl = computed(() => {
     return `${baseURL}/${prefix}${sanitizeUrl(props.data?.url ?? '#')}`;
 });
 
+const handleClick = (event: MouseEvent) => {
+    if (!props.editable) {
+        event.preventDefault();
+    }
+};
+
 </script>
 
 <template>
-    <a class="button secondary flex gap-2 w-full justify-center !p-1 relative items-center" :href="linkUrl" target="_download">
+    <a class="button secondary flex gap-2 w-full justify-center !p-1 relative items-center" :href="linkUrl" target="_download" :aria-disabled="!editable" @click="handleClick">
         <fa-icon :icon="['fas', 'download']" class="text-xl"/>
         <span>{{ $t('placeholders.download') }}</span>
     </a>
