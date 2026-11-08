@@ -5,12 +5,9 @@ import {
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
     faBars,
-    faCommentDots,
     faCube,
     faExpand,
     faFont,
-    faGear,
-    faGears,
     faGrip,
     faGripVertical,
     faHeading,
@@ -46,9 +43,6 @@ library.add(
     faCube,
     faHeading,
     faImage,
-    faCommentDots,
-    faGears,
-    faGear
 );
 
 export default FontAwesomeIcon;
