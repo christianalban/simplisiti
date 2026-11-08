@@ -49,6 +49,14 @@ class SimplisitiServer extends Server
         Tools\UpdateScriptDocsTool::class,
         Tools\DeleteScriptDocsTool::class,
         Tools\OrderScriptDocsTool::class,
+        Tools\AvailableResourcesTool::class,
+        Tools\CreateResourceTool::class,
+        Tools\UpdateResourceTool::class,
+        Tools\DeleteResourceTool::class,
+        Tools\ResourceDocsTool::class,
+        Tools\CreateResourceDocsTool::class,
+        Tools\UpdateResourceDocsTool::class,
+        Tools\DeleteResourceDocsTool::class,
     ];
 
     /**

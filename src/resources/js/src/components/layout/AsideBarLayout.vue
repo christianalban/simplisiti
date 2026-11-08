@@ -38,14 +38,14 @@ const toolLinks = [
         icon: 'photo-film',
     },
     {
-        name: 'settings.index',
-        title: 'titles.settings',
-        icon: 'gears',
-    },
-    {
         name: 'plugins.index',
         title: 'titles.plugins',
         icon: 'toolbox',
+    },
+    {
+        name: 'settings.index',
+        title: 'titles.settings',
+        icon: 'gears',
     },
 ]
 </script>
