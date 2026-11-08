@@ -23,6 +23,7 @@ const activeTabIndex = ref(0);
         <div class="tabs-container flex overflow-y-auto rounded-lg bg-gray-100">
             <div :class="['tab', {'active': index === activeTabIndex}]" v-for="(tab, index) of tabs" :key="index" @click="activeTabIndex = index">
                 <span class="before"></span>
+                <fa-icon v-if="tab.icon" :icon="tab.icon" />
                 {{ tab.title }}
                 <span class="after"></span>
             </div>
@@ -40,7 +41,7 @@ const activeTabIndex = ref(0);
 
 <style scoped>
 .tab {
-    @apply flex items-center justify-center px-4 py-2 border-transparent transition-colors cursor-pointer bg-gray-100 min-w-[300px] relative;
+    @apply flex items-center justify-center gap-2 px-4 py-2 border-transparent transition-colors cursor-pointer bg-gray-100 min-w-[300px] relative;
 
     &.active {
         @apply border-blue-500 bg-white;
