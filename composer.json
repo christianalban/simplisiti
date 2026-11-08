@@ -21,9 +21,10 @@
         }
     },
     "require": {
-        "illuminate/database": "^10|^11",
-        "illuminate/support": "^10|^11",
-        "laravel/sanctum": "^3.2|^4.0",
-        "matthiasmullie/minify": "^1.3"
+        "illuminate/database": "^11.45 || ^12.0 || ^13.0",
+        "illuminate/support": "^11.45 || ^12.0 || ^13.0",
+        "laravel/sanctum": "^4.0",
+        "matthiasmullie/minify": "^1.3",
+        "laravel/mcp": "^1.1"
     }
 }
