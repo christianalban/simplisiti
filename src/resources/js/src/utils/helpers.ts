@@ -137,6 +137,11 @@ type PreviewResources = {
     script: string;
 };
 
+export type PreviewResourceBundle = {
+    global: PreviewResources;
+    plugin: PreviewResources;
+};
+
 let previewResourcesPromise: Promise<PreviewResources> | null = null;
 
 export const loadResourcesPreview = (): Promise<PreviewResources> => {
@@ -179,6 +184,24 @@ export const loadPluginResourcesPreview = (): Promise<PreviewResources> => {
     return pluginResourcesPromise;
 };
 
+let previewResourceBundlePromise: Promise<PreviewResourceBundle> | null = null;
+
+export const loadPreviewResources = (): Promise<PreviewResourceBundle> => {
+    if (!previewResourceBundlePromise) {
+        previewResourceBundlePromise = Promise.all([
+            loadResourcesPreview(),
+            loadPluginResourcesPreview(),
+        ])
+            .then(([global, plugin]) => ({ global, plugin }))
+            .catch((error) => {
+                previewResourceBundlePromise = null;
+                throw error;
+            });
+    }
+
+    return previewResourceBundlePromise;
+};
+
 export const clearLoadedResources = () => {
     previewSheet = null;
     previewSheetPromise = null;
@@ -186,6 +209,7 @@ export const clearLoadedResources = () => {
     pluginSheetPromise = null;
     previewResourcesPromise = null;
     pluginResourcesPromise = null;
+    previewResourceBundlePromise = null;
 }
 
 export const toKebabCase= (str: string): string => {

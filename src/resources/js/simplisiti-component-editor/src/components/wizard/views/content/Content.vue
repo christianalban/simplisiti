@@ -2,6 +2,7 @@
 import { computed, onMounted, PropType, ref } from 'vue';
 import TextContent from './partials/TextContent.vue';
 import { ContentTypeMapping } from '../../../../engine/constants/Content';
+import { normalizeSerializedTemplate } from '../../../../engine/helpers/TemplateProtection';
 
 const props = defineProps({
     element: {
@@ -15,7 +16,7 @@ const contentType = computed(() => props.element ? ContentTypeMapping[props.elem
 
 const propagateContent = () => {
     if (contentType.value === 'text') {
-        content.value = props.element?.innerHTML;
+        content.value = normalizeSerializedTemplate(props.element?.innerHTML ?? '');
     }
 }
 
@@ -27,6 +28,7 @@ const notifyClassList = () => {
 
 const notifyContent = () => {
     notifyClassList();
+    content.value = normalizeSerializedTemplate(content.value ?? '');
     emit('update:spContent', {
         content: content.value,
         type: contentType.value,

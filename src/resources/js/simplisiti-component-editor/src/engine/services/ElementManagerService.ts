@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { SupportedTags, SupportedTagsList } from "../constants/HtmlTagsMappings";
 import { createFactory } from "../factories/ElementFactory";
 import { dispatchContentChange } from "./ElementEventDispatcherService";
+import { normalizeSerializedTemplate } from "../helpers/TemplateProtection";
 
 let placeHolderBox: HTMLDivElement | null = null;
 let draggedElement: HTMLElement | null = null;
@@ -234,7 +235,8 @@ const dispatchContainerChange = (container: HTMLElement | null) => {
     const simplisitiId = container?.dataset.simplisitiid;
 
     if (container && simplisitiId) {
-        dispatchContentChange(simplisitiId, clearEditorInteractionClasses(container.innerHTML));
+        const content = clearEditorInteractionClasses(container.innerHTML);
+        dispatchContentChange(simplisitiId, normalizeSerializedTemplate(content));
     }
 };
 

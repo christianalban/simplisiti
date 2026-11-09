@@ -5,7 +5,7 @@ import { getPages } from '../../services/PageService';
 import { Component } from '../../types/Component';
 import { Page } from '../../types/Page';
 import Group from '../../components/Group.vue';
-import { groupItems, labelName, loadPluginResourcesPreview, loadResourcesPreview } from '../../utils/helpers';
+import { groupItems, labelName, loadPreviewResources } from '../../utils/helpers';
 import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
 import HeaderComponent from '../../components/layout/Header.vue';
 import DialogComponent from "../../components/Dialog.vue";
@@ -77,12 +77,7 @@ const closeComponentUsage = () => {
 }
 
 const loadResources = () => {
-    const resources = Promise.all([
-        loadPluginResourcesPreview(),
-        loadResourcesPreview(),
-    ])
-
-    resources.then(() => {
+    loadPreviewResources().then(() => {
         getComponents()
         .then((response) => {
             isLoaded.value = true;
