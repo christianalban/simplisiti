@@ -1,86 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ElementsTabs, ElementTab } from '../engine/services/ElementFloatingPanelService';
 import { isElementAddingMode } from '../engine/services/ElementManagerService';
 
 const toolBoxVisible = ref(false);
 const selectedTab = ref<ElementTab>(ElementsTabs[0]);
 
-const toggleVisibilityToolbox = () => {
-    toolBoxVisible.value = !toolBoxVisible.value;
-};
+const isToolboxExpanded = computed(() => toolBoxVisible.value && !isElementAddingMode.value);
 
-const selectTab = (tab: ElementTab) => {
-    selectedTab.value = tab;
-    toolBoxVisible.value = true;
+const toggleVisibilityToolbox = () => {
+    toolBoxVisible.value = !isToolboxExpanded.value;
 };
 
 </script>
 
 <template>
-    <div class="sp-element__floating-container">
-        <div :class="['sp-element__floating-panel', { 'sp-element__floating-panel__closed': isElementAddingMode || !toolBoxVisible }]">
-            <div class="sp-element__component-container">
+    <div class="fixed inset-y-0 left-0 z-[1000] flex overflow-y-auto">
+        <div :class="[
+            'flex w-[300px] gap-1.5 overflow-hidden bg-white shadow-lg transition-[width] duration-300',
+            { '!w-0': isElementAddingMode || !toolBoxVisible }
+        ]">
+            <div class="min-w-[300px]">
                 <component :is="selectedTab.component"/>
             </div>
         </div>
-        <div class="sp-element__side-buttons">
-            <button class="sp-element__close-button" v-for="tab of ElementsTabs" v-key="tab.icon" @click="selectTab(tab)">
-                <fa-icon :icon="tab.icon"/>
-            </button>
-            <button class="sp-element__close-button" @click="toggleVisibilityToolbox" v-if="toolBoxVisible">
-                <fa-icon icon="times"/>
+        <div class="flex flex-col items-center justify-center">
+            <button
+                class="cursor-pointer w-7 rounded-r-md bg-gray-100 p-1.5 text-base text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none"
+                @click="toggleVisibilityToolbox"
+                :aria-label="isToolboxExpanded ? 'Cerrar elementos' : 'Abrir elementos'"
+            >
+                <fa-icon :icon="isToolboxExpanded ? 'xmark' : selectedTab.icon"/>
             </button>
         </div>
     </div>
 </template>
-
-<style scoped>
-.sp-element__floating-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1000;
-    overflow-y: auto;
-    display: flex;
-}
-
-.sp-element__floating-panel {
-    display: flex;
-    gap: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: width 0.3s;
-    width: 300px;
-}
-
-.sp-element__component-container {
-    min-width: 300px;
-}
-
-.sp-element__floating-panel.sp-element__floating-panel__closed {
-    width: 0;
-}
-
-.sp-element__side-buttons {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.sp-element__close-button {
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s;
-}
-
-.sp-element__close-button:hover {
-    background-color: #e0e0e0;
-}
-</style>

@@ -46,6 +46,3 @@ onMounted(() => {
         <text-content v-if="contentType === 'text'" v-model:content="content" @change="notifyContent" />
     </div>
 </template>
-
-<style scoped>
-</style>

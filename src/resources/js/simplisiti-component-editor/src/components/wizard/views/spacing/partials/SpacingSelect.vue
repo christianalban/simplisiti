@@ -51,35 +51,51 @@ const updateSpacingConfig = () => {
 </script>
 
 <template>
-    <div class="sp-spacing__container">
+    <div class="space-y-2">
         <div>
-            <h2>{{ title }}</h2>
+            <h2 class="text-sm font-semibold text-gray-800">{{ title }}</h2>
         </div>
-        <div class="sp-spacing__select-container">
-            <div class="sp-spacing__select-item">
-                <label>Arriba</label>
-                <select v-model="spacingConfig.top" @change="updateSpacingConfig">
+        <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Arriba</label>
+                <select
+                    v-model="spacingConfig.top"
+                    class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    @change="updateSpacingConfig"
+                >
                     <option value=""></option>
                     <option v-for="option in upSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
-            <div class="sp-spacing__select-item">
-                <label>Abajo</label>
-                <select v-model="spacingConfig.bottom" @change="updateSpacingConfig">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Abajo</label>
+                <select
+                    v-model="spacingConfig.bottom"
+                    class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    @change="updateSpacingConfig"
+                >
                     <option value=""></option>
                     <option v-for="option in bottomSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
-            <div class="sp-spacing__select-item">
-                <label>Izquierda</label>
-                <select v-model="spacingConfig.left" @change="updateSpacingConfig">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Izquierda</label>
+                <select
+                    v-model="spacingConfig.left"
+                    class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    @change="updateSpacingConfig"
+                >
                     <option value=""></option>
                     <option v-for="option in leftSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
-            <div class="sp-spacing__select-item">
-                <label>Derecha</label>
-                <select v-model="spacingConfig.right" @change="updateSpacingConfig">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Derecha</label>
+                <select
+                    v-model="spacingConfig.right"
+                    class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    @change="updateSpacingConfig"
+                >
                     <option value=""></option>
                     <option v-for="option in rightSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
@@ -87,16 +103,3 @@ const updateSpacingConfig = () => {
         </div>
     </div>
 </template>
-
-<style scoped>
-.sp-spacing__select-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-
-    .sp-spacing__select-item {
-        display: flex;
-        flex-direction: column;
-    }
-}
-</style>

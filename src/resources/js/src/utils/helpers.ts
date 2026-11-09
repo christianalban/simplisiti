@@ -90,98 +90,102 @@ export const addQueryToUrlFromOptions = (url: string, options?: Options, query?:
 
 export const isMobileScreen = (): boolean => window.innerWidth < 768;
 
-export let previewSheet: CSSStyleSheet;
+export let previewSheet: CSSStyleSheet | null = null;
+let previewSheetPromise: Promise<CSSStyleSheet> | null = null;
 
 export const loadPreviewSheet = async (): Promise<CSSStyleSheet> => {
-    if (previewSheet) {
-        return previewSheet;
+    if (!previewSheetPromise) {
+        previewSheetPromise = axios.get<string>(getResourcePreviewUrl('style'))
+            .then((response) => {
+                const sheet = new CSSStyleSheet();
+                sheet.replaceSync(response.data);
+                previewSheet = sheet;
+                return sheet;
+            })
+            .catch((error) => {
+                previewSheetPromise = null;
+                throw error;
+            });
     }
-    previewSheet = new CSSStyleSheet();
-    const styleUrl = getResourcePreviewUrl('style');
-    const response = await axios.get(styleUrl);
-    previewSheet.replaceSync(response.data);
 
-    return previewSheet;
+    return previewSheetPromise;
 };
 
-export let pluginSheet: CSSStyleSheet;
+export let pluginSheet: CSSStyleSheet | null = null;
+let pluginSheetPromise: Promise<CSSStyleSheet> | null = null;
 
 export const loadPluginSheet = async (): Promise<CSSStyleSheet> => {
-    if (pluginSheet) {
-        return pluginSheet;
+    if (!pluginSheetPromise) {
+        pluginSheetPromise = axios.get<string>(getPluginResourcePreviewUrl('style'))
+            .then((response) => {
+                const sheet = new CSSStyleSheet();
+                sheet.replaceSync(response.data);
+                pluginSheet = sheet;
+                return sheet;
+            })
+            .catch((error) => {
+                pluginSheetPromise = null;
+                throw error;
+            });
     }
-    pluginSheet = new CSSStyleSheet();
-    const styleUrl = getPluginResourcePreviewUrl('style');
-    const response = await axios.get(styleUrl);
-    pluginSheet.replaceSync(response.data);
 
-    return pluginSheet;
+    return pluginSheetPromise;
 };
 
-let previewStyles: HTMLStyleElement | null; 
-let previewScript: HTMLScriptElement | null; 
-
-export const loadResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
-    if (previewStyles && previewScript) {
-        const clonedPreviewStyles = cloneElement<HTMLStyleElement>(previewStyles);
-        const clonedPreviewScript = cloneElement<HTMLScriptElement>(previewScript);
-
-        return [clonedPreviewStyles, clonedPreviewScript];
-    }
-
-    previewStyles = document.createElement('style');
-    previewScript = document.createElement('script');
-
-    const styleUrl = getResourcePreviewUrl('style');
-    const responseStyle = await axios.get(styleUrl);
-
-    const scriptUrl = getResourcePreviewUrl('script');
-    const responseScript = await axios.get(scriptUrl);
-
-    previewStyles.textContent = responseStyle.data;
-
-    previewScript.textContent = responseScript.data;
-
-    return [previewStyles, previewScript];
+type PreviewResources = {
+    style: string;
+    script: string;
 };
 
-const cloneElement = <T>(element: HTMLElement): T => {
-    return element.cloneNode(true) as T;
-}
+let previewResourcesPromise: Promise<PreviewResources> | null = null;
 
-let pluginStyles: HTMLStyleElement | null; 
-let pluginScript: HTMLScriptElement | null;
-
-export const loadPluginResourcesPreview = async (): Promise<(HTMLStyleElement|HTMLScriptElement)[]> => {
-    if (pluginStyles && pluginScript) {
-        
-        const clonedPluginStyles = cloneElement<HTMLStyleElement>(pluginStyles);
-        const clonedPluginScript = cloneElement<HTMLScriptElement>(pluginScript);
-
-        return [clonedPluginStyles, clonedPluginScript];
+export const loadResourcesPreview = (): Promise<PreviewResources> => {
+    if (!previewResourcesPromise) {
+        previewResourcesPromise = Promise.all([
+            axios.get<string>(getResourcePreviewUrl('style')),
+            axios.get<string>(getResourcePreviewUrl('script')),
+        ])
+            .then(([styleResponse, scriptResponse]) => ({
+                style: styleResponse.data,
+                script: scriptResponse.data,
+            }))
+            .catch((error) => {
+                previewResourcesPromise = null;
+                throw error;
+            });
     }
 
-    pluginStyles = document.createElement('style');
-    pluginScript = document.createElement('script');
+    return previewResourcesPromise;
+};
 
-    const styleUrl = getPluginResourcePreviewUrl('style');
-    const responseStyle = await axios.get(styleUrl);
+let pluginResourcesPromise: Promise<PreviewResources> | null = null;
 
-    const scriptUrl = getPluginResourcePreviewUrl('script');
-    const responseScript = await axios.get(scriptUrl);
+export const loadPluginResourcesPreview = (): Promise<PreviewResources> => {
+    if (!pluginResourcesPromise) {
+        pluginResourcesPromise = Promise.all([
+            axios.get<string>(getPluginResourcePreviewUrl('style')),
+            axios.get<string>(getPluginResourcePreviewUrl('script')),
+        ])
+            .then(([styleResponse, scriptResponse]) => ({
+                style: styleResponse.data,
+                script: scriptResponse.data,
+            }))
+            .catch((error) => {
+                pluginResourcesPromise = null;
+                throw error;
+            });
+    }
 
-    pluginStyles.textContent = responseStyle.data;
-
-    pluginScript.textContent = responseScript.data;
-
-    return [pluginStyles, pluginScript];
+    return pluginResourcesPromise;
 };
 
 export const clearLoadedResources = () => {
-    pluginScript = null;
-    pluginStyles = null;
-    previewStyles = null;
-    previewScript = null;
+    previewSheet = null;
+    previewSheetPromise = null;
+    pluginSheet = null;
+    pluginSheetPromise = null;
+    previewResourcesPromise = null;
+    pluginResourcesPromise = null;
 }
 
 export const toKebabCase= (str: string): string => {

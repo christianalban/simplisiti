@@ -205,17 +205,22 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="sp-wizard-popup__tabs-container">
-        <div class="sp-wizard-popup__tabs">
-            <div class="sp-wizard-popup__tab" v-for="availableTab of availableTabs">
-                <button :class="['sp-wizard-popup__tab-button', { 'sp-wizard-popup__tab-button__active': isTabActive(availableTab) }]" :title="availableTab.title" @click="selectTab(availableTab)">
+    <div class="w-[215px]">
+        <div class="flex">
+            <div v-for="availableTab of availableTabs" :key="availableTab.tab">
+                <button
+                    :class="[
+                        'cursor-pointer border-0 bg-gray-100 p-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
+                        { 'bg-blue-100 text-blue-900': isTabActive(availableTab) }
+                    ]"
+                    :title="availableTab.title"
+                    @click="selectTab(availableTab)"
+                >
                     <fa-icon :icon="availableTab.icon" />
                 </button>
             </div>
         </div>
-    </div>
-    <div class="sp-wizard-popup__content">
-        <div class="sp-wizard-popup__content-header">
+        <div class="pt-2">
             <div v-for="availableTab of availableTabs">
                 <div v-show="isTabActive(availableTab)">
                     <component
@@ -233,27 +238,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-
-<style scoped>
-
-.sp-wizard-popup__tabs-container {
-    width: 215px;
-    & > .sp-wizard-popup__tabs {
-        display: flex;
-    }
-
-    .sp-wizard-popup__tab-button {
-        border: none;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        padding: 0.5rem;
-        margin: 0;
-        transition: background-color 0.2s;
-
-        &:hover,
-        &.sp-wizard-popup__tab-button__active {
-            background-color: #e0e0e0;
-        }
-    }
-}
-</style>

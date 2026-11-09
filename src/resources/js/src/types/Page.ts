@@ -10,4 +10,4 @@ export interface Page {
     sections: Section[]
 }
 
-export type ResourcePreview = 'style' | 'script' | 'layout';
+export type ResourcePreview = 'style' | 'script' | 'layout' | 'content-style';

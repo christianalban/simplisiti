@@ -72,43 +72,30 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="sp-font__container">
-        <div class="sp-font__select-container">
-            <div class="sp-font__select-item">
-                <label>Tamaño</label>
-                <select v-model="fontSize" @change="notifyClass">
+    <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Tamaño</label>
+                <select
+                    v-model="fontSize"
+                    class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    @change="notifyClass"
+                >
                     <option value=""></option>
                     <option v-for="option in fontSizeOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
             </div>
         </div>
-        <div class="sp-font__select-container">
-            <div class="sp-font__select-item">
-                <label>Color {{ fontColor['color'] }}</label>
-                <input class="sp-font__select-color" type="color" v-model="fontColor['color']" @change="notifyStyle" />
+        <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-700">Color {{ fontColor['color'] }}</label>
+                <input
+                    class="h-8 w-full cursor-pointer rounded-md border border-gray-300 bg-white p-1 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    type="color"
+                    v-model="fontColor['color']"
+                    @change="notifyStyle"
+                />
             </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-.sp-font__select-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-
-    .sp-font__select-item {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .sp-font__select-item__full {
-        grid-column: 1 / span 2;
-    }
-
-    .sp-font__select-color {
-        height: 20px;
-        width: 100%;
-    }
-}
-</style>

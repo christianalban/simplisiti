@@ -35,42 +35,80 @@ const emit = defineEmits(['update']);
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 
-const loadResourcesEditor = (): (HTMLLinkElement|HTMLScriptElement)[] => {
-    const scriptEditor = document.createElement('script');
-    const styleEditor = document.createElement('link');
-    const layoutEditor = document.createElement('link');
-    const scriptVue = document.createElement('script');
-    const scriptVueApp = document.createElement('script');
+const loadScript = (doc: Document, source: string): Promise<HTMLScriptElement> => {
+    return new Promise((resolve, reject) => {
+        const script = doc.createElement('script');
+        script.src = source;
+        script.onload = () => resolve(script);
+        script.onerror = () => reject(new Error(`Unable to load editor resource: ${source}`));
+        doc.body.appendChild(script);
+    });
+};
 
-    const scriptEditorUrl = getResourceEditorEngine('script');
-    const styleEditorUrl = getResourceEditorEngine('style');
-    const layoutEditorUrl = getResourceEditorEngine('layout');
+const loadStylesheet = (root: ShadowRoot | HTMLElement, source: string): Promise<HTMLLinkElement> => {
+    return new Promise((resolve, reject) => {
+        const link = root.ownerDocument.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = source;
+        link.onload = () => resolve(link);
+        link.onerror = () => reject(new Error(`Unable to load editor stylesheet: ${source}`));
+        root.appendChild(link);
+    });
+};
+
+const createInlineStyle = (doc: Document, content: string): HTMLStyleElement => {
+    const style = doc.createElement('style');
+    style.textContent = content;
+    return style;
+};
+
+const createInlineScript = (doc: Document, content: string): HTMLScriptElement => {
+    const script = doc.createElement('script');
+    script.textContent = content;
+    return script;
+};
+
+const loadEditor = async (doc: Document): Promise<void> => {
     const scriptVueUrl = 'https://unpkg.com/vue@3/dist/vue.global.js';
+    const scriptEditorUrl = getResourceEditorEngine('script');
+    const editorHost = doc.createElement('div');
+    editorHost.id = 'simplisiti-component-editor-host';
+    editorHost.style.cssText = 'all: initial; display: block; position: relative; z-index: 1;';
 
-    styleEditor.rel = 'stylesheet';
-    styleEditor.href = styleEditorUrl;
+    const editorShadowRoot = editorHost.attachShadow({ mode: 'open' });
+    const appContainer = doc.createElement('div');
+    appContainer.id = 'simplisiti-component-editor-app';
+    appContainer.innerHTML = '<simplisiti-component-editor></simplisiti-component-editor>';
+    editorShadowRoot.appendChild(appContainer);
+    doc.body.appendChild(editorHost);
 
-    layoutEditor.rel = 'stylesheet';
-    layoutEditor.href = layoutEditorUrl;
+    const editorStyleUrl = getResourceEditorEngine('style');
+    const contentStyleUrl = getResourceEditorEngine('content-style');
+    await Promise.all([
+        loadStylesheet(doc.head, contentStyleUrl),
+        loadStylesheet(editorShadowRoot, editorStyleUrl),
+    ]);
 
-    scriptVue.src = scriptVueUrl;
+    await loadScript(doc, scriptVueUrl);
+    await loadScript(doc, scriptEditorUrl);
 
-    scriptEditor.src = scriptEditorUrl;
+    const mountScript = doc.createElement('script');
+    mountScript.textContent = `
+        if (!window.Vue || !window.SimplisitiComponentEditor) {
+            throw new Error('The component editor dependencies are not available');
+        }
 
-    scriptVueApp.innerHTML = `
-        const appContainer = document.createElement('div');
-        appContainer.id = 'simplisiti-component-editor-app';
-        appContainer.innerHTML = '<simplisiti-component-editor/>';
-        document.body.appendChild(appContainer);
-        window.addEventListener('load', () => {
-            const { createApp } = Vue;
-            const app = createApp({});
-            app.use(SimplisitiComponentEditor);
-            app.mount('#simplisiti-component-editor-app');
-        });
+        const editorHost = document.getElementById('simplisiti-component-editor-host');
+        const appContainer = editorHost?.shadowRoot?.querySelector('#simplisiti-component-editor-app');
+        if (!appContainer) {
+            throw new Error('The component editor host is not available');
+        }
+
+        const app = window.Vue.createApp({});
+        app.use(window.SimplisitiComponentEditor);
+        app.mount(appContainer);
     `;
-
-    return [styleEditor, scriptEditor, scriptVue, scriptVueApp, layoutEditor];
+    doc.body.appendChild(mountScript);
 };
 
 const updateIframe = async () => {
@@ -96,8 +134,10 @@ const updateIframe = async () => {
 
         if (!doc) return;
 
-        const [styleLink, scriptLink] = await loadResourcesPreview();
-        const [pluginStyleLink, pluginScriptLink] = await loadPluginResourcesPreview();
+        const [previewResources, pluginResources] = await Promise.all([
+            loadResourcesPreview(),
+            loadPluginResourcesPreview(),
+        ]);
 
         const metaViewport = doc.createElement('meta');
         metaViewport.name = 'viewport';
@@ -106,22 +146,22 @@ const updateIframe = async () => {
         doc.open();
         doc.write(contentContainer.outerHTML);
         doc.head.appendChild(metaViewport);
-        doc.head.appendChild(styleLink);
-        doc.head.appendChild(pluginStyleLink);
-        doc.body.appendChild(scriptLink);
-        doc.body.appendChild(pluginScriptLink);
+        doc.head.appendChild(createInlineStyle(doc, previewResources.style));
+        doc.head.appendChild(createInlineStyle(doc, pluginResources.style));
+        doc.body.appendChild(createInlineScript(doc, previewResources.script));
+        doc.body.appendChild(createInlineScript(doc, pluginResources.script));
 
         if (props.allowEdit) {
-            const [styleEditorLink, scriptEditorLink, scriptVueLink, scriptVueAppLink, layoutEditor] = loadResourcesEditor();
+            doc.close();
 
-            doc.head.appendChild(styleEditorLink);
-            doc.head.appendChild(layoutEditor);
-            doc.body.appendChild(scriptVueLink);
-            doc.body.appendChild(scriptEditorLink);
-            doc.body.appendChild(scriptVueAppLink);
+            try {
+                await loadEditor(doc);
+            } catch (error) {
+                console.error('Unable to initialize the component editor.', error);
+            }
+        } else {
+            doc.close();
         }
-
-        doc.close();
 
         iframe.value.onload = () => {
             const bodyHeight = doc.body.scrollHeight;

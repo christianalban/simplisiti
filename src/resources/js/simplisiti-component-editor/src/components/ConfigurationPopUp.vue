@@ -86,76 +86,31 @@ onMounted(() => {
 </script>
 
 <template>
-    <div :class="['sp-configuration-popup', {'sp-configuration-popup_closed': isClosed}]" ref="popup" @click.stop="undefined">
-        <div class="sp-configuration-popup__header">
-            <h4>{{ type }}</h4>
-            <button class="sp-configuration-popup__button" @click="deleteElement">
+    <div
+        :class="[
+            'fixed z-[1000] min-w-max rounded-md bg-white p-3 shadow-lg ring-1 ring-black/5 animate-editor-fade-in',
+            { 'animate-editor-fade-out': isClosed }
+        ]"
+        ref="popup"
+        @click.stop
+    >
+        <div class="flex items-center gap-2 border-b border-gray-200 py-1.5">
+            <h4 class="m-0 text-sm font-semibold text-gray-800">{{ type }}</h4>
+            <button
+                class="ml-auto cursor-pointer rounded-md p-1 text-gray-500 transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                @click="deleteElement"
+            >
                 <fa-icon icon="trash" />
             </button>
-            <button class="sp-configuration-popup__button" @click="emitClosed">
+            <button
+                class="cursor-pointer rounded-md p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                @click="emitClosed"
+            >
                 <fa-icon icon="times" />
             </button>
         </div>
-        <div class="sp-configuration-popup__body">
+        <div class="pt-2">
             <wizard v-if="element" :element="element" @tabChange="tabChange" />
         </div>
     </div>
 </template>
-
-<style scoped>
-.sp-configuration-popup {
-    position: fixed;
-    background-color: white;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 1000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    cursor: auto;
-    animation: fadeIn 0.25s linear forwards;
-    min-width: max-content;
-
-    &.sp-configuration-popup_closed {
-        animation: fadeOut 0.25s linear forwards;
-    }
-
-    & > .sp-configuration-popup__header {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding: 5px 0;
-        border-bottom: 1px solid #ccc;
-
-        & > h4 {
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        & > .sp-configuration-popup__close {
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
-
-        & > .sp-configuration-popup__button:nth-child(2) {
-            margin-left: auto;
-        }
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-</style>

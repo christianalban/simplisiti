@@ -1,0 +1,43 @@
+@tailwind components;
+
+@layer components {
+    [data-simplisitiid="simplisiti-component-preview"] div,
+    [data-simplisitiid="simplisiti-component-preview"] a,
+    [data-simplisitiid="simplisiti-component-preview"] p,
+    [data-simplisitiid="simplisiti-component-preview"] h1,
+    [data-simplisitiid="simplisiti-component-preview"] img {
+        @apply border-2 border-transparent;
+    }
+
+    [data-simplisitiid="simplisiti-component-preview"] div:empty,
+    [data-simplisitiid="simplisiti-component-preview"] a:empty,
+    [data-simplisitiid="simplisiti-component-preview"] p:empty,
+    [data-simplisitiid="simplisiti-component-preview"] h1:empty,
+    [data-simplisitiid="simplisiti-component-preview"] img:empty {
+        @apply p-2;
+    }
+
+    div.sp-element__active,
+    a.sp-element__active,
+    p.sp-element__active,
+    h1.sp-element__active,
+    img.sp-element__active {
+        @apply cursor-pointer border-2 border-blue-600 transition-colors duration-300;
+    }
+
+    div.sp-element__active {
+        @apply border-fuchsia-600;
+    }
+
+    .sp-element__add-element-mode div.sp-element__active {
+        @apply border-teal-600;
+    }
+
+    .sp-element__placeholder {
+        @apply rounded-sm bg-teal-600 p-1;
+    }
+
+    body {
+        @apply h-full;
+    }
+}

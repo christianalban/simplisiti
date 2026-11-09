@@ -53,7 +53,7 @@ onMounted(() => {
         />
         <div class="flex-1 overflow-y-auto">
             <draggable-list
-                class="md:w-1/5 grid gap-4"
+                class="md:w-1/2 grid gap-4"
                 :list="filteredScripts"
                 @update:list="saveOrder"
             />

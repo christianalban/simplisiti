@@ -67,14 +67,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <div  class="sp-spacing__container">
+    <div class="space-y-3">
         <spacing-select
             title="Margen"
             type="margin"
             v-model:spacingConfig="marginConfig"
             @update:spacingConfig="notify"
         />
-        <hr class="sp-spacing__separator">
+        <hr class="my-4 border-0 border-t border-gray-200">
         <spacing-select
             title="Padding"
             type="padding"
@@ -83,11 +83,3 @@ onMounted(() => {
         />
     </div>
 </template>
-
-<style scoped>
-.sp-spacing__separator {
-    margin: 1rem 0;
-    border: 0;
-    border-top: 1px solid #ccc;
-}
-</style>

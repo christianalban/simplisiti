@@ -35,57 +35,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <configuration-pop-up
-        v-if="isPopUpOpened"
-        :element="element"
-        :type="element?.tagName"
-        @close.stop="closePopUp"
-    />
-    <element-floating-panel />
+    <div class="min-h-full font-sans text-sm text-gray-800">
+        <configuration-pop-up
+            v-if="isPopUpOpened"
+            :element="element"
+            :type="element?.tagName"
+            @close.stop="closePopUp"
+        />
+        <element-floating-panel />
+    </div>
 </template>
-
-<style>
-[data-simplisitiid="simplisiti-component-preview"] {
-    div,
-    a,
-    p,
-    h1,
-    img {
-        border: 2px solid transparent;
-    }
-}
-div,
-a,
-p,
-h1,
-img {
-    &.sp-element__active {
-        cursor: pointer;
-        transition: border-color 0.3s ease;
-        border: 2px solid #2563eb;
-    }
-}
-
-div.sp-element__active {
-    border: 2px solid #db27d2;
-}
-
-.sp-element__add-element-mode {
-    div.sp-element__active {
-        border-color: #0d9488;
-    }
-}
-
-.sp-element__placeholder {
-    padding: 5px;
-    background-color: #0d9488;
-    border-radius: 2.5px;
-}
-
-[data-simplisitiid="simplisiti-component-preview"]:empty {
-    padding: 10px;
-}
-body {
-    height: 100%
-}
-</style>

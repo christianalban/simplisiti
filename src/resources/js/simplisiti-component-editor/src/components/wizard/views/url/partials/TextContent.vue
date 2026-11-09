@@ -20,19 +20,12 @@ const updateContent = (event: Event) => {
 </script>
 
 <template>
-    <div class="sp-font__select-item">
-        <label>Url</label>
-        <textarea class="sp-font__select-text" :value="content" @input="updateContent($event)"></textarea>
+    <div class="flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-700">Url</label>
+        <textarea
+            class="min-h-24 w-full resize-y rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            :value="content"
+            @input="updateContent($event)"
+        ></textarea>
     </div>
 </template>
-
-<style scoped>
-.sp-font__select-item {
-    display: flex;
-    flex-direction: column;
-
-    .sp-font__select-text {
-        border: 1px solid #ccc;
-    }
-}
-</style>
