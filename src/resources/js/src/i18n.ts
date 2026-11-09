@@ -88,6 +88,7 @@ const messages = {
                 editContent: "Edit content",
                 graphical: "Graphical",
                 clone: "Clone",
+                usage: "Show component usage",
             },
             buttons: {
                 create: "New component",
@@ -117,6 +118,13 @@ const messages = {
                 clone: {
                     title: "Clone component",
                     message: "Are you sure you want to clone the component '{name}'?",
+                },
+                usage: {
+                    title: "Pages using this component",
+                    loading: "Loading pages...",
+                    empty: "This component is not used on any page.",
+                    error: "Pages couldn't be loaded.",
+                    openPage: "Open page editor",
                 }
             }
         },
@@ -471,6 +479,7 @@ const messages = {
                 editContent: "Editar contenido",
                 graphical: "Gráfico",
                 clone: "Clonar",
+                usage: "Mostrar uso del componente",
             },
             buttons: {
                 create: "Nuevo componente",
@@ -500,6 +509,13 @@ const messages = {
                 clone: {
                     title: "Clonar componente",
                     message: "¿Está seguro que desea clonar el componente '{name}'?",
+                },
+                usage: {
+                    title: "Páginas que usan este componente",
+                    loading: "Cargando páginas...",
+                    empty: "Este componente no se utiliza en ninguna página.",
+                    error: "No se pudieron cargar las páginas.",
+                    openPage: "Abrir editor de página",
                 }
             }
         },
