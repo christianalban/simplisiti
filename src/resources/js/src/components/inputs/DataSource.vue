@@ -35,7 +35,7 @@ const emitChange = (event: Event) => {
     <div v-if="!editStructure" class="text-gray-500 mb-1 w-full h-full bg-white p-2 rounded-l">
         {{ modelValue }}
     </div>
-    <select class="input w-full" @change="emitChange" :value="modelValue" :disabled="!editable" v-else>
+    <select class="input w-full h-full" @change="emitChange" :value="modelValue" :disabled="!editable" v-else>
         <option value="">{{ $t('placeholders.select') }}</option>
         <option :value="source.name" v-for="source of sources">
             {{ source.name }}

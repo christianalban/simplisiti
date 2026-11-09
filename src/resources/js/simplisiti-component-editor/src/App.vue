@@ -21,7 +21,7 @@ watch(isElementAddingMode, (value) => {
 
 const closePopUp = () => {
     if (element.value) {
-        element.value.classList.remove('sp-element__active');
+        element.value.classList.remove('sp-element__selected');
     }
     element.value = null;
     isPopUpOpened.value = false;

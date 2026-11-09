@@ -89,9 +89,9 @@ const verticalAlignmentRotation = (index: number): string => {
 }
 
 const alignmentButtonClass = (isActive: boolean, rotation: string): string[] => [
-    'flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-600 transition-colors hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500',
+    'wizard-icon-button cursor-pointer rounded-lg text-gray-600 transition-colors hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500',
     rotation,
-    ...(isActive ? ['bg-blue-100', 'text-blue-700'] : []),
+    ...(isActive ? ['wizard-icon-button--selected'] : []),
 ];
 
 onMounted(() => {

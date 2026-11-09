@@ -35,6 +35,16 @@ export const WizardViews: WizardViewsTabs = {
         icon: 'expand',
         component: () => import('../../components/wizard/views/spacing/Spacing.vue')
     },
+    'background': {
+        title: 'Color de fondo',
+        icon: 'fill-drip',
+        component: () => import('../../components/wizard/views/background/Background.vue')
+    },
+    'border-radius': {
+        title: 'Redondeado',
+        icon: 'border-all',
+        component: () => import('../../components/wizard/views/border-radius/BorderRadius.vue')
+    },
     'font': {
         title: 'Fuente',
         icon: 'font',
@@ -65,37 +75,48 @@ export const AvailableWizard: AvailableWizardViews = {
     'container': [
         'layout',
         'spacing',
+        'background',
+        'border-radius',
     ],
     'ancord': [
         'spacing',
+        'background',
+        'border-radius',
         'font',
         'content',
         'url',
     ],
     'paragraph': [
         'spacing',
+        'background',
+        'border-radius',
         'font',
         'content',
     ],
     'header1': [
         'spacing',
+        'background',
+        'border-radius',
         'font',
         'content',
     ],
     'image': [
         'spacing',
+        'background',
+        'border-radius',
         'src',
     ],
 };
 
-export type AvailableWizards = 'layout' | 'spacing' | 'font' | 'content' | 'url' | 'src';
+export type AvailableWizards = 'layout' | 'spacing' | 'background' | 'border-radius' | 'font' | 'content' | 'url' | 'src';
 
 export interface StyleValue {
     [key: string]: string;
 }
 
-export type StylesProperties = 'color';
+export type StylesProperties = 'color' | 'background-color';
 
 export const StylesPropertiesList: StylesProperties[] = [
     'color',
+    'background-color',
 ];

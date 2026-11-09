@@ -18,6 +18,7 @@ interface DragSession {
     type: 'add' | 'move';
     sourceContainer: HTMLElement | null;
     sourceIndex: number;
+    sourceNextSibling: Node | null;
     targetContainer: HTMLElement | null;
     targetIndex: number;
     placeholderWidth: number;
@@ -47,8 +48,9 @@ const previewRootId = 'simplisiti-component-preview';
 const placeholderClass = 'sp-element__placeholder';
 const newElementPlaceholderHeight = 32;
 const interactionLayers = new WeakMap<HTMLElement, () => void>();
+const transparentDragImages = new WeakMap<Document, HTMLCanvasElement>();
 const editorInteractionClasses = [
-    'sp-element__active',
+    'sp-element__selected',
     'sp-element__hover',
     'sp-element__dragging',
     'sp-element__drop-target',
@@ -72,17 +74,17 @@ const isInsideRoot = (node: HTMLElement, root: HTMLElement): boolean => {
     return node === root || root.contains(node);
 };
 
-type HighlightState = 'active' | 'hover' | null;
+type HighlightState = 'selected' | 'hover' | null;
 
 const setElementHighlight = (node: HTMLElement | null, state: HighlightState) => {
     if (!node || !isSupportedElement(node)) {
         return;
     }
 
-    node.classList.remove('sp-element__active', 'sp-element__hover');
+    node.classList.remove('sp-element__selected', 'sp-element__hover');
 
-    if (state === 'active') {
-        node.classList.add('sp-element__active');
+    if (state === 'selected') {
+        node.classList.add('sp-element__selected');
     } else if (state === 'hover') {
         node.classList.add('sp-element__hover');
     }
@@ -120,6 +122,97 @@ const findContainerElement = (target: EventTarget | null, root: HTMLElement): HT
     return isSupportedElement(candidate) ? candidate : null;
 };
 
+const isDocumentScroller = (node: HTMLElement): boolean => {
+    const document = node.ownerDocument;
+
+    return node === document.scrollingElement
+        || node === document.documentElement
+        || node === document.body;
+};
+
+const canScrollAxis = (node: HTMLElement, axis: 'x' | 'y'): boolean => {
+    if (isDocumentScroller(node)) {
+        return true;
+    }
+
+    const style = node.ownerDocument.defaultView?.getComputedStyle(node);
+    const overflow = axis === 'x' ? style?.overflowX : style?.overflowY;
+
+    return overflow === 'auto' || overflow === 'scroll' || overflow === 'overlay';
+};
+
+const getScrollableAncestors = (target: EventTarget | null, root: HTMLElement): HTMLElement[] => {
+    const ancestors: HTMLElement[] = [];
+    let current: HTMLElement | null = target instanceof HTMLElement ? target : root;
+
+    while (current) {
+        ancestors.push(current);
+
+        if (current === root) {
+            break;
+        }
+
+        current = current.parentElement as HTMLElement | null;
+    }
+
+    const documentScroller = root.ownerDocument.scrollingElement as HTMLElement | null;
+
+    if (documentScroller && !ancestors.includes(documentScroller)) {
+        ancestors.push(documentScroller);
+    }
+
+    return ancestors;
+};
+
+const normalizeWheelDelta = (event: WheelEvent, value: number, node: HTMLElement): number => {
+    if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+        return value * 16;
+    }
+
+    if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+        return value * (node.clientHeight || node.ownerDocument.documentElement.clientHeight);
+    }
+
+    return value;
+};
+
+const scrollWithWheel = (event: WheelEvent, root: HTMLElement): boolean => {
+    let remainingX = normalizeWheelDelta(event, event.deltaX, root);
+    let remainingY = normalizeWheelDelta(event, event.deltaY, root);
+    let didScroll = false;
+
+    for (const scrollable of getScrollableAncestors(event.target, root)) {
+        const previousLeft = scrollable.scrollLeft;
+        const previousTop = scrollable.scrollTop;
+        const maximumLeft = Math.max(0, scrollable.scrollWidth - scrollable.clientWidth);
+        const maximumTop = Math.max(0, scrollable.scrollHeight - scrollable.clientHeight);
+
+        if (canScrollAxis(scrollable, 'x') && remainingX !== 0) {
+            scrollable.scrollLeft = Math.min(maximumLeft, Math.max(0, previousLeft + remainingX));
+        }
+
+        if (canScrollAxis(scrollable, 'y') && remainingY !== 0) {
+            scrollable.scrollTop = Math.min(maximumTop, Math.max(0, previousTop + remainingY));
+        }
+
+        const consumedX = scrollable.scrollLeft - previousLeft;
+        const consumedY = scrollable.scrollTop - previousTop;
+
+        if (consumedX !== 0 || consumedY !== 0) {
+            didScroll = true;
+        }
+
+        remainingX -= consumedX;
+        remainingY -= consumedY;
+
+        if (remainingX === 0 && remainingY === 0) {
+            break;
+        }
+    }
+
+    return didScroll;
+};
+
 const clearDropTarget = () => {
     dropTarget?.classList.remove('sp-element__drop-target');
     dropTarget = null;
@@ -151,6 +244,22 @@ const getDirectChildren = (node: HTMLElement): HTMLElement[] => {
     );
 };
 
+const getPlaceholderIndex = (container: HTMLElement): number => {
+    let index = 0;
+
+    for (const child of Array.from(container.children)) {
+        if (child === placeHolderBox) {
+            return index;
+        }
+
+        if (child !== draggedElement) {
+            index += 1;
+        }
+    }
+
+    return -1;
+};
+
 const insertAtPosition = (container: HTMLElement, node: HTMLElement, index: number) => {
     const children = getDirectChildren(container);
     const reference = children[index] ?? null;
@@ -160,6 +269,40 @@ const insertAtPosition = (container: HTMLElement, node: HTMLElement, index: numb
     } else {
         container.appendChild(node);
     }
+};
+
+const insertAtOriginalPosition = (container: HTMLElement, node: HTMLElement, nextSibling: Node | null, index: number) => {
+    if (nextSibling?.parentNode === container) {
+        container.insertBefore(node, nextSibling);
+        return;
+    }
+
+    insertAtPosition(container, node, index);
+};
+
+const getTransparentDragImage = (ownerDocument: Document): HTMLCanvasElement => {
+    const existingImage = transparentDragImages.get(ownerDocument);
+
+    if (existingImage) {
+        return existingImage;
+    }
+
+    const canvas = ownerDocument.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    canvas.style.position = 'fixed';
+    canvas.style.left = '-10000px';
+    canvas.style.top = '-10000px';
+    canvas.style.pointerEvents = 'none';
+    canvas.getContext('2d')?.clearRect(0, 0, 1, 1);
+    ownerDocument.body.appendChild(canvas);
+    transparentDragImages.set(ownerDocument, canvas);
+
+    return canvas;
+};
+
+const setTransparentDragImage = (event: DragEvent, ownerDocument: Document) => {
+    event.dataTransfer?.setDragImage(getTransparentDragImage(ownerDocument), 0, 0);
 };
 
 const measureNewElementWidth = (container: HTMLElement): number => {
@@ -286,7 +429,12 @@ const finishDrag = (restoreSource = true) => {
         && !currentDraggedElement.isConnected
     ) {
         clearPlaceholder();
-        insertAtPosition(session.sourceContainer, currentDraggedElement, session.sourceIndex);
+        insertAtOriginalPosition(
+            session.sourceContainer,
+            currentDraggedElement,
+            session.sourceNextSibling,
+            session.sourceIndex,
+        );
     } else {
         clearPlaceholder();
     }
@@ -317,8 +465,8 @@ const resetPointerGesture = () => {
 };
 
 const deactivateAllElements = (root: HTMLElement) => {
-    root.querySelectorAll<HTMLElement>('.sp-element__active, .sp-element__hover').forEach((activeElement) => {
-        setElementHighlight(activeElement, null);
+    root.querySelectorAll<HTMLElement>('.sp-element__selected, .sp-element__hover').forEach((highlightedElement) => {
+        setElementHighlight(highlightedElement, null);
     });
 };
 
@@ -344,7 +492,7 @@ export const selectElement = (event: Event, node: Node) => {
     }
 
     element.value = node;
-    setElementHighlight(node, 'active');
+    setElementHighlight(node, 'selected');
     isPopUpOpened.value = true;
 
     event.preventDefault();
@@ -452,10 +600,11 @@ const updatePlaceholderPosition = (position: {
     const childNodes = getDirectChildren(container);
     const insertIndex = getClosestElementPosition(clientX, clientY, container);
     const reference = childNodes[insertIndex] ?? null;
+    const placeholderIndex = getPlaceholderIndex(container);
     const isAlreadyInPosition = placeholder.parentElement === container
         && dragSession?.targetContainer === container
         && dragSession.targetIndex === insertIndex
-        && (reference ? placeholder.nextElementSibling === reference : container.lastElementChild === placeholder);
+        && placeholderIndex === insertIndex;
 
     if (!isAlreadyInPosition) {
         if (reference) {
@@ -576,6 +725,7 @@ export const moveElement = (event: DragEvent, node: Node) => {
         type: 'move',
         sourceContainer,
         sourceIndex,
+        sourceNextSibling: node.nextSibling,
         targetContainer: sourceContainer,
         targetIndex: sourceIndex,
         placeholderWidth: rect.width,
@@ -598,11 +748,12 @@ export const moveElement = (event: DragEvent, node: Node) => {
 
     placeholder.style.width = `${rect.width}px`;
     placeholder.style.height = `${rect.height}px`;
-    insertAtPosition(sourceContainer, placeholder, sourceIndex);
+    sourceContainer.insertBefore(placeholder, node);
     event.dataTransfer?.setData('text/plain', draggedElement.dataset.simplisitiid || draggedElement.tagName);
 
     if (event.dataTransfer) {
         event.dataTransfer.effectAllowed = 'move';
+        setTransparentDragImage(event, node.ownerDocument);
     }
 };
 
@@ -618,6 +769,7 @@ export const enableElementAddingMode = (tagName: SupportedTags, event?: DragEven
         type: 'add',
         sourceContainer: null,
         sourceIndex: -1,
+        sourceNextSibling: null,
         targetContainer: null,
         targetIndex: -1,
         placeholderWidth: 0,
@@ -631,6 +783,10 @@ export const enableElementAddingMode = (tagName: SupportedTags, event?: DragEven
     event?.dataTransfer?.setData('text/plain', `new:${tagName}`);
     if (event?.dataTransfer) {
         event.dataTransfer.effectAllowed = 'copy';
+        const ownerDocument = event.currentTarget instanceof HTMLElement
+            ? event.currentTarget.ownerDocument
+            : document;
+        setTransparentDragImage(event, ownerDocument);
     }
 };
 
@@ -669,9 +825,9 @@ const setDraggableElements = (root: HTMLElement) => {
 };
 
 const clearInteractionState = (root: HTMLElement) => {
-    root.querySelectorAll<HTMLElement>('.sp-element__active, .sp-element__hover, .sp-element__dragging, .sp-element__drop-target')
-        .forEach((activeElement) => {
-            activeElement.classList.remove(...editorInteractionClasses);
+    root.querySelectorAll<HTMLElement>('.sp-element__selected, .sp-element__hover, .sp-element__dragging, .sp-element__drop-target')
+        .forEach((highlightedElement) => {
+            highlightedElement.classList.remove(...editorInteractionClasses);
         });
 
     finishDrag(false);
@@ -814,6 +970,16 @@ export const initializeElementInteractionLayer = (root: HTMLElement): (() => voi
         }
     };
 
+    const onWheel = (event: WheelEvent) => {
+        if (!dragSession) {
+            return;
+        }
+
+        if (scrollWithWheel(event, root) && event.cancelable) {
+            event.preventDefault();
+        }
+    };
+
     const observer = new MutationObserver(() => setDraggableElements(root));
 
     root.addEventListener('pointerover', onPointerOver);
@@ -830,6 +996,7 @@ export const initializeElementInteractionLayer = (root: HTMLElement): (() => voi
     root.addEventListener('dragover', onDragOver);
     root.addEventListener('drop', onDrop);
     root.addEventListener('dragend', onDragEnd);
+    root.ownerDocument.addEventListener('wheel', onWheel, { capture: true, passive: false });
     observer.observe(root, { childList: true, subtree: true });
 
     const cleanup = () => {
@@ -847,6 +1014,7 @@ export const initializeElementInteractionLayer = (root: HTMLElement): (() => voi
         root.removeEventListener('dragover', onDragOver);
         root.removeEventListener('drop', onDrop);
         root.removeEventListener('dragend', onDragEnd);
+        root.ownerDocument.removeEventListener('wheel', onWheel, true);
         observer.disconnect();
         clearInteractionState(root);
         resetPointerGesture();

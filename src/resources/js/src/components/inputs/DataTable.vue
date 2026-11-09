@@ -295,7 +295,7 @@ watch(columns, (value) => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full" :disabled="!editable">
+    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full h-full" :disabled="!editable">
         <span>{{ $t('components.buttons.fillData') }}</span>
     </button>
     <modal

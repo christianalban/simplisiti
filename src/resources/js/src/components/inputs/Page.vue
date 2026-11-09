@@ -28,7 +28,7 @@ const emitChange = (event: Event) => {
 </script>
 
 <template>
-    <select class="input w-full" @change="emitChange" :value="modelValue" :disabled="!editable">
+    <select class="input w-full h-full" @change="emitChange" :value="modelValue" :disabled="!editable">
         <option value="">{{ $t('placeholders.select') }}</option>
         <option :value="page.name" v-for="page of pages">
             {{ page.title }} - {{ page.url }}

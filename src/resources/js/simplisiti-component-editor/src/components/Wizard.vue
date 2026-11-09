@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
-import { StylesProperties, StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
+import { StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
 import { dispatchAttributeChange, dispatchClassChange, dispatchContentChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
 import { ContentTypeValue } from '../engine/constants/Content';
 import { AttributeTypeValue } from '../engine/constants/Attribute';
@@ -188,9 +188,13 @@ const updateClassList = () => {
 };
 
 const updateStyleList = () => {
-    for (let style in element.style) {
-        if (StylesPropertiesList.includes(style as StylesProperties) && element.style[style] !== '') {
-            spStyleList.value[style] = element.style[style];
+    spStyleList.value = {};
+
+    for (const style of StylesPropertiesList) {
+        const value = element.style.getPropertyValue(style);
+
+        if (value !== '') {
+            spStyleList.value[style] = value;
         }
     }
 };
@@ -210,8 +214,8 @@ onMounted(() => {
             <div v-for="availableTab of availableTabs" :key="availableTab.tab">
                 <button
                     :class="[
-                        'cursor-pointer border-0 bg-gray-100 w-6 p-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
-                        { 'bg-blue-100 text-blue-900': isTabActive(availableTab) }
+                        'wizard-icon-button cursor-pointer border-0 bg-gray-100 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
+                        { 'wizard-icon-button--selected': isTabActive(availableTab) }
                     ]"
                     :title="availableTab.title"
                     @click="selectTab(availableTab)"

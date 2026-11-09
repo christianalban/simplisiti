@@ -17,7 +17,7 @@
         outline-offset: -2px !important;
     }
 
-    [data-simplisitiid="simplisiti-component-preview"] :is(div, a, p, h1, img).sp-element__active {
+    [data-simplisitiid="simplisiti-component-preview"] :is(div, a, p, h1, img).sp-element__selected {
         @apply border-fuchsia-600;
         border-color: #c026d3 !important;
         outline: 2px solid #c026d3 !important;

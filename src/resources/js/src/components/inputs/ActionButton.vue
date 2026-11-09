@@ -72,7 +72,7 @@ const handleClick = () => {
 <template>
     <button
         type="button"
-        class="button primary flex gap-2 justify-center px-1 relative items-center w-full"
+        class="button primary flex gap-2 justify-center px-1 relative items-center w-full h-full"
         @click="handleClick"
         :disabled="!editable || isExecuting"
     >
