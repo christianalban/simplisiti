@@ -1,7 +1,6 @@
-import axios from "axios";
-import { HTML_ALIAS, SupportedTagsList } from "../constants/HtmlTagsMappings";
+import { HTML_ALIAS } from "../constants/HtmlTagsMappings";
 import { AvailableWizard, WizardComponent, WizardViews } from "../constants/WizardPages";
-import { addElementListeners } from "../services/ElementManagerService";
+import { initializeElementInteractionLayer } from "../services/ElementManagerService";
 
 export const aliasFromTagName = (tagName: string): WizardComponent[] => {
     const alias = HTML_ALIAS[tagName];
@@ -39,33 +38,42 @@ export const rgbaToHex = (rgba: string): string => {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-export const addEventListener = (selector: string) => {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach((node: Node) => addElementListeners(node));
+const previewSelector = '[data-simplisitiid="simplisiti-component-preview"]';
 
-    const componentPreview = document.querySelector(`[data-simplisitiid="simplisiti-component-preview"]`);
-    if (componentPreview) addElementListeners(componentPreview);
+export const getComponentPreview = (documentRoot: Document = document): HTMLElement | null => {
+    return documentRoot.querySelector<HTMLElement>(previewSelector);
 };
 
-export const initSupportedElements = () => {
-    SupportedTagsList.forEach((tag) => {
-        addEventListener(`[data-simplisitiid="simplisiti-component-preview"] ${tag}`);
-    })
-}
+export const waitForComponentPreview = (
+    documentRoot: Document = document,
+    timeout = 5000,
+): Promise<HTMLElement> => {
+    const existingPreview = getComponentPreview(documentRoot);
 
-export const renderStyleSupportedElements = (html: string): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        axios.post('/compile_styles', { html })
-            .then(({ data }) => {
-                let style = document.getElementById('simplisiti-preview-style');
-                if (!style) {
-                    style = document.createElement('style');
-                    style.id = 'simplisiti-preview-style';
-                }
-                style.textContent = data;
-                document.head.appendChild(style);
+    if (existingPreview) {
+        return Promise.resolve(existingPreview);
+    }
 
-                resolve()
-            })
-    })
-}
+    return new Promise((resolve, reject) => {
+        const observationRoot = documentRoot.body ?? documentRoot.documentElement;
+        const observer = new MutationObserver(() => {
+            const preview = getComponentPreview(documentRoot);
+
+            if (preview) {
+                window.clearTimeout(timeoutId);
+                observer.disconnect();
+                resolve(preview);
+            }
+        });
+        const timeoutId = window.setTimeout(() => {
+            observer.disconnect();
+            reject(new Error('The component preview was not found in the editor iframe.'));
+        }, timeout);
+
+        observer.observe(observationRoot, { childList: true, subtree: true });
+    });
+};
+
+export const initSupportedElements = (componentPreview: HTMLElement): (() => void) => {
+    return initializeElementInteractionLayer(componentPreview);
+};

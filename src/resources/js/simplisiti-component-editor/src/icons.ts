@@ -1,6 +1,8 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faArrowDownWideShort,
+    faArrowRotateLeft,
+    faArrowRotateRight,
     faArrowsLeftRight,
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
@@ -25,6 +27,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
     faXmark,
+    faArrowRotateLeft,
+    faArrowRotateRight,
     faArrowsLeftRightToLine,
     faArrowsLeftRight,
     faArrowsUpToLine,

@@ -106,12 +106,16 @@ onMounted(() => {
         <div class="flex flex-wrap gap-4 text-sm font-semibold text-gray-700">
             <label class="inline-flex cursor-pointer items-center gap-1.5">
                 <input class="accent-blue-600" type="radio" name="display" value="sp-style__layout-display__flex" v-model="display" @change="notify"/>
-                <fa-icon icon="arrows-left-right" />
+                <div class="editor-icon-wrapper">
+                    <fa-icon icon="arrows-left-right" />
+                </div>
                 Flexible
             </label>
             <label class="inline-flex cursor-pointer items-center gap-1.5">
                 <input class="accent-blue-600" type="radio" name="display" value="sp-style__layout-display__grid" v-model="display" @change="notify"/>
-                <fa-icon icon="table-cells" />
+                <div class="editor-icon-wrapper">
+                    <fa-icon icon="table-cells" />
+                </div>
                 Tabla
             </label>
         </div>
@@ -119,7 +123,9 @@ onMounted(() => {
             <div class="flex flex-wrap gap-3" v-if="display === 'sp-style__layout-display__flex'">
                 <div class="flex w-1/2 min-w-[8rem] flex-col gap-1">
                     <label class="text-xs font-semibold text-gray-700">
-                            <fa-icon icon="arrow-down-wide-short" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrow-down-wide-short" />
+                            </div>
                             Dirección
                     </label>
                     <select
@@ -136,7 +142,9 @@ onMounted(() => {
             <div class="flex flex-wrap gap-3">
                 <div class="flex w-1/2 min-w-[8rem] flex-col gap-1">
                     <label class="text-xs font-semibold text-gray-700">
-                            <fa-icon icon="arrow-down-wide-short" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrow-down-wide-short" />
+                            </div>
                             Espaciado
                     </label>
                     <select
@@ -152,7 +160,9 @@ onMounted(() => {
             <div class="grid grid-cols-2 gap-2" v-if="display === 'sp-style__layout-display__grid'">
                 <div class="flex flex-col gap-1">
                     <label class="text-xs font-semibold text-gray-700">
-                            <fa-icon icon="grip" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="grip" />
+                            </div>
                             Columas
                     </label>
                     <select
@@ -166,7 +176,9 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-xs font-semibold text-gray-700">
-                            <fa-icon icon="grip-vertical" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="grip-vertical" />
+                            </div>
                             Filas
                     </label>
                     <select
@@ -183,22 +195,30 @@ onMounted(() => {
                 <label class="text-xs font-semibold text-gray-700">{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Vertical' : 'Horizontal' }}</label>
                 <div class="flex w-full justify-start gap-4">
                     <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__start', horizontalAlignmentRotation(0))">
-                            <fa-icon icon="arrows-up-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__start" v-model="horizontalAlignment" @change="notify"/>
                     </label>
                     <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__center', horizontalAlignmentRotation(1))">
-                            <fa-icon icon="arrows-left-right-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-left-right-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__center" v-model="horizontalAlignment" @change="notify"/>
                     </label>
                     <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__end', horizontalAlignmentRotation(2))">
-                            <fa-icon icon="arrows-up-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__end" v-model="horizontalAlignment" @change="notify"/>
                     </label>
                     <label
                         v-if="display === 'sp-style__layout-display__flex'"
                         :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__between', horizontalAlignmentRotation(3))"
                     >
-                            <fa-icon icon="bars" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="bars" />
+                            </div>
                         <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__between" v-model="horizontalAlignment" @change="notify"/>
                     </label>
                 </div>
@@ -207,15 +227,21 @@ onMounted(() => {
                 <label class="text-xs font-semibold text-gray-700">{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Horizontal' : 'Vertical' }}</label>
                 <div class="flex w-full justify-start gap-4">
                     <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__start', verticalAlignmentRotation(0))">
-                            <fa-icon icon="arrows-up-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__start" v-model="verticalAlignment" @change="notify"/>
                     </label>
                     <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__center', verticalAlignmentRotation(1))">
-                            <fa-icon icon="arrows-left-right-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-left-right-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__center" v-model="verticalAlignment" @change="notify"/>
                     </label>
                     <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__end', verticalAlignmentRotation(2))">
-                            <fa-icon icon="arrows-up-to-line" />
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
                         <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__end" v-model="verticalAlignment" @change="notify"/>
                     </label>
                 </div>

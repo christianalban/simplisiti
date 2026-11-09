@@ -15,7 +15,7 @@ const toggleVisibilityToolbox = () => {
 </script>
 
 <template>
-    <div class="fixed inset-y-0 left-0 z-[1000] flex overflow-y-auto">
+    <div class="editor-fixed-overlay inset-y-0 left-0 z-[1000] flex overflow-y-auto">
         <div :class="[
             'flex w-[300px] gap-1.5 overflow-hidden bg-white shadow-lg transition-[width] duration-300',
             { '!w-0': isElementAddingMode || !toolBoxVisible }

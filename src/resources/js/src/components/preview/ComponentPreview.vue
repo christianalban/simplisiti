@@ -4,6 +4,7 @@ import { getComponentPreview, getResourceEditorEngine } from "../../services/Pag
 import { useContentObserver, parseComponentContent } from "../../services/ContentService.ts";
 import { Component } from "../../types/Component.ts";
 import { EditorEngine } from '../../editor-engine/EditorEngine.ts';
+import { EditorHistoryService } from '../../services/EditorHistoryService.ts';
 import { loadPluginResourcesPreview, loadResourcesPreview } from '../../utils/helpers.ts';
 
 const observer = useContentObserver();
@@ -11,6 +12,9 @@ const observer = useContentObserver();
 const loaded = ref(false);
 
 const editorEngine = new EditorEngine();
+const history = new EditorHistoryService(50);
+const previewRootSelector = '[data-simplisitiid="simplisiti-component-preview"]';
+let isApplyingHistory = false;
 
 const props = defineProps({
     component: {
@@ -34,6 +38,45 @@ const props = defineProps({
 const emit = defineEmits(['update']);
 
 const iframe = ref<HTMLIFrameElement | null>(null);
+
+const dispatchHistoryState = () => {
+    const doc = iframe.value?.contentDocument;
+    const CustomEventConstructor = doc?.defaultView?.CustomEvent;
+
+    if (!doc || !CustomEventConstructor) {
+        return;
+    }
+
+    doc.dispatchEvent(new CustomEventConstructor('editorHistoryState', {
+        detail: history.getState(),
+    }));
+};
+
+const dispatchHistoryRestored = (doc: Document) => {
+    const CustomEventConstructor = doc.defaultView?.CustomEvent;
+
+    if (CustomEventConstructor) {
+        doc.dispatchEvent(new CustomEventConstructor('editorHistoryRestored'));
+    }
+};
+
+const recordHistorySnapshot = (snapshot: string) => {
+    if (!props.allowEdit || isApplyingHistory) {
+        return;
+    }
+
+    history.record(snapshot);
+    dispatchHistoryState();
+};
+
+const initializeHistory = (snapshot: string) => {
+    if (!props.allowEdit) {
+        return;
+    }
+
+    history.initialize(snapshot);
+    dispatchHistoryState();
+};
 
 const loadScript = (doc: Document, source: string): Promise<HTMLScriptElement> => {
     return new Promise((resolve, reject) => {
@@ -143,28 +186,8 @@ const updateIframe = async () => {
         metaViewport.name = 'viewport';
         metaViewport.content = 'width=device-width, initial-scale=1.0';
 
-        doc.open();
-        doc.write(contentContainer.outerHTML);
-        doc.head.appendChild(metaViewport);
-        doc.head.appendChild(createInlineStyle(doc, previewResources.style));
-        doc.head.appendChild(createInlineStyle(doc, pluginResources.style));
-        doc.body.appendChild(createInlineScript(doc, previewResources.script));
-        doc.body.appendChild(createInlineScript(doc, pluginResources.script));
-
-        if (props.allowEdit) {
-            doc.close();
-
-            try {
-                await loadEditor(doc);
-            } catch (error) {
-                console.error('Unable to initialize the component editor.', error);
-            }
-        } else {
-            doc.close();
-        }
-
         iframe.value.onload = () => {
-            const bodyHeight = doc.body.scrollHeight;
+            const bodyHeight = doc.body?.scrollHeight ?? 0;
             if (props.allowEdit) {
                 return;
             }
@@ -174,47 +197,120 @@ const updateIframe = async () => {
 
             loaded.value = true;
         };
+
+        doc.open();
+        doc.write('<!doctype html><html><head></head><body></body></html>');
+        doc.close();
+
+        if (!doc.body || !doc.head) {
+            throw new Error('Unable to initialize the component preview document.');
+        }
+
+        doc.body.appendChild(contentContainer);
+        doc.head.appendChild(metaViewport);
+        doc.head.appendChild(createInlineStyle(doc, previewResources.style));
+        doc.head.appendChild(createInlineStyle(doc, pluginResources.style));
+        doc.body.appendChild(createInlineScript(doc, previewResources.script));
+        doc.body.appendChild(createInlineScript(doc, pluginResources.script));
+
+        if (props.allowEdit) {
+            try {
+                await loadEditor(doc);
+            } catch (error) {
+                console.error('Unable to initialize the component editor.', error);
+            }
+            initializeHistory(content);
+        }
     }
+};
+
+const commitEditorChange = async () => {
+    const composedHtml = await editorEngine.getComposedHtmlString();
+
+    recordHistorySnapshot(composedHtml);
+    emit('update', composedHtml);
 };
 
 const onClassChange = async (event: any) => {
     editorEngine.updateClassOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.spClassList);
 
-    const composedHtml = await editorEngine.getComposedHtmlString();
-
-    emit('update', composedHtml);
+    await commitEditorChange();
 };
 
 const onStyleChange = async (event: any) => {
     editorEngine.updateStyleOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.spStyleList);
 
-    const composedHtml = await editorEngine.getComposedHtmlString();
-
-    emit('update', composedHtml);
+    await commitEditorChange();
 };
 
 const onElementRemoved = async (event: any) => {
     editorEngine.removeElementBySimplisitiId(event.detail.simplisitiId);
 
-    const composedHtml = await editorEngine.getComposedHtmlString();
-
-    emit('update', composedHtml);
+    await commitEditorChange();
 };
 
 const onContentChange = async (event: any) => {
     editorEngine.updateContainerContentBySimplisitiId(event.detail.simplisitiId, event.detail.content);
 
-    const composedHtml = await editorEngine.getComposedHtmlString();
-
-    emit('update', composedHtml);
+    await commitEditorChange();
 };
 
 const onAttributeChange = async (event: any) => {
     editorEngine.updateAttributeOfElementBySimplisitiId(event.detail.simplisitiId, event.detail.attribute);
 
-    const composedHtml = await editorEngine.getComposedHtmlString();
+    await commitEditorChange();
+};
 
+const restoreHistorySnapshot = async (snapshot: string) => {
+    const doc = iframe.value?.contentDocument;
+    const preview = doc?.querySelector<HTMLElement>(previewRootSelector);
+
+    if (!doc || !preview) {
+        return;
+    }
+
+    editorEngine.setHtmlString(snapshot);
+    const composedHtml = await editorEngine.compose().getComposedHtmlString();
+    preview.innerHTML = composedHtml;
+    dispatchHistoryRestored(doc);
     emit('update', composedHtml);
+    resizeIframe();
+};
+
+const undoEditorChange = async () => {
+    const snapshot = history.undo();
+
+    if (!snapshot) {
+        return;
+    }
+
+    isApplyingHistory = true;
+    try {
+        await restoreHistorySnapshot(snapshot);
+    } finally {
+        isApplyingHistory = false;
+        dispatchHistoryState();
+    }
+};
+
+const redoEditorChange = async () => {
+    const snapshot = history.redo();
+
+    if (!snapshot) {
+        return;
+    }
+
+    isApplyingHistory = true;
+    try {
+        await restoreHistorySnapshot(snapshot);
+    } finally {
+        isApplyingHistory = false;
+        dispatchHistoryState();
+    }
+};
+
+const onHistoryStateRequest = () => {
+    dispatchHistoryState();
 };
 
 const resizeIframe = () => {
@@ -235,6 +331,9 @@ const listenElementEvents = () => {
     window.document.addEventListener('contentChange', onContentChange);
     window.document.addEventListener('elementRemoved', onElementRemoved);
     window.document.addEventListener('attributeChange', onAttributeChange);
+    window.document.addEventListener('editorHistoryStateRequest', onHistoryStateRequest);
+    window.document.addEventListener('editorHistoryUndo', undoEditorChange);
+    window.document.addEventListener('editorHistoryRedo', redoEditorChange);
 };
 
 const interserctionObserver = new IntersectionObserver((entries) => {
@@ -276,6 +375,9 @@ onUnmounted(() => {
     window.document.removeEventListener('contentChange', onContentChange);
     window.document.removeEventListener('elementRemoved', onElementRemoved);
     window.document.removeEventListener('attributeChange', onAttributeChange);
+    window.document.removeEventListener('editorHistoryStateRequest', onHistoryStateRequest);
+    window.document.removeEventListener('editorHistoryUndo', undoEditorChange);
+    window.document.removeEventListener('editorHistoryRedo', redoEditorChange);
 });
 </script>
 

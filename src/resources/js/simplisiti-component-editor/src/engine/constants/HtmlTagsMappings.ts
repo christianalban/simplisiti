@@ -41,5 +41,5 @@ export type SupportedIcons = 'square' | 'link' | 'paragraph' | 'heading' | 'imag
 export type SupportedTags = 'div' | 'a' | 'p' | 'h1' | 'img';
 
 export const SupportedTagsList: SupportedTags[] = [
-    'div', 'a', 'p', 'h1', 'img'
-]
+    ...Object.keys(HTML_TITLES) as SupportedTags[],
+];

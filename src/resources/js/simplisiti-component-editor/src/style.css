@@ -2,3 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .editor-fixed-overlay {
+        position: fixed !important;
+    }
+
+    .editor-icon-wrapper {
+        @apply flex h-3 w-3 items-center justify-center;
+    }
+}

@@ -23,7 +23,7 @@ const elementIcons = Object.keys(HTML_ICONS).map((icon) => {
             class="flex cursor-grab items-center gap-2 rounded-md border border-gray-200 bg-white px-2.5 py-2 text-sm text-gray-800 transition-colors hover:bg-gray-50 active:cursor-grabbing"
             :title="title"
             draggable="true"
-            @dragstart="enableElementAddingMode(element)"
+            @dragstart="enableElementAddingMode(element, $event)"
             @dragend="disableElementAddingMode"
         >
             <fa-icon :icon="icon" class="h-4 w-4 shrink-0 text-gray-600"/>

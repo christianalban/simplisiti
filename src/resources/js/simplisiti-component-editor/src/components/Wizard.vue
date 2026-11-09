@@ -210,13 +210,15 @@ onMounted(() => {
             <div v-for="availableTab of availableTabs" :key="availableTab.tab">
                 <button
                     :class="[
-                        'cursor-pointer border-0 bg-gray-100 p-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
+                        'cursor-pointer border-0 bg-gray-100 w-6 p-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
                         { 'bg-blue-100 text-blue-900': isTabActive(availableTab) }
                     ]"
                     :title="availableTab.title"
                     @click="selectTab(availableTab)"
                 >
-                    <fa-icon :icon="availableTab.icon" />
+                    <div class="editor-icon-wrapper">
+                        <fa-icon :icon="availableTab.icon" />
+                    </div>
                 </button>
             </div>
         </div>
