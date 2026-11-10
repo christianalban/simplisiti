@@ -27,14 +27,26 @@ trait PageUtils {
 
     public function createSections($sections, ?Page $page = null): self {
         foreach ($sections as $section) {
-            $createdSection = $this->getPage($page)->sections()->create([
-                'order' => $section['order'],
-            ]);
+            $createdSection = $this->getPage($page)->sections()->create($this->parseSectionData($section));
 
             $this->forSection($createdSection)->createComponents($section['components']);
         }
 
         return $this;
+    }
+
+    public function parseSectionData(array $section): array {
+        return [
+            'order' => $section['order'],
+            'sp_class_list' => collect($section['sp_class_list'] ?? [])
+                ->filter(fn ($className) => is_string($className) && str_starts_with($className, 'sp-style__'))
+                ->values()
+                ->all(),
+            'sp_style_list' => collect($section['sp_style_list'] ?? [])
+                ->only(['background-color'])
+                ->filter(fn ($value) => is_string($value) && $value !== '')
+                ->all(),
+        ];
     }
 
     public function createComponents($components, ?Section $section = null): self {
@@ -101,14 +113,9 @@ trait PageUtils {
         $toUpdateSections = collect($sections);
 
         $toUpdateSections->each(function($sectionsData) use ($page) {
-            $toUpdateData = $sectionsData;
-
-            unset($toUpdateData['id']);
-            unset($toUpdateData['components']);
-
             $section = $this->getPage($page)->sections()->firstWhere('id', $sectionsData['id']);
 
-            $section->update($toUpdateData);
+            $section->update($this->parseSectionData($sectionsData));
 
             $componentsData = collect($sectionsData['components'])->map(function($component) {
                 $data = $this->parseComponentData($component);

@@ -5,10 +5,18 @@ import Wizard from './Wizard.vue';
 import { dispatchElementRemoved } from '../engine/services/ElementEventDispatcherService';
 import ConfirmationDialog from './ConfirmationDialog.vue';
 
-const { element } = defineProps({
+const { element, showDeleteButton, dispatchChanges } = defineProps({
     element: {
         type: [HTMLElement, null] as PropType<HTMLElement | null>,
         required: true,
+    },
+    showDeleteButton: {
+        type: Boolean,
+        default: true,
+    },
+    dispatchChanges: {
+        type: Boolean,
+        default: true,
     }
 });
 
@@ -18,7 +26,13 @@ const showDeleteConfirmation = ref(false);
 let positionFrameId: number | null = null;
 let resizeObserver: ResizeObserver | null = null;
 
-const emit = defineEmits(['close']);
+const emit = defineEmits([
+    'close',
+    'classChange',
+    'styleChange',
+    'contentChange',
+    'attributeChange',
+]);
 
 const updatePosition = (target: HTMLElement | null) => {
     if (!target || !popup.value) {
@@ -163,6 +177,7 @@ onUnmounted(() => {
         <div class="flex items-center gap-2 border-b border-gray-200 py-1.5">
             <h4 class="m-0 text-sm font-semibold text-gray-800">{{ type }}</h4>
             <button
+                v-if="showDeleteButton"
                 class="ml-auto cursor-pointer rounded-md p-1 text-gray-500 transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 aria-label="Eliminar elemento"
                 title="Eliminar elemento"
@@ -182,7 +197,16 @@ onUnmounted(() => {
             </button>
         </div>
         <div class="pt-2">
-            <wizard v-if="element" :element="element" @tabChange="tabChange" />
+            <wizard
+                v-if="element"
+                :element="element"
+                :dispatch-changes="dispatchChanges"
+                @tabChange="tabChange"
+                @classChange="emit('classChange', $event)"
+                @styleChange="emit('styleChange', $event)"
+                @contentChange="emit('contentChange', $event)"
+                @attributeChange="emit('attributeChange', $event)"
+            />
         </div>
         <confirmation-dialog
             :show="showDeleteConfirmation"

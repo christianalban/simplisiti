@@ -83,6 +83,8 @@ MARKDOWN;
                     'sections[]' => [
                         'id' => 'Existing section identifier, used by update payloads.',
                         'order' => 'Required non-negative section order.',
+                        'sp_class_list' => 'Optional persistent sp-style__* classes applied to the section container.',
+                        'sp_style_list' => 'Optional persistent inline styles controlled by the section Wizard, currently background-color.',
                         'components' => 'Required array of component placements.',
                     ],
                     'sections[].components[]' => [

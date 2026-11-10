@@ -2,7 +2,6 @@
 import { onMounted, ref, computed } from 'vue';
 import { clonePage, usePages } from '../../services/PageService';
 import { Page } from '../../types/Page';
-import { Component } from '../../types/Component';
 import { groupItems, labelName } from '../../utils/helpers';
 import Group from '../../components/Group.vue';
 import ComponentFloatingPreview from '../../components/preview/ComponentFloatingPreview.vue';
@@ -29,12 +28,6 @@ const showConfirmClone = (page: Page) => {
 const pagesGroup = computed(() => {
     return groupItems(pages.value);
 });
-
-const componentsOfPage = (page: Page): Component[] => {
-    return page.sections.reduce((acc, section) => {
-        return acc.concat(section.components);
-    }, [] as Component[]);
-}
 
 const confirmClonePage = () => {
     if (toClonePage.value?.id) {
@@ -101,10 +94,19 @@ onMounted(() => {
                             </div>
                         </div>
                         <div class="overflow-hidden w-full aspect-[3/4]">
-                            <component-floating-preview
-                                v-for="component of componentsOfPage(pageItem)"
-                                :component="component"
-                            />
+                            <div
+                                v-for="(section, sectionIndex) of pageItem.sections"
+                                :key="section.id ?? `section-${sectionIndex}`"
+                                class="page-section"
+                                :class="section.sp_class_list"
+                                :style="section.sp_style_list"
+                            >
+                                <component-floating-preview
+                                    v-for="(component, componentIndex) of section.components"
+                                    :key="component.id ?? `${sectionIndex}-${componentIndex}`"
+                                    :component="component"
+                                />
+                            </div>
                         </div>
                     </a>
                 </div>

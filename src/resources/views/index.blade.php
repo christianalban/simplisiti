@@ -5,6 +5,7 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="/vendor/simplisiti/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>Simplisiti Panel</title>
+    <link rel="stylesheet" href="/api/spanel/page/editor/layout/engine">
     <script type="module" crossorigin src="/vendor/simplisiti/assets/index-e483804e.js"></script>
     <link rel="stylesheet" href="/vendor/simplisiti/assets/index-c84ee3d6.css">
   </head>

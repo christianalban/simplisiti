@@ -62,7 +62,7 @@ MARKDOWN;
                 'title' => 'Create page payload',
                 'category' => 'create',
                 'type' => 'schema',
-                'summary' => 'The complete top-level payload required to create a page.',
+                'summary' => 'The complete top-level payload required to create a page, including optional section container settings.',
                 'keywords' => ['payload', 'name', 'url', 'title', 'sections', 'complete'],
                 'fields' => [
                     ['name' => 'name', 'type' => 'string', 'required' => true, 'max' => 255, 'unique' => true],
@@ -77,6 +77,8 @@ MARKDOWN;
                     'sections' => [
                         [
                             'order' => 0,
+                            'sp_class_list' => ['sp-style__layout-display__flex'],
+                            'sp_style_list' => ['background-color' => '#f8fafc'],
                             'components' => [
                                 ['id' => 12, 'order' => 0, 'variables' => [], 'content' => ['headline' => 'Our team']],
                             ],
@@ -98,6 +100,8 @@ MARKDOWN;
                     'title' => ['nullable', 'string'],
                     'sections' => ['required', 'array'],
                     'sections.*.order' => ['required', 'integer', 'min:0'],
+                    'sections.*.sp_class_list' => ['nullable', 'array', 'sp-style__* classes'],
+                    'sections.*.sp_style_list' => ['nullable', 'array', 'background-color'],
                     'sections.*.components' => ['required', 'array'],
                     'sections.*.components.*.id' => ['required', 'integer', 'exists:components,id'],
                     'sections.*.components.*.order' => ['nullable', 'integer', 'min:0'],

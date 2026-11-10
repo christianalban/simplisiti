@@ -28,7 +28,7 @@ The input and validation rules match `StorePageRequest`:
 - `name` is required, must be a string with at most 255 characters, and must be unique.
 - `url` is required and must be unique. URLs are preferably written with a leading `/`, but the current request does not enforce that format.
 - `title` is a nullable string used as the browser-tab name.
-- `sections` is required and must be an array. Every section requires an integer `order` greater than or equal to zero and a `components` array.
+- `sections` is required and must be an array. Every section requires an integer `order` greater than or equal to zero and a `components` array. Sections may also include `sp_class_list` and `sp_style_list` to persist the container Wizard configuration.
 - Every section component requires an existing component `id` and a `variables` array. Send `variables: []` when the component has no variables. Its `order` and `content` are optional; `content_id` is accepted only when it references an existing `component_section` record.
 
 `StorePageAction` creates the page, sections, and component placements in a transaction. A successful call returns `Page created successfully`; validation failures retain paths such as `sections.0.components.1.id`.
@@ -90,6 +90,11 @@ MARKDOWN;
                 ->min(0)
                 ->description('Required section order, starting at zero.')
                 ->required(),
+            'sp_class_list' => $schema->array()
+                ->description('Optional persistent container classes from the section Wizard.')
+                ->items($schema->string()),
+            'sp_style_list' => $schema->object()
+                ->description('Optional persistent container styles from the section Wizard, currently including background-color.'),
             'components' => $schema->array()
                 ->description('Required component placements in this section.')
                 ->items($schema->object($component))

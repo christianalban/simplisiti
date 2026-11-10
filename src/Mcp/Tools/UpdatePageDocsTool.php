@@ -88,6 +88,8 @@ MARKDOWN;
                     'sections' => ['required', 'array'],
                     'sections.*.id' => ['sometimes', 'required', 'integer', 'exists:sections,id'],
                     'sections.*.order' => ['required', 'integer', 'min:0'],
+                    'sections.*.sp_class_list' => ['nullable', 'array', 'sp-style__* classes'],
+                    'sections.*.sp_style_list' => ['nullable', 'array', 'background-color'],
                     'sections.*.components' => ['required', 'array'],
                     'sections.*.components.*.id' => ['required', 'integer', 'exists:components,id'],
                     'sections.*.components.*.order' => ['nullable', 'integer', 'min:0'],

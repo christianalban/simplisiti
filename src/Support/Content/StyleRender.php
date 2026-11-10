@@ -32,5 +32,23 @@ class StyleRender
                 $app->addStyles(".{$className} {\n{$styles}\n}\n");
             }
         }
+
+        $app->addStyles($this->getEditorLayoutStyles());
+    }
+
+    private function getEditorLayoutStyles(): string
+    {
+        $paths = [
+            base_path('vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/style.css'),
+            dirname(__DIR__, 2) . '/resources/css/simplisiti-component-editor/style.css',
+        ];
+
+        foreach ($paths as $path) {
+            if (is_file($path)) {
+                return (string) file_get_contents($path);
+            }
+        }
+
+        throw new \RuntimeException('The Simplisiti editor layout stylesheet could not be found.');
     }
 }

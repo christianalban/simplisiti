@@ -19,9 +19,17 @@ class ContentRender
 
     public function renderSectionContent(Section $section): string
     {
-        return $section->components->reduce(function ($buildedContent, $component) {
+        $content = $section->components->reduce(function ($buildedContent, $component) {
             return $buildedContent . $this->renderComponentContent($component);
         }, '');
+
+        return View::make('simplisiti::section', [
+            'classList' => implode(' ', $section->sp_class_list ?? []),
+            'styleList' => collect($section->sp_style_list ?? [])
+                ->map(fn ($value, $property) => "{$property}: {$value}")
+                ->implode('; '),
+            'content' => $content,
+        ])->render() . PHP_EOL;
     }
 
     public function renderComponentContent(Component $component, ?array $override = null): string

@@ -18,6 +18,7 @@ import { usePages } from '../../../services/PageService';
 import { useContentObserver } from '../../../services/ContentService.ts';
 import { isMobileScreen } from '../../../utils/helpers';
 import { getStorage, putStorage } from '../../../services/LocalStorageService.ts';
+import ConfigurationPopUp from '../../../../simplisiti-component-editor/src/components/ConfigurationPopUp.vue';
 
 const { loadResources } = useResources();
 const { loadSources } = useSources();
@@ -31,8 +32,8 @@ const props = defineProps({
     sections: {
         type: Array as PropType<Section[]>,
         default: () => [
-            {order: 0, components: []},
-            {order: 1, components: []}
+            {order: 0, sp_class_list: [], sp_style_list: {}, components: []},
+            {order: 1, sp_class_list: [], sp_style_list: {}, components: []}
         ],
     },
     pageEditionMode: {
@@ -51,17 +52,28 @@ const toDeleteComponentSection = ref<Section|null>(null);
 const selectedComponent = ref<Component|null>(null);
 const selectedSection = ref<number|null>(null);
 const selectedSectionId = ref<number|null>(null);
+const sectionConfigurationElement = ref<HTMLElement|null>(null);
+const sectionConfigurationIndex = ref<number|null>(null);
+const sectionElements = new Map<string, HTMLElement>();
 
 const pageEditionMode = ref<PageEditionMode>('adding-component');
 
 const prependSection = (index: number) => {
     const sections = [...props.sections];
-    sections.splice(index, 0, reactive({order: 0, components: []}));
+    sections.splice(index, 0, reactive({
+        order: 0,
+        sp_class_list: [],
+        sp_style_list: {},
+        components: [],
+    }));
     emit('update:sections', sections);
 };
 
 const appendSection = () => {
-    emit('update:sections', [...props.sections, reactive({order: 0, components: []})]);
+    emit('update:sections', [
+        ...props.sections,
+        reactive({order: 0, sp_class_list: [], sp_style_list: {}, components: []}),
+    ]);
 };
 
 const removeSection = (sectionIndex: number) => {
@@ -122,6 +134,124 @@ const selectToBeDeletedComponent = (component: Component, componentIndex: number
     showDialog.value = true;
 };
 
+const sectionElementId = (section: Section, sectionIndex: number): string => {
+    return `page-section-${section.id ?? `new-${sectionIndex}`}`;
+};
+
+const resolveSectionElement = (value: unknown): HTMLElement | null => {
+    if (value instanceof HTMLElement) {
+        return value;
+    }
+
+    if (value && typeof value === 'object' && '$el' in value) {
+        const element = (value as { $el?: unknown }).$el;
+
+        return element instanceof HTMLElement ? element : null;
+    }
+
+    return null;
+};
+
+const setSectionElement = (section: Section, sectionIndex: number, value: unknown) => {
+    const id = sectionElementId(section, sectionIndex);
+    const element = resolveSectionElement(value);
+
+    if (element) {
+        element.dataset.simplisitiid = id;
+        element.dataset.sectionIndex = String(sectionIndex);
+        sectionElements.set(id, element);
+        return;
+    }
+
+    sectionElements.delete(id);
+};
+
+const updateSectionConfiguration = (sectionIndex: number, updates: Partial<Section>) => {
+    const sections = props.sections.map((section, index) => (
+        index === sectionIndex
+            ? { ...section, ...updates }
+            : section
+    ));
+
+    emit('update:sections', sections);
+};
+
+const openSectionConfiguration = (section: Section, sectionIndex: number) => {
+    const target = sectionElements.get(sectionElementId(section, sectionIndex));
+
+    if (!target) {
+        return;
+    }
+
+    sectionConfigurationIndex.value = sectionIndex;
+    sectionConfigurationElement.value = target;
+};
+
+const syncSectionConfiguration = () => {
+    const index = sectionConfigurationIndex.value;
+    const target = sectionConfigurationElement.value;
+
+    if (index === null || !target) {
+        return;
+    }
+
+    const spClassList = Array.from(target.classList)
+        .filter((className) => className.startsWith('sp-style__'));
+    const spStyleList: Record<string, string> = {};
+    const backgroundColor = target.style.getPropertyValue('background-color');
+
+    if (backgroundColor) {
+        spStyleList['background-color'] = backgroundColor;
+    }
+
+    updateSectionConfiguration(index, {
+        sp_class_list: spClassList,
+        sp_style_list: spStyleList,
+    });
+};
+
+const closeSectionConfiguration = () => {
+    syncSectionConfiguration();
+    sectionConfigurationElement.value = null;
+    sectionConfigurationIndex.value = null;
+};
+
+const onSectionClassChange = ({ simplisitiId, spClassList }: {
+    simplisitiId?: string;
+    spClassList?: string[];
+}) => {
+    if (!simplisitiId) {
+        return;
+    }
+
+    const target = sectionElements.get(simplisitiId);
+    const index = target ? Number(target.dataset.sectionIndex) : NaN;
+
+    if (!target || Number.isNaN(index) || !Array.isArray(spClassList)) {
+        return;
+    }
+
+    updateSectionConfiguration(index, { sp_class_list: spClassList });
+};
+
+const onSectionStyleChange = ({ simplisitiId, spStyleList }: {
+    simplisitiId?: string;
+    spStyleList?: Record<string, string>;
+}) => {
+    if (!simplisitiId) {
+        return;
+    }
+
+    const target = sectionElements.get(simplisitiId);
+    const index = target ? Number(target.dataset.sectionIndex) : NaN;
+
+    if (!target || Number.isNaN(index) || typeof spStyleList !== 'object' || spStyleList === null) {
+        return;
+    }
+
+    updateSectionConfiguration(index, { sp_style_list: spStyleList });
+};
+
 onMounted(() => {
     loadResources();
     loadSources();
@@ -165,9 +295,12 @@ onMounted(() => {
                         <page-sections-button-add v-if="sectionIndex" @click="prependSection(sectionIndex)" />
                         <div class="page-sections-item-panel">
                             <draggable 
-                                class="page-sections-dreaggable"
+                                :class="['page-section', 'page-sections-dreaggable', section.sp_class_list]"
+                                :style="section.sp_style_list"
+                                :data-simplisitiid="sectionElementId(section, sectionIndex)"
+                                :data-section-index="sectionIndex"
+                                :ref="(element) => setSectionElement(section, sectionIndex, element)"
                                 v-model="section.components" 
-                                :disabled="section.components.length === 1"
                                 group="components" 
                                 item-key="id"
                             >
@@ -209,6 +342,9 @@ onMounted(() => {
                                 <span v-else>
                                     {{ $t(sectionIndex === sections.length - 1 ? 'pages.labels.footer' :  'pages.labels.section', { section: (section.order = sectionIndex) }) }}
                                 </span>
+                                <button type="button" @click.stop="openSectionConfiguration(section, sectionIndex)">
+                                    <fa-icon icon="gear" />
+                                </button>
                                 <button @click="removeSection(sectionIndex)">
                                     <fa-icon icon="trash" />
                                 </button>
@@ -220,6 +356,15 @@ onMounted(() => {
             <page-sections-button-add @click="appendSection" />
         </div>
     </div>
+    <configuration-pop-up
+        v-if="sectionConfigurationElement"
+        :element="sectionConfigurationElement"
+        :show-delete-button="false"
+        :dispatch-changes="false"
+        @close="closeSectionConfiguration"
+        @classChange="onSectionClassChange"
+        @styleChange="onSectionStyleChange"
+    />
     <dialog-component
         v-model:showDialog="showDialog"
         :title="$t('components.dialogs.delete.title')"

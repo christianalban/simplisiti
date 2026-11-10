@@ -6,10 +6,14 @@ import { dispatchAttributeChange, dispatchClassChange, dispatchContentChange, di
 import { ContentTypeValue } from '../engine/constants/Content';
 import { AttributeTypeValue } from '../engine/constants/Attribute';
 
-const { element } = defineProps({
+const { element, dispatchChanges } = defineProps({
     element: {
         type: HTMLElement as PropType<HTMLElement>,
         required: true,
+    },
+    dispatchChanges: {
+        type: Boolean,
+        default: true,
     }
 });
 
@@ -19,7 +23,13 @@ const spStyleList = ref<StyleValue>({});
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedWizard = ref<WizardComponentImported|undefined>(undefined);
 
-const emit = defineEmits(['tabChange']);
+const emit = defineEmits([
+    'tabChange',
+    'classChange',
+    'styleChange',
+    'contentChange',
+    'attributeChange',
+]);
 
 const getAvailabeTabs = () => {
     for (const wizard of aliasFromTagName(element.tagName.toLowerCase())) {
@@ -131,7 +141,16 @@ const emitUpdateClassList = (event: string[], toUpdateWizard: WizardComponentImp
             addSpClasses(flattedSpClassList)
             .then(() => {
                 if (element.dataset.simplisitiid) {
-                    dispatchClassChange(element.dataset.simplisitiid, flattedSpClassList);
+                    const detail = {
+                        simplisitiId: element.dataset.simplisitiid,
+                        spClassList: flattedSpClassList,
+                    };
+
+                    if (dispatchChanges) {
+                        dispatchClassChange(detail.simplisitiId, detail.spClassList);
+                    } else {
+                        emit('classChange', detail);
+                    }
                 }
             });
         });
@@ -150,7 +169,16 @@ const emitUpdateStyleList = (event: StyleValue) => {
     addSpStyles(flattedSpStyleList)
         .then(() => {
             if (element.dataset.simplisitiid) {
-                dispatchStyleChange(element.dataset.simplisitiid, flattedSpStyleList);
+                const detail = {
+                    simplisitiId: element.dataset.simplisitiid,
+                    spStyleList: flattedSpStyleList,
+                };
+
+                if (dispatchChanges) {
+                    dispatchStyleChange(detail.simplisitiId, detail.spStyleList);
+                } else {
+                    emit('styleChange', detail);
+                }
             }
         });
 };
@@ -164,7 +192,14 @@ const emitUpdateContent = (event: ContentTypeValue) => {
         .then(() => {
             if (element.dataset.simplisitiid) {
                 if (event.type === 'text') {
-                    dispatchContentChange(element.dataset.simplisitiid, event.content);
+                    if (dispatchChanges) {
+                        dispatchContentChange(element.dataset.simplisitiid, event.content);
+                    } else {
+                        emit('contentChange', {
+                            simplisitiId: element.dataset.simplisitiid,
+                            content: event.content,
+                        });
+                    }
                 }
             }
         });
@@ -178,7 +213,14 @@ const emitUpdateAttribute = (event: AttributeTypeValue) => {
     addSpAttribute(event)
         .then(() => {
             if (element.dataset.simplisitiid) {
-                dispatchAttributeChange(element.dataset.simplisitiid, event);
+                if (dispatchChanges) {
+                    dispatchAttributeChange(element.dataset.simplisitiid, event);
+                } else {
+                    emit('attributeChange', {
+                        simplisitiId: element.dataset.simplisitiid,
+                        attribute: event,
+                    });
+                }
             }
         });
 };
