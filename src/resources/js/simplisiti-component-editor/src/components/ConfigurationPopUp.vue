@@ -178,6 +178,7 @@ onUnmounted(() => {
             <h4 class="m-0 text-sm font-semibold text-gray-800">{{ type }}</h4>
             <button
                 v-if="showDeleteButton"
+                type="button"
                 class="ml-auto cursor-pointer rounded-md p-1 text-gray-500 transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 aria-label="Eliminar elemento"
                 title="Eliminar elemento"
@@ -188,6 +189,7 @@ onUnmounted(() => {
                 </div>
             </button>
             <button
+                type="button"
                 class="cursor-pointer rounded-md p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 @click="emitClosed"
             >

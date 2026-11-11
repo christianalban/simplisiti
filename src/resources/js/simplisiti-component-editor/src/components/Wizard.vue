@@ -67,42 +67,14 @@ const isTabActive = (tab: WizardComponentImported) => {
     return selectedWizard.value?.tab === tab.tab;
 };
 
-const removeElementClass = (className: string): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            element.classList.remove(className);
-            resolve();
-        }, 10);
-    });
-};
-
-const addElementClass = (className: string): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            element.classList.add(className);
-            resolve();
-        }, 10);
-    });
-};
-
-const clearSpClasses = (): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        element.classList.forEach(async (className: string) => {
-            if (className.startsWith('sp-style')) {
-                await removeElementClass(className);
-            }
-        });
-        resolve();
-    });
+const clearSpClasses = () => {
+    Array.from(element.classList)
+        .filter((className) => className.startsWith('sp-style__'))
+        .forEach((className) => element.classList.remove(className));
 };
 
 const addSpClasses = (classList: string[]) => {
-    return new Promise<void>((resolve) => {
-        classList.forEach(async (className: string) => {
-            await addElementClass(className);
-        });
-        resolve();
-    });
+    classList.forEach((className) => element.classList.add(className));
 };
 
 const addSpStyles = (styleList: StyleValue) => {
@@ -136,24 +108,21 @@ const emitUpdateClassList = (event: string[], toUpdateWizard: WizardComponentImp
     const flattedSpClassList = availableTabs.flatMap((availableTab) => availableTab.spClassList);
     spClassList.value = flattedSpClassList;
 
-    clearSpClasses()
-        .then(() => {
-            addSpClasses(flattedSpClassList)
-            .then(() => {
-                if (element.dataset.simplisitiid) {
-                    const detail = {
-                        simplisitiId: element.dataset.simplisitiid,
-                        spClassList: flattedSpClassList,
-                    };
+    clearSpClasses();
+    addSpClasses(flattedSpClassList);
 
-                    if (dispatchChanges) {
-                        dispatchClassChange(detail.simplisitiId, detail.spClassList);
-                    } else {
-                        emit('classChange', detail);
-                    }
-                }
-            });
-        });
+    if (element.dataset.simplisitiid) {
+        const detail = {
+            simplisitiId: element.dataset.simplisitiid,
+            spClassList: flattedSpClassList,
+        };
+
+        if (dispatchChanges) {
+            dispatchClassChange(detail.simplisitiId, detail.spClassList);
+        } else {
+            emit('classChange', detail);
+        }
+    }
 };
 
 const emitUpdateStyleList = (event: StyleValue) => {
@@ -226,7 +195,8 @@ const emitUpdateAttribute = (event: AttributeTypeValue) => {
 };
 
 const updateClassList = () => {
-    spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
+    spClassList.value = Array.from(element.classList)
+        .filter((className: string) => className.startsWith('sp-style__'));
 };
 
 const updateStyleList = () => {
@@ -255,6 +225,7 @@ onMounted(() => {
         <div class="flex">
             <div v-for="availableTab of availableTabs" :key="availableTab.tab">
                 <button
+                    type="button"
                     :class="[
                         'wizard-icon-button cursor-pointer border-0 bg-gray-100 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
                         { 'wizard-icon-button--selected': isTabActive(availableTab) }
