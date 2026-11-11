@@ -1,26 +1,30 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faArrowDownWideShort,
+    faArrowRotateLeft,
+    faArrowRotateRight,
     faArrowsLeftRight,
     faArrowsLeftRightToLine,
     faArrowsUpToLine,
     faBars,
-    faCommentDots,
+    faBorderAll,
     faCube,
     faExpand,
+    faFillDrip,
     faFont,
-    faGear,
-    faGears,
     faGrip,
     faGripVertical,
     faHeading,
     faImage,
+    faItalic,
     faLink,
     faObjectGroup,
     faParagraph,
     faSquare,
+    faStrikethrough,
     faTableCells,
     faTrash,
+    faUnderline,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -28,12 +32,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
     faXmark,
+    faArrowRotateLeft,
+    faArrowRotateRight,
     faArrowsLeftRightToLine,
     faArrowsLeftRight,
     faArrowsUpToLine,
     faTableCells,
     faObjectGroup,
     faExpand,
+    faBorderAll,
+    faFillDrip,
     faGrip,
     faGripVertical,
     faBars,
@@ -42,13 +50,13 @@ library.add(
     faLink,
     faTrash,
     faFont,
+    faItalic,
+    faStrikethrough,
+    faUnderline,
     faParagraph,
     faCube,
     faHeading,
     faImage,
-    faCommentDots,
-    faGears,
-    faGear
 );
 
 export default FontAwesomeIcon;

@@ -95,6 +95,20 @@ class SimplisitiApp extends BasePlugin
         return $this->routeManager;
     }
 
+    public function addStyles(string $style): void
+    {
+        if ($this->styleManager) {
+            $this->styleManager->addStyles($style);
+        }
+    }
+
+    public function addScripts(string $script): void
+    {
+        if ($this->scriptManager) {
+            $this->scriptManager->addScripts($script);
+        }
+    }
+
     public function init(): void {
         $this->initPlugins();
     }

@@ -14,7 +14,8 @@ import Page from './Page.vue';
 import SelectInput from './SelectInput.vue';
 import DownloadLink from './DownloadLink.vue';
 import UploadFile from './UploadFile.vue';
-import { DownloadFileOptions, UploadFileOptions } from '../../types/Plugin';
+import ActionButton from './ActionButton.vue';
+import { ActionButtonOptions, DownloadFileOptions, UploadFileOptions } from '../../types/Plugin';
 import { TextAreaOptions } from '../../types/TextAreaInput';
 
 const props = defineProps({
@@ -107,13 +108,14 @@ watch(type, (value) => {
     <input-component v-if="inputTypes.includes(type)" :type="type" :modelValue="value" @update:modelValue="emitInputValue($event)" :required="required" :editable="editable"/>
     <text-area-component v-else-if="type === 'textarea'" :name="name" :data="data as TextAreaOptions" :modelValue="value as string" @update:modelValue="emitTextAreaValue($event)" :editable="editable"/>
     <resource-picker v-else-if="type === 'resource'" :modelValue="value" @update:modelValue="emitResourceValue($event)" :editable="editable"/>
-    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data as Column"/>
+    <data-table v-else-if="type === 'datatable'" :editStructure="editStructure" :editable="editable" :name="name" :modelValue="value" @update:modelValue="emitDataTableValue($event)" :data="data as Column"/>
     <data-source v-else-if="type === 'datasource'" :editStructure="editStructure" :name="name" :modelValue="value" @update:modelValue="emitDataSourceValue($event)" :editable="editable"/>
     <action v-else-if="type === 'action'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <page v-else-if="type === 'page'" :name="name" :modelValue="value" @update:modelValue="emitActionValue($event)" :editable="editable"/>
     <select-input v-else-if="type === 'select'" :name="name" :modelValue="value" @update:modelValue="emitInputValue($event)" :data="data as SelectOption[]" :required="required" :editable="editable"/>
-    <download-link v-else-if="type === 'link'" :data="data as DownloadFileOptions" :plugin="plugin"/>
-    <upload-file v-else-if="type === 'upload_file'" :name="name" :data="data as UploadFileOptions" :plugin="plugin"/>
+    <download-link v-else-if="type === 'link'" :data="data as DownloadFileOptions" :plugin="plugin" :editable="editable"/>
+    <upload-file v-else-if="type === 'upload_file'" :name="name" :data="data as UploadFileOptions" :plugin="plugin" :editable="editable"/>
+    <action-button v-else-if="type === 'action_button'" :data="data as ActionButtonOptions" :plugin="plugin" :editable="editable"/>
 </template>
 
 <style scoped>

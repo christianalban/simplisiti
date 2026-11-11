@@ -5,7 +5,7 @@ import { ListItem } from '../../types/List';
 import { Style } from '../../types/Style';
 import DraggableList from '../../components/DraggableList.vue';
 import HeaderComponent from '../../components/layout/Header.vue';
-import { compareStrings } from '../../utils/helpers';
+import { compareStrings, mergeReorderedItems } from '../../utils/helpers';
 
 const styles = ref<ListItem[]>([]);
 const filter = ref<string>('');
@@ -17,7 +17,9 @@ const filteredStyles = computed(() => {
 });
 
 const saveOrder = (list: ListItem[]) => {
-    const orderedList = list.map(({ id }, index) => ({
+    styles.value = mergeReorderedItems(styles.value, filteredStyles.value, list);
+
+    const orderedList = styles.value.map(({ id }, index) => ({
         id,
         order: index + 1,
     }));
@@ -51,7 +53,7 @@ onMounted(() => {
         />
         <div class="flex-1 overflow-y-auto">
             <draggable-list
-                class="md:w-1/5 grid gap-4"
+                class="md:w-1/2 grid gap-4"
                 :list="filteredStyles"
                 @update:list="saveOrder"
             />

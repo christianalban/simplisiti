@@ -5,9 +5,11 @@ import { ref, PropType, onMounted, watch, nextTick, computed } from "vue";
 import { Variable, VariableType } from '../../types/Variable';
 import { Column, DataTableValue } from '../../types/DataTable';
 import { value } from '../../utils/helpers';
+import { mergeReorderedItems } from '../../utils/helpers';
 import VariableTypeSelector from "./VariableTypeSelector.vue";
 import DialogComponent from "../Dialog.vue";
 import { usePages } from "../../services/PageService";
+import Draggable from 'vuedraggable';
 
 const { pages } = usePages();
 
@@ -20,6 +22,10 @@ const props = defineProps({
         required: false,
     },
     editStructure: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+    },
+    editable: {
         type: Boolean as PropType<boolean>,
         default: true,
     },
@@ -63,6 +69,21 @@ const emptyColumn = (type: VariableType = 'text') => {
 
 const columns = ref<Column[]>([emptyColumn()]);
 const rows = ref<Variable[][]>([[emptyVariable()]]);
+const rowKeys = new WeakMap<Variable[], number>();
+let nextRowKey = 0;
+const rowsBeforeDrag = ref<Variable[][] | null>(null);
+
+const rowKey = (row: Variable[]): number => {
+    let key = rowKeys.get(row);
+
+    if (key === undefined) {
+        key = nextRowKey++;
+        rowKeys.set(row, key);
+    }
+
+    return key;
+};
+
 const rowsFiltered = computed<Variable[][]>(() => {
     if (!search.value) {
         return rows.value;
@@ -137,6 +158,7 @@ const addRow = () => {
     });
 
     rows.value.push(newRow);
+    rowKey(newRow);
 
     populateSharedChildrenDataTableColumns();
 };
@@ -149,8 +171,25 @@ const removeColumn = (index: number) => {
     });
 };
 
-const removeRow = (index: number) => {
-    rows.value.splice(index, 1);
+const removeRow = (row: Variable[]) => {
+    const index = rows.value.indexOf(row);
+
+    if (index >= 0) {
+        rows.value.splice(index, 1);
+    }
+};
+
+const startReorderingRows = () => {
+    rowsBeforeDrag.value = [...rowsFiltered.value];
+};
+
+const finishReorderingRows = () => {
+    if (!rowsBeforeDrag.value) {
+        return;
+    }
+
+    rows.value = mergeReorderedItems(rows.value, rowsBeforeDrag.value, rowsFiltered.value);
+    rowsBeforeDrag.value = null;
 };
 
 const takeStructureFromFirstRow = () => {
@@ -188,12 +227,20 @@ const confirmDeleteComponent = () => {
 }
 
 const canEditRows = computed(() => {
-    return props.data?.add_rows ?? true
+    return props.editable && (props.data?.add_rows ?? true);
 })
 
 const canEdit = computed(() => {
-    return props.editStructure && (props.data?.editable ?? true);
+    return props.editable && props.editStructure && (props.data?.editable ?? true);
 })
+
+const canReorderRows = computed(() => {
+    return props.editable && (props.data?.editable ?? true);
+})
+
+const canEditCell = (index: number) => {
+    return props.editable && (columns.value[index]?.editable ?? true);
+};
 
 onMounted(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
@@ -248,7 +295,7 @@ watch(columns, (value) => {
 </script>
 
 <template>
-    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full">
+    <button @click="handleShowModal" type="button" class="button secondary flex items-center justify-center gap-2 w-full h-full" :disabled="!editable">
         <span>{{ $t('components.buttons.fillData') }}</span>
     </button>
     <modal
@@ -266,6 +313,7 @@ watch(columns, (value) => {
             <table class="w-full relative">
                 <thead>
                     <tr>
+                        <th v-if="canReorderRows" class="sticky left-0 z-10 min-w-[3rem] p-2 bg-gray-100 top-0"></th>
                         <th :class="`min-w-[200px] p-2 bg-gray-100 sticky top-0 z-10 ${column.type}`" v-for="(column, index) of columns">
                             <div class="flex">
                                 <div class="w-full form-group">
@@ -286,23 +334,40 @@ watch(columns, (value) => {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="group" v-for="(variables, index) of rowsFiltered" :key="`${index}:${name}`">
+                <draggable
+                    tag="tbody"
+                    :list="rowsFiltered"
+                    :item-key="rowKey"
+                    handle=".row-drag-handle"
+                    :disabled="!canReorderRows"
+                    @start="startReorderingRows"
+                    @end="finishReorderingRows"
+                >
+                    <template #item="{ element: variables }">
+                    <tr class="group" :key="rowKey(variables)">
+                        <td v-if="canReorderRows" class="sticky left-0 z-10 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
+                            <button type="button" class="button secondary row-drag-handle cursor-grab" :aria-label="$t('components.buttons.reorderRow')">
+                                <fa-icon icon="grip-lines" />
+                            </button>
+                        </td>
                         <td class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-for="(variable, variableIndex) of variables" :key="`${name}:${columns[variableIndex]?.name}:${variable.name}`">
                             <div class="h-10 flex items-center justify-center">
-                                <control-type-selector v-model="variable.default" :edit-structure="canEdit" :name="variable.name" :type="variable.type" :data="variable.options" :editable="columns[variableIndex]?.editable"/>
+                                <control-type-selector v-model="variable.default" :edit-structure="canEdit" :name="variable.name" :type="variable.type" :data="variable.options" :editable="canEditCell(variableIndex)"/>
                             </div>
                         </td>
                         <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200" v-if="canEditRows">
                             <div class="flex flex-col gap-1">
-                                <button type="button" class="button danger" @click="removeRow(index)">
+                                <button type="button" class="button danger" @click="removeRow(variables)">
                                     <fa-icon icon="minus" />
                                 </button>
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="canEditRows">
-                        <td :colspan="columns.length" class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200"></td>
+                    </template>
+                </draggable>
+                <tbody v-if="canEditRows">
+                    <tr>
+                        <td :colspan="columns.length + (canReorderRows ? 1 : 0)" class="p-2 transition-colors bg-gray-100 group-hover:bg-gray-200"></td>
                         <td class="sticky right-0 p-2 transition-colors bg-gray-100 group-hover:bg-gray-200">
                             <div class="flex flex-col gap-1 w-min ml-auto">
                                 <button type="button" class="button secondary" @click="addRow">

@@ -1,1 +1,41 @@
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .editor-fixed-overlay {
+        position: fixed !important;
+    }
+
+    .editor-history-overlay {
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+    }
+
+    .editor-history-overlay button {
+        cursor: inherit;
+    }
+
+    .editor-history-overlay--dragging {
+        cursor: grabbing;
+    }
+
+    .editor-history-overlay--snapping {
+        transition: left 200ms ease-out, top 200ms ease-out;
+        will-change: left, top;
+    }
+
+    .editor-icon-wrapper {
+        @apply flex h-3 w-3 items-center justify-center;
+    }
+
+    .wizard-icon-button {
+        @apply flex h-8 w-8 shrink-0 items-center justify-center;
+    }
+
+    .wizard-icon-button--selected {
+        @apply relative z-10 bg-blue-600 text-white shadow-md ring-2 ring-blue-400;
+    }
+}

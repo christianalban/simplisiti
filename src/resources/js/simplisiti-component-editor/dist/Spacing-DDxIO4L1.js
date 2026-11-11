@@ -1,0 +1,80 @@
+const a = [
+  "0",
+  "0.5",
+  "1",
+  "1.5",
+  "2",
+  "2.5",
+  "3",
+  "3.5",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "14",
+  "16",
+  "20",
+  "24",
+  "28",
+  "32",
+  "36",
+  "40",
+  "44",
+  "48",
+  "52",
+  "56",
+  "60",
+  "64",
+  "72",
+  "80",
+  "96"
+], n = (s) => a.map((e) => ({
+  value: s(e).replace(".", "_"),
+  label: e
+})), _ = a, i = [
+  "0",
+  "10",
+  "20",
+  "30",
+  "40",
+  "50",
+  "60",
+  "70",
+  "80",
+  "90",
+  "100"
+], t = (s) => {
+  const e = s === "width" ? "vw" : "vh";
+  return [
+    ..._.map((l) => ({
+      value: `sp-style__sizing-${s}__${l}`.replace(".", "_"),
+      label: l
+    })),
+    {
+      value: `sp-style__sizing-${s}__auto`,
+      label: "Auto"
+    },
+    {
+      value: `sp-style__sizing-${s}__full`,
+      label: "Full (100%)"
+    },
+    {
+      value: `sp-style__sizing-${s}__screen`,
+      label: `Screen (100${e})`
+    },
+    ...i.map((l) => ({
+      value: `sp-style__sizing-${s}__viewport-${l}`,
+      label: `${l}% (${e})`
+    }))
+  ];
+};
+export {
+  a as S,
+  t as a,
+  n as s
+};

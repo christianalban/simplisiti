@@ -15,6 +15,8 @@ const component = ref<Component>({
     id: 1,
     name: '',
     html: '<div><p>Create your new component</p></div>',
+    styles: '',
+    scripts: '',
     variables: [
         {type: 'text', name: '', default: ''}
     ],
@@ -23,6 +25,8 @@ const component = ref<Component>({
 const save = () => {
     createComponent({
         html: component.value.html,
+        styles: component.value.styles || '',
+        scripts: component.value.scripts || '',
         variables: mapWithoutSettingsData(component.value.variables),
         name: component.value.name,
     })
@@ -71,6 +75,8 @@ const setName = (event: Event) => {
         </div>
         <components-form
             v-model:code="component.html"
+            v-model:styles="component.styles"
+            v-model:scripts="component.scripts"
             v-model:variables="component.variables"
             :component="component"
         />

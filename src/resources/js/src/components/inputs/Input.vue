@@ -19,6 +19,7 @@ const props = defineProps({
     },
     editable: {
         type: Boolean as PropType<boolean>,
+        default: true,
     },
     checked: {
         type: Boolean as PropType<boolean>,
@@ -57,7 +58,7 @@ const emitInputValue = (value: Event) => {
             :placeholder="$t('components.placeholders.defaultValue')"
             :required="required"
             step='0.01'
-            :disabled="!editable"
+            :readonly="!editable"
         />
     </div>
     <div v-if="specialTypes.includes(props.type)" class="flex items-center justify-center w-full h-full px-2">

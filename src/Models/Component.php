@@ -11,6 +11,8 @@ class Component extends Model
     protected $fillable = [
         'name',
         'html',
+        'styles',
+        'scripts',
         'variables',
     ];
 

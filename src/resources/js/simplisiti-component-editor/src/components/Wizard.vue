@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { PropType, defineAsyncComponent, onMounted, ref, shallowReactive } from 'vue';
 import { aliasFromTagName } from '../engine/helpers/HtmlAlias';
-import { StylesProperties, StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
+import { StylesPropertiesList, StyleValue, WizardComponentImported } from '../engine/constants/WizardPages';
 import { dispatchAttributeChange, dispatchClassChange, dispatchContentChange, dispatchStyleChange } from '../engine/services/ElementEventDispatcherService';
 import { ContentTypeValue } from '../engine/constants/Content';
 import { AttributeTypeValue } from '../engine/constants/Attribute';
 
-const { element } = defineProps({
+const { element, dispatchChanges } = defineProps({
     element: {
         type: HTMLElement as PropType<HTMLElement>,
         required: true,
+    },
+    dispatchChanges: {
+        type: Boolean,
+        default: true,
     }
 });
 
@@ -19,7 +23,13 @@ const spStyleList = ref<StyleValue>({});
 const availableTabs = shallowReactive<WizardComponentImported[]>([]);
 const selectedWizard = ref<WizardComponentImported|undefined>(undefined);
 
-const emit = defineEmits(['tabChange']);
+const emit = defineEmits([
+    'tabChange',
+    'classChange',
+    'styleChange',
+    'contentChange',
+    'attributeChange',
+]);
 
 const getAvailabeTabs = () => {
     for (const wizard of aliasFromTagName(element.tagName.toLowerCase())) {
@@ -57,42 +67,14 @@ const isTabActive = (tab: WizardComponentImported) => {
     return selectedWizard.value?.tab === tab.tab;
 };
 
-const removeElementClass = (className: string): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            element.classList.remove(className);
-            resolve();
-        }, 10);
-    });
-};
-
-const addElementClass = (className: string): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            element.classList.add(className);
-            resolve();
-        }, 10);
-    });
-};
-
-const clearSpClasses = (): Promise<void> => {
-    return new Promise<void>((resolve) => {
-        element.classList.forEach(async (className: string) => {
-            if (className.startsWith('sp-style')) {
-                await removeElementClass(className);
-            }
-        });
-        resolve();
-    });
+const clearSpClasses = () => {
+    Array.from(element.classList)
+        .filter((className) => className.startsWith('sp-style__'))
+        .forEach((className) => element.classList.remove(className));
 };
 
 const addSpClasses = (classList: string[]) => {
-    return new Promise<void>((resolve) => {
-        classList.forEach(async (className: string) => {
-            await addElementClass(className);
-        });
-        resolve();
-    });
+    classList.forEach((className) => element.classList.add(className));
 };
 
 const addSpStyles = (styleList: StyleValue) => {
@@ -126,15 +108,21 @@ const emitUpdateClassList = (event: string[], toUpdateWizard: WizardComponentImp
     const flattedSpClassList = availableTabs.flatMap((availableTab) => availableTab.spClassList);
     spClassList.value = flattedSpClassList;
 
-    clearSpClasses()
-        .then(() => {
-            addSpClasses(flattedSpClassList)
-            .then(() => {
-                if (element.dataset.simplisitiid) {
-                    dispatchClassChange(element.dataset.simplisitiid, flattedSpClassList);
-                }
-            });
-        });
+    clearSpClasses();
+    addSpClasses(flattedSpClassList);
+
+    if (element.dataset.simplisitiid) {
+        const detail = {
+            simplisitiId: element.dataset.simplisitiid,
+            spClassList: flattedSpClassList,
+        };
+
+        if (dispatchChanges) {
+            dispatchClassChange(detail.simplisitiId, detail.spClassList);
+        } else {
+            emit('classChange', detail);
+        }
+    }
 };
 
 const emitUpdateStyleList = (event: StyleValue) => {
@@ -150,7 +138,16 @@ const emitUpdateStyleList = (event: StyleValue) => {
     addSpStyles(flattedSpStyleList)
         .then(() => {
             if (element.dataset.simplisitiid) {
-                dispatchStyleChange(element.dataset.simplisitiid, flattedSpStyleList);
+                const detail = {
+                    simplisitiId: element.dataset.simplisitiid,
+                    spStyleList: flattedSpStyleList,
+                };
+
+                if (dispatchChanges) {
+                    dispatchStyleChange(detail.simplisitiId, detail.spStyleList);
+                } else {
+                    emit('styleChange', detail);
+                }
             }
         });
 };
@@ -164,7 +161,14 @@ const emitUpdateContent = (event: ContentTypeValue) => {
         .then(() => {
             if (element.dataset.simplisitiid) {
                 if (event.type === 'text') {
-                    dispatchContentChange(element.dataset.simplisitiid, event.content);
+                    if (dispatchChanges) {
+                        dispatchContentChange(element.dataset.simplisitiid, event.content);
+                    } else {
+                        emit('contentChange', {
+                            simplisitiId: element.dataset.simplisitiid,
+                            content: event.content,
+                        });
+                    }
                 }
             }
         });
@@ -178,19 +182,31 @@ const emitUpdateAttribute = (event: AttributeTypeValue) => {
     addSpAttribute(event)
         .then(() => {
             if (element.dataset.simplisitiid) {
-                dispatchAttributeChange(element.dataset.simplisitiid, event);
+                if (dispatchChanges) {
+                    dispatchAttributeChange(element.dataset.simplisitiid, event);
+                } else {
+                    emit('attributeChange', {
+                        simplisitiId: element.dataset.simplisitiid,
+                        attribute: event,
+                    });
+                }
             }
         });
 };
 
 const updateClassList = () => {
-    spClassList.value = Array.from(element.classList).filter((className: string) => className.startsWith('sp-style'));
+    spClassList.value = Array.from(element.classList)
+        .filter((className: string) => className.startsWith('sp-style__'));
 };
 
 const updateStyleList = () => {
-    for (let style in element.style) {
-        if (StylesPropertiesList.includes(style as StylesProperties) && element.style[style] !== '') {
-            spStyleList.value[style] = element.style[style];
+    spStyleList.value = {};
+
+    for (const style of StylesPropertiesList) {
+        const value = element.style.getPropertyValue(style);
+
+        if (value !== '') {
+            spStyleList.value[style] = value;
         }
     }
 };
@@ -205,17 +221,25 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="sp-wizard-popup__tabs-container">
-        <div class="sp-wizard-popup__tabs">
-            <div class="sp-wizard-popup__tab" v-for="availableTab of availableTabs">
-                <button :class="['sp-wizard-popup__tab-button', { 'sp-wizard-popup__tab-button__active': isTabActive(availableTab) }]" :title="availableTab.title" @click="selectTab(availableTab)">
-                    <fa-icon :icon="availableTab.icon" />
+    <div class="w-[215px]">
+        <div class="flex">
+            <div v-for="availableTab of availableTabs" :key="availableTab.tab">
+                <button
+                    type="button"
+                    :class="[
+                        'wizard-icon-button cursor-pointer border-0 bg-gray-100 text-sm text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
+                        { 'wizard-icon-button--selected': isTabActive(availableTab) }
+                    ]"
+                    :title="availableTab.title"
+                    @click="selectTab(availableTab)"
+                >
+                    <div class="editor-icon-wrapper">
+                        <fa-icon :icon="availableTab.icon" />
+                    </div>
                 </button>
             </div>
         </div>
-    </div>
-    <div class="sp-wizard-popup__content">
-        <div class="sp-wizard-popup__content-header">
+        <div class="pt-2">
             <div v-for="availableTab of availableTabs">
                 <div v-show="isTabActive(availableTab)">
                     <component
@@ -233,27 +257,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-
-<style scoped>
-
-.sp-wizard-popup__tabs-container {
-    width: 215px;
-    & > .sp-wizard-popup__tabs {
-        display: flex;
-    }
-
-    .sp-wizard-popup__tab-button {
-        border: none;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        padding: 0.5rem;
-        margin: 0;
-        transition: background-color 0.2s;
-
-        &:hover,
-        &.sp-wizard-popup__tab-button__active {
-            background-color: #e0e0e0;
-        }
-    }
-}
-</style>

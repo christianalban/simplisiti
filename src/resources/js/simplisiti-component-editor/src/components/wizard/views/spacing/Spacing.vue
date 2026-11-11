@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { PropType, onMounted, ref } from 'vue';
 import SpacingSelect from './partials/SpacingSelect.vue';
-import { SpacingConfig, Spacings } from '../../../../engine/constants/Spacing';
+import DimensionSelect from './partials/DimensionSelect.vue';
+import { SizingConfig, SpacingConfig, Spacings } from '../../../../engine/constants/Spacing';
 import { propagateClassGroup } from '../../../../engine/helpers/HtmlAlias';
 
 const props = defineProps({
     spClassList: {
         type: Array as PropType<string[]>,
-        default: [],
+        default: () => [],
     },
 });
 
@@ -27,6 +28,11 @@ const paddingConfig = ref<SpacingConfig>({
     right: undefined,
 });
 
+const sizingConfig = ref<SizingConfig>({
+    width: undefined,
+    height: undefined,
+});
+
 const propagateGroup = <T>(group: string) => {
     return propagateClassGroup<T>(group, props.spClassList);
 }
@@ -41,6 +47,9 @@ const propagateClassList = () => {
     paddingConfig.value.bottom = propagateGroup<Spacings>('sp-style__spacing-padding-bottom__');
     paddingConfig.value.left = propagateGroup<Spacings>('sp-style__spacing-padding-left__');
     paddingConfig.value.right = propagateGroup<Spacings>('sp-style__spacing-padding-right__');
+
+    sizingConfig.value.width = propagateGroup<string>('sp-style__sizing-width__');
+    sizingConfig.value.height = propagateGroup<string>('sp-style__sizing-height__');
 }
 
 const notify = () => {
@@ -54,6 +63,9 @@ const notify = () => {
         paddingConfig.value.bottom,
         paddingConfig.value.left,
         paddingConfig.value.right,
+
+        sizingConfig.value.width,
+        sizingConfig.value.height,
     ].filter(item => item);
 
     emit('update:spClassList', cleanedClassList);
@@ -67,27 +79,37 @@ onMounted(() => {
 </script>
 
 <template>
-    <div  class="sp-spacing__container">
+    <div class="space-y-3">
         <spacing-select
             title="Margen"
             type="margin"
             v-model:spacingConfig="marginConfig"
             @update:spacingConfig="notify"
         />
-        <hr class="sp-spacing__separator">
+        <hr class="my-4 border-0 border-t border-gray-200">
         <spacing-select
             title="Padding"
             type="padding"
             v-model:spacingConfig="paddingConfig"
             @update:spacingConfig="notify"
         />
+        <hr class="my-4 border-0 border-t border-gray-200">
+        <div class="space-y-2">
+            <h2 class="text-sm font-semibold text-gray-800">Tamaño</h2>
+            <div class="grid grid-cols-2 gap-2">
+                <dimension-select
+                    title="Ancho"
+                    type="width"
+                    v-model:sizingValue="sizingConfig.width"
+                    @update:sizingValue="notify"
+                />
+                <dimension-select
+                    title="Alto"
+                    type="height"
+                    v-model:sizingValue="sizingConfig.height"
+                    @update:sizingValue="notify"
+                />
+            </div>
+        </div>
     </div>
 </template>
-
-<style scoped>
-.sp-spacing__separator {
-    margin: 1rem 0;
-    border: 0;
-    border-top: 1px solid #ccc;
-}
-</style>

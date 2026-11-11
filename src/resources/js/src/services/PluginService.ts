@@ -41,3 +41,9 @@ export const uploadFile = async (payload: UploadFilePayload, plugin: string): Pr
 
     return await axios.post(`${pluginNamespacePath}${sanitizeUrl(payload.url)}`, formData);
 }
+
+export const executePluginAction = async (url: string, plugin: string): Promise<any> => {
+    const pluginNamespacePath = getPathFromPluginName(plugin);
+
+    return await axios.post(`${pluginNamespacePath}${sanitizeUrl(url)}`, {});
+}

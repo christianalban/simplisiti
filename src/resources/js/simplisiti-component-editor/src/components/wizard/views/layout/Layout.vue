@@ -72,6 +72,28 @@ const notify = () => {
     emit('update:spClassList', cleanedClassList);
 }
 
+const horizontalAlignmentRotation = (index: number): string => {
+    if (flexDirection.value === 'sp-style__layout-flex-direction__column') {
+        return ['rotate-0', 'rotate-90', 'rotate-180', 'rotate-180'][index] || 'rotate-0';
+    }
+
+    return ['-rotate-90', 'rotate-0', 'rotate-90', 'rotate-90'][index] || 'rotate-0';
+}
+
+const verticalAlignmentRotation = (index: number): string => {
+    if (flexDirection.value === 'sp-style__layout-flex-direction__column') {
+        return ['-rotate-90', 'rotate-0', 'rotate-90'][index] || 'rotate-0';
+    }
+
+    return ['rotate-0', '-rotate-90', 'rotate-180'][index] || 'rotate-0';
+}
+
+const alignmentButtonClass = (isActive: boolean, rotation: string): string[] => [
+    'wizard-icon-button cursor-pointer rounded-lg text-gray-600 transition-colors hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500',
+    rotation,
+    ...(isActive ? ['wizard-icon-button--selected'] : []),
+];
+
 onMounted(() => {
     propagateClassList();
     notify();
@@ -80,222 +102,150 @@ onMounted(() => {
 </script>
 
 <template>
-    <div  class="sp-layout__container">
-        <div class="sp-layout__header">
-            <label>
-                <input type="radio" name="display" value="sp-style__layout-display__flex" v-model="display" @change="notify"/>
-                <fa-icon icon="arrows-left-right" />
+    <div class="space-y-3">
+        <div class="flex flex-wrap gap-4 text-sm font-semibold text-gray-700">
+            <label class="inline-flex cursor-pointer items-center gap-1.5">
+                <input class="accent-blue-600" type="radio" name="display" value="sp-style__layout-display__flex" v-model="display" @change="notify"/>
+                <div class="editor-icon-wrapper">
+                    <fa-icon icon="arrows-left-right" />
+                </div>
                 Flexible
             </label>
-            <label>
-                <input type="radio" name="display" value="sp-style__layout-display__grid" v-model="display" @change="notify"/>
-                <fa-icon icon="table-cells" />
+            <label class="inline-flex cursor-pointer items-center gap-1.5">
+                <input class="accent-blue-600" type="radio" name="display" value="sp-style__layout-display__grid" v-model="display" @change="notify"/>
+                <div class="editor-icon-wrapper">
+                    <fa-icon icon="table-cells" />
+                </div>
                 Tabla
             </label>
         </div>
-        <div class="sp-layout__body">
-            <div class="sp-layout__body">
-                <div class="sp-layout__flex-container" v-if="display === 'sp-style__layout-display__flex'">
-                    <div class="sp-layout__grid-item sp-layout__flex-direction-container">
-                        <label>
-                            <fa-icon icon="arrow-down-wide-short" />
+        <div class="space-y-3">
+            <div class="flex flex-wrap gap-3" v-if="display === 'sp-style__layout-display__flex'">
+                <div class="flex w-1/2 min-w-[8rem] flex-col gap-1">
+                    <label class="text-xs font-semibold text-gray-700">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrow-down-wide-short" />
+                            </div>
                             Dirección
-                        </label>
-                        <select v-model="flexDirection" @change="notify">
+                    </label>
+                    <select
+                        v-model="flexDirection"
+                        class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        @change="notify"
+                    >
                             <option value=""></option>
                             <option value="sp-style__layout-flex-direction__row">Fila</option>
                             <option value="sp-style__layout-flex-direction__column">Columna</option>
-                        </select>
-                    </div>
+                    </select>
                 </div>
-                <div class="sp-layout__gap-spacing-container">
-                    <div class="sp-layout__grid-item sp-layout__gap-container">
-                        <label>
-                            <fa-icon icon="arrow-down-wide-short" />
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex w-1/2 min-w-[8rem] flex-col gap-1">
+                    <label class="text-xs font-semibold text-gray-700">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrow-down-wide-short" />
+                            </div>
                             Espaciado
-                        </label>
-                        <select v-model="gapSpacing" @change="notify">
+                    </label>
+                    <select
+                        v-model="gapSpacing"
+                        class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        @change="notify"
+                    >
                             <option value=""></option>
                             <option v-for="option in gapSpacingOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
-                        </select>
-                    </div>
+                    </select>
                 </div>
-                <div class="sp-layout__grid-container" v-if="display === 'sp-style__layout-display__grid'">
-                    <div class="sp-layout__grid-item sp-layout__columns-container">
-                        <label>
-                            <fa-icon icon="grip" />
+            </div>
+            <div class="grid grid-cols-2 gap-2" v-if="display === 'sp-style__layout-display__grid'">
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-semibold text-gray-700">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="grip" />
+                            </div>
                             Columas
-                        </label>
-                        <select v-model="gridColumns" @change="notify">
+                    </label>
+                    <select
+                        v-model="gridColumns"
+                        class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        @change="notify"
+                    >
                             <option value=""></option>
                             <option v-for="option in columnsOptions" :key="`sp-style__layout-grid-template__columns-${option}`" :value="`sp-style__layout-grid-template__columns-${option}`">{{ option }}</option>
-                        </select>
-                    </div>
-                    <div class="sp-layout__grid-item sp-layout__rows-container">
-                        <label>
-                            <fa-icon icon="grip-vertical" />
+                    </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-semibold text-gray-700">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="grip-vertical" />
+                            </div>
                             Filas
-                        </label>
-                        <select v-model="gridRows" @change="notify">
+                    </label>
+                    <select
+                        v-model="gridRows"
+                        class="w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        @change="notify"
+                    >
                             <option value=""></option>
                             <option v-for="option in rowsOptions" :key="`sp-style__layout-grid-template__rows-${option}`" :value="`sp-style__layout-grid-template__rows-${option}`">{{ option }}</option>
-                        </select>
-                    </div>
+                    </select>
                 </div>
-                <div :class="`sp-layout__horizontal-alignment-container ${flexDirection}`">
-                    <label>{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Vertical' : 'Horizontal' }}</label>
-                    <div class="sp-layout__buttons-container">
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-up-to-line" />
-                            <input type="radio" name="horizontal" value="sp-style__layout-justify-content__start" v-model="horizontalAlignment" @change="notify"/>
-                        </label>
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-left-right-to-line" />
-                            <input type="radio" name="horizontal" value="sp-style__layout-justify-content__center" v-model="horizontalAlignment" @change="notify"/>
-                        </label>
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-up-to-line" />
-                            <input type="radio" name="horizontal" value="sp-style__layout-justify-content__end" v-model="horizontalAlignment" @change="notify"/>
-                        </label>
-                        <label class="sp-layout__button__aligment" v-if="display === 'sp-style__layout-display__flex'">
-                            <fa-icon icon="bars" />
-                            <input type="radio" name="horizontal" value="sp-style__layout-justify-content__between" v-model="horizontalAlignment" @change="notify"/>
-                        </label>
-                    </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-700">{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Vertical' : 'Horizontal' }}</label>
+                <div class="flex w-full justify-start gap-4">
+                    <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__start', horizontalAlignmentRotation(0))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__start" v-model="horizontalAlignment" @change="notify"/>
+                    </label>
+                    <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__center', horizontalAlignmentRotation(1))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-left-right-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__center" v-model="horizontalAlignment" @change="notify"/>
+                    </label>
+                    <label :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__end', horizontalAlignmentRotation(2))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__end" v-model="horizontalAlignment" @change="notify"/>
+                    </label>
+                    <label
+                        v-if="display === 'sp-style__layout-display__flex'"
+                        :class="alignmentButtonClass(horizontalAlignment === 'sp-style__layout-justify-content__between', horizontalAlignmentRotation(3))"
+                    >
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="bars" />
+                            </div>
+                        <input class="sr-only" type="radio" name="horizontal" value="sp-style__layout-justify-content__between" v-model="horizontalAlignment" @change="notify"/>
+                    </label>
                 </div>
-                <div :class="`sp-layout__vertical-alignment-container ${flexDirection}`">
-                    <label>{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Horizontal' : 'Vertical' }}</label>
-                    <div class="sp-layout__buttons-container">
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-up-to-line" />
-                            <input type="radio" name="vertical" value="sp-style__layout-align-items__start" v-model="verticalAlignment" @change="notify"/>
-                        </label>
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-left-right-to-line" />
-                            <input type="radio" name="vertical" value="sp-style__layout-align-items__center" v-model="verticalAlignment" @change="notify"/>
-                        </label>
-                        <label class="sp-layout__button__aligment">
-                            <fa-icon icon="arrows-up-to-line" />
-                            <input type="radio" name="vertical" value="sp-style__layout-align-items__end" v-model="verticalAlignment" @change="notify"/>
-                        </label>
-                    </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-700">{{ flexDirection === 'sp-style__layout-flex-direction__column' ? 'Horizontal' : 'Vertical' }}</label>
+                <div class="flex w-full justify-start gap-4">
+                    <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__start', verticalAlignmentRotation(0))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__start" v-model="verticalAlignment" @change="notify"/>
+                    </label>
+                    <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__center', verticalAlignmentRotation(1))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-left-right-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__center" v-model="verticalAlignment" @change="notify"/>
+                    </label>
+                    <label :class="alignmentButtonClass(verticalAlignment === 'sp-style__layout-align-items__end', verticalAlignmentRotation(2))">
+                            <div class="editor-icon-wrapper">
+                                <fa-icon icon="arrows-up-to-line" />
+                            </div>
+                        <input class="sr-only" type="radio" name="vertical" value="sp-style__layout-align-items__end" v-model="verticalAlignment" @change="notify"/>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-.sp-layout__container {
-    .sp-layout__header {
-        display: flex;
-        gap: 1rem;
-        label {
-            [type="radio"] {
-                margin-right: 0.5rem;
-            }
-        }
-    }
-}
-
-.sp-layout__grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-
-    .sp-layout__grid-item {
-        display: flex;
-        flex-direction: column;
-    }
-}
-
-.sp-layout__flex-direction-container,
-.sp-layout__gap-container {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-}
-
-.sp-layout__horizontal-alignment-container {
-    gap: 0.5rem;
-
-    & > .sp-layout__buttons-container {
-        & > .sp-layout__button__aligment:first-child {
-            transform: rotate(-90deg);
-        }
-        & > .sp-layout__button__aligment:nth-child(3),
-        & > .sp-layout__button__aligment:last-child {
-            transform: rotate(90deg);
-        }
-    }
-
-    &.sp-style__layout-flex-direction__column {
-        & > .sp-layout__buttons-container {
-            & > .sp-layout__button__aligment:first-child {
-                transform: rotate(0deg);
-            }
-            & > .sp-layout__button__aligment:nth-child(2) {
-                transform: rotate(90deg);
-            }
-            & > .sp-layout__button__aligment:nth-child(3),
-            & > .sp-layout__button__aligment:last-child {
-                transform: rotate(180deg);
-            }
-        }
-    }
-}
-
-.sp-layout__vertical-alignment-container {
-    gap: 0.5rem;
-
-    & > .sp-layout__buttons-container {
-        & > .sp-layout__button__aligment:nth-child(2) {
-            transform: rotate(-90deg);
-        }
-        & > .sp-layout__button__aligment:last-child {
-            transform: rotate(180deg);
-        }
-    }
-
-    &.sp-style__layout-flex-direction__column {
-        & > .sp-layout__buttons-container {
-            & > .sp-layout__button__aligment:first-child {
-                transform: rotate(-90deg);
-            }
-            & > .sp-layout__button__aligment:nth-child(2) {
-                transform: rotate(0deg);
-            }
-            & > .sp-layout__button__aligment:last-child {
-                transform: rotate(90deg);
-            }
-        }
-    }
-}
-
-.sp-layout__buttons-container {
-    display: flex;
-    width: 100%;
-    justify-content: flex-start;
-    gap: 1rem;
-
-    & > .sp-layout__button__aligment {
-        cursor: pointer;
-        width: 2rem;
-        height: 2rem;
-        transition: background-color 0.3s;
-        border-radius: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        & > input[type="radio"] {
-            display: none;
-        }
-
-        &:hover,
-        &:has(input[type="radio"]:checked) {
-            background-color: #f0f0f0;
-        }
-    }
-}
-</style>

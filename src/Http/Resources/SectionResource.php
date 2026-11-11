@@ -17,6 +17,8 @@ class SectionResource extends JsonResource
         return [
             'id' => $this->id,
             'order' => $this->order,
+            'sp_class_list' => $this->sp_class_list ?? [],
+            'sp_style_list' => $this->sp_style_list ?? [],
             'components' => ComponentResource::collection($this->whenLoaded('components')),
         ];
     }

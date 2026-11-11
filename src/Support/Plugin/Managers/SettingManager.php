@@ -37,7 +37,7 @@ class SettingManager {
         ];
     }
 
-    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, ?string $description = null, bool $required = false, mixed $data = null, ?array $options = [], mixed $default = null, ?Closure $manipulateSettings = null): void
+    public function addSetting(string|ManipulateSetting $plugin, string $name, string $type, string $label, ?string $description = null, bool $required = false, mixed $data = null, ?array $options = [], mixed $default = null, ?Closure $manipulateSettings = null, ?bool $editable = true): void
     {
         $this->settings[] = [
             'plugin' => $plugin instanceof ManipulateSetting ? $plugin::class : $plugin,
@@ -50,6 +50,7 @@ class SettingManager {
             'default' => $default,
             'options' => $options,
             'manipulateSettings' => $manipulateSettings,
+            'editable' => $editable,
         ];
     }
 
@@ -68,7 +69,11 @@ class SettingManager {
         $settingMenu = [];
 
         foreach ($this->settings as $setting) {
-            $settingValue = $settingValues->where('plugin', $setting['plugin'])->where('name', $setting['name'])->first()->value['value'] ?? null;
+            $storedSetting = $settingValues
+                ->where('plugin', $setting['plugin'])
+                ->where('name', $setting['name'])
+                ->first();
+            $settingValue = $storedSetting?->value['value'] ?? null;
             if (is_callable($setting['manipulateSettings'])) {
                 $settingValue = $setting['manipulateSettings']($settingValue, $dataContainer);
             }

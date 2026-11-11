@@ -13,11 +13,13 @@ use Illuminate\Support\Str;
 
 class ScriptManager implements AssetManager {
     private Collection $scripts;
+    private Collection $componentScripts;
     private array $pluginScripts;
 
     public function __construct(
     ) {
         $this->scripts = $this->renderScript();
+        $this->componentScripts = collect();
         $this->pluginScripts = [];
     }
 
@@ -29,6 +31,23 @@ class ScriptManager implements AssetManager {
     public function getScripts(): Collection
     {
         return $this->scripts;
+    }
+
+    public function addScripts(string $script): void
+    {
+        if (trim($script) !== '') {
+            $this->componentScripts->push($script);
+        }
+    }
+
+    public function getComponentScripts(): Collection
+    {
+        return $this->componentScripts;
+    }
+
+    public function resetComponentScripts(): void
+    {
+        $this->componentScripts = collect();
     }
 
     public function addPluginScript(Plugin $plugin, string $name, string $script): void

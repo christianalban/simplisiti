@@ -9,6 +9,13 @@ class Section extends Model
 {
     protected $fillable = [
         'order',
+        'sp_class_list',
+        'sp_style_list',
+    ];
+
+    protected $casts = [
+        'sp_class_list' => 'array',
+        'sp_style_list' => 'array',
     ];
 
     public function page()

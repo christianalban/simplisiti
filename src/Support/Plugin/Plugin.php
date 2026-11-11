@@ -24,7 +24,13 @@ abstract class Plugin {
         return $settings->value['value'] ?? null;
     }
 
-    public function setSettingValue(string $name, array $value): void
+    /**
+     * Set the value of a setting for a specific plugin.
+     *
+     * @param string $name The name of the setting.
+     * @param array|string $value The value to set for the setting.
+     */
+    public function setSettingValue(string $name, array|string $value): void
     {
         Setting::updateOrCreate(
             [

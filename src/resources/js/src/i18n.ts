@@ -69,6 +69,7 @@ const messages = {
                 action: "Action",
                 page: "Page",
                 link: "Link",
+                action_button: "Action button",
             },
             labels: {
                 componentName: "Component name (optional group)",
@@ -79,12 +80,15 @@ const messages = {
                 createComponent: "Create new component",
                 editComponent: "Edit component",
                 code: "Code",
+                styles: "Styles",
+                scripts: "Scripts",
                 variables: "Variables",
                 selectResource: "Select resource",
                 fillData: "Fill data",
                 editContent: "Edit content",
                 graphical: "Graphical",
                 clone: "Clone",
+                usage: "Show component usage",
             },
             buttons: {
                 create: "New component",
@@ -94,6 +98,7 @@ const messages = {
                 editContent: "Edit content",
                 refresh: "Refresh components list",
                 addVariable: "Add variable",
+                reorderRow: "Reorder row",
             },
             toasts: {
                 created: "Component created successfully.",
@@ -113,6 +118,13 @@ const messages = {
                 clone: {
                     title: "Clone component",
                     message: "Are you sure you want to clone the component '{name}'?",
+                },
+                usage: {
+                    title: "Pages using this component",
+                    loading: "Loading pages...",
+                    empty: "This component is not used on any page.",
+                    error: "Pages couldn't be loaded.",
+                    openPage: "Open page editor",
                 }
             }
         },
@@ -448,6 +460,7 @@ const messages = {
                 action: "Acción",
                 page: "Página",
                 link: "Enlace",
+                action_button: "Botón de acción",
             },
             labels: {
                 componentName: "Nombre del componente (grupo opcional)",
@@ -458,12 +471,15 @@ const messages = {
                 createComponent: "Crear nuevo componente",
                 editComponent: "Editar componente",
                 code: "Código",
+                styles: "Estilos",
+                scripts: "Scripts",
                 variables: "Variables",
                 selectResource: "Seleccionar recurso",
                 fillData: "Completar datos",
                 editContent: "Editar contenido",
                 graphical: "Gráfico",
                 clone: "Clonar",
+                usage: "Mostrar uso del componente",
             },
             buttons: {
                 create: "Nuevo componente",
@@ -473,6 +489,7 @@ const messages = {
                 editContent: "Editar contenido",
                 refresh: "Actualizar listado de componentes",
                 addVariable: "Agregar variable",
+                reorderRow: "Reordenar fila",
             },
             toasts: {
                 created: "Componente creado correctamente.",
@@ -492,6 +509,13 @@ const messages = {
                 clone: {
                     title: "Clonar componente",
                     message: "¿Está seguro que desea clonar el componente '{name}'?",
+                },
+                usage: {
+                    title: "Páginas que usan este componente",
+                    loading: "Cargando páginas...",
+                    empty: "Este componente no se utiliza en ninguna página.",
+                    error: "No se pudieron cargar las páginas.",
+                    openPage: "Abrir editor de página",
                 }
             }
         },

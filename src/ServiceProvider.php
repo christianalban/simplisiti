@@ -23,6 +23,8 @@ class ServiceProvider extends Support\ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
 
+        $this->loadRoutesFrom(__DIR__.'/routes/mcp.php');
+
         $this->loadViewsFrom(__DIR__.'/resources/views', 'simplisiti');
 
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');

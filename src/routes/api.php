@@ -1,10 +1,10 @@
 <?php
 
 use Alban\Simplisiti\Controllers;
+use Alban\Simplisiti\Http\Middleware\AuthenticateUnlessLocal;
 use Illuminate\Support\Facades\Route;
 
-// For Develop remove the 'auth:sanctum' middleware
-Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function () {
+Route::prefix('api/spanel')->middleware(['api', AuthenticateUnlessLocal::class])->group(function () {
     Route::controller(Controllers\ComponentController::class)->group(function () {
         Route::get('component', 'index');
         Route::get('component/{component}', 'show');
@@ -24,7 +24,7 @@ Route::prefix('api/spanel')->middleware(['api', 'auth:sanctum'])->group(function
         Route::delete('page/{page}', 'destroy');
         Route::group(['excluded_middleware' => 'throttle:api'], function () {
             Route::get('page/editor/font/{font}', 'fontEngine')->where('type', 'style|script');
-            Route::get('page/editor/{type}/engine', 'editorEngine')->where('type', 'style|script|layout');
+            Route::get('page/editor/{type}/engine', 'editorEngine')->where('type', 'style|script|layout|content-style');
             Route::get('page/plugin/{type}/preview', 'pluginPreview')->where('type', 'style|script');
             Route::match(['get', 'post'], 'page/{type}/preview', 'preview')->where('type', 'style|script|component');
         });

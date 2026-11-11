@@ -5,6 +5,8 @@ namespace Alban\Simplisiti\Services\SimplisitiEngine\Loaders;
 use Alban\Simplisiti\Models\Page;
 use Alban\Simplisiti\Services\SimplisitiEngine\SimplisitiApp;
 use Alban\Simplisiti\Support\Content\ContentRender;
+use Alban\Simplisiti\Support\Content\ScriptRender;
+use Alban\Simplisiti\Support\Content\StyleRender;
 use Alban\Simplisiti\Support\Content\TitlePageRender;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -60,15 +62,20 @@ class PagesLoader
             }
 
             $pages->each(function (Page $page) {
-                Route::get($page->url, function (...$params) use ($page) {
-                    
-                    $this->app->setRequestParameters($page->url, $params);
-                    return View::make('simplisiti::boot', [
-                        'content' => $this->renderContent($page),
-                        'title' => $this->renderTitlePage($page),
-                        'app' => $this->app,
-                    ]);
-                })->middleware(['web'])->name($page->name);
+                Route::group(['middleware' => ['web']], function () use ($page) {
+                    Route::get($page->url, function (...$params) use ($page) {
+                        
+                        $this->app->setRequestParameters($page->url, $params);
+                        $this->renderStyles($page);
+                        $this->renderScripts($page);
+
+                        return View::make('simplisiti::boot', [
+                            'content' => $this->renderContent($page),
+                            'title' => $this->renderTitlePage($page),
+                            'app' => $this->app,
+                        ]);
+                    })->name($page->name);
+                });
             });
 
         } catch (\Illuminate\Database\QueryException $e) {
@@ -85,6 +92,18 @@ class PagesLoader
         $contentRender = new ContentRender();
 
         return $contentRender->renderPageContent($page);
+    }
+
+    protected function renderStyles(Page $page): void
+    {
+        $styleRender = new StyleRender();
+        $styleRender->renderPageStyles($page);
+    }
+
+    protected function renderScripts(Page $page): void
+    {
+        $scriptRender = new ScriptRender();
+        $scriptRender->renderPageScripts($page);
     }
 
     protected function renderTitlePage(Page $page): string

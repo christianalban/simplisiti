@@ -33,7 +33,7 @@ const emitChange = (event: Event) => {
 </script>
 
 <template>
-    <select class="input w-full" :name="name" :value="modelValue" @change="emitChange($event)" :required="required" :disabled="!editable">
+    <select class="input w-full h-full" :name="name" :value="modelValue" @change="emitChange($event)" :required="required" :disabled="!editable">
         <option :value="null">{{ $t('placeholders.select') }}</option>
         <option v-for="option of data" :value="option.value">{{ option.label }}</option>
     </select>

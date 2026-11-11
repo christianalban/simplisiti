@@ -116,6 +116,7 @@ class PageController extends SimplisitiAppController {
             'script' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/simplisiti-component-editor.umd.cjs',
             'style' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/style.css',
             'layout' => 'vendor/alban/simplisiti/src/resources/css/simplisiti-component-editor/style.css',
+            'content-style' => 'vendor/alban/simplisiti/src/resources/js/simplisiti-component-editor/dist/content.css',
         };
 
         $engineResource = base_path($path);
@@ -125,6 +126,7 @@ class PageController extends SimplisitiAppController {
         $contentType = match ($type) {
             'style' => 'text/css',
             'layout' => 'text/css',
+            'content-style' => 'text/css',
             'script' => 'text/javascript',
         };
 

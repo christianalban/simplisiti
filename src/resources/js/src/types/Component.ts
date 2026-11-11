@@ -11,6 +11,8 @@ export interface Component {
     order?: number
     name: string
     html: string
+    styles?: string
+    scripts?: string
     variables: Variable[]
     content_id?: number
     content?: ComponentContent

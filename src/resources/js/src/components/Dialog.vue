@@ -18,6 +18,14 @@ const props = defineProps({
     showDialog: {
         type: Boolean,
         required: true,
+    },
+    confirmLabel: {
+        type: String,
+        default: '',
+    },
+    cancelLabel: {
+        type: String,
+        default: '',
     }
 });
 
@@ -52,8 +60,8 @@ watch(showDialog, (showDialog) => {
             <span class="font-bold">{{ props.title }}</span>
             <p class="text-sm">{{ props.message }}</p>
             <div class="flex justify-between gap-4">
-                <button value="cancel" class="button danger" formmethod="dialog">{{ $t('buttons.cancel') }}</button>
-                <button id="confirmBtn" class="button primary" value="default" formmethod="dialog">{{ $t('buttons.confirm') }}</button>
+                <button value="cancel" class="button danger" formmethod="dialog">{{ cancelLabel || $t('buttons.cancel') }}</button>
+                <button id="confirmBtn" class="button primary" value="default" formmethod="dialog">{{ confirmLabel || $t('buttons.confirm') }}</button>
             </div>
         </form>
     </dialog>

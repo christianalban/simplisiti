@@ -76,21 +76,23 @@ const handleInput = (event: Event) => variableName.value = value(event.target);
 </script>
 
 <template>
-    <div class="form-group h-10">
+    <div class="variable-config-item h-10">
         <div class="variable-grip-lines button primary flex cursor-move !px-1 items-center justify-center">
             <fa-icon icon="grip-lines" class="text-gray-500" />
         </div>
-        <variable-type-selector class="!w-20" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
-        <input type="text" class="input !w-32" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
+        <variable-type-selector class="w-full min-w-0" :modelValue="type" @update:modelValue="$emit('update:type', $event)"/>
+        <input type="text" class="input w-full min-w-0" :value="variableName" @input="handleInput($event)" @blur="$emit('update:name', variableName)" :placeholder="$t('components.placeholders.name')" />
         <!-- inputs defaults accord selected type -->
-        <control-type-selector class="flex-1" :modelValue="default" @update:modelValue="$emit('update:default', $event)" :name="name" :type="type" :data="options"/>
+        <div class="variable-value min-w-0 w-full overflow-hidden">
+            <control-type-selector :modelValue="default" @update:modelValue="$emit('update:default', $event)" :name="name" :type="type"/>
+        </div>
         <!-- inputs defaults accord selected type -->
         <!-- buttons add and remove -->
-        <div class="flex flex-col text-xs w-14">
-            <button type="button" :class="['variable-button flex-1 rounded-tr', {'bg-blue-200 text-blue-900': hasConfigs, 'bg-blue-100 text-blue-300 cursor-not-allowed': !hasConfigs}]" @click="displaySettings" :disabled="!hasConfigs">
+        <div class="variable-actions flex flex-col text-xs w-14">
+            <button type="button" :class="['variable-button flex-1', {'bg-blue-200 text-blue-900': hasConfigs, 'bg-blue-100 text-blue-300 cursor-not-allowed': !hasConfigs}]" @click="displaySettings" :disabled="!hasConfigs">
                 <fa-icon icon="gear" />
             </button>
-            <button type="button" :class="['variable-button flex-1 bg-red-200 text-red-900 rounded-br ', { 'hover:bg-red-300 cursor-pointer': showRemove, 'cursor-not-allowed': !showRemove }]" @click="removeVariable" :disabled="!showRemove">
+            <button type="button" :class="['variable-button flex-1 bg-red-200 text-red-900', { 'hover:bg-red-300 cursor-pointer': showRemove, 'cursor-not-allowed': !showRemove }]" @click="removeVariable" :disabled="!showRemove">
                 <fa-icon icon="minus" />
             </button>
         </div>
@@ -99,4 +101,40 @@ const handleInput = (event: Event) => variableName.value = value(event.target);
 </template>
 
 <style scoped>
+.variable-config-item {
+    @apply grid min-w-0;
+    grid-template-columns: 2.25rem minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr) 3.5rem;
+}
+
+.variable-config-item > .variable-grip-lines {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.variable-config-item > :nth-child(2),
+.variable-config-item > :nth-child(3),
+.variable-config-item > .variable-value {
+    border-radius: 0;
+}
+
+.variable-value :deep(.input),
+.variable-value :deep(.button) {
+    border-radius: 0;
+}
+
+.variable-actions {
+    overflow: hidden;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.variable-actions > button {
+    border-radius: 0;
+}
+
+.variable-actions > button:first-child {
+    border-top-right-radius: 0.5rem;
+}
+
+.variable-actions > button:last-child {
+    border-bottom-right-radius: 0.5rem;
+}
 </style>

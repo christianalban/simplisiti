@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue';
 import Draggable from 'vuedraggable'
 import { Component, ComponentContent } from '../../../types/Component';
 import Group from '../../../components/Group.vue';
-import { groupItems, componentName, loadPluginResourcesPreview, loadResourcesPreview } from '../../../utils/helpers';
+import { groupItems, componentName, loadPreviewResources } from '../../../utils/helpers';
 import ComponentFloatingPreview from '../../../components/preview/ComponentFloatingPreview.vue';
 
 const availableComponents = ref<Component[]>([]);
@@ -37,12 +37,7 @@ const cloneComponent = (component: Component) => {
 }
 
 const loadComponents = () => {
-    const resources = Promise.all([
-        loadPluginResourcesPreview(),
-        loadResourcesPreview(),
-    ])
-
-    resources.then(() => {
+    loadPreviewResources().then(() => {
         isLoading.value = true;
         getComponents({
             withData: true,

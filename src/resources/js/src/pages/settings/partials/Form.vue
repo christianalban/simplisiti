@@ -28,6 +28,7 @@ defineProps({
                         :type="item.type"
                         :data="item.options"
                         :plugin="item.plugin"
+                        :editable="item.editable"
                     />
                 </div>
             </div>

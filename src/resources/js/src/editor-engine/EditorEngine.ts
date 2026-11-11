@@ -1,13 +1,16 @@
 import { AttributeValue } from "../types/Attribute";
 import { HTML_TAGS } from "../types/EditorEngine";
 import { StyleValue } from "../types/Style";
+import { normalizeSerializedTemplate, TemplateProtection } from "./TemplateProtection";
 
 export class EditorEngine {
     private htmlString!: string;
     private document!: Document;
+    private readonly templateProtection = new TemplateProtection();
 
     public setHtmlString(htmlString: string) {
         this.htmlString = htmlString;
+        this.templateProtection.reset();
     }
 
     private getElements(): HTMLElement[] {
@@ -19,7 +22,8 @@ export class EditorEngine {
     public compose(): EditorEngine {
         const parser = new DOMParser();
 
-        const doc = parser.parseFromString(this.htmlString, 'text/html');
+        const protectedHtml = this.templateProtection.protect(this.htmlString);
+        const doc = parser.parseFromString(protectedHtml, 'text/html');
 
         this.document = doc;
 
@@ -38,7 +42,7 @@ export class EditorEngine {
     public clearHtmlString(): string {
         let html = this.document.body.innerHTML;
         html = html.replaceAll('draggable="true"', '');
-        return html;
+        return this.templateProtection.restore(html);
     }
 
     public async getComposedHtmlString(): Promise<string> {
@@ -85,8 +89,12 @@ export class EditorEngine {
     }
 
     public updateContainerContentBySimplisitiId(simplisitiId: string | undefined, content: string): void {
+        const protectedContent = this.templateProtection.protect(
+            normalizeSerializedTemplate(content),
+        );
+
         if (simplisitiId === 'simplisiti-component-preview') {
-            this.document.body.innerHTML = content;
+            this.document.body.innerHTML = protectedContent;
             return;
         }
 
@@ -96,7 +104,7 @@ export class EditorEngine {
             return;
         }
 
-        element.innerHTML = content;
+        element.innerHTML = protectedContent;
     }
 
     public updateAttributeOfElementBySimplisitiId(simplisitiId: string, spAttribute: AttributeValue): void {

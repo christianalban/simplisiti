@@ -47,7 +47,7 @@ export const getPluginResourcePreviewUrl = (type: ResourcePreview): string => {
 }
 
 /* TODO: Remove render component on backend */
-/* @deprecated The engine render de html on the client side, so this feauture is not needed */
+/* @deprecated The engine render the html on the client side, so this feauture is not needed */
 export const getComponentPreview = async (componentId: number, content: ContentValue): Promise<any> => {
     return await axios.post(`page/component/preview?component=${componentId}`, { content })
 }
